@@ -1,0 +1,51 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    <form method="post" onsubmit="viewLoader()">
+    {{ include('install/_loader.twig') }}
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>01. Installation de la base de données <span class="txtprimary">Proaxive Lite</span></h1>
+        <span>L'installateur va importer la base de donnes pour vous. Renseignez simplement les champs demandés.</span>
+        <p>Un récapitulatif vous sera affiché avant d'importer les données.</p>
+        <div class="alert alert-warning">
+            <strong>Avertissement :</strong> Assurez-vous d'avoir créé votre base de données pour Proaxive avant de poursuivre.
+        </div>
+        <div class="bloc-default">
+            <div class="bloc-default_title">
+                <strong>Remplissez les champs ci-dessous.</strong>
+            </div>
+            <div class="big-icon text-center" style="font-size:9em;">
+                <i class="icofont-database"></i>
+            </div>
+            <div class="bloc-default_content">
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label class="form-label" for="db_host">Serveur hôte de votre base de données</label>
+                        <input class="form-input underlined" type="text" id="db_host" name="db_host" value="" placeholder="" autocomplete="off">
+                        <small><i class="icofont-info-circle"></i> localhost, 127.0.0.0 ou adresse IP/Serveur</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="db_name">Nom de votre base de données</label>
+                        <input class="form-input underlined" type="text" id="db_name" name="db_name" value="" placeholder="" autocomplete="off">
+                        <small></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="db_user">Utilisateur de votre base de données</label>
+                        <input class="form-input underlined" type="text" id="db_user" name="db_user" value="" placeholder="" autocomplete="off">
+                        <small></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="db_passwd">Mot de passe de votre base de données</label>
+                        <input class="form-input underlined" type="password" id="db_passwd" name="db_passwd" value="" placeholder="">
+                        <small></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="si__footer text-right">
+        <button type="submit" class="btn btn-primary" name="createSetting"><i class="icofont-check-circled"></i> Poursuivre</button>
+    </div>
+    </form>
+{% endblock %}

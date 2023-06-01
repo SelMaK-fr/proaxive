@@ -1,0 +1,52 @@
+{% extends '_layout/layout_search.twig' %}
+
+{% block title "Suivi des intervention en ligne" %}
+
+{% block body %}
+    <div class="section no-pad-bot search" id="index-banner">
+        <div class="container">
+            <div class="card-custom bradius search-box" style="width:80%;margin:0 auto;top: 3vh;position:relative">
+                <div class="columns">
+                    <div class="column col-6 col-md-12 rborder">
+                        <div class="pl5">
+                            <div class="pt3 text-center">
+                                {% if company.logo is empty %}
+                                    <img src="{{ getenv('APP_ROOT_PUBLIC') }}/assets/styles/proaxive/proaxive_logo_synexolabs_400.png">
+                                {% else %}
+                                    <img src="{{ getenv('APP_ROOT_PUBLIC') }}/uploads/company/{{ company.logo }}" alt="Logo {{ company.cname }}">
+                                {% endif %}
+                            </div>
+                            <h1 class="title-search d-block">
+                                {% if company.cname is empty %}
+                                Proaxive
+                                {% else %}
+                                {{ company.cname }}
+                                {% endif %}
+                            </h1>
+                            <div class="search-text">
+                                Proaxive est une application web qui permet de suivre les interventions en ligne. Elle est totalement gratuite pour tous les clients.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column col-6 col-md-12">
+                        <div class="pt5 pb3 pl5 pr5 bborder">
+                            {{ include('_notifications.twig') }}
+                            <form method="post">
+                                <h2 class="title-search-form">Entrez un numéro d'intervention</h2>
+                                {{ form.inputBlock('search_intervention', false, 'Votre numéro d\'intervention') | raw }}
+                                {{ form.submit('primary shadow') | raw }}
+                            </form>
+                            <div class="alert alert-info mt3">Le numéro d'intervention vous est communiqué par votre technicien.</div>
+                        </div>
+                        <div class="pt3">
+                            <div class="pl5 pr5 pb3">
+                                <strong>Pour des raisons de sécurité</strong>, vos données personnelles ne sont pas visible sur le suivi en ligne.
+                                <br>Une fiche d'intervention détaillée vous sera remise par courriel ou directement disponible dans votre ordinateur.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

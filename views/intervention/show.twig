@@ -1,0 +1,98 @@
+{% extends '_layout/layout.twig' %}
+
+{% block title %} Intervention n°{{ intervention.number }} du {{ intervention.created_at | date('d-m-Y') }}  {% endblock %}
+
+{% block body %}
+    <div class="title-page">
+        <h1>Bienvenue dans votre suivi en ligne</h1>
+        <span>Suivez ce qu'il se passe sur votre équipement informatique</span>
+    </div>
+    <div class="content-app">
+            <div class="columns">
+                <div class="column col-9 col-lg-9 col-xl-9 col-md-12">
+                    <div style="clear:both"></div>
+                    <div class="card-custom p-relative">
+                        <div class="card-content">
+                            <div class="columns">
+                                <div class="column col-2 col-md-12">
+                                    <strong class="d-block">N°</strong>
+                                    {{ intervention.number }}
+                                </div>
+                                <div class="column col-2 col-md-12">
+                                    {% if intervention.pmad == 1 %}
+                                        <strong class="d-block">Type</strong>
+                                        À distance
+                                    {% elseif(intervention.pmad == 0) %}
+                                        Date de dépôt : <strong class="d-block"> {{ intervention.received | date('d-m-Y') }}</strong>
+                                    {% endif %}
+                                </div>
+                                <div class="column col-3 col-md-12">
+                                    <strong class="d-block primarytxt">Début de l'intervention</strong>
+                                    {% if intervention.start is null %}
+                                        N.A
+                                    {% else %}
+                                        {{ intervention.start | date('d-m-Y') }}
+                                    {% endif %}
+                                </div>
+                                <div class="column col-3 col-md-12">
+                                    <strong class="d-block">État</strong>
+                                    {% if(intervention.closed == 1) %}
+                                    <span class="label label-success">Cloturé le {{ intervention.close_date | localizeddate('none', 'none', 'fr', null, 'EEEE d MMMM Y') }}</span>
+                                    {% else %}
+                                    <span class="label" style="background-color:#{{ status.bgcolor }}">{{ status.title }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="column col-2 col-md-12">
+                                    <strong class="d-block">Votre technicien</strong>{{ company.director }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <i class="material-icons">update</i> {{ intervention.updated_at | localizeddate('none', 'none', 'fr', null, 'EEEE d MMMM Y à H:m') }}
+                        </div>
+                    </div>
+                    {% if intervention.status_id != 3 %}
+                        <div class="steps">
+                            <ul class="progressbar">
+                                {% if intervention.pmad == 1 %}
+                                    <li {% if intervention.steps >= 1 %}class="active"{% endif %}>
+                                        <span><i class="icofont-clock-time"></i></span>Intervention programmée
+                                    </li>
+                                    <li {% if intervention.steps >= 2 %}class="active"{% endif %}><span><i class="icofont-tools"></i></span> Intervention en cours</li>
+                                    <li {% if intervention.steps >= 3 %}class="active"{% endif %}><span><i class="icofont-tasks"></i></span> Tests finaux</li>
+                                    <li {% if intervention.steps == 4 %}class="active"{% endif %}><span><i class="icofont-tick-mark"></i></span> Terminé</li>
+                                {% else%}
+                                    <li {% if intervention.steps >= 1 %}class="active"{% endif %}>
+                                        <span><i class="icofont-car-alt-3"></i></span>Matériel récupéré
+                                    </li>
+                                    <li {% if intervention.steps >= 2 %}class="active"{% endif %}><span><i class="icofont-tools"></i></span> En atelier</li>
+                                    <li {% if intervention.steps >= 3 %}class="active"{% endif %}><span><i class="icofont-tasks"></i></span> Tests finaux</li>
+                                    <li {% if intervention.steps == 4 %}class="active"{% endif %}><span><i class="icofont-tick-mark"></i></span> Terminé</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% if intervention.start is null %}
+                        {{ include('intervention/_notstart.twig') }}
+                    {% else %}
+                        {{ include('intervention/_start.twig') }}
+                    {% endif %}
+                </div>
+                <div class="column col-3 col-lg-4 col-xl-4 col-md-12">
+                    <div class="bloc-column text-center">
+                        {% if intervention.start is not null %}
+                            <div class="card-custom">
+                                <div class="card-content">
+                                    <span class="mb1">
+                                    <a class="btn-rounded btn-primary" href="/i/{{ intervention.number }}/print"><i class="material-icons">print</i></a>
+                                    </span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {{ include('intervention/_widget_equipment.twig') }}
+                    {{ include('_widget_company.twig') }}
+                </div>
+            </div>
+    </div>
+{% endblock %}

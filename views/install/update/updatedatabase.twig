@@ -1,0 +1,41 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    {{ include('install/_loader.twig') }}
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>Mise à jour de la base de données.</h1>
+        <span>L'installateur va maintenant procéder à la mise à jour de la base de données de Proaxive Lite.</span>
+        <p>Cette opération peut durer un certain temps.</p>
+        <p>Si ce n'est pas déjà fait, pensez à sauvegarder votre base de données.</p>
+        <div class="bloc-default">
+            {% if success == 1 %}
+                <div class="big-icon text-center primarytxt" style="font-size:9em;">
+                    <i class="icofont-ui-check"></i>
+                </div>
+             {% else%}
+                 <div class="big-icon text-center" style="font-size:9em;">
+                     <i class="icofont-arrow-right"></i><i class="icofont-database"></i>
+                 </div>
+            {% endif %}
+            <div class="code" style="background-color:#333;color:white;max-height: 300px;overflow: auto;padding: 1em;position: relative;word-break: break-word;margin-bottom:1em;">
+                {{ response | raw  }}
+            </div>
+        </div>
+    </div>
+    <div class="si__footer text-right">
+        {% if success == 1 %}
+            <form method="post" class="d-inline-block" onsubmit="viewLoader()">
+                <button type="submit" class="btn btn-primary" name="finish_update"><i class="icofont-check-circled"></i> Terminer</button>
+            </form>
+        {% elseif success == 0 %}
+            <form method="post" action="" class="d-inline-block" onsubmit="viewLoader()">
+                <button type="submit" class="btn btn-primary" name="importSql"><i class="icofont-check-circled"></i> Relancer</button>
+            </form>
+        {% elseif success is empty %}
+            <form method="post" onsubmit="viewLoader()">
+                <button type="submit" class="btn btn-primary" name="start_migrate"><i class="icofont-check-circled"></i> Mettre à jour</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

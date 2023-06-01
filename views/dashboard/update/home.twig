@@ -1,0 +1,54 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %} Mise à jour de Proaxive Lite {% endblock %}
+
+{% block breadCrumb %}
+    {{ breadcrumb('','', false) | raw }}
+{% endblock %}
+
+{% block body %}
+    <div class="section--admin">
+        <div class="container">
+            <div class="admin-content">
+            {{ include('_notifications.twig') }}
+            <div class="columns">
+                <div class="column col-8 col-mx-auto">
+                        <div class="card-custom">
+                            <div class="card-header"><h2><i class="icofont-database"></i> Mise à jour de Proaxive</h2></div>
+                            <div class="card-body">
+                                {{ viewAlert('info',"Vous devez rester connecté pour utiliser l'assistant de mise à jour !") | raw }}
+                                <p>
+                                    L'assistant se sert des fichiers de migration afin de mettre à jour Proaxive. <br>
+                                    Ne modifiez en aucun cas ces fichiers afin d'éviter de corrompre les mises à jour suivantes.
+                                </p>
+                                <span class="d-block">Version : <strong>{{ app_info.number }}</strong> ({{ app_info.verdate }})</span>
+                                <span class="d-block">Nom de code : <strong>{{ app_info.namecode }}</strong></span>
+                                <span class="d-block">Statut : <strong>{{ app_info.status }}</strong></span>
+                                <span class="d-block">Développeur : <a href="{{ app_info.urlauthor }}" target="_blank"><i class="icofont-link-alt"></i></a> <strong>{{ app_info.author }}</strong></span>
+                                <br>
+                                {% if newupdate == 1 %}
+                                <div class="alert alert-primary mt-2">
+                                Nouvelle version disponible : <strong>{{ serverhost.num }}</strong> <br>
+                                <a class="label label-primary" href="https://proaxive.fr/downloads" target="_blank">Télécharger l'archive de mise à jour !</a>
+                                    <form class="mt-2" method="get" action="/update">
+                                        <input type="hidden" name="assist" value="start">
+                                        {{ form.submitDefault("Lancer l'assistant", 'info') | raw }}
+                                    </form>
+                                </div>
+                                {% elseif newupdate is null %}
+                                 <em>Votre version de Proaxive est à jour !</em>
+                                {% endif %}
+                                <div class="admin-form mt-2">
+                                    <form method="post" class="d-inline-block">
+                                        <input type="hidden" name="check_update">
+                                        {{ form.submitDefault("Vérifier les mises à jour", 'primary') | raw }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

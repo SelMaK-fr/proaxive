@@ -1,0 +1,4 @@
+vendor
+db/seeds/ClientSeeder.php
+db/seeds/EquipmentSeeder.php
+db/seeds/InterventionSeeder.php

@@ -1,0 +1,50 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="card-custom">
+            <div class="card-body">
+                <div class="columns">
+                    <div class="column col-6 col-lg-12">
+                        <div>
+                            <canvas id="customers"></canvas>
+                        </div>
+                    </div>
+                    <div class="column col-6 col-lg-12">
+                        <div>
+                            <canvas id="canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns mg-t-1">
+                    <div class="column col-6 col-md-12">
+                        Les stats sont générés par an. Pour visualiser une année précédente, veuillez la sélectionner via le formulaire ci-dessous :
+                        <div class="mg-t-1">
+                            {% set minYear = "now -2 years"|date("Y") %}
+                            {% set maxYear = "now + 9 years"|date("Y") %}
+                            <form method="post" action="/admin/stats">
+                                <div class="form-group d-inline-block">
+                                    <select name="year" class="form-select" style="width:auto;" id="">
+                                        {% for year in minYear..maxYear %}
+                                            <option value="{{ year }}">Année {{ year }}</option>
+                                            {% set year = year + 1 %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary d-inline-block">Visualiser</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>let year = {{ year }}</script>
+    <script src="{{ getenv('APP_ROOT_PUBLIC') }}/assets/javascript/api/api.proaxive.js"></script>
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="form-default">
+{{ form.inputWithIcon('fullname', false, 'user-suited', 'Nom complet') | raw }}
+{{ form.inputWithIcon('pseudo', false, 'user-alt-7', "Pseudonyme de l'administrateur") | raw }}
+{{ form.inputWithIcon('mail', false, 'email', 'Adresse email') | raw }}
+</div>
+{% if myaccount is not defined %}
+{{ form.select('roles', "Rôles", {'super admin':'super_admin', 'technician':'technician', 'manager':'manager'}) | raw }}
+{% endif %}
+{% if inputpassword is defined %}
+{{ form.password('password', 'Mot de passe', false) | raw }}
+{% endif %}

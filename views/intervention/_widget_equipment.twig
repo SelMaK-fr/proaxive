@@ -1,0 +1,33 @@
+<div class="card-custom">
+    <div class="card-content">
+        <div class="text-center">
+            <i class="material-icons">desktop_windows</i>
+            <h2>Matériel déposé</h2>
+        </div>
+        <div class="text-center">
+            <span class="small-txt-h2 text-center dblock mb1">{{ equipment.name }} ({{ equipment.b_title }})</span>
+            {% if equipment.b_logo is not null %}
+                <div style="padding:0 4rem;margin-bottom:1rem;">
+                    <img class="img-responsive" src="{{ equipment.b_logo }}" alt="">
+                </div>
+            {% endif %}
+            {% markdown %}
+                {{ equipment.content }}
+            {% endmarkdown %}
+        </div>
+    </div>
+</div>
+
+<div class="card-custom">
+    <div class="card-content">
+        <div class="text-center">
+            <h2>Système d'exploitation</h2>
+        </div>
+        <div class="text-center">
+            <div class="text-center mt-1 mb-1" style="font-weight:600;">
+                {{ equipment.os_name }} ({{ equipment.os_architecture }})
+            </div>
+            ver. <span class="label primary d-inline-block">{{ equipment.os_release }}</span>
+        </div>
+    </div>
+</div>

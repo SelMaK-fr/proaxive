@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a32fdbc3-4bf1-44b4-84c9-19d8245490d6" name="Proaxive Dev" url="http://37.187.176.47">
+        <fileTransfer rootFolder="/web/proaxive-published.org/public_html" host="37.187.176.47" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

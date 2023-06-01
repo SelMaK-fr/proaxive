@@ -1,0 +1,107 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Compte client - {{ client.fullname }}{% endblock %}
+
+{% block body %}
+    <div class="section--admin">
+        <div class="container">
+            <div class="admin-content">
+                <div class="mg-b-3">
+                    {{ include('clients/admin/_profil_header.twig') }}
+                </div>
+                <div class="card-custom">
+                    <div class="card-body">
+                        <div class="columns">
+                            <div class="column col-4 col-sm-12">
+                                <div class="mg-b-2">
+                                    <div class="head-title">
+                                        <div class="columns">
+                                            <div class="column col-8">
+                                                <div class="card-header"><h2>Équipements</h2></div>
+                                            </div>
+                                            <div class="column col-4 text-right">
+                                                <a href="/admin/client/{{ client.id }}/add-equipment" class="btn-sm btn-primary" title="Ajouter un équipement"><i class="icofont-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if equipments is empty %}
+                                        {{ viewAlert('info', "Aucun équipement enregistré") | raw }}
+                                    {% else %}
+                                        <div class="recent-default">
+                                            {% for item in equipments %}
+                                                <div class="recent-default-single {% if item.status == 0 %}equipment-out{% endif %}">
+                                                    <a href="/admin/edit-equipment/{{ item.eid }}">
+                                                        <div class="recent-default-flex">
+                                                            <div class="recent-d-img"><i class="icofont-{{ item.icon }}"></i></div>
+                                                            <div class="recent-d-ctn">
+                                                                <h2>{{ item.name }}</h2>
+                                                                <p>
+                                                                    <i>{{ item.title }}</i> - {{ item.b_title }}<br>
+                                                                    <i class="icofont-clock-time"></i> {{ item.updated_at | date('d-m-Y') }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="column col-8 col-sm-12">
+                                <div id="interventions">
+                                    <div class="head-title">
+                                        <div class="columns">
+                                            <div class="column col-8">
+                                                <div class="card-header"><h2>Interventions</h2></div>
+                                            </div>
+                                            <div class="column col-4 text-right">
+                                                {% if equipments is not empty %}
+                                                    <a href="/admin/client/{{ client.id }}/add-intervention" class="btn-sm btn-primary" title="Créer une intervention"><i class="icofont-plus"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if interventions is empty %}
+                                        {{ viewAlert('info', "Aucune intervention enregistrée pour ce client") | raw }}
+                                    {% else %}
+                                        <div class="recent-default">
+                                            <div class="columns">
+                                                {% for item in interventions %}
+                                                    {{ include('intervention/admin/_item.twig') }}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div id="outlay" class="mg-t-2">
+                                    <div class="head-title">
+                                        <div class="columns">
+                                            <div class="column col-8">
+                                                <div class="card-header"><h2>Débours</h2></div>
+                                            </div>
+                                            <div class="column col-4 text-right">
+                                                <a href="/admin/client/{{ client.id }}/add-outlay" class="btn-sm btn-primary" title="Créer une intervention"><i class="icofont-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if outlay is empty %}
+                                        {{ viewAlert('info', "Aucun débours enregistré pour ce client") | raw }}
+                                    {% else %}
+                                        <div class="recent-default">
+                                            <div class="columns">
+                                                {% for item in outlay %}
+                                                    {{ include('outlay/admin/_item.twig') }}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

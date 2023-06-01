@@ -1,0 +1,21 @@
+{% extends '_layout/layout.twig' %}
+
+{% block title %} Intervention n°{{ intervention.number }} du {{ intervention.created_at | date('d-m-Y') }}  {% endblock %}
+
+{% block body %}
+        <div class="title-page">
+            <h1>Bon d'intervention n°{{ intervention.number }}</h1>
+            <span>Vous pouvez imprimer votre bon ici. Sauvegardez les cases à cocher avant impression.</span>
+        </div>
+        <div class="card-custom mt1">
+            <div class="card-content">
+                <form method="post" action="">
+                    <div class="container-fluid text-center mt2 mb2">
+                        <button type="submit" class="btn btn-primary"><i class="icofont-checked"></i> Sauvegarder les cases à cocher</button>
+                        <a href="#" class="btn btn-primary" onclick="printDiv('printpdf');"><i class="icofont-print"></i> Imprimer ce bon</a>
+                    </div>
+                    {{ include('templates/print_intervention.twig', {viewClient: 1}) }}
+                </form>
+            </div>
+        </div>
+{% endblock %}

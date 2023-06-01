@@ -1,0 +1,248 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <!-- start:Main-stats -->
+    <div class="main-stats">
+        <div class="container">
+            {{ include('_notifications.twig') }}
+            <div class="columns">
+                <!-- card 04 -->
+                <div class="column col-3 col-sm-12">
+                    <a class="stats-card" href="/admin/clients">
+                        <div class="stats-title">
+                            <h2>{{ clients | length }}</h2>
+                            <p>Clients</p>
+                        </div>
+                        <div class="stats-icon"><i class="icofont-id-card"></i></div>
+                    </a>
+                </div>
+                <!-- card 03 -->
+                <div class="column col-3 col-sm-12">
+                    <a class="stats-card" href="/admin/equipments">
+                        <div class="stats-title">
+                            <h2>{{ equipments | length }}</h2>
+                            <p>Équipements</p>
+                        </div>
+                        <div class="stats-icon"><i class="icofont-monitor"></i></div>
+                    </a>
+                </div>
+                <!-- card 02 -->
+                <div class="column col-3 col-sm-12">
+                    <a class="stats-card" href="/admin/interventions">
+                        <div class="stats-title">
+                            <h2>{{ interventions | length }}</h2>
+                            <p>Interventions</p>
+                        </div>
+                        <div class="stats-icon"><i class="icofont-repair"></i></div>
+                    </a>
+                </div>
+                <!-- card 01 -->
+                <div class="column col-3 col-sm-12">
+
+                    <a class="stats-card" href="/admin/equipments/brands">
+                        <div class="stats-title">
+                            <h2>{{ countBrand }}</h2>
+                            <p>Marques</p>
+                        </div>
+                        <div class="stats-icon"><i class="icofont-building-alt"></i></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:Main-stats -->
+    <!-- start:Main-message / bloc -->
+    <div class="main-message mg-tb-3">
+        <div class="container">
+            {% if checkFolderInstall %}
+                {{ viewAlert('danger', '<strong>Alert sécurité !</strong> Veuillez renommer le dossier <strong>install</strong>. <a href="/admin/setting">Sécuriser l\'application</a>') | raw }}
+            {% endif %}
+            {% if auser.token is not null %}
+                {{ viewAlert('warning', '<strong>1er étape</strong> ! Il est important de changer vos identifiants administrateur - <a href="/admin/edit-auser/1">Editer mon compte admin</a>') | raw }}
+            {% endif %}
+            {% if countCompany == 0 %}
+                {{ viewAlert('warning', '<strong>2ème étape</strong> ! Commencez par créer votre entreprise - <a href="/admin/add-company">Créer mon entreprise</a>') | raw }}
+            {% endif %}
+            {% if countClient == 0 %}
+                {{ viewAlert('warning', '<strong>3ème étape</strong> ! Créez votre premier client et ses équipements - <a href="/admin/add-client">Créer un client</a>') | raw }}
+            {% endif %}
+            {% if sessionAuth.roles == "super admin" %}
+            <div class="card-custom">
+                <div class="card-body">
+                    <div class="columns">
+                        <div class="column col-6 col-lg-12">
+                            <div>
+                                <canvas id="customers"></canvas>
+                            </div>
+                        </div>
+                        <div class="column col-6 col-lg-12">
+                            <div>
+                                <canvas id="canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns mg-t-1">
+                        <div class="column col-6 col-md-12">
+                            Les stats sont générés par an. Pour visualiser une année précédente, veuillez la sélectionner via le formulaire ci-dessous :
+                            <div class="mg-t-1">
+                                {% set minYear = "now -2 years"|date("Y") %}
+                                {% set maxYear = "now + 9 years"|date("Y") %}
+                                <form method="post" action="/admin/stats">
+                                    <div class="form-group d-inline-block">
+                                        <select name="year" class="form-select" style="width:auto;" id="">
+                                            {% for year in minYear..maxYear %}
+                                                <option value="{{ year }}">Année {{ year }}</option>
+                                                {% set year = year + 1 %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary d-inline-block">Visualiser</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- end:Main-message / bloc -->
+    <!-- start:Main-last -->
+    <div class="main-last">
+        <div class="container">
+            <div class="columns">
+                <div class="column col-6 col-lg-12">
+                    <div class="card-custom">
+                        <div class="card-header"><h2>Interventions en cours</h2></div>
+                        <div class="card-body">
+                            <table class="table-custom">
+                                <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Statut</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for interprogress in interventions %}
+                                 {% if interprogress.closed is null %}
+                                <tr class="clickable-row" data-href="/admin/edit-intervention/{{ interprogress.idi }}" data-target="_self">
+                                    <td>{{ interprogress.number }}</td>
+                                    <td>{{ interprogress.icreated | localizeddate('none', 'none', 'fr', null, 'd, MMM Y') }}</td>
+                                    <td>{{ interprogress.c_fullname }}</td>
+                                    <td><span class="label" style="background-color:#{{ interprogress.bgcolor }}">{{ interprogress.tstatus }}</span></td>
+                                </tr>
+                                 {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-6 col-lg-12">
+                    <div class="card-custom">
+                        <div class="card-header"><h2>Interventions clôturées</h2></div>
+                        <div class="card-body">
+                            <table class="table-custom">
+                                <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Cloture</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for interclose in interventions %}
+                                    {% if interprogress.closed is not null %}
+                                <tr class="clickable-row" data-href="/admin/edit-intervention/{{ interclose.idi }}" data-target="_self">
+                                    <td>{{ interclose.number }}</td>
+                                    <td>{{ interclose.icreated | localizeddate('none', 'none', 'fr', null, 'd, MMM Y') }}</td>
+                                    <td>{{ interclose.fullname }}</td>
+                                    <td>{{ interclose.close_date | localizeddate('none', 'none', 'fr', null, 'd, MMM Y') }} <i class="icofont-check-alt"></i></td>
+                                </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:Main-last -->
+    <!-- start:Main-last -->
+    <div class="main-last mg-tb-3">
+        <div class="container">
+            <div class="columns">
+                <div class="column col-4 col-lg-12">
+                    <div class="card-custom">
+                        <div class="card-header"><h2>Clients Récents</h2></div>
+                        <div class="card-body">
+                            <div class="recent-default">
+                                {% for client in clients | slice(0,5) %}
+                                <div class="recent-default-single">
+                                    <a href="{{ client.urlAdmin }}">
+                                        <div class="recent-default-flex">
+                                            <div class="recent-d-img"><i class="icofont-user"></i></div>
+                                            <div class="recent-d-ctn">
+                                                <h2>{{ client.fullname }}</h2>
+                                                <p>
+                                                    {% if client.zipcode is not empty and client.city is not empty %}
+                                                        <i>{{ client.zipcode }}</i> - {{ client.city }} ({{ client.name }})<br>
+                                                    {% elseif client.zipcode is not empty %}
+                                                        <i>{{ client.zipcode }} ({{ client.name }})</i>
+                                                    {% elseif client.city is not empty %}
+                                                        {{ client.city }} ({{ client.name }})<br>
+                                                    {% endif %}
+                                                    {{ getDataWithHtml(client.phone, false, 'strong') | raw }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-4 col-lg-12">
+                    <div class="card-custom">
+                        <div class="card-header"><h2>En atelier</h2></div>
+                        <div class="card-body">
+                            <div class="recent-default">
+                                {% for equipment in equipments %}
+                                    {% if equipment.inworkshop == 1 %}
+                                <div class="recent-default-single">
+                                    <a href="{{ equipment.urlAdmin }}">
+                                        <div class="recent-default-flex">
+                                            <div class="recent-d-img"><i class="icofont-{{ equipment.icon }}"></i></div>
+                                            <div class="recent-d-ctn">
+                                                <h2>{{ equipment.ename }}</h2>
+                                                <p><i>{{ equipment.ce_title }}</i> - {{ equipment.fullname }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:Main-last -->
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>let year = {{ 'NOW' | date('Y') }}</script>
+    <script src="{{ getenv('APP_ROOT_PUBLIC') }}/assets/javascript/api/api.proaxive.js"></script>
+{% endblock %}

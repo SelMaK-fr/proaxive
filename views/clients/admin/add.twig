@@ -1,0 +1,34 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Nouveau client{% endblock %}
+
+{% block body %}
+    <!-- START .cards -->
+    <div class="section--admin">
+        <div class="container">
+            <form method="post">
+                {{ include('_notifications.twig') }}
+                <div class="card-custom mg-b-3">
+                    <div class="card-body">
+                        <div class="card-header m-0">
+                            <div class="columns">
+                                <div class="col-8 col-sm-12"><h2>Nouveau client</h2><span>Création d'un nouveau client</span></div>
+                                <div class="col-4 col-sm-12 text-right">
+                                    {{ form.submitDefault('Sauvegarder', 'primary') | raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-form">
+                    <div class="card-custom">
+                        <div class="card-content">
+                        {{ include('clients/admin/_form.twig', {'formAdd':1}) }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+    </div>
+    <!-- END .cards -->
+{% endblock %}

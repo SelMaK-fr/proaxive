@@ -1,0 +1,44 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Nouvel administrateur{% endblock %}
+
+{% block body %}
+    <!-- START .cards -->
+    <div class="section--admin">
+        <div class="container">
+            <div class="admin-content">
+                <div class="columns">
+                    <div class="column col-6 col-md-12">
+                        <div class="card-custom">
+                            <div class="card-body">
+                                <div class="card-header"><h2>Données du compte</h2></div>
+                                <div class="admin-form">
+                                    <form method="post" action="#">
+                                        {{ include('ausers/admin/_form.twig', {'inputpassword' : true}) }}
+                                        {{ form.submitDefault('Confirmer', 'primary') | raw }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column col-6 col-md-12">
+                        <div class="card-custom">
+                            <div class="card-body">
+                                <div class="card-header"><h2>A propos des permissions</h2></div>
+                                Le système de rôle permet de restreindre des actions à un utilisateur qui n'est pas "super admin".
+                                <br><br>
+                                Pour le moment, 3 rôles existent :
+                                <ul>
+                                    <li><strong>super admin</strong> : à toutes les permissions dans l'application</li>
+                                    <li><strong>technician</strong> : il ne peut pas éditer des éléments qu'il n'a pas lui-même créés. Il n'a pas accès aux paramètres de l'application. Il ne peut pas créer d'autres utilisateurs. Il ne voit pas les statistiques de l'entreprise</li>
+                                    <li><strong>manager</strong> : il ne peut pas créer d'élément autre que des utilisateurs. Il peut administrer les utilisateurs. Il n'a pas accès aux paramètres de l'application. Il ne voit pas les statistiques de l'entreprise</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END .cards -->
+{% endblock %}

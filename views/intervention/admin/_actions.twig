@@ -1,0 +1,59 @@
+<div class="card-custom mg-b-3">
+    <div class="card-content">
+        <div class="columns col-gapless">
+            <div class="column col-9 col-sm-12 hide-sm">
+                <h3>{{ intervention.title }}</h3>
+            </div>
+            <div class="column col-3 col-sm-12">
+                {% if intervention.approved == 0 %}
+                    {% if sessionAuth.roles == 'super admin' %}
+                        <button class="btn-sm btn btn-primary" name="approve_inter"><i class="icofont-check"></i> Approuver cette intervention</button>
+                        <a href="#delete-inter-{{ intervention.i_id }}" class="btn-sm btn-danger" title="Supprimer cette intervention"><i class="icofont-trash"></i></a>
+                    {% else %}
+                            <strong>En attente d'approbation</strong>
+                            <span class="d-block">Mode restreint</span>
+                    {% endif %}
+                {% else %}
+                    <div class="submit-nav-mobile">
+                        <div class="action-navigation text-right p-relative">
+                            {% if sessionAuth.roles == 'super admin' %}
+                            <a href="#delete-inter-{{ intervention.i_id }}" class="btn btn-danger" title="Supprimer cette intervention"><i class="icofont-trash"></i></a>
+                            {% endif %}
+                            <a class="btn btn-info" href="/admin/intervention/html/{{ intervention.i_id }}" target="_blank"><i class="icofont-printer"></i></a>
+                            {{ form.submitSingle('primary', 'update', '', 'save') | raw }}
+                            <button onclick="toggleAside('action_submit', 'deploy');" type="button" class="btn btn-primary"><i class="icofont-gear-alt"></i></button>
+                            <div class="sf-content toggle-content" id="action_submit">
+                                {% if sessionAuth.roles == 'super admin' %}
+                                    {% if intervention.approved == 0 %}
+                                        <button class="btn btn-light-primary" name="approve_inter"><span class="text-success"><i class="icofont-check"></i> Approuver cette intervention</span></button>
+                                    {% endif %}
+                                {% endif %}
+                                {% if intervention.start is null %}
+                                    <button class="btn btn-light-primary animate__animated animate__flash" name="start_inter"><i class="icofont-rocket-alt-2"></i> Débuter l'intervention</button>
+                                {% else %}
+                                    {% if intervention.closed is null %}
+                                        {{ form.submitSingle('light-info','update_inter', 'Mettre à jour la date', 'clock-time') | raw }}
+                                    {% endif %}
+                                    {% if intervention.back_home is null %}
+                                        {{ form.submitSingle('warning', 'backhome', 'Rendre le matériel', 'fast-delivery') | raw }}
+                                    {% endif %}
+                                    {{ form.submitSingle('light-primary', 'sendmail', 'Envoyer le mail', 'send-mail') | raw }}
+                                    {% if intervention.rapport_bao is empty %}
+                                        <a href="#upload-file" class="btn btn-info d-block"><i class="icofont-file-alt"></i> Rapport BAO</a>
+                                    {% else %}
+                                        <a href="/admin/intervention/{{ intervention.id }}/rapport/bao" class="btn btn-light-primary"><i class="icofont-ui-edit"></i> Modifier rapport BAO</a>
+                                    {% endif %}
+                                    {% if intervention.closed == 1 %}
+                                        <a href="#closed-1" class="btn btn-success"><i class="icofont-ui-edit"></i> Modifier le compte rendu</a>
+                                    {% else %}
+                                        <a href="#closed-1" class="btn btn-light-danger"><i class="icofont-close-circled"></i> Clôturer</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

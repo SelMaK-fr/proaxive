@@ -1,0 +1,22 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>02. Licence d'utilisation de <span class="txtprimary">Proaxive</span> Lite</h1>
+        <div class="bloc-default">
+            <div class="big-icon text-center" style="font-size:9em;">
+                <i class="icofont-license"></i>
+            </div>
+            <textarea style="width:100%" name="licence" id="" cols="40" rows="20" disabled>
+                {{ licence }}
+            </textarea>
+        </div>
+        <strong>Acceptez-vous les termes de cette licence ?</strong>
+    </div>
+    <div class="si__footer text-right">
+        <form method="get" action="/setup/database">
+            <button class="btn btn-primary"><i class="icofont-check-circled"></i> J'accepte</button>
+        </form>
+    </div>
+{% endblock %}

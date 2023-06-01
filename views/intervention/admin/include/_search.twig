@@ -1,0 +1,23 @@
+<div class="search-bar">
+    {% set minYear = "now"|date("Y") %}
+    {% set maxYear = "now + 9 years"|date("Y") %}
+    <form method="get" class="form-horizontal" action="/admin/s/interventions">
+        <div class="form-group">
+            <input style="width: auto" class="mr-1 form-input" type="text"  name="search[keyword]" id="" placeholder="N° ou date de création">
+            <button type="submit" name="by_keyword" class="btn-sm btn-primary mr-1"><i class="icofont-search-1"></i> Rechercher</button>
+            <select style="width: auto" name="month" class="mr-1 form-input"  id="">
+                {% for month in 1..12 %}
+                    {% set date = month ~ "/1/2023" %}
+                    <option value="{{ date|date("m") }}">{{ date|localizeddate('none', 'none', 'fr', null, 'MMMM') }}</option>
+                {% endfor %}
+            </select>
+            <select style="width: auto" name="year" class="mr-1 form-input"  id="">
+                {% for year in minYear..maxYear %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% set year = year + 1 %}
+                {% endfor %}
+            </select>
+            <button type="submit" name="by_date" class="btn-sm btn-primary"><i class="icofont-eye"></i> Tout Afficher</button>
+        </div>
+    </form>
+</div>

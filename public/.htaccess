@@ -1,0 +1,14 @@
+######################################################################################
+# HTACCESS FILE by SelMaK_
+# File ver. 2.1.2	04/03/2022
+# https://www.proaxive.fr
+######################################################################################
+<Files *.json>
+  order allow,deny
+  deny from all
+</Files>
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

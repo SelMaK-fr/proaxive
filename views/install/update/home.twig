@@ -1,0 +1,36 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    {{ include('install/_loader.twig') }}
+    <form method="post" onsubmit="viewLoader()">
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>Mise à jour de la base de données.</h1>
+        <p>L'installateur va maintenant procéder à la mise à jour de la base de données de Proaxive Lite.</p>
+        <p>Si ce n'est pas déjà fait, pensez à sauvegarder votre base de données.</p>
+        <div class="grid-center">
+            <div class="col-6_sm-12">
+                <div class="bloc-default">
+                    <div class="big-icon text-center primarytxt" style="font-size:9em;">
+                        <i class="icofont-lock"></i>
+                    </div>
+                    <p>Afin de procéder à la mise à jour, merci de confirmer l'utilisateur et le mot de passe de votre base de données Proaxive.</p>
+                    <div class="form-group">
+                        <label class="form-label" for="userData"><strong>Utilisateur SQL</strong></label>
+                        <input class="form-input underlined" type="text" id="userData" name="userData" value="" placeholder="" autocomplete="off">
+                        <small style="color:red">{% if error is not empty %}{{ error }}{% endif %}</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="passData"><strong>Mot de passe SQL</strong></label>
+                        <input class="form-input underlined" type="password" id="passData" name="passData" value="" placeholder="" autocomplete="off">
+                        <small style="color:red">{% if error is not empty %}{{ error }}{% endif %}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="si__footer text-right">
+        <button type="submit" class="btn btn-primary shadow"><i class="icofont-check-circled"></i> Continuer</button>
+    </div>
+    </form>
+{% endblock %}

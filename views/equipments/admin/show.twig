@@ -1,0 +1,163 @@
+{% extends '_layout/dashboard/layout.twig' %}
+
+{% block title %}Equipement - {{ e.ename }}{% endblock %}
+
+{% block body %}
+    <div class="section--admin">
+        <div class="container">
+            <div class="admin-content">
+                <div class="card-custom p-0 mg-b-2">
+                    <div class="card-body p-all-15">
+                        <div class="d-flex justify-content-space-between">
+                            <div class="first-letter">
+                                <div class="d-flex align-items-center" style="height: 100%">
+                                    <div class="flex-root align-items-center">
+                                        <span>
+                                            <i style="font-size: 70px" class="icofont-{{ e.icon }}"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-root mg-l-2">
+                                <div class="card-header m-0">
+                                    <h2>{{ e.ename }}</h2>
+                                </div>
+                                <div class="columns">
+                                    <div class="column col-4">
+                                        <span class="d-block">
+                                            <strong>Type :</strong> {{ e.ce_title }}
+                                        </span>
+                                        <span class="d-block">
+                                            <strong>Marque :</strong> {{ e.b_title }}
+                                        </span>
+                                        <span class="d-block">
+                                            <strong>N°série :</strong> {{ e.serialnumber }}
+                                        </span>
+                                        <span class="d-block">
+                                            <strong>N°produit :</strong> {{ e.numberproduct }}
+                                        </span>
+                                        <div class="mg-t-1">
+                                            <strong>Propriétaire</strong> <br>
+                                            <i class="icofont-id"></i> <a href="/admin/client/{{ e.cid }}">{{ e.fullname }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="column col-8">
+                                        <span class="d-block">
+                                            <strong>Système d'exploitation :</strong> {{ e.os_name }} ({{ e.os_release }})
+                                        </span>
+                                        <span class="d-block">
+                                            <strong>Licence OS :</strong> {{ e.licence_os }}
+                                        </span>
+                                        <div style="border-top:1px dashed #dbdbdb;margin:8px 0;"></div>
+                                        <div class="d-block">
+                                            <strong>Etat du matériel :</strong>
+                                            <div>
+                                                {{ e.etat | raw }} {{ e.workshop | raw }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pg-1">
+                        <div class="d-flex align-items-center">
+                            <strong>Ses interventions :</strong>
+                            {% if interventions is empty %}
+                            <span class="d-block mg-l-1">Aucune</span>
+                            {% else %}
+                            {% for i in interventions %}
+                            <span class="d-block mg-l-1"><a href="/admin/edit-intervention/{{ i.id }}"><strong>N°{{ i.number }}</strong></a> du {{ i.created_at | date('d-m-Y') }}</span>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tabs-nav">
+                        <ul id="nav">
+                            <li><a href="/admin/client/{{ e.cid }}/equipment/{{ e.eid }}/add-intervention"><i class="icofont-ui-add"></i> Créer une intervention</a></li>
+                            <li><a href="/admin/edit-equipment/{{ e.eid }}"><i class="icofont-ui-edit"></i> Modifier cet équipement</a></li>
+                            <li><a href="#"><i class="icofont-printer"></i> Imprimer sa fiche</a> <em>(bientôt)</em></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column col-8 col-sm-12">
+                        <div class="columns">
+                            <div class="column col-6 col-sm-12">
+                                <div class="card-custom">
+                                    <div class="card-body">
+                                        <div class="card-header">
+                                            <h2><i class="icofont-ui-user"></i> Utilisateur</h2>
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Nom de l'utilisateur :</strong> {{ e.u_username }}
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Adresse courriel :</strong> {{ e.u_account_mail }} <br>
+                                            <em>Si compte Microsoft</em>
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Mot de passe :</strong> {{ e.u_password }}
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Domaine :</strong> {{ e.u_domain }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column col-6 col-sm-12">
+                                <div class="card-custom">
+                                    <div class="card-body">
+                                        <div class="card-header">
+                                            <h2><i class="icofont-network"></i> Paramètres réseau</h2>
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Adresse IP :</strong> {{ e.n_ipaddress }}
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Passerelle :</strong> {{ e.n_gateway }}
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>Masque sous-réseau :</strong> {{ e.n_masknetwork }}
+                                        </div>
+                                        <div class="mg-b-05">
+                                            <strong>DNS :</strong> {{ e.n_dns }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-custom mg-t-2">
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <h2>Détails de l'équipement</h2>
+                                </div>
+                                <div class="mg-b-05">
+                                    {{ e.content }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column col-4 col-sm-12">
+                        <div class="card-custom">
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <h2><i class="icofont-wifi-alt"></i> Paramètres Wifi</h2>
+                                </div>
+                                <div class="mg-b-05">
+                                    <strong>SSID :</strong> {{ e.n_ssid }}
+                                </div>
+                                <div class="mg-b-05">
+                                    <strong>Clé de sécurité Wifi :</strong>
+                                    <div>
+                                        <textarea class="form-input" name="" id="" cols="40" rows="3" readonly>{{ e.n_wifi_key }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

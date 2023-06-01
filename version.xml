@@ -1,0 +1,11 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!-- Proaxive (SelMaK) -->
+<app_version>
+    <number>1.5.6</number>
+    <namecode>Reonli</namecode>
+    <release>Lite</release>
+    <verdate>06/23</verdate>
+    <status>stable</status>
+    <author>SelMaK</author>
+    <urlauthor>https://proaxive.fr</urlauthor>
+</app_version>

@@ -1,0 +1,751 @@
+:root{
+  --body-bg-color: #f4f4f4;
+  --first-bg-color: #ffffff;
+  --primary-color: #453d9b;
+  --body-txt-color: #333;
+  --main-txt-color: #222;
+  --form-bg-color: #f8f8f8;
+  --border-color: #e2e2e4;
+  --main-bg-color:#f8f8f8;
+  --table-thead-color:#edf5f8;
+  --default-txt-color:#ffffff;
+}
+::selection {
+  background-color: var(--primary-color);
+  color: var(--default-txt-color);
+}
+
+@font-face {
+  font-family: "RobotoLight";
+  src: url("/public/assets/styles/admin-default/fonts/roboto/Roboto-Light.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "RobotoMedium";
+  src: url("/public/assets/styles/admin-default/fonts/roboto/Roboto-Medium.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "RobotoRegular";
+  src: url("/public/assets/styles/admin-default/fonts/roboto/Roboto-Regular.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "RobotoBold";
+  src: url("/public/assets/styles/admin-default/fonts/roboto/Roboto-Bold.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "RobotoBlack";
+  src: url("/public/assets/styles/admin-default/fonts/roboto/Roboto-Black.ttf");
+  font-display: swap;
+}
+/* line 35, ../sass/layout.scss */
+html {
+  line-height: 1.5;
+  font-size: 20px;
+}
+
+/* line 40, ../sass/layout.scss */
+body {
+  background-color:var(--body-bg-color);
+  color:var(--body-txt-color);
+  font-family: "RobotoRegular", sans-serif;
+  font-size: 14px;
+  background-image: url("../back.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-rendering: optimizeLegibility;
+}
+.btn, .btn-sm.btn-primary, .btn.btn-primary, .btn-sm.btn-primary:hover, .btn.btn-primary:hover{
+  background: var(--primary-color);
+}
+
+/* line 1, ../sass/_base.scss */
+*, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 4, ../sass/_base.scss */
+*, ::after, ::before {
+  box-sizing: inherit;
+}
+
+/* line 7, ../sass/_base.scss */
+p {
+  margin: 0 0 1.2rem;
+}
+
+/* line 10, ../sass/_base.scss */
+h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: .5em;
+  margin-top: 0;
+}
+
+/* line 17, ../sass/_base.scss */
+.h2, h2 {
+  font-size: 1.6rem;
+}
+
+/* line 20, ../sass/_base.scss */
+.h4, h4 {
+  font-size: 1.2rem;
+}
+
+/* line 23, ../sass/_base.scss */
+.d-block {
+  display: block;
+}
+
+/* Padding and margin */
+/* line 27, ../sass/_base.scss */
+.mg-tb-1 {
+  margin: 1em 0;
+}
+
+/* line 28, ../sass/_base.scss */
+.mg-tb-2 {
+  margin: 2em 0;
+}
+
+/* line 29, ../sass/_base.scss */
+.mg-tb-3 {
+  margin: 3em 0;
+}
+
+/* line 30, ../sass/_base.scss */
+.mg-lr-1 {
+  margin: 0 1em;
+}
+
+/* line 31, ../sass/_base.scss */
+.mg-lr-2 {
+  margin: 0 2em;
+}
+
+/* line 32, ../sass/_base.scss */
+.mg-lr-3 {
+  margin: 0 3em;
+}
+
+/* line 33, ../sass/_base.scss */
+.mg-l-1 {
+  margin-left: 1em;
+}
+
+/* line 34, ../sass/_base.scss */
+.mg-l-2 {
+  margin-left: 2em;
+}
+
+/* line 35, ../sass/_base.scss */
+.mg-l-3 {
+  margin-left: 3em;
+}
+
+/* line 36, ../sass/_base.scss */
+.mg-r-1 {
+  margin-right: 1em;
+}
+
+/* line 37, ../sass/_base.scss */
+.mg-r-2 {
+  margin-right: 2em;
+}
+
+/* line 38, ../sass/_base.scss */
+.mg-r-3 {
+  margin-right: 3em;
+}
+
+/* line 39, ../sass/_base.scss */
+.mg-b-1 {
+  margin-bottom: 1em;
+}
+
+/* line 40, ../sass/_base.scss */
+.mg-b-2 {
+  margin-bottom: 2em;
+}
+
+/* line 41, ../sass/_base.scss */
+.mg-b-3 {
+  margin-bottom: 3em;
+}
+
+/* line 42, ../sass/_base.scss */
+.mg-t-1 {
+  margin-top: 1em;
+}
+
+/* line 43, ../sass/_base.scss */
+.mg-t-2 {
+  margin-top: 2em;
+}
+
+/* line 44, ../sass/_base.scss */
+.mg-t-3 {
+  margin-top: 3em;
+}
+
+/* Text */
+/* line 46, ../sass/_base.scss */
+strong {
+  font-weight: normal;
+  font-family: "RobotoBold", sans-serif;
+}
+
+/* line 50, ../sass/_base.scss */
+.text-center {
+  text-align: center;
+}
+
+/* line 51, ../sass/_base.scss */
+.text-right {
+  text-align: right;
+}
+
+/* line 52, ../sass/_base.scss */
+.text-left {
+  text-align: left;
+}
+
+/* line 53, ../sass/_base.scss */
+.txtdanger {
+  color: #9b353d;
+}
+.txtprimary{
+  color:var(--primary-color);
+}
+
+/* line 54, ../sass/_base.scss */
+.container-install {
+  width: 1100px;
+  margin: 3em auto;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+/* Colors */
+/* line 61, ../sass/_base.scss */
+.bg-color-1 {
+  background-color: var(--body-bg-color);
+}
+
+/* */
+/* line 67, ../sass/_base.scss */
+.si--navigation .top-navigation {
+  background-color: #f7f7f7;
+  background-image: url(../white-canvas.jpg);
+  background-size: cover;
+  padding: 3em 0;
+  margin-bottom: 3em;
+  -moz-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+}
+/* line 74, ../sass/_base.scss */
+.si--navigation .top-navigation h2 {
+  font-family: "RobotoBold", sans-serif;
+  text-transform: uppercase;
+  margin: 0;
+}
+/* line 78, ../sass/_base.scss */
+.si--navigation .top-navigation h2 span {
+  font-family: "RobotoLight", sans-serif;
+}
+/* line 83, ../sass/_base.scss */
+.si--navigation .navigation__title {
+  background-color: var(--primary-color);
+  color: white;
+}
+/* line 86, ../sass/_base.scss */
+.si--navigation .navigation__title h2 {
+  font-size: 1.3em;
+  line-height: 2.5;
+  text-align: center;
+}
+/* line 93, ../sass/_base.scss */
+.si--navigation ul{
+  text-align:right;
+}
+.si--navigation ul li {
+  list-style: none;
+  display: block;
+  margin-top: 0;
+  margin-bottom: .5em;
+  line-height: 2;
+  padding: 0.8em 0.7em;
+  text-decoration: none;
+}
+/* line 101, ../sass/_base.scss */
+.si--navigation ul li span {
+  display: inline-block;
+  font-size: 1.1em;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+/* line 109, ../sass/_base.scss */
+.si--navigation ul li.active {
+  color: var(--primary-color);
+  font-family: "RobotoBold", sans-serif;
+  background-color:white;
+}
+/* line 112, ../sass/_base.scss */
+.si--navigation ul li.active span {
+  background-color: var(--primary-color);
+  color: white !important;
+}
+/* line 117, ../sass/_base.scss */
+.si--navigation ul li.inactive span {
+  background-color: #d9d9d9;
+  color: #b9b9b9 !important;
+}
+
+/* Content */
+/* line 125, ../sass/_base.scss */
+.si__container {
+  position: relative;
+}
+
+/* line 128, ../sass/_base.scss */
+.si-content {
+  background-color: white;
+  height: 100%;
+  position: relative;
+}
+/* line 132, ../sass/_base.scss */
+.si-content .topbar {
+  background-color: var(--primary-color);
+  color: white;
+  line-height: 2.5;
+  padding: 0 15px;
+}
+/* line 138, ../sass/_base.scss */
+.si-content .si__content {
+  padding: 1.5rem;
+}
+/* line 140, ../sass/_base.scss */
+.si-content .si__content h1 {
+  font-size: 1.3em;
+  font-family: "RobotoMedium", sans-serif;
+  text-transform: uppercase;
+}
+/* line 146, ../sass/_base.scss */
+.si-content .si__footer {
+  padding: 15px;
+  background-color: var(--body-bg-color);
+  margin-top: 2em;
+}
+
+/* line 152, ../sass/_base.scss */
+.switch {
+  background: var(--primary-color);
+  position: relative;
+  height: 26px;
+  width: 120px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px rgba(255, 255, 255, 0.1);
+}
+/* line 159, ../sass/_base.scss */
+.switch label {
+  display: block !important;
+}
+
+/* line 161, ../sass/_base.scss */
+.switch-inline {
+  margin: 0;
+}
+/* line 163, ../sass/_base.scss */
+.switch-inline label {
+  font-family: RobotoBold, sans-serif;
+}
+
+/* line 166, ../sass/_base.scss */
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 58px;
+  line-height: 26px;
+  font-size: 11px;
+  color: #ffffff;
+  text-align: center;
+  /*text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);*/
+  cursor: pointer;
+}
+
+/* line 179, ../sass/_base.scss */
+.switch-label:active {
+  font-weight: bold;
+}
+
+/* line 183, ../sass/_base.scss */
+.switch-label-off {
+  padding-left: 2px;
+}
+
+/* line 187, ../sass/_base.scss */
+.switch-label-on {
+  padding-right: 2px;
+}
+
+/* line 191, ../sass/_base.scss */
+.switch-input {
+  display: none;
+}
+
+/* line 195, ../sass/_base.scss */
+.switch-input:checked + .switch-label {
+  font-weight: bold;
+  color: var(--primary-color);
+  /*text-shadow: 0 1px rgba(0, 0, 0, 0.25);*/
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+}
+
+/* line 204, ../sass/_base.scss */
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+  /* Note: left: 50% doesn't transition in WebKit */
+  left: 60px;
+}
+
+/* line 209, ../sass/_base.scss */
+.switch-selection {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  left: 2px;
+  width: 58px;
+  height: 22px;
+  background: #ffffff;
+  border-radius: 3px;
+  /*background-image: -webkit-linear-gradient(top, #9dd993, #65bd63);
+  background-image: -moz-linear-gradient(top, #9dd993, #65bd63);
+  background-image: -o-linear-gradient(top, #9dd993, #65bd63);
+  background-image: linear-gradient(to bottom, #9dd993, #65bd63);*/
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: left 0.15s ease-out;
+  -moz-transition: left 0.15s ease-out;
+  -o-transition: left 0.15s ease-out;
+  transition: left 0.15s ease-out;
+}
+
+/* line 231, ../sass/_base.scss */
+.switch-blue .switch-selection {
+  background: #3aa2d0;
+  background-image: -webkit-linear-gradient(top, #4fc9ee, #3aa2d0);
+  background-image: -moz-linear-gradient(top, #4fc9ee, #3aa2d0);
+  background-image: -o-linear-gradient(top, #4fc9ee, #3aa2d0);
+  background-image: linear-gradient(to bottom, #4fc9ee, #3aa2d0);
+}
+
+/* line 239, ../sass/_base.scss */
+.switch-yellow .switch-selection {
+  background: #c4bb61;
+  background-image: -webkit-linear-gradient(top, #e0dd94, #c4bb61);
+  background-image: -moz-linear-gradient(top, #e0dd94, #c4bb61);
+  background-image: -o-linear-gradient(top, #e0dd94, #c4bb61);
+  background-image: linear-gradient(to bottom, #e0dd94, #c4bb61);
+}
+
+/** Loader **/
+/* line 247, ../sass/_base.scss */
+.preloader {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  z-index: 2;
+}
+/* line 254, ../sass/_base.scss */
+.preloader span.title--preloader {
+  text-align: center;
+  display: block;
+  padding-top: 10em;
+  font-family: "RobotoBold", sans-serif;
+  font-size: 1.2em;
+}
+/* line 260, ../sass/_base.scss */
+.preloader span.title--preloader img {
+  display: inline-block;
+}
+
+/* line 1, ../sass/_button.scss */
+button.btn-table {
+  border: 0;
+}
+
+/* line 4, ../sass/_button.scss */
+.btn, .btn-table {
+  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* line 7, ../sass/_button.scss */
+.btn-table {
+  padding: 0.1em 0.5em;
+  display: inline-block;
+}
+/* line 10, ../sass/_button.scss */
+.btn-table.btn-danger {
+  background-color: #dd5a5a;
+  color: white;
+}
+/* line 14, ../sass/_button.scss */
+.btn-table.btn-info {
+  background-color: #5abedd;
+  color: white;
+}
+
+/* line 20, ../sass/_button.scss */
+.btn {
+  padding: 0.5em 1em;
+  height: inherit;
+  border-color: transparent !important;
+  font-size: .8rem;
+  line-height: 1.2rem;
+  outline: 0;
+  text-align: center;
+  text-decoration: none;
+  transition: background .2s,border .2s,box-shadow .2s,color .2s;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* line 35, ../sass/_button.scss */
+.btn-sm {
+  padding: 0.3em 0.5em;
+  height: inherit;
+  font-size: 1em;
+}
+
+/* line 41, ../sass/_button.scss */
+.btn, .btn-sm {
+  font-family: "RobotoMedium", sans-serif;
+  border-color: transparent;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+/* line 45, ../sass/_button.scss */
+.btn:hover, .btn-sm:hover {
+  opacity: 0.8;
+  border-color: transparent;
+}
+/* line 49, ../sass/_button.scss */
+.btn.btn-primary, .btn-sm.btn-primary {
+  color: white;
+  border-color: transparent;
+}
+/* line 53, ../sass/_button.scss */
+.btn.btn-danger, .btn-sm.btn-danger {
+  background-color: #dd5a5a;
+  color: white;
+}
+/* line 57, ../sass/_button.scss */
+.btn.btn-info, .btn-sm.btn-info {
+  background-color: #5abedd;
+  color: white;
+}
+/* line 61, ../sass/_button.scss */
+.btn.btn-warning, .btn-sm.btn-warning {
+  background-color: #e68027;
+  color: white;
+}
+/* line 65, ../sass/_button.scss */
+.btn.btn-secondary, .btn-sm.btn-secondary {
+  color: white;
+}
+/* line 68, ../sass/_button.scss */
+.btn.btn-default, .btn-sm.btn-default {
+  background-color: #cdcdcd;
+  color: white;
+}
+/* line 72, ../sass/_button.scss */
+.btn.btn-white, .btn-sm.btn-white {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+/* line 79, ../sass/_button.scss */
+.button-inline a, .button-inline button {
+  display: inline-block;
+}
+
+/** Intervention float button */
+/* line 85, ../sass/_button.scss */
+.inter-button-float {
+  display: none;
+  position: fixed;
+  top: 40%;
+  right: 8em;
+  background-color: white;
+  width: 250px;
+}
+/* line 92, ../sass/_button.scss */
+.inter-button-float .bf-content {
+  padding: 1.5em;
+}
+/* line 95, ../sass/_button.scss */
+.inter-button-float a, .inter-button-float button {
+  width: 100%;
+  margin-bottom: 0.4em;
+}
+
+@media (min-width: 1800px) {
+  /* line 102, ../sass/_button.scss */
+  .inter-button-float {
+    display: block;
+  }
+
+  /* line 105, ../sass/_button.scss */
+  .button-inline {
+    display: none;
+  }
+}
+/* line 1, ../sass/_form.scss */
+.form-group-switch {
+  margin-bottom: 1.5em;
+}
+
+/* line 4, ../sass/_form.scss */
+.form-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--body-bg-color);
+  border:0;
+  border-radius: 0.3rem;
+  height: 1.8rem;
+  line-height: 1.2rem;
+  max-width: 100%;
+  outline: 0;
+  padding: .25rem .8rem;
+  position: relative;
+  transition: background .2s,border .2s,box-shadow .2s,color .2s;
+  width: 100%;
+}
+
+/* line 30, ../sass/_form.scss */
+.form-label {
+  display: block;
+  line-height: 1.2rem;
+  padding: .3rem 0;
+}
+
+/* line 2, ../sass/_blocs.scss */
+.bloc-default .bloc-default_title {
+  margin-bottom: 1em;
+}
+
+/* line 1, ../sass/_alert.scss */
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  border-radius: 0.25em;
+}
+/* line 7, ../sass/_alert.scss */
+.alert span {
+  display: inline-block;
+  font-size: 1.3em;
+  margin-right: 0.5em;
+}
+/* line 11, ../sass/_alert.scss */
+.alert span i {
+  vertical-align: middle;
+}
+/* line 15, ../sass/_alert.scss */
+.alert.alert-info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+/* line 21, ../sass/_alert.scss */
+.alert.alert-success {
+  color: #1c9806;
+  background-color: #f2fef0;
+  border-color: #23bf08;
+}
+/* line 26, ../sass/_alert.scss */
+.alert.alert-warning {
+  color: #c47709;
+  background-color: #fce6c6;
+  border-color: #f49917;
+}
+/* line 31, ../sass/_alert.scss */
+.alert.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* line 1, ../sass/_installindex.scss */
+.container {
+  width: 600px;
+  margin: 3em auto;
+}
+
+/* line 6, ../sass/_installindex.scss */
+.card-custom .card-header {
+  background-color: var(--primary-color);
+  line-height: 40px;
+  color: white;
+  font-size: 1.2em;
+}
+/* line 12, ../sass/_installindex.scss */
+.card-custom .card-body {
+  padding: 2em;
+}
+/* line 14, ../sass/_installindex.scss */
+.card-custom .card-body img {
+  margin-bottom: 1em;
+}
+/* line 17, ../sass/_installindex.scss */
+.card-custom .card-body a {
+  text-decoration: none;
+}
+/* line 21, ../sass/_installindex.scss */
+.card-custom .card-footer {
+  background-color: #eaeaea;
+  padding: 1.5em;
+}
+.label{
+  text-transform: uppercase;
+  font-size: 0.7em;
+  vertical-align: middle;
+  padding: 0.3em 0.5em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.label.label-primary{
+  background-color:var(--primary-color);
+  color: #ffffff;
+}
+.label.label-danger{
+  background-color: #ac3030;
+  color: #ffffff;
+}

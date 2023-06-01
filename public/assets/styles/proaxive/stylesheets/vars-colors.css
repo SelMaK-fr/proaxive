@@ -1,0 +1,15 @@
+/** Configurations des couleurs pour le mode clair (mode par défaut) **/
+:root{
+    --body-bg-color: #f4f4f4;
+    --first-bg-color: #ffffff;
+    --secondary-color:#CDCDCD;
+    --primary-color: #453d9b;
+    --body-txt-color: #333;
+    --main-txt-color: #222;
+    --form-bg-color: #f8f8f8;
+    --border-color: #e2e2e4;
+    --main-bg-color:#f8f8f8;
+    --table-thead-color:#edf5f8;
+    --default-txt-color:#ffffff;
+    --shadow-color: rgba(175, 175, 175, 0.1);
+}

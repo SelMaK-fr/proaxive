@@ -1,0 +1,59 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>Bienvenue dans l'installation de <span class="txtprimary">Proaxive</span></h1>
+        <span>Merci d'avoir choisi la solution <strong>Proaxive</strong> pour gérer vos interventions informatique.</span>
+        <p>Avant de commencer, vérifions si votre serveur/hébergement est compatible avec l'application.</p>
+        <div class="bloc-default">
+            <div class="bloc-default_title">
+                <strong>Votre serveur supporte t'il Proaxive ?</strong>
+            </div>
+            {% if checkPHP == false %}
+                <div class="alert alert-danger">
+                  <i class="icofont-sad"></i>  Désolé, votre version PHP n'est pas compatible avec Proaxive <strong>(PHP 8.1 minimum)</strong> !
+                    <br>Votre version PHP : {{ clientPHPVersion }}
+                </div>
+                <div class="big-icon text-center" style="font-size:9em;">
+                    <i class="icofont-worried"></i>
+                </div>
+            {% else %}
+                <div class="big-icon text-center" style="font-size:9em;">
+                    <i class="icofont-ui-check txtprimary"></i>
+                </div>
+            {% endif %}
+            <div class="bloc-default_content">
+                <span class="d-block">Version PHP : <strong>
+                        {% if checkPHP == true %}
+                            <span>Version de PHP supérieur ou égale à 8.1 <span class="label label-primary"><i class="icofont-check"></i> OK</span></span>
+                        {% elseif checkPHP == false %}
+                            <span class="label label-danger"><i class="icofont-error"></i></span> <span class="txtdanger">Version de PHP incompatible (PHP 8.1 minimum)</span>
+                        {% endif %}
+                    </strong></span>
+                <span class="d-block">Modules PHP nécessaires : <strong>
+                        {% if checkExtensionIntl is not null %}
+                            <span>php8.1-intl <span class="label label-primary"><i class="icofont-check"></i> OK</span></span>
+                            {% else %}
+                            <span class="txtdanger">php8.1-intl <span class="label label-danger"><i class="icofont-error"></i> Manquant</span></span>
+                        {% endif %}
+                        {% if checkExtensionXml is not null %}
+                            <span style="margin-left:1em;display:inline-block;">php8.1-xml <span class="label label-primary"><i class="icofont-check"></i> OK</span></span>
+                            {% else %}
+                            <span class="txtdanger">php8.1-xml <span class="label label-danger"><i class="icofont-error"></i> Manquant</span></span>
+                        {% endif %}
+                    </strong></span>
+            </div>
+        </div>
+    </div>
+    <div class="si__footer text-right">
+        <form method="get" action="/setup/licence">
+            {% if checkPHP == true and checkExtensionIntl is not null and checkExtensionXml is not null %}
+                <button class="btn btn-primary"><i class="icofont-check-circled"></i> Démarrer l'installation</button>
+            {% elseif checkPHP == false or checkExtensionIntl is null or checkExtensionXml is null %}
+                <button class="btn btn-primary disabled" disabled>Impossible de démarrer l'installation</button>
+            {% endif %}
+
+        </form>
+    </div>
+{% endblock %}

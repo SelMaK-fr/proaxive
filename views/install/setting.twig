@@ -1,0 +1,61 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    <form method="post" onsubmit="viewLoader()">
+        {{ include('install/_loader.twig') }}
+    <div class="si__content">
+        {{ include('_notifications.twig') }}
+        <h1>Configuration rapide de <span class="txtprimary">Proaxive Lite</span></h1>
+        <span>Avant dernière étape de l'installation.</span>
+        <p>Ci-dessous vous trouverez quelques configurations basiques de l'application.</p>
+        <div class="bloc-default">
+            <div class="bloc-default_title">
+                <strong>Veuillez choisir vos paramètres :</strong>
+            </div>
+            <div class="big-icon text-center" style="font-size:9em;">
+                <i class="icofont-arrow-right"></i><i class="icofont-options"></i>
+            </div>
+            <div class="bloc-default_content">
+                <!-- PHP Error -->
+                <div class="form-group-switch">
+                    <div class="switch-inline grid-12 grid-noGutter">
+                        <label class="col-3" style="line-height: 1.8;" for="php_error">Erreurs PHP</label>
+                        <div class="col-9">
+                            <div class="switch">
+                            <input type="radio" class="switch-input" name="php_error" value="1" id="php_error-yes">
+                            <label for="php_error-yes" class="switch-label switch-label-off">Oui</label>
+                            <input type="radio" class="switch-input" name="php_error" value="0" id="php_error-no" checked="">
+                            <label for="php_error-no" class="switch-label switch-label-on">Non</label>
+                            <span class="switch-selection"></span>
+                        </div>
+                        </div>
+                    </div>
+                    <small><i class="icofont-info-circle"></i> Affiche les erreurs basiques de PHP</small>
+                </div>
+                <!-- PHP Error Whoops! -->
+                <div class="form-group-switch"> 
+                    <div class="switch-inline grid-12 grid-noGutter">
+                        <label class="col-3" style="line-height: 1.8;" for="full_error">Erreurs Whoops!</label>
+                        <div class="switch">
+                            <input type="radio" class="switch-input" name="full_error" value="1" id="full_error-yes">
+                            <label for="full_error-yes" class="switch-label switch-label-off">Oui</label>
+                            <input type="radio" class="switch-input" name="full_error" value="0" id="full_error-no" checked="">
+                            <label for="full_error-no" class="switch-label switch-label-on">Non</label>
+                            <span class="switch-selection"></span>
+                        </div>
+                    </div>
+                    <small><i class="icofont-warning"></i> Ne pas activer en production</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="app_url">URL de l'application Proaxive (corrigez si elle n'est pas correct)</label>
+                    <input class="form-input underlined" type="text" id="app_url" name="app_url" value="{{ baseUrl }}" placeholder="">
+                    <small><i class="icofont-info-circle"></i> Ex : <strong>{{ baseUrl }}</strong>/i/KalElvsBruce</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="si__footer text-right">
+            <button type="submit" class="btn btn-primary" name="setting"><i class="icofont-check-circled"></i> Dernière étape</button>
+    </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Proaxive - Installation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <link rel="stylesheet" href="{{ getenv('APP_ROOT_PUBLIC') }}/assets/frameworks/gridlex/gridlex.min.css">
+    <!-- START::ICONFONT -->
+    <link rel="stylesheet" href="{{ getenv('APP_ROOT_PUBLIC') }}/assets/icons/icofont/icofont.min.css">
+    <link rel="stylesheet" href="{{ getenv('APP_ROOT_PUBLIC') }}/assets/styles/proaxive/stylesheets/app.install.css" type="text/css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/install/assets/stylesheets/light-style.css" title="default"/>
+</head>
+
+<body class="install--proaxive">
+<div class="container-install">
+<section class="section-install">
+    <div class="grid-3_xs-1 grid-noGutter">
+        <div class="col-4 col-sm-6 bg-color-1">
+            <div class="si--navigation">
+                <div class="top-navigation">
+                    <div class="text-center">
+                        <img width="30%" src="{{ getenv('APP_ROOT_PUBLIC') }}/assets/styles/admin-default/img/logo-beta_300.png" alt="">
+                        <h2>Proaxive <span class="primarytxt">Lite</span></h2>
+                        <small class="d-block">Assistant d'installation et de mise à jour.</small>
+                        <small class="d-block">Proaxive <strong>{{ app_info.number }}</strong></small>
+                    </div>
+                </div>
+                <ul>
+                    <li class="{% if current_menu == 'home' and current_menu is defined %}active{% endif %}"><span><i class="icofont-home"></i></span> Bienvenue !</li>
+                    <li class="{% if current_menu == 'database' and current_menu is defined %}active{% endif %}"><span><i class="icofont-database"></i></span> Base de données</li>
+                    <li class="{% if current_menu == 'importsql' and current_menu is defined %}active{% endif %}"><span><i class="icofont-upload"></i></span> Migration des tables</li>
+                    <li class="{% if current_menu == 'setting' and current_menu is defined %}active{% endif %}"><span><i class="icofont-options"></i></span> Paramètres de application</li>
+                    <li class="{% if current_menu == 'finish' and current_menu is defined %}active{% endif %}"><span><i class="icofont-smirk"></i></span> Fin de l'installation</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-8 col-sm-6">
+            <div class="si-content">
+                <div class="topbar">
+                    Version de l'installateur : <strong>0.5.0</strong>
+                </div>
+                <div class="si__container">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+<script type="text/javascript">
+    function viewLoader()
+    {
+        document.getElementById('loader').style.display = 'block';
+    }
+    window.onsubmit = viewLoader;
+</script>
+</body>
+</html>
+

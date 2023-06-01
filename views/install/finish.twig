@@ -1,0 +1,34 @@
+{% extends 'install/_layout.twig' %}
+
+{% block body %}
+    <form method="post" onsubmit="viewLoader()">
+        {{ include('install/_loader.twig') }}
+        <div class="si__content">
+            {{ include('_notifications.twig') }}
+            <h1>Fin de l'installation <span class="txtprimary">Proaxive Lite</span></h1>
+            <div class="bloc-default">
+                <div class="bloc-default_title">
+                    <strong>Merci d'avoir installé Proaxive Lite !</strong>
+                </div>
+                <div class="big-icon text-center txtprimary" style="font-size:9em;">
+                    <i class="icofont-ui-check"></i>
+                </div>
+                <div class="bloc-default_content">
+                    <p>
+                        <span style="text-decoration: underline">Identifiants de connexion au panel :</span><br>
+                        Utilisateur : <strong>admin</strong><br>
+                        Mot de passe : <strong>admin</strong>
+                    </p>
+                    <div class="alert alert-danger">Il est important de modifier ses identifiant à la première connexion.</div>
+                    <p>
+                        <strong>Proaxive</strong> peut être configuré avec un virtualhost ou via un simple fichier .htaccess (<strong>actif par défaut</strong>)
+                    </p>
+                    <a href="https://discuss.synexolabs.com/d/33-configurer-un-virtualhost" class="btn btn-primary" target="_blank"><i class="icofont-external-link"></i> Configurer un virtualhost</a>
+                </div>
+            </div>
+        </div>
+        <div class="si__footer text-right">
+            <button type="submit" class="btn btn-primary" name="setting"><i class="icofont-check-circled"></i> Finaliser et se connecter</button>
+        </div>
+    </form>
+{% endblock %}
