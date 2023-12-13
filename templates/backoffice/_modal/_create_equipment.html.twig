@@ -1,0 +1,30 @@
+<div class="modal" id="add_equipment">
+    <div class="modal-container p-5">
+        <form method="post" action="{{ url_for('equipment_add_fast') }}">
+            <div class="modal-content">
+                <div class="mb-4">
+                    <h1>Nouvel équipement</h1>
+                    Vous êtes sur le point de créer une nouvel équipement. Merci de renseigner les champs ci-dessous.
+                    <br>
+                    Vous pourrez compléter ses informations par la suite.
+                </div>
+                <div class="grid-2 mt-5">
+                    <div class="col">
+                        <input type="hidden" name="customers_id" value="{{ c.id }}">
+                        {{ form.input('name', 'Dénomination', 'Nom que porte cet équipement') | raw }}
+                        {{ form.input('e_serial', 'N°de série', 'Nom que porte cet équipement') | raw }}
+                    </div>
+                    <div class="col">
+                        {{ form.select('types_equipments_id', 'Type', t) | raw }}
+                        {{ form.select('brands_id', 'Marque', b) | raw }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer text-right">
+                <button type="submit" id="submit_add" class="btn btn-light-info">Mettre à jour maintenant</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>

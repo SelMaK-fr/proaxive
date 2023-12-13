@@ -1,0 +1,116 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Liste des interventions{% endblock %}
+
+{% block body %}
+    {% if interventions is not empty %}
+        <div class="card">
+            <div class="card-body p-4">
+                <div class="grid-12 -noGutter">
+                    <div class="col-8_sm-12">
+                        <div class="form-group form-icon form-icon-left mb-0">
+                            <div class="flex">
+                                <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
+                                <div class="flex-root">
+                                    <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/interventions/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
+
+                                </div>
+                                <button type="button" data-target="search_intervention" data-toggle="modal" class="btn-sm btn-light-info">Recherche avancée</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4_sm-12">
+                        <div class="ml-4 text-right">
+                            <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-purple mb-0 ri-add-fill fs-18px"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="results" id="htmlContent"></div>
+        </div>
+        <div id="table-visible" class="mt-5">
+            <div class="table">
+                <div class="grid-12">
+                    {% for i in interventions %}
+                        <div class="col-4_sm-12">
+                            <div class="card p-relative">
+                                <div class="card-body p-4">
+                                    <div class="flex align-items-center">
+                                        <div class="mr-4">
+                                            <span class="text-{% if i.is_closed %}green{% else %}purple-light{% endif %}">
+                                                <i class="fs-32px ri-{% if i.is_closed %}checkbox-circle{% else %}timer-2{% endif %}-fill"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <div class="pin pin-right">
+                                                {{ getDataPriority(i.a_priority, 'Priorité') }}
+                                            </div>
+                                            <h4>{{ i.name }}</h4>
+                                            <em class="text-muted">{{ i.description | slice(0,35) }}</em>
+                                            <p>
+                                                <span class="d-block">Etat:
+                                                    {{ getDataState(i.state) }}
+                                                </span>
+                                                <span class="d-block">Référence : <a href="{{ url_for('intervention_read', {'id': i.id}) }}"><span class="text-green">{{ i.ref_number }}</span></a></span>
+                                                <span class="d-block">Emise le : {{ i.created_at | date('d/m/Y') }}</span>
+                                                <span class="d-block">Equipement : {{ i.equipment_name }} de <a class="color-inherit"
+                                                                                                                href="{{ url_for('customer_read', {id: i.customers_id}) }}"><strong>{{ i.customer_name }}</strong></a></span>
+                                                <span class="d-block">Type : {{ i.sort }}</span>
+                                                {% if pull_date is not null %}
+                                                    <span class="d-block">Retrait : {{ i.pull_date | date('d/m/Y') }}</span>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center">
+        <span>
+            <i class="fs-80px ri-server-line"></i>
+        </span>
+            <h3>Aucune intervention</h3>
+            Créez des interventions et retrouvez-les ici
+            <div class="mt-3">
+                <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-light-purple"><i class="ri-add-line"></i> Nouvelle intervention</button>
+            </div>
+        </div>
+    {% endif %}
+
+    {{ include('backoffice/intervention/_modal/_add_fast.html.twig') }}
+    {{ include('backoffice/intervention/_modal/_search.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/assets/js/search.js"></script>
+    <script>
+        let inputswitch = document.querySelector(".switch")
+        let createInput = document.querySelector(".create-customer .form-group")
+        let selectCustomer = document.querySelector('#select-customer')
+        inputswitch.addEventListener('click', function (e) {
+            if(inputswitch.checked === true){
+                selectCustomer.style.display = "none";
+                const newInput = document.createElement("input");
+                const newLabel = document.createElement("label");
+                newInput.setAttribute('type', 'text');
+                newInput.setAttribute('name', 'fullname');
+                newInput.setAttribute('class', 'form-input');
+                newLabel .setAttribute('class', 'form-label');
+                newLabel.innerHTML = "Nom complet du client";
+                createInput.appendChild(newLabel);
+                createInput.appendChild(newInput);
+            } else {
+                let checkInput = document.querySelector(".create-customer .form-group input")
+                let checklabel = document.querySelector(".create-customer .form-group label")
+                selectCustomer.style.display = "block";
+                checkInput.remove();
+                checklabel.remove();
+            }
+        })
+    </script>
+{% endblock %}

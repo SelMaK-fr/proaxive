@@ -1,0 +1,63 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Nouvelle intervention{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a href="#" class="selected"><i class="ri-computer-line"></i> Informations générales</a></li>
+                <li><a href="#">Détails de l'intervention</a></li>
+            </ul>
+            <div class="p-4">
+                {{ form.renderStart | raw }}
+                    <div class="grid-12">
+                        <div class="col-6_sm-12">
+                            <div class="mb-5">
+                                <h3 class="fs-18px fw-500">Création d'une nouvelle intervention</h3>
+                                <p class="m-0">Cette méthode de création est en deux étapes.</p>
+                            </div>
+                            {{ form.renderField('name') | raw }}
+                            <div class="grid-12">
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('sort') | raw }}
+                                </div>
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('a_priority') | raw }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6_sm-12">
+                            <div class="mb-5">
+                                <div class="alert alert-warning">
+                                    <strong>Attention :</strong> les données ci-dessous ne pourront plus être modifiées.
+                                </div>
+                            </div>
+                            <div class="grid-12">
+                                <div class="col-6_sm-12">
+                                    {% if customer is not empty %}
+                                        <div class="form-group">
+                                            <label class="form-label" for="customer">Client sélectionné</label>
+                                            <div class="form-input all-border-purple">
+                                                <div id="customer" class="h100 flex align-items-center text-purple-light" style="">{{ customer.fullname }}</div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="customers_id" value="{{ customer.id }}">
+                                    {% else %}
+                                        {{ form.renderField('customers_id') | raw }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('company_id') | raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-light-purple"><i class="ri-checkbox-circle-line"></i> Suivant</button>
+                    </div>
+                {{ form.renderEnd(false) | raw }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

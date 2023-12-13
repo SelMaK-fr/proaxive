@@ -1,0 +1,125 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des tâches (Interventions){% endblock %}
+
+{% block body %}
+
+    <div class="grid">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="card-header mb-4">
+                        <div class="grid-2 -noGutter">
+                            <div class="col-6_sm-12">
+                                <h2>Gestion des tâches</h2>
+                                <span>Ajouter ou supprimer une tâche pour les interventions</span>
+                            </div>
+                            <div class="col-6_sm-12 text-right">
+                                <button type="button" data-target="add_os" data-toggle="modal" class="btn btn-light-primary"><i class="ri-add-line"></i> Ajouter une tâche</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% if tasks is not empty %}
+                        <div class="boxed-shadow p-relative br-5">
+                            <table class="table-radius table-shadow overflow-hidden" id="table-visible">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Description</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for t in tasks %}
+                                    <tr>
+                                        <td>{{ t.name }}</td>
+                                        <td>{{ t.description }}</td>
+                                        <td class="p-relative">
+                                            <div class="admin-tools">
+                                                <span class="d-block text-right">
+                                                <button class="btn-sm btn-nothing toggle" type="button"><i class="ri-more-fill"></i></button>
+                                                </span>
+                                                <div class="table-submenu" id="menu-tools{{ t.id }}">
+                                                    <button type="button" data-target="edit_task-{{ t.id }}" data-toggle="modal"><i class="ri-pencil-line"></i> Modifier</button>
+                                                    <form action="{{ url_for('settings_task_delete') }}" method="post">
+                                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                                        <input type="hidden" name="id" value="{{ t.id }}">
+                                                        <button type="submit" class="delete-confirm"><i class="ri-delete-bin-2-line"></i> Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!-- EDIT -->
+                                            <div class="modal" id="edit_task-{{ t.id }}">
+                                                <div class="modal-container p-5">
+                                                    <div class="modal-header text-right">
+                                                        <button type="button" data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                                                    </div>
+                                                    <form method="post" action="{{ url_for('settings_task_update') }}?id={{ t.id }}">
+                                                        <div class="modal-content">
+                                                            <div class="mb-4"><h1>Modification</h1></div>
+                                                            <div class="grid-12 mt-5">
+                                                                <div class="col-12_sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="name" class="form-label">Dénomination</label>
+                                                                        <input type="text" name="name" value="{{ t.name }}" class="form-control" id="name">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="description" class="form-label">Description</label>
+                                                                        <textarea class="form-control" name="description" id="description">{{ t.description }}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-light-purple">Sauvegarder</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center boxed-shadow">
+                            <span>
+                                <i class="fs-80px ri-server-line"></i>
+                            </span>
+                            <h3>Aucune tâche pour les interventions</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ADD -->
+
+    <div class="modal" id="add_os">
+        <div class="modal-container p-5">
+            {{ form.renderStart | raw }}
+                <div class="modal-header text-right">
+                    <button type="button" data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                </div>
+                <div class="modal-content">
+                    <div class="mb-4"><h1>Nouvelle tâche</h1></div>
+                    Création d'une nouvelle tâche afin de l'utiliser avec les interventions.
+                    <div class="grid-12 mt-5">
+                        <div class="col-12_sm-12">
+                            {{ form.renderField('name') | raw }}
+                            {{ form.renderField('description') | raw }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-light-purple">Créer maintenant</button>
+                </div>
+            {{ form.renderEnd(false) | raw }}
+        </div>
+    </div>
+{% endblock %}

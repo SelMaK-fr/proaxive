@@ -1,0 +1,86 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Liste des équipements{% endblock %}
+
+{% block body %}
+    {% if equipments is not empty %}
+        <div class="card">
+            <div class="card-body">
+                <div class="p-4">
+                    <div class="grid-12 -noGutter">
+                        <div class="col-8_sm-12">
+                            <div class="form-group form-icon form-icon-left mb-0">
+                                <div class="flex">
+                                    <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
+                                    <div class="flex-root">
+                                        <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/equipments/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4_sm-12">
+                            <div class="ml-4 text-right">
+                                <a title="Ajouter un périphérique" href="{{ url_for('equipment_create_device') }}" class="btn btn-purple m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-printer-fill"></i></a>
+                                <a title="Ajouter un ordinateur/smartphone" href="{{ url_for('equipment_create') }}" class="btn btn-purple m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-computer-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="htmlContent"></div>
+            </div>
+        </div>
+
+        <div class="grid-12 mt-5" id="table-visible">
+            {% for e in equipments %}
+                <div class="col-4_sm-12">
+                    <a class="color-inherit p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">
+                        <span class="pin pin-top pin-right">
+                        {% if e.is_outofservice is not null %}
+                            <span class="label badge-light-pink">
+                        <i class="ri-forbid-2-fill"></i>
+                        </span>
+                        {% endif %}
+                        </span>
+                        <div class="card {% if e.is_outofservice is defined and e.is_outofservice is not null %}all-border-pink{% endif %}">
+                            <div class="card-body p-4">
+                                <div class="flex align-items-center">
+                                    <div class="mr-4">
+                                            <span class="text-{% if e.is_outofservice is not null %}pink{% else %}green{% endif %}">
+                                                <i class="fs-32px ri-{% if e.is_outofservice is not null %}forbid-2{% else %}thumb-up{% endif %}-fill"></i>
+                                            </span>
+                                    </div>
+                                    <div>
+                                        <h4>{{ e.name }}</h4>
+                                        <span class="d-block text-blue">{{ e.customer_name }}</span>
+                                        <p>
+                                            <span class="d-block">Ajouté le : {{ e.created_at | date('d/m/Y') }}</span>
+                                            <span class="d-block">Type : {{ e.type_name }}</span>
+                                            <span class="d-block">Marque : {{ e.brand_name }}</span>
+                                            <span class="d-block">{{ e.os_name }}</span>
+                                            <span class="d-block"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center">
+        <span>
+            <i class="fs-80px ri-server-line"></i>
+        </span>
+            <h3>Aucun équipement</h3>
+            Ajoutez des équipements et retrouvez-les ici
+            <div class="mt-3">
+                <a href="" class="btn btn-light-purple"><i class="ri-add-line"></i> Nouvel équipement</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/assets/js/search.js"></script>
+{% endblock %}

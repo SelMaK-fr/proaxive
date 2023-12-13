@@ -1,0 +1,43 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Liste des magasins/ateliers{% endblock %}
+
+{% block body %}
+    <div class="grid-12">
+        {% for w in workshop %}
+            <div class="col-3_sm-12">
+                <div class="card p-relative">
+                    <div class="p-absolute t-1 r-1">
+                        {% if w.isdefault == 1 %}
+                            <span title="Maison mère" class="label-mid badge-light-yellow"><i class="fs-16px ri-check-fill"></i></span>
+                        {% endif %}
+                        <a class="label-mid badge-light-green" href="{{ url_for('workshop_update', {'id': w.id}) }}"><i class="fs-16px ri-edit-fill"></i></a>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="flex align-items-center">
+                            <div class="mr-3">
+                                <span><i class="fs-32px ri-building-fill"></i></span>
+                            </div>
+                            <div>
+                                <h4>{{ w.name }}</h4>
+                                <p class="m-0">
+                                    {{ getData('Gérant', w.director) }}
+                                    <span class="d-block">
+                                        Employé(e)s : <span class="label-mid badge-light-green text-uppercase">2</span>
+                                    </span>
+                                    {{ getData('Courriel', w.mail) }}
+                                    {{ getData('Site internet', w.website) }}
+                                    {{ getData('Tél.fixe', w.phone) }}
+                                    {{ getData('Adresse', w.address) }}
+                                    {{ getData('Ville', w.city) }}
+                                    {{ getData('Code postal', w.zipcode) }}
+                                    {{ getData('Département', w.department) }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

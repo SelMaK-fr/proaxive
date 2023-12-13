@@ -1,0 +1,62 @@
+{% extends "backoffice/base.html.twig" %}
+
+{% block title %}Membre de l'équipe - {{ u.fullname }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a class="selected" href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
+                <li><a href=""><i class="ri-pencil-fill"></i> Modifier</a></li>
+            </ul>
+            <div class="p-4">
+                <div class="grid-12">
+                    <div class="col-4_sm-12">
+                        <h3 class="mt-2 fw-500 fs-16px">Statistiques pour {{ u.fullname }}</h3>
+                        {{ getRoles(u.roles) }}
+                        <div class="mt-4">
+                            <canvas id="myChart" style="position: relative; height:40vh; width:100%"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-8_sm-12">
+                        <div class="grid-12">
+                            <div class="col-12_sm-12">
+                                <h3>Ses interventions</h3>
+                                <table class="table table-default">
+                                    <thead>
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Client</th>
+                                            <th>Equipement</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/assets/js/chartjs/chart.min.js"></script>
+    <script type="text/javascript" src="/assets/js/charts-data/dash.user.stats.js"></script>
+    <script>
+        dashUserStats([
+            {% if countInterventions > 0 %}{{ countInterventions }}{% else %}0{% endif %}
+        ])
+    </script>
+{% endblock %}

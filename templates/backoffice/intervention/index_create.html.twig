@@ -1,0 +1,40 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Création d'une intervention{% endblock %}
+
+{% block body %}
+    <div class="text-center mb-4">
+        <h2><span class="text-purple-light">Créer</span> une intervention</h2>
+        Veuillez choisir la méthode d'ajout de votre intervention
+    </div>
+    <div class="grid-center">
+        <div class="col-4_sm-12">
+            <div class="card">
+                <h3 class="pt-4 pr-4 pl-4">Méthode simplifiée</h3>
+                <div class="card-body p-4">
+                    <div class="text-center mb-3"><i class="ri-add-box-fill fs-55px"></i></div>
+                    Cette méthode permet de créer une intervention plus rapidement. Cette intervention sera enregistrée en <strong>brouillon</strong>, vous pourrez renseigner les autres informations plus tard et la valider.
+                    <p class="text-center mt-3">
+                        <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-light-purple">Je choisi cette méthode</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4_sm-12">
+            <div class="card">
+                <h3 class="pt-4 pr-4 pl-4">Méthode compléte</h3>
+                <div class="card-body p-4">
+                    <div class="text-center mb-3 text-pink">
+                        <i class="ri-add-box-fill fs-55px"></i>
+                        <i class="ri-add-box-fill fs-55px"></i>
+                    </div>
+                    Méthode traditionnelle, vous devez renseigner le maximum d'information et avoir des clients et équipements présents en base de données. Méthode idéale si vous avez déjà toutes les informations.
+                    <p class="text-center mt-3">
+                        <a href="{{ url_for('intervention_create_regular') }}" class="btn btn-light-pink fw-600">Je choisi cette méthode</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('backoffice/intervention/_modal/_add_fast.html.twig') }}
+{% endblock %}

@@ -1,0 +1,73 @@
+<div class="modal" id="add_intervention">
+    <div class="modal-container p-5">
+        {{ form.renderStart | raw }}
+            <div class="modal-content">
+                <div class="mb-4">
+                    <h1>Nouvelle intervention</h1>
+                    Vous êtes sur le point de créer une nouvelle intervention. Merci de renseigner les champs ci-dessous.
+                    <br>
+                    Cette intervention sera enregistrée en tant que <span class="label badge-light-yellow">brouillon</span>.
+                </div>
+                <div class="grid-2 mt-5">
+                    <div class="col">
+                        {{ form.renderField('name') | raw }}
+                        <div class="create-customer"><div class="form-group"></div></div>
+                        <div id="select-customer">
+                            {{ form.renderField('customers_id') | raw }}
+                            {{ form.renderField('customer_name') | raw }}
+                        </div>
+                        {{ form.renderField('create_customer') | raw }}
+                    </div>
+                    <div class="col">
+                        {{ form.renderField('sort') | raw }}
+                        {{ form.renderField('company_id') | raw }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer text-right">
+                <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+            </div>
+        {{ form.renderEnd(false) | raw }}
+    </div>
+</div>
+
+{% block javascripts %}
+    <script>
+        // Retrieve customers_name field
+        let select = document.querySelector('select#form_intervention_add_fast-customers_id')
+        let input = document.getElementById('form_intervention_add_fast-customer_name')
+        select.addEventListener('change', function (e) {
+            input.value = select.options[select.selectedIndex].text;
+        })
+        // Create Customer
+        let inputswitch = document.querySelector(".form-check-input")
+        let createInput = document.querySelector(".create-customer .form-group")
+        let divCustomer = document.querySelector('#select-customer')
+        let selectCustomer = document.querySelector('#form_intervention_add_fast-customers_id')
+        inputswitch.addEventListener('click', function (e) {
+            if(inputswitch.checked === true){
+                divCustomer.style.display = "none";
+                selectCustomer.setAttribute('disabled', 'disabled');
+                const newInput = document.createElement("input");
+                const newLabel = document.createElement("label");
+                newInput.setAttribute('type', 'text');
+                newInput.setAttribute('name', 'form_intervention_add_fast[fullname]');
+                newInput.setAttribute('id', 'form_intervention_add_fast-fullname');
+                newInput.setAttribute('class', 'form-input');
+                newLabel .setAttribute('class', 'form-label');
+                newLabel.innerHTML = "Nom complet du client";
+                createInput.appendChild(newLabel);
+                createInput.appendChild(newInput);
+            } else {
+                let checkInput = document.querySelector(".create-customer .form-group input")
+                let checklabel = document.querySelector(".create-customer .form-group label")
+                divCustomer.style.display = "block";
+                selectCustomer.removeAttribute('disabled');
+                checkInput.remove();
+                checklabel.remove();
+            }
+        })
+    </script>
+{% endblock %}

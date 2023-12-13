@@ -1,0 +1,13 @@
+{{ formBao.renderStart | raw }}
+<div class="card-inside inside-purple-border">
+    <div class="card-body p-3 text-muted">
+        <h3>Importer un fichier BAO</h3>
+        <p>
+            Proaxive vous permet également d'importer un rapport d'équipement de la solution BAO (Boîte à Outils par Bastien).
+            Ce rapport contient la configuration matérielle de l'ordinateur que Proaxive récupère automatiquement.
+        </p>
+        {{ formBao.renderField('file') | raw }}
+        <button type="submit" class="btn btn-light-purple">Importer les données</button>
+    </div>
+</div>
+{{ formBao.renderEnd() | raw }}

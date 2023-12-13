@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive" data-layout-mode="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- START::GridLex Local -->
+    <link rel="stylesheet" href="/assets/frameworks/gridlex/gridlex.min.css">
+    <!-- START::REMIXICON -->
+    <link href="/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <!-- START::CSS App -->
+    <link rel="stylesheet" href="/assets/stylesheets/app.css">
+    <link rel="stylesheet" href="/assets/stylesheets/utilities.css">
+    <!-- START::Print -->
+    <link rel="stylesheet" href="/assets/stylesheets/print.css" type="text/css" media="print">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="portal-body bg-sk-color-base-foreground">
+<div class="main">
+    <div class="header bg-sk-color-base-foreground">
+        <div class="pl-6 pr-6">
+            <div class="flex justify-content-center align-items-center">
+                <div>
+                    <h1 class="mb-0 d-inline-block fs-24px fw-600">Ma super boite</h1>
+                </div>
+                <div class="search-i">
+
+                </div>
+                <div class="flex-root"></div>
+                <div>
+                    Retour au site
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block body %}{% endblock %}
+</div>
+{{ include('_session_flash.html.twig') }}
+{% block javascripts %}
+    <script src="assets/js/app.js"></script>
+{% endblock %}
+</body>
+</html>

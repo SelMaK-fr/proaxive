@@ -1,0 +1,24 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}{{ e.name }} de {{ e.customer_name }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a href="{{ url_for('equipment_read', {'id' : e.id}) }}"><i class="ri-computer-line"></i> Vue générale</a></li>
+                <li><a class="selected" href="{{ url_for('equipment_update', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+                <li><a href="{{ url_for('equipment_update_specs', {'id' : e.id}) }}"><i class="ri-cpu-line"></i> Configuration système</a></li>
+            </ul>
+            <div class="p-4">
+                {{ include('backoffice/equipment/_form.html.twig', {'device': null}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+{% endblock %}

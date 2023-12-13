@@ -1,0 +1,26 @@
+<div class="modal" id="delete_{{ field_name }}">
+    <div class="modal-container p-5">
+        <div class="modal-header text-right">
+            <button data-dismiss="modal" type="button" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+        </div>
+        <div class="modal-content">
+            <form method="post" action="{{ url }}">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+                <div class="text-center mb-4"><h1>Confirmation de suppression</h1></div>
+                Vous êtes sur le point de supprimer cette données :
+                <p>
+                    <i class="ri-arrow-right-circle-line"></i> <strong>{{ field_data }}</strong>
+                </p>
+                <span class="d-block mb-4">Veuillez confirmer l'intitulé complet de cette données (respectez les espaces et majuscules) :</span>
+                <div class="form-group">
+                    <label class="form-label" for="fullname">Intitulé de la données</label>
+                    <input class="form-input" type="text" id="" name="{{ field_name }}" placeholder="">
+                </div>
+
+                <p class="text-center mt-6">
+                    <button type="submit" class="btn btn-light-pink"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

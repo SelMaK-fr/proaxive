@@ -1,0 +1,127 @@
+{% extends 'frontoffice/portal.html.twig' %}
+
+{% block title %}Bienvenue sur votre compte client{% endblock %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col-7_sm-12">
+            <div class="pt-5 pb-5">
+                <h3 class="fs-28px fw-600 txt-veryhard m-0">Bonjour {{ customer.fullname }}</h3>
+                <p class="fs-18px fw-300">Bienvenue sur votre compte client en ligne</p>
+                <div class="mt-4">
+                    <div class="grid">
+                        <div class="col-4_sm-12">
+                            <div class="card">
+                                <a href="" class="flex align-items-center card-body p-3">
+                                    <div class="flex align-items-center card-icon p-3 btn-purple text-center">
+                                        <i class="ri-home-2-fill fs-40px"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <span class="inline-block fw-500 txt-veryhard fs-15px text-uppercase mb-2">Mon adresse</span>
+                                        <p class="m-0">Mettre à jour mon adresse postale</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-4_sm-12">
+                            <div class="card">
+                                <a href="" class="flex align-items-center card-body p-3">
+                                    <div class="flex align-items-center card-icon p-3 btn-purple text-center">
+                                        <i class="ri-list-check-2 fs-40px"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <span class="inline-block fw-500 txt-veryhard fs-15px text-uppercase mb-2">Interventions</span>
+                                        <p class="m-0">Consulter mes interventions</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-4_sm-12">
+                            <div class="card">
+                                <div class="flex align-items-center card-body p-3">
+                                    <div class="flex align-items-center card-icon p-3 btn-purple text-center">
+                                        <i class="ri-file-list-3-fill fs-40px"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <span class="inline-block fw-500 txt-veryhard fs-15px text-uppercase mb-2">Mes documents</span>
+                                        <p class="m-0"><em>Prochainement disponible</em></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if customer.on_sale is defined and customer.on_sale is not null %}
+                    <div class="mt-4">
+                        <div class="alert alert-primary">
+                            <div class="flex align-items-center">
+                                <div class="mr-3"><i class="ri-heart-line fs-26px"></i></div>
+                                <div>
+                                    <strong>Félicitation !</strong>
+                                    <span class="d-block">
+                                Vous bénéficiez actuellement d'une réduction de <strong>{{ customer.on_sale }}%</strong> sur tous nos services informatiques.
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="col-6_sm-12">
+            <div class="card all-border">
+                <div class="card-body p-4">
+                    <h3 class="fs-20px fw-600 txt-veryhard">Vos équipements informatique</h3>
+                    <p class="fw-300">
+                        Ci-dessous, votre matériel(s) déjà déposé(s) dans notre atelier. Seul, le technicien peut mettre à jour ces informations. <br>
+                        L'icône <i class="ri-tools-fill fs-20px"></i> représente votre matériel en cours de maintenance dans notre atelier.
+                    </p>
+                    <div class="grid-12">
+                        {% for item in e %}
+                            <div class="col-6_sm-12">
+                                <div class="card-inside bg-foreground-child p-relative">
+                                    {% if item.is_outofservice is not empty and item.is_outofservice == 0 %}
+                                        <div class="p-absolute drapal-service">
+                                            <div class="alert-light-pink alert">
+                                            <span>
+                                                <i class="fs-32px ri-forbid-2-fill"></i> <span class="text-uppercase">hors-service</span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body p-4" {% if item.is_outofservice is not empty and item.is_outofservice == 0 %}style="position: relative;z-index: 1;opacity:.3"{% endif %}>
+                                        <span class="d-block fw-500">{{ item.name }}</span>
+                                        <span class="d-block">{{ item.brand_name }}</span>
+                                        <span class="d-block">{{ item.type_name }}</span>
+                                        <span class="d-block">{{ item.os_name }}</span>
+                                        <span class="d-block mt-3">
+                                            <span class="d-block fw-500">Clé OS</span>
+                                            <span>{{ item.e_licence }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6_sm-12">
+            <div class="card all-border">
+                <div class="card-body p-4">
+                    <h3 class="fs-20px fw-600 txt-veryhard">Vos débours</h3>
+                    <p class="fw-300">
+                        Ci-dessous, retrouvez vos débours en cours et finalisés. Seul, le technicien peut mettre à jour ces informations.
+                        <br>
+                        Vous avez la possibilité de signer les débours depuis cet espace client.
+                    </p>
+                    <div class="alert alert-info alert-dashed">
+                        Vous n'avez aucun débours.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

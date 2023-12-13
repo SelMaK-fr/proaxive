@@ -1,0 +1,81 @@
+{{ form.renderStart | raw }}
+<div class="grid-12">
+    <div class="col-6_sm-12">
+        <div class="mb-5">
+            <h3 class="fs-18px fw-500">Détails de l'équipement pour {{ dataEquipment.customer_name }}</h3>
+            <p class="m-0">Ajouter plus d'informations pour l'équipement <strong>{{ session.name }}</strong></p>
+        </div>
+
+        <div class="grid-2">
+            <div class="col">
+                {{ form.renderField('e_serial') | raw }}
+                {{ form.renderField('e_model') | raw }}
+            </div>
+            <div class="col">
+                {{ form.renderField('e_year') | raw }}
+                {{ form.renderField('operating_systems_id') | raw }}
+            </div>
+        </div>
+        <div class="alert alert-info">
+            <strong>Information :</strong>
+            <p>
+                Afin de rendre la création un peu plus rapide, les informations détaillées d'un équipement pourront être renseignées après l'enregistrement en base de données.
+            </p>
+        </div>
+    </div>
+    <div class="col-6_sm-12">
+        {% if session.form_user == 1 %}
+            <div class="card-inside inside-purple-border mb-4 p-relative">
+                <span class="label badge-light-pink p-absolute r-1 t-1">Option</span>
+                <div class="card-body p-3">
+                    <div class="mb-5">
+                        <h3 class="fs-18px fw-500">Compte utilisateur</h3>
+                        <p class="m-0">Accès à un compte utilisateur sécurisé</p>
+                    </div>
+                    <div class="grid-2">
+                        <div class="col">
+                            {{ form.renderField('u_username') | raw }}
+                            {{ form.renderField('u_password') | raw }}
+                        </div>
+                        <div class="col">
+                            {{ form.renderField('u_account_mail') | raw }}
+                            {{ form.renderField('u_domain') | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if session.form_network == 1 %}
+            <div class="card-inside inside-purple-border p-relative">
+                <span class="label badge-light-pink p-absolute r-1 t-1">Option</span>
+                <div class="card-body p-3">
+                    <div class="mb-5">
+                        <h3 class="fs-18px fw-500">Configuration Réseau</h3>
+                        <p class="m-0">Informations de connexion réseau</p>
+                    </div>
+                    <div class="grid-2">
+                        <div class="col">
+                            {{ form.renderField('n_ipaddress') | raw }}
+                            {{ form.renderField('n_masknetwork') | raw }}
+                        </div>
+                        <div class="col">
+                            {{ form.renderField('n_gateway') | raw }}
+                            {{ form.renderField('n_dns') | raw }}
+                        </div>
+                    </div>
+                    {{ form.renderField('n_ssid') | raw }}
+                    {{ form.renderField('n_wifi_key') | raw }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="grid-12">
+    <div class="col-6_sm-12">
+        <a href="{{ url_for('equipment_create') }}" title="Annuler la soumission" class="btn btn-light-pink">Annuler</a>
+    </div>
+    <div class="col-6_sm-12 text-right">
+        <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+    </div>
+</div>
+{{ form.renderEnd(false) | raw }}

@@ -1,0 +1,24 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Nouvel équipement{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a class="selected" href="{{ url_for('equipment_create') }}"><i class="ri-computer-line"></i> Informations générales</a></li>
+            </ul>
+            <div class="p-4">
+                {{ include('backoffice/equipment/_form.html.twig', {'device': null}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+{% endblock %}
+

@@ -1,0 +1,88 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Préférences de l'application{% endblock %}
+
+{% block body %}
+    <div class="grid-12">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            {{ form.renderStart | raw }}
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">Expiration automatique des liens</div>
+                                Cela concerne principalement les liens vers le suivi des interventions. Pratique si vous souhaitez limiter la consultation des interventions depuis le suivi
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('expiration_link') | raw }}
+                            </div>
+                        </div>
+                        <div class="grid-12 border-top-dashed pt-3">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">Taux horaire</div>
+                                Options permettant de gérer votre chiffre d'affaires sur vos interventions. Si activé, un champs de temps sera ajouté lors de la création d'une intervention.
+                                <br>Seules les nouvelles interventions seront concernées après activation.
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('price_time') | raw }}
+                            </div>
+                        </div>
+                        <div class="grid-12  border-top-dashed pt-3">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">API Adresse</div>
+                                L'API adresse permet de rentrer les informations des villes automatiquement. L'API recherche en temps réél les adresses disponibles lors de la frappe.
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('api_address') | raw }}
+                            </div>
+                        </div>
+                        <div class="grid-12  border-top-dashed pt-3">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">API Nominatim</div>
+                                Permet de rechercher des données géographiques par leur nom et leur adresse et de générer des adresses à partir de coordonnées géographiques.
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('api_nominatim') | raw }}
+                            </div>
+                        </div>
+                        <div class="grid-12 border-top-dashed pt-3">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">Génération de numéro</div>
+                                Choisissez la façon dont les numéros d'intervention sont générés.
+                            </div>
+                            <div class="col-6_sm-12">
+                                <div class="grid">
+                                    <div class="col-6_sm-12">
+                                        {{ form.renderField('date_for_number') | raw }}
+                                        {{ form.renderField('generate_number_alpha') | raw }}
+                                    </div>
+                                    <div class="col-6_sm-12">
+                                        <span class="d-block fw-500">Aperçu de votre choix</span>
+                                        <span class="text-pink">{{ getNumber }}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="grid-12 border-top-dashed pt-3">
+                            <div class="col-6_sm-12">
+                                <div class="mb-2 fw-600">Gestion d'affichage des erreurs PHP</div>
+                                Activer les erreurs permet de connaitre les problèmes rencontrés avec l'application. Elles sont à titre d'indication à communiquer au développeur.
+
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('php_error') | raw }}
+                                Cela active également le journal des logs système de l'application "/var/logs"
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                    </div>
+                </div>
+            {{ form.renderEnd(false) | raw }}
+        </div>
+    </div>
+
+{% endblock %}

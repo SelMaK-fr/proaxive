@@ -1,0 +1,25 @@
+{% extends "backoffice/base.html.twig" %}
+
+{% block title %}Nouvel utilisateur{% endblock %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col-8_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="alert alert-info">
+                        L'utilisateur devra créer son mot de passe lors de sa première connexion.
+                    </div>
+                    {{ form.renderStart | raw }}
+                    {{ form.renderField('fullname') | raw }}
+                    {{ form.renderField('pseudo') | raw }}
+                    {{ form.renderField('mail') | raw }}
+                    {{ form.renderField('roles') | raw }}
+                    {{ form.renderField('company_id') | raw }}
+                    <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                    {{ form.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

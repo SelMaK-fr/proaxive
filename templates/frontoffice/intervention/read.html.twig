@@ -1,0 +1,70 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Intervention n°{{ i.ref_number }}{% endblock %}
+
+{% block body %}
+    <div class="consult">
+        <div class="portal-container">
+            <div class="grid-center">
+                <div class="col-10_sm-12">
+                    <div class="grid">
+                        <div class="col-8_sm-12">
+                            <h2 class="fs-28px">Statut Intervention</h2>
+                            <span class="fw-600">Intervention n° {{ i.ref_number }}</span>
+                            <span class="d-block text-muted">Mise à jour : {{ i.created_at | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }}</span>
+                        </div>
+                        <div class="col-4_sm-12 text-right">
+                            <form action="{{ url_for('app_search_intervention') }}">
+                                <div class="input-inner-button mt-4">
+                                    <div class="input-for-btn">
+                                        <label for="search-i" class="form-label"></label>
+                                        <input type="text" name="s" id="search-i" class="form-control" placeholder="Entrez un numéro d'intervention">
+                                    </div>
+                                    <button type="submit" class="btn-purple btn-lg d-block"><i class="ri-search-2-line"></i> Rechercher</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <h3 class="text-center fs-28px mb-7 pt-5">Soyez informé(e) en un simple coup d'oeil</h3>
+                    <div class="grid">
+                        <div class="col-6_sm-12">
+                            <div class="step-wrapper">
+                                <ul class="stepProgress">
+                                    <li class="stepProgress-item {% if i.way_steps >= 1 %}is-done pink{% endif %}"><strong>Matériel récupéré</strong>
+                                        Votre matériel est dans nos locaux et en attente de réparation.
+                                    </li>
+                                    <li class="stepProgress-item {% if i.way_steps == 2 %}current{% elseif i.way_steps >= 2 %}is-done{% endif %}"><strong>En atelier</strong>
+                                        Votre matériel est en cours de réparation dans notre atelier.
+                                    </li>
+                                    <li class="stepProgress-item {% if i.way_steps == 3 %}current{% elseif i.way_steps >= 3 %}is-done{% endif %}"><strong>Tests finaux</strong>
+                                        Le technicien réalise différents tests sur votre matériel avant sa sortie.
+                                    </li>
+                                    <li class="stepProgress-item {% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}is-done{% endif %}"><strong>En cours de sortie</strong>
+                                        Votre matériel sera bientôt disponible pour retrait.
+                                    </li>
+                                    <li class="stepProgress-item {% if i.way_steps == 5 %}is-done text-pink{% endif %}"><strong>Terminé</strong>
+                                        La réparation de votre matériel est terminée et prêt pour retrait.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-6_sm-12">
+                            <div class="card all-border mb-4">
+                                <div class="card-body p-4">
+                                    <p class="mt-0 mb-4">Les détails spécifiques de cette intervention ont volontairement été cachés pour raison de vie privée. Connectez vous pour visualiser les détails complet.</p>
+                                    <a href="" class="btn btn-light-purple">Se connecter maintenant</a>
+                                </div>
+                            </div>
+                            <h3 class="mb-3">Historique des tâches effectuées</h3>
+                            <ul class="tasks">
+                                {% for t in tasks %}
+                                    <li class="bg-foreground-child p-2 rd-2"><span class="t-icon"><i class="ri-check-fill"></i></span> <span class="t-name">{{ t.name }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

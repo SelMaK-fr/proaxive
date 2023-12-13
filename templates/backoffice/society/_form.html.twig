@@ -1,0 +1,97 @@
+{{ form.renderStart | raw }}
+<div class="grid-12">
+    <div class="col-6_sm-12">
+        <div class="mb-5">
+            <h3 class="fs-18px fw-500">Informations client</h3>
+            <p class="m-0">Ici, vous pouvez modifier les informations personnelles de votre client. <br>Une fois l'ID client enregistré, il ne pourra plus être modifié.</p>
+        </div>
+        {% if customer %}
+            <div class="grid-2">
+                <div class="col">
+                    {% if customer.login_id is null or customer.login_id is empty %}
+                        {{ form.renderField('login_id') | raw }}
+                    {% else %}
+                        <div class="form-group">
+                            <label class="form-label" for="login_id">Client ID</label>
+                            <div class="input-icon input-danger icon-left br-8 p-relative">
+                                <span class="icon"><i class="ri-lock-fill"></i></span>
+                                <div class="form-input underlined pl-8 flex align-items-center"><span>{{ customer.login_id }}</span></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <div class="mg-b-1">
+                        [Portail] <br>
+                        <em>Permet au client de se connecter au portail</em><br>
+                        {% if customer.login_id is empty %}
+                            <button type="button" onclick="generateIdCustomer()" class="btn-sm btn-light-pink">Générer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {{ form.renderField('mail') | raw }}
+        <div class="grid-12">
+            <div class="col-3_sm-12">
+                {{ form.renderField('type_status') | raw }}
+            </div>
+            <div class="col-9_sm-12">
+                {{ form.renderField('fullname') | raw }}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('siret_number') | raw }}
+                {{ form.input('siret_number', 'N°Siret', 'Numéro de siret') | raw }}
+            </div>
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('tva_number') | raw }}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('naf_number') | raw }}
+            </div>
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('website') | raw }}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('phone') | raw }}
+                {{ form.renderField('favorite_contact') | raw }}
+            </div>
+            <div class="col-6_col-sm-12">
+                {{ form.renderField('mobile') | raw }}
+            </div>
+        </div>
+    </div>
+    <div class="col-6_sm-12">
+        {{ form.renderField('address') | raw }}
+        {{ form.renderField('addr_longitude') | raw }}
+        {{ form.renderField('addr_latitude') | raw }}
+        <div class="grid">
+            <div class="col-4_sm-12">
+                {{ form.renderField('city') | raw }}
+            </div>
+            <div class="col-4_sm-12">
+                {{ form.renderField('zipcode') | raw }}
+            </div>
+            <div class="col-4_col-sm-12">
+                {{ form.renderField('department') | raw }}
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4_sm-12">
+                {{ form.renderField('h_floor') | raw }}
+            </div>
+            <div class="col-4_col-sm-12">
+                {{ form.renderField('h_digicode') | raw }}
+            </div>
+        </div>
+        {{ form.renderField('h_about') | raw }}
+    </div>
+</div>
+<button type="submit" class="btn btn-light-purple">Envoyer</button>
+{{ form.renderEnd(false) | raw }}

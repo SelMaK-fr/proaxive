@@ -1,0 +1,34 @@
+{% if equipments is not empty %}
+    <table class="table-default">
+        <thead>
+        <tr>
+            <th>Dénomination</th>
+            <th>Client</th>
+            <th>N°de série</th>
+            <th>Modèle</th>
+            <th>Etat</th>
+            <th>Ajouté le</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in equipments %}
+            <tr onclick="document.location = '{{ url_for('equipment_read', {'id': e.id}) }}'" style="cursor: pointer{% if client.is_blacklist == 1 %};background-color:rgba(247, 49, 100, 0.15){% endif %}">
+                <td>
+                    <strong>{{ e.name }}</strong>
+                </td>
+                <td>{{ e.customer_name }}</td>
+                <td>{{ e.e_serial }}</td>
+                <td>{{ e.e_model }}</td>
+                <td>{% if e.is_outofservice is not null or e.is_outofservice is not empty %} <span class="label badge-light-pink">Hors-service</span>{% else%}<span class="label badge-light-green">OK</span>{% endif %}</td>
+                <td>{{ e.created_at | date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ url_for('equipment_update', {'id': e.id}) }}" class="btn-sm btn-light-purple" title="Modifier le compte client"><i class="ri-edit-2-fill"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="p-4">Il n'y a aucun résultat pour cette recherche</div>
+{% endif %}

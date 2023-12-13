@@ -1,0 +1,84 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="body-background mh-fullvh">
+        <div class="pl-2 pr-2">
+            <div class="grid-center">
+                <div class="col-5_sm-12">
+                    <div class="card all-border mt-6 card-shadow">
+                        <div class="card-tabs">
+                            <ul class="brtr-100 brtl-100 js-tabs">
+                                <li><a class="selected" href="#search"><i class="ri-search-2-line"></i> Rechercher</a></li>
+                                <li><a href="#login"><i class="ri-lock-2-fill"></i> Compte client</a></li>
+                            </ul>
+                            <div class="tabs-content p-6">
+                                <div id="search" class="tab-pane selected">
+                                    <div class="text-center">
+                                        <img class="v-middle mb-4" style="height:200px;" src="/img/undraw_file_searching_re_3evy.svg" alt="">
+                                        <h3 class="fs-28px fw-600 text-foreground m-0">Rechercher une intervention</h3>
+                                        <p class="fs-18px fw-300 mt-2 mb-4">Suivi des interventions informatique en ligne</p>
+                                        <div class="ct-form-custom mb-4">
+                                            <form action="{{ url_for('app_search_intervention') }}">
+                                                <div class="input-inner-button mt-4">
+                                                    <div class="input-for-btn">
+                                                        <label for="search-i" class="form-label"></label>
+                                                        <input type="text" name="s" id="search-i" class="form-control" placeholder="Entrez un numéro d'intervention">
+                                                    </div>
+                                                    <button type="submit" class="btn-light-purple btn-lg d-block"><i class="ri-search-2-line"></i> Rechercher</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <span>Vous n'avez pas de numéro d'intervention ? <a href="#"><span class="fw-500 primary">Contactez-nous !</span></a></span>
+                                    </div>
+                                </div>
+                                <div id="login" class="tab-pane">
+                                    <div class="text-center mb-6">
+                                        <h2 class="fs-28px fw-600">Espace Client</h2>
+                                        Connexion à votre espace client en ligne.
+                                    </div>
+                                    <div class="login-form-horizontal mt-4">
+                                        <form method="post" action="{{ url_for('portal_login') }}">
+                                            <div class="mb-4">
+                                                <div class="form-group mb-3">
+                                                    <div class="input-group input-group-prefix">
+                                                        <span class="input-group-case case-prefix"><i class="ri-mail-fill fs-18px"></i></span>
+                                                        <label>
+                                                            <input type="text" name="login_id" class="form-control" placeholder="C-xyz ou john@mail.com">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
+                                                <div class="form-group mb-3">
+                                                    <div class="input-group input-group-prefix">
+                                                        <span class="input-group-case case-prefix"><i class="ri-key-2-fill fs-18px"></i></span>
+                                                        <label>
+                                                            <input type="password" name="passwd" class="form-control">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn-purple btn-lg rd-10">Se connecter</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                        <div class="alert alert-info">
+                                            Un problème pour vous connecter à votre espace ? Contactez-nous
+                                        </div>
+                                        <p>
+                                            Votre accès est confidentiel, ne le communiquez jamais à autruis.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

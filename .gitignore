@@ -1,0 +1,7 @@
+/.idea
+/vendor/
+/.env
+/var/logs/*.log
+###< Assets ###
+/public/assets/sass
+/public/assets/.sass-cache

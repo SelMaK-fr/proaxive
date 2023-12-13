@@ -1,0 +1,93 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Validation de l'intervention n°{{ i.ref_number }}{% endblock %}
+
+{% block body %}
+    <div class="text-center mb-4"><h2><span class="text-purple-light">Validation</span> d'intervention</h2></div>
+    <div class="grid-center">
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-space-between mb-3">
+                        <div class="alert alert-info">Intervention en mode <strong>brouillon</strong> <br>Veuillez remplir et confirmer les informations demandées afin de valider cette intervention</div>
+                        <form action="">
+                            <input type="hidden" name="id" value="{{ i.id }}">
+                            <button data-target="delete_intervention" data-toggle="modal" type="button" class="btn btn-light-pink">Supprimer ce brouillon</button>
+                        </form>
+                    </div>
+                    {{ form.renderStart | raw }}
+                        <div class="grid-12">
+                            <div class="col-4_sm-12">
+                                <div class="form-group mb-6">
+                                    <label for="" class="form-label">Client</label>
+                                    <strong class="d-block">{{ i.customer_name }}</strong>
+                                </div>
+                                {{ form.renderField('name') | raw }}
+                            </div>
+                            <div class="col-4_sm-12">
+                                {% if e == 0 %}
+                                    <div class="mb-6">
+                                        <span class="d-block mb-1">Ce client n'a pas d'équipement</span>
+                                        <button type="button" data-target="add_equipment" data-toggle="modal" class="btn-sm btn-light-info"><i class="ri-add-circle-line"></i> Créer un équipement</button>
+                                    </div>
+                                {% else %}
+                                    {{ form.renderField('equipments_id') | raw }}
+                                    {{ form.renderField('equipment_name') | raw }}
+                                {% endif %}
+                                {{ form.renderField('sort') | raw }}
+                            </div>
+                            <div class="col-4_sm-12">
+                                {{ form.renderField('a_priority') | raw }}
+                                {{ form.renderField('way_steps') | raw }}
+                            </div>
+                        </div>
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('description') | raw }}
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('before_breakdown') | raw }}
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-light-purple">Enregistrer</button>
+                        </div>
+                        {{ form.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_intervention">
+        <div class="modal-container p-5">
+            <div class="modal-header text-right">
+                <button data-dismiss="modal" type="button" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-content">
+                <form method="post" action="{{ url_for('intervention_delete', {'id':i.id}) }}">
+                    <input type="hidden" name="_METHOD" value="DELETE"/>
+                    <div class="text-center mb-4"><h1>Confirmation de suppression</h1></div>
+                    Vous êtes sur le point de supprimer l'intervention :
+                    <p>
+                        <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
+                    </p>
+                    <p class="text-center mt-6">
+                        <button type="submit" class="btn btn-light-pink"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{ include('backoffice/equipment/_modal/_add_fast.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {% if e is not empty %}
+        <script type="text/javascript">
+            let select = document.querySelector('select#form_intervention_validation-equipments_id')
+            let input = document.getElementById('form_intervention_validation-equipment_name')
+            select.addEventListener('change', function (e) {
+                input.value = select.options[select.selectedIndex].text;
+            })
+        </script>
+    {% endif %}
+{% endblock %}

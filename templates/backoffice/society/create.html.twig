@@ -1,0 +1,31 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Nouveau client (Société/Entreprise){% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a href="{{ url_for('customer_create_particular') }}"><i class="ri-user-line"></i> Client</a></li>
+                <li><a class="selected"  href="{{ url_for('customer_create_society') }}"><i class="ri-building-line"></i> Société/entreprise</a></li>
+            </ul>
+            <div class="p-4">
+                {{ include('backoffice/society/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block javascripts %}
+    {% if config.api_address == 1 %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="/assets/js/opendata.js"></script>
+    {% endif %}
+    <script src="/assets/js/functions.customers.js"></script>
+{% endblock %}

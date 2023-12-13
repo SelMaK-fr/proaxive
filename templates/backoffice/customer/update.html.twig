@@ -1,0 +1,40 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Compte client - {{ customer.fullname }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
+                <li><a class="selected" href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+                <li><a href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
+            </ul>
+            <div class="p-4">
+                {{ include('backoffice/customer/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block javascripts %}
+    {% if config.api_address == 1 %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="/assets/js/opendata.js"></script>
+    {% endif %}
+    <script src="/assets/js/functions.customers.js"></script>
+    <script type="text/javascript">
+        function viewLoader()
+        {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('body-wrapper').style.overflow = 'hidden';
+        }
+        window.onsubmit = viewLoader;
+    </script>
+{% endblock %}

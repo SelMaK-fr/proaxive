@@ -1,0 +1,64 @@
+<div class="flash-message">
+{% for message in flash.get('panel-info') %}
+    <div class="ui info message" id="message-flash">
+        <div class="header">
+            <strong>Information</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in flash.get('panel-success') %}
+    <div class="ui success message" id="message-flash">
+        <div class="header">
+            <strong>Success</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in flash.get('panel-error') %}
+    <div class="ui error message" id="message-flash">
+        <div class="header">
+            <strong>Erreur</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for message in flash.get('panel-warning') %}
+    <div class="ui warning message" id="message-flash">
+        <div class="header">
+            <strong>Avertissement</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+</div>
+<!-- For Portal -->
+{% for message in flash.get('info') %}
+    <div class="alt-notification info" id="message-flash">
+        <div class="alt-message">
+            <strong>Information</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in flash.get('error') %}
+    <div class="alt-notification error" id="message-flash">
+        <div class="alt-message">
+            <strong>Erreur</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in flash.get('success') %}
+    <div class="alt-notification success" id="message-flash">
+        <div class="alt-message">
+            <strong>Succès</strong> : {{ message }}
+        </div>
+    </div>
+{% endfor %}
+
+{% block javascripts %}
+    <script>
+        setTimeout( function(){
+            const oMsg = document.getElementById('message-flash');
+            if(oMsg){
+                oMsg.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+{% endblock %}

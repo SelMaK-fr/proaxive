@@ -1,0 +1,120 @@
+{{ form.renderStart | raw }}
+<div class="grid-12">
+    <div class="col-6_sm-12">
+        <div class="mb-5">
+            <h3 class="fs-18px fw-500">Création d'un nouvel équipement</h3>
+        </div>
+        <div class="grid-2">
+            <div class="col">
+                {% if c is not empty %}
+                    <div class="form-group">
+                        <label class="form-label" for="customer">Client sélectionné</label>
+                        <div class="form-input all-border-purple">
+                            <div id="customer" class="h100 flex align-items-center text-purple-light" style="">{{ c.fullname }}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    {{ form.renderField('customers_id') | raw }}
+                {% endif %}
+                {{ form.renderField('name') | raw }}
+                {{ form.renderField('e_serial') | raw }}
+                {{ form.renderField('e_model') | raw }}
+            </div>
+            <div class="col">
+                {{ form.renderField('types_equipments_id') | raw }}
+                {{ form.renderField('brands_id') | raw }}
+                {% if device is null %}
+                {{ form.renderField('operating_systems_id') | raw }}
+                {% endif %}
+                {{ form.renderField('e_year') | raw }}
+            </div>
+        </div>
+    </div>
+    <div class="col-6_sm-12">
+        <div class="mb-5">
+            <h3 class="fs-18px fw-500">Options de l'équipement</h3>
+            <p class="m-0">Ci-dessous, vous pouvez préciser les données utilisateurs ou informations réseau (suivant le type sélectionné). Les options ne sont pas obligatoire.</p>
+        </div>
+        {% if device is null %}
+            <div class="accordion p-relative">
+                <span class="label badge-light-pink p-absolute r-4 t-1">Option</span>
+                <div class="accordion-title">
+                    <div>
+                        <h3 class="fs-18px fw-500 mb-0">Compte utilisateur</h3>
+                        <span>Accès à un compte utilisateur sécurisé</span>
+                    </div>
+                    <button type="button"><i class="ri-add-circle-fill"></i></button>
+                </div>
+                <div class="accordion-content d-hidden">
+                    <div class="grid-12">
+                        <div class="col-6_sm-12">
+                            {{ form.renderField('u_username') | raw }}
+                            {{ form.renderField('u_password') | raw }}
+                        </div>
+                        <div class="col-6_sm-12">
+                            {{ form.renderField('u_account_mail') | raw }}
+                            {{ form.renderField('u_domain') | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="accordion p-relative">
+            <span class="label badge-light-pink p-absolute r-4 t-1">Option</span>
+            <div class="accordion-title">
+                <div>
+                    <h3 class="fs-18px fw-500 mb-0">Configuration Réseau</h3>
+                    <span>Informations de connexion réseau</span>
+                </div>
+                <button type="button"><i class="ri-add-circle-fill"></i></button>
+            </div>
+            <div class="accordion-content d-hidden">
+                <div class="grid-12">
+                    <div class="col-6_sm-12">
+                        {{ form.renderField('n_ipaddress') | raw }}
+                        {{ form.renderField('n_masknetwork') | raw }}
+                    </div>
+                    <div class="col-6_sm-12">
+                        {{ form.renderField('n_gateway') | raw }}
+                        {{ form.renderField('n_dns') | raw }}
+                    </div>
+                </div>
+                {{ form.renderField('n_ssid') | raw }}
+                {{ form.renderField('n_wifi_key') | raw }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-right">
+    <div class="hidden">
+        {{ form.renderField('type_name') | raw }}
+        {{ form.renderField('brand_name') | raw }}
+    </div>
+    <button type="submit" class="btn btn-light-purple">Enregister</button>
+</div>
+{{ form.renderEnd(false) | raw }}
+
+{% block javascripts %}
+    <script src="/assets/js/accordion.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        const items = document.querySelectorAll("#form_equipment-customers_id");
+        items.forEach((item) => new Choices(item, {
+            duplicateItemsAllowed: false,
+            searchEnabled: true,
+            itemSelectText: 'Cliquez pour selectionner',
+        }));
+    </script>
+    <script type="text/javascript">
+        let selectBrand = document.querySelector('select#form_equipment-brands_id')
+        let selectType = document.querySelector('select#form_equipment-types_equipments_id')
+        let inputBrandName = document.getElementById('form_equipment-brand_name')
+        let inputTypeName = document.getElementById('form_equipment-type_name')
+        selectBrand.addEventListener('change', function (e) {
+            inputBrandName.value = selectBrand.options[selectBrand.selectedIndex].text;
+        })
+        selectType.addEventListener('change', function (e) {
+            inputTypeName.value = selectType.options[selectType.selectedIndex].text;
+        })
+    </script>
+{% endblock %}

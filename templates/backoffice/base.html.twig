@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <title>Proaxive - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta content="Proaxive by SelMaK" name="author">
+    {% block stylesheets %}{% endblock %}
+    <!-- START::GridLex Local -->
+    <link rel="stylesheet" href="/assets/frameworks/gridlex/gridlex.min.css">
+    <!-- START::REMIXICON -->
+    <link href="/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <!-- SimpleBar
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+    -->
+    <!-- START::CSS App -->
+    <link rel="stylesheet" href="/assets/stylesheets/app.css">
+    <link rel="stylesheet" href="/assets/stylesheets/utilities.css">
+    <!-- START::Print -->
+    <link rel="stylesheet" href="/assets/stylesheets/print.css" type="text/css" media="print">
+    <noscript>
+        <style>
+            /**
+            * Reinstate scrolling for non-JS clients
+            */
+            .simplebar-content-wrapper {
+                overflow: auto;
+            }
+        </style>
+    </noscript>
+</head>
+<body id="body-wrapper">
+<div class="overlay"></div>
+<div class="layout-wrapper">
+    <header id="sk-topbar">
+        <div class="layout-topbar">
+            <div class="top-navbar">
+                <div class="flex align-items-center">
+                    <div class="d-desktop">
+                        <a href="#" class="btn btn-light-purple"><i class="ri-question-line"></i> Support Proaxive</a>
+                        <a href="#" class="btn btn-light-pink"><i class="ri-hand-coin-line"></i> Portail Client</a>
+                    </div>
+                </div>
+                <div class="flex align-items-center">
+                    <ul class="right-navbar flex align-items-center">
+                        <li class="btn-button"><button type="button" onclick="toggleTheme()"><i class="ri-sun-fill"></i></button></li>
+                        <li class="btn-button"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
+                        <li class="profil-item">
+                            <div class="flex align-items-center">
+                                <span class="profil-icon d-block mr-2"><i class="ri-shield-user-fill"></i></span>
+                                <div class="profil-body">
+                                    <span class="fw-500">John Doe</span>
+                                    <p class="p-0 m-0 fs-12px">Admin</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="d-mobile">
+                        <span class="d-block btn-aside aside-deploy ml-3"><i class="fs-22px ri-menu-line"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <aside class="sk-menu aside-menu">
+        <div class="pr-4 pl-2 aside-logo flex justify-content-space-between align-items-center">
+            <div class="flex align-items-center">
+                <div class="mr-2"><a href="/admin"><img class="v-middle" style="height: 50px; width: auto" src="{{ appRoot.urlPath }}img/logos/logo_proaxive.png" alt=""></a></div>
+                <div class="flex-root app-title"><span class="fs-20px">Proaxive</span> <span class="fw-500 fs-20px">2.0</span></div>
+            </div>
+            <div class="d-desktop">
+                <span onclick="toggleSidebarStatus()" id="aside-btn" class="d-block btn-aside"><i class="fs-22px ri-layout-grid-fill"></i></span>
+            </div>
+        </div>
+        <ul class="aside-navigation mt-4" data-simplebar>
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'customer' %}current{% endif %}">
+                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-user-line"></i></span> <span class="title">Clients <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span> </span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'customer' %}open{% endif %}">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_customer') }}">
+                                <span>Liste des clients</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('customer_create_particular') }}">
+                                <span>Créer un client</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item-nav dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}current{% endif %}">
+                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-building-fill"></i></span> <span class="title">Magasins/Ateliers <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span> </span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}open{% endif %}">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_workshop') }}">
+                                <span>Liste des magasins/ateliers</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('workshop_create') }}">
+                                <span>Créer un magasin/atelier</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('dash_user') }}">
+                                <span>Gestion des employé(e)s</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}current{% endif %}">
+                <a href="#" title="Gestion des interventions"><span class="icon"><i class="ri-list-check-2"></i></span> <span class="title">Interventions <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}open{% endif %}">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_intervention') }}">
+                                <span>Liste des interventions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('intervention_create_index') }}">
+                                <span>Créer une intervention</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}current{% endif %}">
+                <a href="#" title="Gestion des équipements"><span class="icon"><i class="ri-computer-line"></i></span> <span class="title">Equipements <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}open{% endif %}">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_equipment') }}">
+                                <span>Liste des équipements</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('equipment_create') }}">
+                                <span>Créer un Ordinateur/Smartphone</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('equipment_create_device') }}">
+                                <span>Créer un périphérique</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item-nav dropdown">
+                <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <div class="submenu-dropdown">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="#">
+                                <span>Liste des interventions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>Créer une intervention</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item-nav">
+                <a href="#" title="Gestion des documents"><span class="icon"><i class="ri-briefcase-line"></i></span> <span class="title">E-Document</span></a>
+            </li>
+            <li class="item-nav">
+                <a href="#" title="Gestion des rendez-vous"><span class="icon"><i class="ri-calendar-line"></i></span> <span class="title">Calendrier</span></a>
+            </li>
+            <li class="title-navigation"><span class="item-title d-block">Administration</span><em>Gestion de l'application</em></li>
+            <li class="item-nav {% if currentMenu is defined and currentMenu == 'settings' %}current{% endif %}">
+                <a href="{{ url_for('app_home') }}" title="Paramètres de l'application"><span class="icon"><i class="ri-settings-4-line"></i></span> <span class="title">Paramètres Généraux</span></a>
+            </li>
+            <li class="item-nav dropdown">
+                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <div class="submenu-dropdown">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="#">
+                                <span>Notes enregsitrées</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>Créer une note</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </aside>
+    <main class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="flex flex-wrap">
+                    <div class="flex-0 w100 p-relative">
+                        <div class="breadcrumbs-wrapper flex align-items-center justify-content-space-between">
+                            <div class="page-title"><h3 class="fw-500 fs-22px m-0">{{ block('title') }}</h3></div>
+                            {% if breadcrumbs is defined and breadcrumbs is not null %}
+                                <div>{{ breadcrumbs | raw }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% block body %}{% endblock %}
+                {% if layout_aside is defined %}
+                    <div class="aside aside-right">
+                        <button type="button" class="aside-btn"><i class="ri-settings-4-fill fs-20px"></i></button>
+                        <div class="p-4">
+                            {% block aside %}{% endblock %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</div>
+<!-- LOADER -->
+<div id="loader" class="preloader" style="display:none;">
+    <div class="title--preloader">
+        <div class="flex justify-content-center align-items-center h100">
+            <div>
+                <img style="height:100px" src="/img/loader.gif" alt="loader" /><br>
+                <strong>Mise à jour des données, </strong><span class="text-pink">veuillez patientez ...</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% block javascripts %}{% endblock %}
+<script src="/assets/js/setting.theme.js"></script>
+<script src="/assets/js/p2.app.js"></script>
+<!--
+<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+-->
+{{ include('_session_flash.html.twig') }}
+</body>
+</html>
