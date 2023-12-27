@@ -61,6 +61,11 @@ class InterventionUpdateType extends Type
                 'placeholder' => "Décrivez les détails de cette intervention",
                 'required' => false
             ])
+            ->add('handling_customer', TextareaType::class, [
+                'label' => "Manipulations(s) effectuée(s)",
+                'placeholder' => "Décrivez les manipulations que le client a déjà effectuées ou quand se produit le problème.",
+                'required' => false
+            ])
             ->add('observation', TextareaType::class, [
                 'label' => "Observation",
                 'placeholder' => "Rédiger une observation ici",

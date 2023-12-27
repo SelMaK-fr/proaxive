@@ -22,9 +22,16 @@ class InterventionController extends AbstractController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function index(Request $request, Response $response): Response
+    public function index(Request $request, Response $response, array $args): Response
     {
-        $interventions = $this->getRepository(InterventionRepository::class)->all()->orderBy('created_at DESC')->limit(9);
+        $all = $request->getQueryParams()['v'];
+        if($all === "all"){
+            $interventions = $this->getRepository(InterventionRepository::class)->all()->orderBy('created_at DESC');
+            $template = 'backoffice/intervention/index_all.html.twig';
+        } else {
+            $interventions = $this->getRepository(InterventionRepository::class)->all()->orderBy('created_at DESC')->limit(9);
+            $template = 'backoffice/intervention/index.html.twig';
+        }
         $formSearch = $this->createForm(InterventionSearchType::class);
         $formSearch->handleRequest();
         if($formSearch->isSubmitted() && $formSearch->isValid()) {
@@ -40,7 +47,7 @@ class InterventionController extends AbstractController
         //
         $form = $this->createForm(InterventionFastType::class);
         $form->handleRequest();
-        return $this->render($response, 'backoffice/intervention/index.html.twig', [
+        return $this->render($response, $template, [
             'currentMenu' => 'intervention',
             'interventions' => $interventions,
             'form' => $form,

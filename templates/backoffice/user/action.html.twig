@@ -3,22 +3,28 @@
 {% block title %}Nouvel utilisateur{% endblock %}
 
 {% block body %}
-    <div class="grid">
-        <div class="col-8_sm-12">
-            <div class="card">
-                <div class="card-body p-4">
-                    <div class="alert alert-info">
-                        L'utilisateur devra créer son mot de passe lors de sa première connexion.
-                    </div>
-                    {{ form.renderStart | raw }}
-                    {{ form.renderField('fullname') | raw }}
-                    {{ form.renderField('pseudo') | raw }}
-                    {{ form.renderField('mail') | raw }}
-                    {{ form.renderField('roles') | raw }}
-                    {{ form.renderField('company_id') | raw }}
-                    <button type="submit" class="btn btn-light-purple">Enregistrer</button>
-                    {{ form.renderEnd(false) | raw }}
+    <div class="card">
+        <div class="card-tabs">
+            <ul id="tabs" class="border-bottom">
+                {% if u is not null %}
+                <li><a href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
+                <li><a class="selected" href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+                {% else %}
+                <li><a href="#" class="selected"><i class="ri-pencil-fill"></i> Création d'un(e) employé(e)</a></li>
+                {% endif %}
+            </ul>
+            <div class="p-4">
+                <div class="alert alert-info">
+                    L'utilisateur devra créer son mot de passe lors de sa première connexion.
                 </div>
+                {{ form.renderStart | raw }}
+                {{ form.renderField('fullname') | raw }}
+                {{ form.renderField('pseudo') | raw }}
+                {{ form.renderField('mail') | raw }}
+                {{ form.renderField('roles') | raw }}
+                {{ form.renderField('company_id') | raw }}
+                <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                {{ form.renderEnd(false) | raw }}
             </div>
         </div>
     </div>

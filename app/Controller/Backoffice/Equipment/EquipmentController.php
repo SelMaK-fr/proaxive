@@ -23,7 +23,7 @@ class EquipmentController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $e = $this->getRepository(EquipmentRepository::class)->all()->limit(9);
+        $e = $this->getRepository(EquipmentRepository::class)->all()->limit(9)->orderBy('created_at DESC');
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
         $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));

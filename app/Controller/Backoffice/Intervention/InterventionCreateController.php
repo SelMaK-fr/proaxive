@@ -5,11 +5,15 @@ namespace App\Controller\Backoffice\Intervention;
 use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Repository\EquipmentRepository;
+use App\Repository\InterventionRepository;
+use App\Service\MailInterventionService;
 use App\Type\InterventionCreateNextType;
 use App\Type\InterventionCreateType;
 use App\Type\InterventionFastType;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Service\SerialNumberFormatterService;
+
 class InterventionCreateController extends AbstractController
 {
 
@@ -59,6 +63,7 @@ class InterventionCreateController extends AbstractController
             $data = $form->getRequestData()['form_intervention'];
             if($customer_id){$data_customer_id = $customer_id;}else{$data_customer_id = $data['customers_id'];}
             $findEquipment = $this->getRepository(EquipmentRepository::class)->countRowWhere((int)$data_customer_id, 'customers_id');
+            $numberFormatter = new SerialNumberFormatterService($this->app->getContainer()->get('parameters'));
             $arrayData = [
                 'name' => $data['name'],
                 'customers_id' => $data_customer_id,
@@ -66,7 +71,9 @@ class InterventionCreateController extends AbstractController
                 'equipments_id' => $equipment_id,
                 'sort' => $data['sort'],
                 'company_id' => $data['company_id'],
-                'nb_equipments' => $findEquipment
+                'nb_equipments' => $findEquipment,
+                'ref_number' => $numberFormatter->generateSerialNumber(),
+                'users_id' => $this->getUserId()
             ];
             // Save array in the session
             $this->session->set('form_intervention_next', $arrayData);
@@ -99,7 +106,10 @@ class InterventionCreateController extends AbstractController
         // Create Form
         $form = $this->createForm(InterventionCreateNextType::class, null, $dataSession);
         $form->setAction($this->routeParser->urlFor('intervention_create_save'));
+        $data = $form->getRequestData()['form_intervention_2time'];
         $form->handleRequest();
+        $this->session->set('intervention_2time', $data);
+
 
         return $this->render($response, 'backoffice/intervention/create/next.html.twig', [
             'currentMenu' => 'intervention',
@@ -113,9 +123,25 @@ class InterventionCreateController extends AbstractController
     public function save(Request $request, Response $response, array $args): Response
     {
         if($request->getMethod() === 'POST') {
-            $this->session->get('form_intervention_next');
-            $data = $request->getParsedBody();
-            dd($data);
+            $data_one = $this->session->get('form_intervention_next');
+            $data = $request->getParsedBody()['form_intervention_2time'];
+
+            unset($data_one['nb_equipments'], $data_one['equipments_id']);
+            $data_one['ref_for_link'] = bin2hex(random_bytes(5));
+            $data_one['state'] = "VALIDATED";
+            $customer = $this->getRepository(CustomerRepository::class)->find('id', (int)$data_one['customers_id']);
+            $merge = $data_one + $data;
+            // send the email if the customer has an email address
+            if($customer->mail){
+                $mail = new MailInterventionService($this->getParameters('mailer'));
+                $mail->sendMailStart($customer->mail, $this->view('mailer/intervention/start.html.twig', ['data' => $merge]));
+            }
+            $save = $this->getRepository(InterventionRepository::class)->add($merge, true);
+            if($save){
+                $this->session->getFlash()->add('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));
+                return $this->redirectToRoute('dash_intervention');
+            }
         }
+        return new \Slim\Psr7\Response();
     }
 }

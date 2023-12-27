@@ -44,18 +44,16 @@ function ajaxUpdateDataUrl(url, id, target = null, confirm = null) {
     let formdata = document.getElementById(id);
     let form_data = new FormData(formdata);
 
-    document.getElementById('submit').disabled = true;
+    document.getElementsByClassName('submit-ajax').disabled = true;
 
     let ajax_request = new XMLHttpRequest()
     ajax_request.open('POST', url);
     ajax_request.send(form_data);
-    console.log(form_data);
-
     ajax_request.onreadystatechange = function ()
     {
         if(ajax_request.readyState == 4 && ajax_request.status == 200)
         {
-            document.getElementById('submit').disabled = false;
+            document.getElementsByClassName('submit-ajax').disabled = false;
             document.getElementById(id).reset();
             let loader = document.getElementById("loader");
             let body = document.getElementById("body-wrapper");

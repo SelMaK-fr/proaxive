@@ -5,6 +5,18 @@
 {% block body %}
     {% if users is not empty %}
         <div class="grid-12">
+            <div class="col-3_sm-12">
+                <a href="{{ url_for('user_create') }}" class="color-inherit p-relative">
+                    <div class="card">
+                        <div class="card p-4 text-center">
+                            <h3>Créer un(e) employé(e)</h3>
+                            <div>
+                                <button type="button" class="btn btn-light-purple"><i class="ri-add-fill fs-18px"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
             {% for u in users %}
                 <div class="col-3_sm-12">
                     <a class="color-inherit p-relative" href="{{ url_for('user_read', {'id':u.id}) }}">

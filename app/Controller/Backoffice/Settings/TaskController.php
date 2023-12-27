@@ -69,12 +69,17 @@ class TaskController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0) {
+                $checkIfExist = $this->getRepository(TaskRepository::class)->ifExist('name', $data['name']);
                 if($id != 0){
                     $this->getRepository(TaskRepository::class)->update($data, $id);
                 } else {
-                    $this->getRepository(TaskRepository::class)->add($data);
+                    if($checkIfExist === 0) {
+                        $this->getRepository(TaskRepository::class)->add($data);
+                        $this->session->getFlash()->add('panel-info', "Action effectuée avec succès");
+                    } else {
+                        $this->session->getFlash()->add('panel-error', "Cet élément existe déjà !");
+                    }
                 }
-                $this->session->getFlash()->add('panel-info', "Action effectuée avec succès");
                 return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
             }
         }

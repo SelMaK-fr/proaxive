@@ -67,7 +67,7 @@ Les autres sont des variables génériques.
   --sk-color-base-text-hard: #526484;
   --sk-body-line-height: 1.5;
   --sk-menu-submenu-text: #ffffff;
-  --sk-color-overlay: rgba(0, 0, 0, 0.55);
+  --sk-color-overlay: rgba(0, 0, 0, 0.75);
   --text-muted: #6773a7;
   /*--purple: #4f46bb;*/
   --purple: #393382;
@@ -2275,15 +2275,17 @@ form span.input-error {
   height: auto;
   position: relative;
   margin: 1% auto;
-  width: 650px;
+  min-width: 650px;
+  max-width: 950px;
   border: 1px solid var(--sk-color-base-border);
   -moz-box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1) !important;
   -webkit-box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1) !important;
   box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1) !important;
   transition: all 0.4s ease-in-out;
+  overflow-x: auto;
 }
 
-/* line 26, ../sass/components/_modal.scss */
+/* line 28, ../sass/components/_modal.scss */
 .modal-header .modal__close {
   border: 0;
   background-color: var(--sk-color-base-foreground-child);
@@ -2293,28 +2295,41 @@ form span.input-error {
   border-radius: 6px;
 }
 
-/* line 37, ../sass/components/_modal.scss */
+/* line 39, ../sass/components/_modal.scss */
 [modal-status=deployed] .modal, .modal.deployed {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* line 41, ../sass/components/_modal.scss */
+/* line 43, ../sass/components/_modal.scss */
 [modal-status=deployed] .modal .modal-container, .modal.deployed .modal-container {
-  margin: 10% auto;
+  margin: 5% auto;
 }
 
-/* line 44, ../sass/components/_modal.scss */
+/* line 46, ../sass/components/_modal.scss */
 [modal-status=deployed] .modal .modal-container, .modal.deployed .modal-container {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* line 48, ../sass/components/_modal.scss */
+/* line 50, ../sass/components/_modal.scss */
 [modal-status=deployed] .overlay {
   display: block;
 }
 
+@media (max-width: 950px) {
+  /* line 55, ../sass/components/_modal.scss */
+  .modal {
+    overflow-x: auto;
+  }
+
+  /* line 58, ../sass/components/_modal.scss */
+  .modal.deployed .modal-container {
+    max-width: 100%;
+    min-width: 100%;
+    margin: 2% auto;
+  }
+}
 /* line 1, ../sass/components/_accordion.scss */
 .accordion {
   background-color: var(--sk-color-base-foreground);

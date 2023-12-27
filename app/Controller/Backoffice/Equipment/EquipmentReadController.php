@@ -5,6 +5,7 @@ namespace App\Controller\Backoffice\Equipment;
 use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Repository\EquipmentRepository;
+use App\Repository\InterventionRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -28,7 +29,7 @@ class EquipmentReadController extends AbstractController
         $equipment_id = (int)$args['id'];
         $e = $this->getRepository(EquipmentRepository::class)->findWithTypeBool($equipment_id);
         $c = $this->getRepository(CustomerRepository::class)->find('id', $e->customers_id);
-
+        $i = $this->getRepository(InterventionRepository::class)->allBy('equipments_id', $e->id);
         //
         $bds = $this->app->getContainer()->get('breadcrumbs');
         $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
@@ -42,6 +43,7 @@ class EquipmentReadController extends AbstractController
             'currentMenu' => 'equipment',
             'e' => $e,
             'c' => $c,
+            'i' => $i,
             'breadcrumbs' => $bds
         ]);
     }

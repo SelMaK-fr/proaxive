@@ -25,8 +25,16 @@
                 {{ form.renderField('brands_id') | raw }}
                 {% if device is null %}
                 {{ form.renderField('operating_systems_id') | raw }}
+                {{ form.renderField('os_name') | raw }}
                 {% endif %}
-                {{ form.renderField('e_year') | raw }}
+                <div class="grid-2">
+                    <div class="col-6_sm-12">
+                        {{ form.renderField('e_year') | raw }}
+                    </div>
+                    <div class="col-6_sm-12">
+                        {{ form.renderField('end_guarantee') | raw }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -108,13 +116,18 @@
     <script type="text/javascript">
         let selectBrand = document.querySelector('select#form_equipment-brands_id')
         let selectType = document.querySelector('select#form_equipment-types_equipments_id')
+        let selectOS = document.querySelector('select#form_equipment-operating_systems_id')
         let inputBrandName = document.getElementById('form_equipment-brand_name')
         let inputTypeName = document.getElementById('form_equipment-type_name')
+        let inputOsName = document.getElementById('form_equipment-os_name')
         selectBrand.addEventListener('change', function (e) {
             inputBrandName.value = selectBrand.options[selectBrand.selectedIndex].text;
         })
         selectType.addEventListener('change', function (e) {
             inputTypeName.value = selectType.options[selectType.selectedIndex].text;
+        })
+        selectOS.addEventListener('change', function (e) {
+            inputOsName.value = selectOS.options[selectOS.selectedIndex].text;
         })
     </script>
 {% endblock %}

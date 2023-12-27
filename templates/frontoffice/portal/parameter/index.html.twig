@@ -1,0 +1,64 @@
+{% extends 'frontoffice/portal.html.twig' %}
+
+{% block title %}Paramètres de mon compte client{% endblock %}
+
+{% block body %}
+    <div class="pt-5 pb-5">
+        <div class="pb-5">
+            <h2>Paramètres</h2>
+            <ul class="flex">
+                <li><a href="{{ url_for('portal_home') }}">Accueil</a></li>
+                <li class="ml-1 mr-1"><span>/</span></li>
+                <li><a href="#"></a>Paramètres</li>
+            </ul>
+        </div>
+        <div class="grid">
+            <div class="col-2_sm-12">
+                <div class="navigation-parameters">
+                    <a href="{{ url_for('portal_parameters') }}" class="current"><span class="d-block mr-2"><i class="ri-profile-fill"></i></span><span>Mon compte</span></a>
+                    <a href="{{ url_for('portal_parameters_address') }}"><span class="d-block mr-2"><i class="ri-settings-2-fill"></i></span><span>Mon adresse</span></a>
+                </div>
+            </div>
+            <div class="col-10_sm-12">
+                <div class="card all-border">
+                    <div class="card-body p-4">
+                        <div class="card-header mb-5">
+                            <h2>Paramètres de votre compte utilisateur</h2>
+                            <span>Mettre à jour ses paramètres de compte. Ces informations sont visibles dans le portail client.</span>
+                        </div>
+                        <div class="upload-avatar mb-4">
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <input type="file" tabindex="-1" name="avatar" accept="image/">
+                                <div><img src="/assets/no-avatar-350x350.jpg" alt=""></div>
+                            </form>
+                        </div>
+                        <form method="post" action="">
+                            <div class="grid-2">
+                                <div class="col-6_sm-12">
+                                    <div class="form-group"><label class="form-label" for="fullname">Nom complet</label><input class="form-input" type="text" id="" name="fullname" value="" placeholder="Entrez un pseudo"></div>
+                                    <div class="form-group"><label class="form-label" for="pseudo">Pseudo</label><input class="form-input" type="text" id="" name="pseudo" value="selmak" placeholder="Entrez un pseudo"></div>
+                                </div>
+                                <div class="col-6_sm-12">
+                                    <div class="form-group"><label class="form-label" for="mail">Adresse courriel</label><input class="form-input" type="text" id="" name="mail" value="yann@yann.fr" placeholder="Entrez un pseudo"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="m-0">Gestion du mot de passe</h4>
+                                <span>Choisissez un mot compliqué afin de mieux sécuriser votre compte</span>
+                            </div>
+                            <div class="grid-2">
+                                <div class="col-6_sm-12">
+                                    <div class="form-group"><label class="form-label" for="password">Mot de passe</label><input class="form-input" type="password" id="password" name="password" value="$2a$12$Lh4aNWePFtzp5Oc.BPvibOYPUilVeITFI199/loGmIE64Mw3hp09u" autocomplete="off"></div>
+                                </div>
+                                <div class="col-6_sm-12">
+                                    <div class="form-group"><label class="form-label" for="confirm_password">Confirmation du mot de passe</label><input class="form-input" type="password" id="confirm_password" name="confirm_password" value="" autocomplete="off"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-light-purple"><i class="ri-checkbox-circle-line"></i> Mettre à jour</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

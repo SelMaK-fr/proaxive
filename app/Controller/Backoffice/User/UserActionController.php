@@ -14,6 +14,7 @@ class UserActionController extends AbstractController
     public function action(Request $request, Response $response, array $args): Response
     {
         $user_id = (int)$args['id'];
+        $user = null;
         if($user_id){
             $user = $this->getRepository(UserRepository::class)->find('id', $user_id, true);
             $form = $this->createForm(UserType::class, $user);
@@ -41,7 +42,8 @@ class UserActionController extends AbstractController
 
         return $this->render($response, 'backoffice/user/action.html.twig', [
             'form' => $form,
-            'currentMenu' => 'user'
+            'currentMenu' => 'user',
+            'u' => $user
         ]);
     }
 }

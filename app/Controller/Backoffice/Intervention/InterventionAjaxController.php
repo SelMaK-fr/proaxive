@@ -4,11 +4,12 @@ namespace App\Controller\Backoffice\Intervention;
 
 use App\AbstractController;
 use App\Repository\CustomerRepository;
+use App\Repository\EquipmentRepository;
 use App\Repository\InterventionRepository;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Validator as V;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Service\SerialNumberFormatterService;
 use function DI\string;
 
 class InterventionAjaxController extends AbstractController
@@ -40,8 +41,9 @@ class InterventionAjaxController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0){
+                $numberFormatter = new SerialNumberFormatterService($this->app->getContainer()->get('parameters'));
                 $arrayData = [
-                    'ref_number' => rand(8,999999),
+                    'ref_number' => $numberFormatter->generateSerialNumber(),
                     'name' => $data['name'],
                     'ref_for_link' => bin2hex(random_bytes(5)),
                     'state' => 'DRAFT',
@@ -98,5 +100,66 @@ class InterventionAjaxController extends AbstractController
             'interventions' => $i,
             'currentMenu' => 'customer'
         ]);
+    }
+
+    /**
+     * Start Intervention
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function start(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        if($request->getMethod() === 'POST') {
+            $this->getRepository(InterventionRepository::class)->update([
+               'start_date' => date('Y-m-d h:i:s')
+            ], $intervention_id);
+        }
+        return $response;
+    }
+
+    /**
+     * End Intervention
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function end(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        if($request->getMethod() === 'POST') {
+            $this->getRepository(InterventionRepository::class)->update([
+                'end_date' => date('Y-m-d h:i:s'),
+                'state' => 'COMPLETED'
+            ], $intervention_id);
+        }
+        return $response;
+    }
+
+    /**
+     * Update Equipment Name for this intervention
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function updateEquipmentName(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+        $e = $this->getRepository(EquipmentRepository::class)->find('id', $i->equipments_id);
+        if($request->getMethod() === 'POST') {
+            $data = [
+                'equipment_name' => $e->name
+            ];
+            $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+        }
+        return new \Slim\Psr7\Response();
     }
 }

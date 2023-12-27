@@ -77,6 +77,8 @@ submenu_theme('.dropdown', '.submenu-dropdown', 'open');
             if (target.hasAttribute('data-target')) {
                 let m_ID = target.getAttribute('data-target');
                 document.getElementById(m_ID).classList.add('deployed');
+                let body = document.getElementById("body-wrapper");
+                body.style.overflow = 'hidden';
                 e.preventDefault();
             }
         }
@@ -85,6 +87,8 @@ submenu_theme('.dropdown', '.submenu-dropdown', 'open');
         if ((target.hasAttribute('data-dismiss') && target.getAttribute('data-dismiss') === 'modal') || target.classList.contains('modal')) {
             let modal = document.querySelector('[class="modal deployed"]');
             modal.classList.remove('deployed');
+            let body = document.getElementById("body-wrapper");
+            body.style.overflow = '';
             e.preventDefault();
         }
     }, false);

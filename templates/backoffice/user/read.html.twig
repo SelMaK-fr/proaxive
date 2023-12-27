@@ -2,18 +2,25 @@
 
 {% block title %}Membre de l'équipe - {{ u.fullname }}{% endblock %}
 
+{% set countInterventions = i | length %}
+
 {% block body %}
     <div class="card">
         <div class="card-tabs">
             <ul id="tabs" class="border-bottom">
                 <li><a class="selected" href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
-                <li><a href=""><i class="ri-pencil-fill"></i> Modifier</a></li>
+                <li><a href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
             </ul>
             <div class="p-4">
                 <div class="grid-12">
                     <div class="col-4_sm-12">
                         <h3 class="mt-2 fw-500 fs-16px">Statistiques pour {{ u.fullname }}</h3>
                         {{ getRoles(u.roles) }}
+                        <div class="card-inside">
+                            <div class="mt-4">
+                                Salarié(e) du magasin : <strong>{{ w.name }}</strong>
+                            </div>
+                        </div>
                         <div class="mt-4">
                             <canvas id="myChart" style="position: relative; height:40vh; width:100%"></canvas>
                         </div>
@@ -24,22 +31,24 @@
                                 <h3>Ses interventions</h3>
                                 <table class="table table-default">
                                     <thead>
-                                        <tr>
-                                            <th>Référence</th>
-                                            <th>Client</th>
-                                            <th>Equipement</th>
-                                            <th>Date</th>
-                                            <th>Statut</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Client</th>
+                                        <th>Equipement</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                    {% for data in i %}
+                                    <tr>
+                                        <td><a class="text-muted" href="{{ url_for('intervention_read', {id:data.id}) }}">{{ data.ref_number }}</a></td>
+                                        <td><strong>{{ data.customer_name }}</strong></td>
+                                        <td>{{ data.equipment_name }}</td>
+                                        <td>{{ data.created_at | date('d/m/y à H:i') }}</td>
+                                        <td title="Temps passé {{ data.total_time }}H">{{ getDataState(data.state) }} {{ getDataPriority(data.a_priority, 'Priorité') }}</td>
+                                    </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -56,7 +65,8 @@
     <script type="text/javascript" src="/assets/js/charts-data/dash.user.stats.js"></script>
     <script>
         dashUserStats([
-            {% if countInterventions > 0 %}{{ countInterventions }}{% else %}0{% endif %}
+            {% if countInterventions > 0 %}{{ countInterventions }}{% else %}0{% endif %},
+            {% if countOutlay > 0 %}{{ countOutlay }}{% else %}0{% endif %}
         ])
     </script>
 {% endblock %}

@@ -42,15 +42,22 @@ class BaseRepository
      * Return all record for a key in an object
      * @throws Exception
      */
-    public function allBy(string $key, int $value, bool $type = false): Select
+    public function allBy(string $key, int $value, int $limit = 16, bool $type = false): Select
     {
         if($type){
             // For array
-            return $this->makeQueryDefault()->where("$key = ?", [$value]);
+            $query = $this->makeQueryDefault()->where("$key = ?", [$value]);
+            if($limit) {
+                $query->limit($limit);
+            }
         } else {
             // For object
-            return $this->makeQueryObject()->where("$key = ?", [$value]);
+            $query = $this->makeQueryObject()->where("$key = ?", [$value]);
+            if($limit) {
+                $query->limit($limit);
+            }
         }
+        return $query;
     }
 
     /**
@@ -105,6 +112,14 @@ class BaseRepository
         $query = $this->makeQueryDefault()->select('id')
             ->where($where .' = '. $id);
         return count($query);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function ifExist(string $key, string $value)
+    {
+        return $this->makeQueryDefault()->where("$key = ?", [$value])->count();
     }
 
     /**

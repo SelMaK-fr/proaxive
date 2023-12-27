@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\BaseRepository;
+use Envms\FluentPDO\Exception;
 
 class InterventionRepository extends BaseRepository
 {
@@ -53,13 +54,15 @@ class InterventionRepository extends BaseRepository
     }
 
     /**
-     * @param int $id
+     * @param string $key
+     * @param mixed $value
      * @return mixed
+     * @throws Exception
      */
     public function joinForId(int $id)
     {
         return $this->makeQueryDefault()
-            ->select('interventions.*, c.*, cy.name cy_name, cy.address cy_address, cy.phone cy_phone, cy.mail cy_mail, e.name e_name, e.id e_id, u.fullname u_fullname, u.roles u_roles, u.id u_id, u.avatar u_avatar')
+            ->select('interventions.*, c.*, cy.name cy_name, cy.address cy_address, cy.phone cy_phone, cy.mail cy_mail, cy.zipcode cy_zipcode, cy.city cy_city, e.name e_name, e.id e_id, u.fullname u_fullname, u.roles u_roles, u.id u_id, u.avatar u_avatar')
             ->leftJoin('equipments as e ON e.id = interventions.equipments_id')
             ->leftJoin('users as u ON u.id = interventions.users_id')
             ->leftJoin('customers as c ON c.id = interventions.customers_id')
@@ -68,4 +71,19 @@ class InterventionRepository extends BaseRepository
             ->fetch()
             ;
     }
+
+    public function joinForIdWithKey(string $key, mixed $value)
+    {
+        return $this->makeQueryObject()
+            ->select('interventions.*, c.*, interventions.id i_id, cy.name cy_name, cy.address cy_address, cy.phone cy_phone, cy.mail cy_mail, cy.zipcode cy_zipcode, cy.city cy_city, e.name e_name, e.id e_id, u.fullname u_fullname, u.roles u_roles, u.id u_id, u.avatar u_avatar')
+            ->leftJoin('equipments as e ON e.id = interventions.equipments_id')
+            ->leftJoin('users as u ON u.id = interventions.users_id')
+            ->leftJoin('customers as c ON c.id = interventions.customers_id')
+            ->leftJoin('company as cy ON cy.id = interventions.company_id')
+            ->where($key. '= ?', [$value])
+            ->fetch()
+            ;
+    }
+
+
 }

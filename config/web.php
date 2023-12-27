@@ -22,7 +22,11 @@ use App\Controller\Backoffice\Intervention\InterventionDeleteController;
 use App\Controller\Backoffice\Intervention\InterventionReadController;
 use App\Controller\Backoffice\Intervention\InterventionUpdateController;
 use App\Controller\Backoffice\Intervention\InterventionValidatedController;
+use App\Controller\Backoffice\Settings\BrandController;
+use App\Controller\Backoffice\Settings\OperatingSystemController;
 use App\Controller\Backoffice\Settings\ParametersController;
+use App\Controller\Backoffice\Settings\TaskController as SettingTask;
+use App\Controller\Backoffice\Settings\TypeEquipmentController;
 use App\Controller\Backoffice\Society\SocietyUpdateController;
 use App\Controller\Backoffice\Task\AddTaskToInterventionController;
 use App\Controller\Backoffice\Task\DeleteTaskOfInterventionController;
@@ -34,20 +38,27 @@ use App\Controller\Backoffice\Workshop\WorkshopController;
 use App\Controller\Frontoffice\IndexController;
 use App\Controller\Frontoffice\Intervention\InterventionReadController as FrontInterventionRead;
 use App\Controller\Frontoffice\Intervention\InterventionSearchController as FrontInterventionSearch;
-use App\Controller\Backoffice\Settings\TaskController as SettingTask;
 use App\Controller\Frontoffice\Portal\LoginController;
 use App\Controller\Frontoffice\Portal\PortalController;
+use App\Controller\Frontoffice\Portal\PortalInterventionController;
+use App\Controller\Frontoffice\Portal\PortalParameterController;
+use App\Middleware\Auth\RedirectAuthIfCookieMiddleware;
 use App\Middleware\IfUpdateSocietyMiddleware;
 use App\Middleware\Intervention\IfDarftMiddleware;
+use App\Middleware\Intervention\IfLinkExpirateMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
     $app->get('/', IndexController::class)->setName('app_home');
-    $app->any('/auth/login', [UserAccountController::class, 'getSignUp'])->setName('auth_user_login')->add(\App\Middleware\RedirectUserIfAuthMiddleware::class);
+    // Authentification Panel
+    $app->group('/auth/', function (RouteCollectorProxy $group) {
+        $group->any('login', [UserAccountController::class, 'getSignUp'])->setName('auth_user_login');
+    });
+
     $app->get('/search/i/', [FrontInterventionSearch::class, 'search'])->setName('app_search_intervention');
     $app->group('/i/', function (RouteCollectorProxy $group) {
-        $group->get('{ref_for_link}', [FrontInterventionRead::class, 'read'])->setName('app_read_intervention');
+        $group->get('{ref_for_link}', [FrontInterventionRead::class, 'read'])->setName('app_read_intervention')->add(IfLinkExpirateMiddleware::class);
     });
     // Administration
     $app->get('/admin', [\App\Controller\Backoffice\IndexController::class, 'index'])->setName('dash_home');
@@ -91,6 +102,7 @@ return function (App $app) {
         $group->post('/ajax/add/fast', [EquipmentAjaxController::class, 'addFast'])->setName('equipment_create_fast');
         $group->any('/create', [EquipmentCreateController::class, 'create'])->setName('equipment_create');
         $group->any('/create/device', [PeripheralCreateController::class, 'create'])->setName('equipment_create_device');
+        $group->any('/c/{id:[0-9]+}/create/device', [PeripheralCreateController::class, 'create'])->setName('equipment_create_customer_device');
         $group->any('/device/{id:[0-9]+}/update', [PeripheralUpdateController::class, 'update'])->setName('equipment_update_device');
         $group->any('/c/{id:[0-9]+}/create', [EquipmentCreateController::class, 'create'])->setName('equipment_create_customer');
         $group->any('/create/specs', [EquipmentCreateController::class, 'createSpecificities'])->setName('equipment_create_specs');
@@ -103,9 +115,13 @@ return function (App $app) {
     /* Intervention */
     $app->group('/admin/interventions', function (RouteCollectorProxy $group){
        $group->get('', [InterventionController::class, 'index'])->setName('dash_intervention');
+       $group->get('/[:{args}]', [InterventionController::class, 'index'])->setName('dash_intervention_all');
        $group->get('/search[:{args}]', [\App\Controller\Backoffice\Intervention\InterventionSearchController::class, 'searchByFields'])->setName('intervention_search_fields');
-        $group->get('/ajax/search/{key}', [InterventionAjaxController::class, 'search'])->setName('intervention_search');
+       $group->get('/ajax/search/{key}', [InterventionAjaxController::class, 'search'])->setName('intervention_search');
        $group->post('/ajax/add/fast', [InterventionAjaxController::class, 'addFast'])->setName("intervention_create_fast");
+       $group->post('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
+       $group->post('/{id:[0-9]+}/ajax/end', [InterventionAjaxController::class, 'end'])->setName("intervention_ajax_end");
+       $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
        $group->get('/create', [InterventionCreateController::class, 'index'])->setName('intervention_create_index');
        $group->any('/create-regular[:{id:[0-9]+}]', [InterventionCreateController::class, 'regular'])->setName('intervention_create_regular');
        $group->any('/create-regular/c-{id:[0-9]+}', [InterventionCreateController::class, 'regular'])->setName('intervention_create_customer_regular');
@@ -128,10 +144,26 @@ return function (App $app) {
        $group->post('/tasks/create', [SettingTask::class, 'actionForm'])->setName('settings_task_create');
        $group->post('/tasks/update[:{args}]', [SettingTask::class, 'actionForm'])->setName('settings_task_update');
        $group->delete('/tasks/delete', [SettingTask::class, 'delete'])->setName('settings_task_delete');
+       $group->get('/types', [TypeEquipmentController::class, 'index'])->setName('settings_type_equipment');
+       $group->post('/types/create', [TypeEquipmentController::class, 'actionForm'])->setName('settings_type_equipment_create');
+       $group->post('/types/update[:{args}]', [TypeEquipmentController::class, 'actionForm'])->setName('settings_type_equipment_update');
+       $group->delete('/types/delete', [TypeEquipmentController::class, 'delete'])->setName('settings_type_equipment_delete');
+       $group->get('/brands', [BrandController::class, 'index'])->setName('settings_brand');
+       $group->post('/brands/create', [BrandController::class, 'actionForm'])->setName('settings_brand_create');
+       $group->post('/brands/update[:{args}]', [BrandController::class, 'actionForm'])->setName('settings_brand_update');
+       $group->delete('/brands/delete', [BrandController::class, 'delete'])->setName('settings_brand_delete');
+       $group->get('/operating-system', [OperatingSystemController::class, 'index'])->setName('settings_os');
+       $group->post('/operating-system/create', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_create');
+       $group->post('/operating-system/update[:{args}]', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_update');
+       $group->delete('/operating_system/delete', [OperatingSystemController::class, 'delete'])->setName('settings_os_delete');
     });
     /** Portal */
-    $app->post('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');
+    $app->any('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');
     $app->group('/wxy/customers', function (RouteCollectorProxy $group){
         $group->get('', [PortalController::class, 'index'])->setName('portal_home');
+        $group->get('/interventions', [PortalInterventionController::class, 'index'])->setName('portal_interventions');
+        $group->get('/i/r/{ref_number:[0-9]+}', [PortalInterventionController::class, 'read'])->setName('portal_intervention_read');
+        $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
+        $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
     });
 };

@@ -17,11 +17,12 @@ final class UserAccountController extends AbstractController
     {
         if($request->getMethod() === 'POST'){
             $params = $request->getParsedBody();
-            $mail = v::notEmpty()->validate($params['email']);
+            $mail = v::email()->validate($params['email']);
             if($mail){
                 $user = $this->getRepository(UserRepository::class);
                 $data = $user->findUserByMail($params['email']);
                 if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
+                    $this->session->get('auth');
                     $this->session->set('auth', $data);
                     // Create Cookie 7 days
                     $cookie = new CookieFactory();

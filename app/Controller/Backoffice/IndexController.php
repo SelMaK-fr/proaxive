@@ -20,7 +20,6 @@ class IndexController extends AbstractController
 
     public function index(Request $request, Response $response): Response
     {
-
         return $this->render($response, 'backoffice/index.html.twig');
     }
 }

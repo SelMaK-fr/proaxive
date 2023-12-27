@@ -1,7 +1,117 @@
 {% extends 'backoffice/base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Panel d'administration de Proaxive{% endblock %}
 
 {% block body %}
-
+    <div class="grid-12">
+        <div class="col-4_sm-12">
+            <div class="card border-bottom-blue border-wh-2-solid">
+                <div class="card-body p-4">
+                    <span class="label label-blue">Bienvenue sur Proaxive !</span>
+                    <strong class="d-block mt-4">Merci d'avoir choisi Proaxive pour gérer vos interventions.</strong>
+                    <p>
+                        Il est important de reporter tous les problèmes rencontré avec l'application.
+                        N'hésitez pas à passer sur le Discord officiel :)
+                    </p>
+                </div>
+            </div>
+            {% if customers is not empty %}
+                <div class="card mt-4">
+                    <h3 class="pt-4 pr-4 pl-4">Clients récents</h3>
+                    <div class="card-body customers p-4">
+                        <div class="list-group">
+                            {% for c in customers %}
+                                <a href="{{ url_for('customer_show', {id: c.id}) }}">
+                                    <div class="list-group-item">
+                                        <div class="flex">
+                                            <span class="d-block mr-3"><i class="fs-28px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
+                                            <div class="media-body">
+                                                <div class="flex align-items-center">
+                                                    <div class="m-0">
+                                                        <h5 class="fw-500 fs-14px mb-0">{{ c.fullname }}</h5>
+                                                        <p class="m-0 fs-13px">{{ c.city }} ({{ c.department }})</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-8_sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="grid-12 -noGutter">
+                        <div class="col-3_sm-12 border-right">
+                            <div class="p-6">
+                                <div class="mb-5">
+                                    <h5 class="fw-600 fs-16px">Ma super boite</h5>
+                                    <p class="p-0 m-0 text-uppercase">Statistiques {{ 'NOW' | date('Y') }}</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="fw-500 fs-18px">{{ countCustomer }}</h5>
+                                    <p class="p-0 m-0 fs-15px fw-300">Nouveaux clients</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="fw-500 fs-18px">{{ countIntervention }}</h5>
+                                    <p class="p-0 m-0 fs-15px fw-300">Interventions réalisées</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="fw-500 fs-18px">0</h5>
+                                    <p class="p-0 m-0 fs-15px fw-300">Débours créés</p>
+                                </div>
+                                <div class="mb-5">
+                                    {% set minYear = "now -1 years"|date("Y") %}
+                                    {% set maxYear = "now + 9 years"|date("Y") %}
+                                    <form method="post" action="#">
+                                        <div class="form-group">
+                                            <select name="year" class="form-select" id="">
+                                                {% for year in minYear..maxYear %}
+                                                    <option value="{{ year }}">Année {{ year }}</option>
+                                                    {% set year = year + 1 %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-light-pink w100">Visualiser les stats</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9_sm-12">
+                            <div class="p-6">
+                                <div>
+                                    <canvas id="canvas" style="position: relative; height:40vh; width:100%"></canvas>
+                                </div>
+                            </div>
+                            <div class="p-4 border-top">
+                                <h3 class="d-block mb-3">Statistique global</h3>
+                                <div class="grid-12">
+                                    <div class="col-3_sm-12">
+                                        <span class="d-block mb-2 text-uppercase">Clients</span>
+                                        <p class="p-0 m-0 fs-18px fw-500">{{ totalCustomers }}</p>
+                                    </div>
+                                    <div class="col-3_sm-12">
+                                        <span class="d-block mb-2 text-uppercase">Débours</span>
+                                        <p class="p-0 m-0 fs-18px fw-500">0</p>
+                                    </div>
+                                    <div class="col-3_sm-12">
+                                        <span class="d-block mb-2 text-uppercase">Interventions</span>
+                                        <p class="p-0 m-0 fs-18px fw-500">{{ totalInterventions }}</p>
+                                    </div>
+                                    <div class="col-3_sm-12">
+                                        <span class="d-block mb-2 text-uppercase">Documents</span>
+                                        <p class="p-0 m-0 fs-18px fw-500">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -26,7 +26,7 @@ class EquipmentCreateController extends AbstractController
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_equipment'];
-            if($customer_id){$data_customer_id = $customer_id;}else{$data_customer_id = $data['customers_id'];}
+            if($customer_id){$data_customer_id = $customer_id;$data['customers_id'] = $customer_id;}else{$data_customer_id = $data['customers_id'];}
             $cName = $this->getRepository(CustomerRepository::class)->find('id', $data_customer_id);
             $data['customer_name'] = $cName->fullname;
             $this->getRepository(EquipmentRepository::class)->add($data, true);

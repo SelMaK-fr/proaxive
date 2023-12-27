@@ -5,17 +5,19 @@ function dashUserStats(customerStats) {
         Chart.defaults.color = "#ffffff";
     }
     const myChart = new Chart(ctx, {
-        type: 'polarArea',
+        type: 'pie',
         data: {
-            labels: ['Interventions'],
+            labels: ['Interventions', 'Débours'],
             datasets: [{
                 label: 'Qty',
                 data: customerStats,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
                 ],
                 borderWidth: 1
             }]

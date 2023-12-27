@@ -1,0 +1,142 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Systèmes d'exploitation{% endblock %}
+
+{% block body %}
+
+    <div class="grid">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="card-header mb-4">
+                        <div class="grid-2 -noGutter">
+                            <div class="col-6_sm-12">
+                                <h2>Systèmes d'exploitation (OS)</h2>
+                                <span>Ajouter ou supprimer un système d'exploitation pour les équipements</span>
+                            </div>
+                            <div class="col-6_sm-12 text-right">
+                                <button type="button" data-target="add_os" data-toggle="modal" class="btn btn-light-primary"><i class="ri-add-line"></i> Ajouter un OS</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% if operatingSystem is not empty %}
+                        <div class="boxed-shadow p-relative br-5">
+                            <table class="table-radius table-shadow overflow-hidden" id="table-visible">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Version</th>
+                                    <th>Architecture</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for os in operatingSystem %}
+                                    <tr>
+                                        <td>{{ os.os_name }}</td>
+                                        <td>{{ os.os_release }}</td>
+                                        <td>{{ os.os_architecture }}</td>
+                                        <td class="p-relative">
+                                            <div class="admin-tools">
+                                                <span class="d-block text-right">
+                                                <button class="btn-sm btn-nothing toggle" type="button"><i class="ri-more-fill"></i></button>
+                                                </span>
+                                                <div class="table-submenu" id="menu-tools{{ os.id }}">
+                                                    <button type="button" data-target="edit_os-{{ os.id }}" data-toggle="modal"><i class="ri-pencil-line"></i> Modifier</button>
+                                                    <form action="{{ url_for('settings_os_delete') }}" method="post">
+                                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                                        <input type="hidden" name="id" value="{{ os.id }}">
+                                                        <button type="submit" class="delete-confirm"><i class="ri-delete-bin-2-line"></i> Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!-- EDIT -->
+                                            <div class="modal" id="edit_os-{{ os.id }}">
+                                                <div class="modal-container p-5">
+                                                    <div class="modal-header text-right">
+                                                        <button data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                                                    </div>
+                                                    <form method="post" action="{{ url_for('settings_os_update') }}?id={{ os.id }}">
+                                                        <div class="modal-content">
+                                                            <div class="mb-4"><h1>Modification</h1></div>
+                                                            <div class="grid-2 mt-5">
+                                                                <div class="col">
+                                                                    <div class="form-group mb-3 is-required">
+                                                                        <label class="form-label" for="os_name">Nom du système
+                                                                            <abbr title="Required Field">*</abbr></label>
+                                                                        <input class="palmtree-form-control form-control" type="text" id="os_name" value="{{ os.os_name }}" name="os_name" placeholder="ex : Windows 11" required="">
+                                                                    </div>
+                                                                    <div class="form-group mb-3 is-required">
+                                                                        <label class="form-label" for="os_architecture">Architecture
+                                                                            <abbr title="Required Field">*</abbr></label>
+                                                                        <select class="palmtree-form-control form-control" id="os_architecture" name="os_architecture" required="">
+                                                                            <option value="">Enter your os architecture</option>
+                                                                            <option value="64Bits" {% if(os.os_architecture == '64Bits') %}selected{% endif %}>64Bits</option>
+                                                                            <option value="32Bits" {% if(os.os_architecture == '32Bits') %}selected{% endif %}>32Bits</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="form-group mb-3 is-required">
+                                                                        <label class="form-label" for="os_release">Version du système
+                                                                            <abbr title="Required Field">*</abbr></label>
+                                                                        <input class="palmtree-form-control form-control" type="text" id="os_release" value="{{ os.os_release }}" name="os_release" placeholder="ex : 22h2" required="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-light-purple">Sauvegarder</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center boxed-shadow">
+                            <span>
+                                <i class="fs-80px ri-server-line"></i>
+                            </span>
+                            <h3>Aucun OS pour les équipements</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ADD -->
+
+    <div class="modal" id="add_os">
+        <div class="modal-container p-5">
+            {{ form.renderStart | raw }}
+                <div class="modal-header text-right">
+                    <button data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                </div>
+                <div class="modal-content">
+                    <div class="mb-4"><h1>Nouveau Système d'exploitation</h1></div>
+                    Création d'un nouveau système d'exploitation afin de l'utiliser avec les équipements.
+                    <div class="grid-2 mt-5">
+                        <div class="col">
+                            {{ form.renderField('os_name') | raw }}
+                            {{ form.renderField('os_architecture') | raw }}
+                        </div>
+                        <div class="col">
+                            {{ form.renderField('os_release') | raw }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-light-purple">Créer maintenant</button>
+                </div>
+            {{ form.renderEnd(false) | raw }}
+        </div>
+    </div>
+{% endblock %}

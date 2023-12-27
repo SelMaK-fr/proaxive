@@ -19,6 +19,11 @@ $settings = [
         'locale' => 'fr',
         'timezone' => 'UTC',
     ],
+    'settings' => [
+        'rootPath' => dirname(__DIR__),
+        'publicPath' => dirname(__DIR__) . '/public/',
+        'active_premium' => '14fe4ht58r1158reezc'
+    ],
     'view' => [
         'path'  => dirname(__DIR__) . '/templates',
         'cache' => false,

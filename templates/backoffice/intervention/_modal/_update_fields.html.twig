@@ -1,5 +1,5 @@
 <div class="modal" id="update_intervention">
-    <div class="modal-container p-5" style="width:950px;margin: 5% auto;">
+    <div class="modal-container p-5">
         {{ form.renderStart | raw }}
         <div class="modal-content">
             <div class="mb-4">
@@ -28,9 +28,17 @@
                             {{ form.renderField('way_type') | raw }}
                         </div>
                     </div>
-                    {{ form.renderField('observation') | raw }}
-                    {{ form.renderField('note_technician') | raw }}
-                    {{ form.renderField('note_customer') | raw }}
+                    <div class="grid-12">
+                        <div class="col-6_sm-12">
+                            {{ form.renderField('observation') | raw }}
+                            {{ form.renderField('handling_customer') | raw }}
+
+                        </div>
+                        <div class="col-6_sm-12">
+                            {{ form.renderField('note_customer') | raw }}
+                            {{ form.renderField('note_technician') | raw }}
+                        </div>
+                    </div>
                 </div>
             </div>
 

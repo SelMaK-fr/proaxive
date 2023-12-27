@@ -38,6 +38,11 @@ abstract class AbstractController
         return $this->settings->get($key)[$value];
     }
 
+    protected function getParameters(string $key): array|bool|string
+    {
+        return $this->settings->get($key);
+    }
+
     /**
      * Return view Twig in the controller
      * @param Response $response
@@ -52,6 +57,11 @@ abstract class AbstractController
     {
         $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
         return $this->twig->render($response, $template, $data);
+    }
+
+    protected function view(string $template, ?array $data = []): mixed
+    {
+        return $this->twig->fetch($template, $data);
     }
 
     // Return the table data's in the controller. $classname => your repository class in /app/Repository

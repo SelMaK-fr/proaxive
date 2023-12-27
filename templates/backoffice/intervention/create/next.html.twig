@@ -14,7 +14,7 @@
                     <div class="grid-12">
                         <div class="col-6_sm-12">
                             <div class="mb-5">
-                                <h3 class="fs-18px fw-500">Intervention au nom de <strong class="text-blue">{{ c.fullname }}</strong></h3>
+                                <h3 class="fs-18px fw-500">Intervention au nom de <strong class="text-blue" id="customer_name">{{ c.fullname }}</strong></h3>
                                 <p class="m-0">Veuillez remplir les champs ci-dessous.</p>
                             </div>
                             {% if config.price_time != 0 %}
@@ -35,15 +35,15 @@
                                                     <label class="form-label" for="login_id">Temps consacré</label>
                                                     <div>
                                                         <label>
-                                                            <input type="radio" name="total_time" value="1">
+                                                            <input type="radio" name="form_intervention_2time[total_time]" value="1">
                                                             1 Heure
                                                         </label>
                                                         <label>
-                                                            <input type="radio" name="total_time" value="2">
+                                                            <input type="radio" name="form_intervention_2time[total_time]" value="2">
                                                             2 Heures
                                                         </label>
                                                         <label>
-                                                            <input type="radio" name="total_time" value="3">
+                                                            <input type="radio" name="form_intervention_2time[total_time]" value="3">
                                                             3 Heures
                                                         </label>
                                                     </div>
@@ -69,10 +69,10 @@
                                         <div class="form-group">
                                             <label class="form-label" for="customer">Equipement selectionné</label>
                                             <div class="form-input all-border-purple">
-                                                <div id="customer" class="h100 flex align-items-center text-purple-light" style="">{{ e.name }}</div>
+                                                <input type="hidden" name="form_intervention_2time[equipment_name]" value="{{ e.name }}">
+                                                <div id="equipment" class="h100 flex align-items-center text-purple-light" style="">{{ e.name }}</div>
                                             </div>
                                         </div>
-                                        {{ form.renderField('equipment_name') | raw }}
                                     {% endif %}
                                     {{ form.renderField('deposit_date') | raw }}
                                     {{ form.renderField('way_type') | raw }}
@@ -112,11 +112,14 @@
 {% block javascripts %}
     {% if session.equipments_id is null %}
         <script type="text/javascript">
-            let select = document.querySelector('select#equipments_id')
-            let input = document.getElementById('equipment_name')
+            let select = document.querySelector('select#form_intervention_2time-equipments_id')
+            let customer = document.getElementById('customer_name')
+            let input = document.getElementById('form_intervention_2time-equipment_name')
+            let inputCustomer = document.getElementById('form_intervention_2time-customer_name');
             select.addEventListener('change', function (e) {
                 input.value = select.options[select.selectedIndex].text;
             })
+            inputCustomer.value = customer.innerText;
         </script>
     {% endif %}
 {% endblock %}

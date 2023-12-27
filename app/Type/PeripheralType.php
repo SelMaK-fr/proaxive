@@ -5,6 +5,7 @@ namespace App\Type;
 use App\Type;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Selmak\Proaxive2\Type\DateType;
 
 class PeripheralType extends Type
 {
@@ -31,6 +32,10 @@ class PeripheralType extends Type
                 'required' => true,
                 'label' => 'Dénomination',
                 'placeholder' => "Nom de l'équipement"
+            ])
+            ->add('end_guarantee', DateType::class, [
+                'label' => 'Fin de garantie',
+                'required' => false
             ])
             ->add('type_name', 'hidden', [
                 'required' => false

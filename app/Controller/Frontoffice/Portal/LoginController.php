@@ -43,6 +43,7 @@ class LoginController extends AbstractController
                 return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
             }
         }
-        return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+        return $this->render($response, '/frontoffice/portal/login.html.twig');
+        //return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
     }
 }

@@ -20,7 +20,7 @@ function updateNameEquipment($id, $eId)
 
     let ajax_request = new XMLHttpRequest()
 
-    ajax_request.open('POST', "/admin/interventions/" + $id + "/ajax/equipment-update/" + $eId);
+    ajax_request.open('POST', "/admin/interventions/" + $id + "/ajax/e-update/" + $eId);
     ajax_request.send();
 
     ajax_request.onreadystatechange = function ()

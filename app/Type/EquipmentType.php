@@ -5,6 +5,7 @@ namespace App\Type;
 use App\Type;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Selmak\Proaxive2\Type\DateType;
 
 final class EquipmentType extends Type
 {
@@ -16,6 +17,9 @@ final class EquipmentType extends Type
                 'placeholder' => 'Sélectionnez un OS',
                 'label' => "Système d'exploitation",
                 'choices' => $this->getOperatingSystem()
+            ])
+            ->add('os_name', 'hidden', [
+                'required' => false
             ])
             ->add('customers_id', 'choice', [
                 'placeholder' => 'Sélectionnez un client',
@@ -48,6 +52,10 @@ final class EquipmentType extends Type
                 'label' => 'Numéro de série',
                 'placeholder' => "Numéro de série",
                 'error_message' => 'Veuillez renseigner un numéro de série.',
+                'required' => false
+            ])
+            ->add('end_guarantee', DateType::class, [
+                'label' => 'Fin de garantie',
                 'required' => false
             ])
             ->add('e_model', 'text', [

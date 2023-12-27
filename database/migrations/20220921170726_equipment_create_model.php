@@ -29,6 +29,7 @@ final class EquipmentCreateModel extends AbstractMigration
             ->addColumn('e_year', 'string', ['null' => true])
             ->addColumn('e_model', 'string', ['null' => true])
             ->addColumn('e_licence', 'string', ['null' => true])
+            ->addColumn('end_guarantee', 'string', ['null' => true])
             ->addColumn('customer_name', 'string', ['null' => true])
             ->addColumn('type_name', 'string', ['null' => true])
             ->addColumn('brand_name', 'string', ['null' => true])

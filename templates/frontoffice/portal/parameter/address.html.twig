@@ -1,0 +1,84 @@
+{% extends 'frontoffice/portal.html.twig' %}
+
+{% block title %}Gestion de mon adresse postale{% endblock %}
+
+{% block body %}
+    <div class="pt-5 pb-5">
+            <div class="pb-5">
+            <h2>Paramètres</h2>
+            <ul class="flex">
+                <li><a href="{{ url_for('portal_home') }}">Accueil</a></li>
+                <li class="ml-1 mr-1"><span>/</span></li>
+                <li><a href="#"></a>Paramètres</li>
+            </ul>
+        </div>
+        <div class="grid">
+            <div class="col-2_sm-12">
+                <div class="navigation-parameters">
+                    <a href="{{ url_for('portal_parameters') }}"><span class="d-block mr-2"><i class="ri-profile-fill"></i></span><span>Mon compte</span></a>
+                    <a href="{{ url_for('portal_parameters_address') }}" class="current"><span class="d-block mr-2"><i class="ri-settings-2-fill"></i></span><span>Mon adresse</span></a>
+                </div>
+            </div>
+            <div class="col-10_sm-12">
+                <div class="card all-border">
+                    <div class="card-body p-4">
+                        <div class="card-header mb-5">
+                            <h2>Modifier mon adresse postale</h2>
+                            <span>Si vous avez changé d'adresse postale, il est important de la mettre à jour via le formulaire ci-dessous.</span>
+                        </div>
+                        <div class="mb-4">
+                            <form action="" method="post" enctype="multipart/form-data">
+                {% if config.api_address == 1 %}
+                    <div class="alert alert-info">
+                        <strong>Renseignez simplement votre numéro + rue</strong>. <br>La recherche automatique se chargera de remplir les champs du dessous.
+                        <br>
+                        Si votre adresse ne s'affiche pas dans la liste, ajoutez votre ville à la suite de votre rue.
+                    </div>
+                    {{ form.input('address', 'Adresse Postale', 'Adresse postale du client', false, 'adresse', {'autocomplete': 'autocomplete="off"'}) | raw }}
+                    {% if has_error('address') %}<span>{{ error('address') }}</span>{% endif %}
+                    {{ form.inputHidden('addr_longitude', 'lg') | raw }}
+                    {{ form.inputHidden('addr_latitude', 'lt') | raw }}
+                    <div class="grid">
+                        <div class="col-4_sm-12">
+                            {{ form.inputText('city', 'ville', 'Ville', {'readonly': 'readonly'}) | raw }}
+                        </div>
+                        <div class="col-4_sm-12">
+                            {{ form.inputText('zipcode', 'cp', 'Code postal', {'readonly': 'readonly'}) | raw }}
+                        </div>
+                        <div class="col-4_col-sm-12">
+                            {{ form.inputText('department', 'department', 'Département', {'readonly': 'readonly'}) | raw }}
+                        </div>
+                    </div>
+                {% else %}
+                    {{ form.input('adress', 'Adresse Postale', 'Adresse postale du client', false, '') | raw }}
+                    <div class="grid">
+                        <div class="col-4_sm-12">
+                            {{ form.input('city', 'Ville', 'Ville') | raw }}
+                        </div>
+                        <div class="col-4_sm-12">
+                            {{ form.input('zipcode', 'Code postal', 'Code postal') | raw }}
+                        </div>
+                        <div class="col-4_col-sm-12">
+                            {{ form.input('department', 'Département', 'Département') | raw }}
+                        </div>
+                    </div>
+                {% endif %}
+                <button type="submit" class="btn btn-light-purple">Mettre à jour</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/assets/js/opendata.js"></script>
+{% endblock %}

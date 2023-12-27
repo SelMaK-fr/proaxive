@@ -25,4 +25,15 @@ class EquipmentRepository extends BaseRepository
             ->fetch()
             ;
     }
+
+    public function findWithBrand(int $id)
+    {
+        return $this->makeQueryObject()
+            ->select(null)
+            ->select('equipments.*, brands.logo_file e_logo')
+            ->leftJoin('brands as b ON b.id = equipments.brands_id')
+            ->where('equipments.id = ?', [$id])
+            ->fetch()
+            ;
+    }
 }

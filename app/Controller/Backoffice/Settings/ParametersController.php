@@ -6,6 +6,7 @@ use App\AbstractController;
 use App\Type\ParametersType;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Service\SerialNumberFormatterService;
 
 class ParametersController extends AbstractController
 {
@@ -13,6 +14,8 @@ class ParametersController extends AbstractController
     public function parameters(Request $request, Response $response): Response
     {
         $s = $this->app->getContainer()->get('parameters');
+        $numberFormatter = new SerialNumberFormatterService($s);
+        $getNumber = $numberFormatter->generateSerialNumber();
 
         $form = $this->createForm(ParametersType::class, $s);
         $form->handleRequest();
@@ -31,7 +34,8 @@ class ParametersController extends AbstractController
 
         return $this->render($response, 'backoffice/settings/preference/index.html.twig', [
             'setting_current' => 'preference',
-            'form' => $form
+            'form' => $form,
+            'getNumber' => $getNumber
         ]);
     }
 }
