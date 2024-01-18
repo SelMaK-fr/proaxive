@@ -21,6 +21,18 @@ class UserRepository extends BaseRepository
         return $query->fetch();
     }
 
+    public function checkUserIfNotActivated($value)
+    {
+        $query = $this->makeQueryDefault()->where('mail = ? AND confirm_at IS NOT NULL', $value);
+        return $query->fetch();
+    }
+
+    public function findUserByToken($token, $code)
+    {
+        $query = $this->makeQueryDefault()->where('token = ? AND confirm_at = ?', [$token, $code]);
+        return $query->fetch();
+    }
+
     public function allWithCompany()
     {
         return $this->makeQueryDefault()

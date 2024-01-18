@@ -1,6 +1,30 @@
 {% extends 'backoffice/base.html.twig' %}
 
-{% block title %}Intervention n°{{ i.ref_number }} enregistrée le {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}{% endblock %}
+{% block title %}
+    Intervention n°{{ i.ref_number }} enregistrée le {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
+{% endblock %}
+
+{% set toolbar_tool = 1 %}
+
+{% block toolbar %}
+    <div class="toolbar-tools flex flex-wrap ml-5">
+        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-sk-one"> <i class="ri-settings-2-line"></i> Editer</button>
+        {% if i.with_deposit is not null or i.with_deposit is not empty %}
+            {% if i.d_is_signed is null %}
+                <a href="{{ url_for('deposit_sign', {reference:i.with_deposit}) }}" class="btn btn-sk-tree">Faire signer le dépôt</a>
+            {% else %}
+                <form action="{{ url_for('deposit_read') }}" method="get">
+                    <input type="hidden" name="intervention_reference" value="{{ i.ref_number }}">
+                    <input type="hidden" name="deposit_reference" value="{{ i.with_deposit }}">
+                    <button type="submit" class="btn btn-sk-tree"> <i class="ri-file-2-line"></i> Afficher le bon</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <button type="button" data-target="add_deposit" data-toggle="modal" class="btn btn-sk-tree"> <i class="ri-file-2-line"></i> Bon de dépôt</button>
+        {% endif %}
+        <button type="button" class="btn btn-sk-tree"> <i class="ri-file-pdf-line"></i> PDF</button>
+    </div>
+{% endblock %}
 
 {% block aside %}
     {{ include('backoffice/intervention/_aside.html.twig') }}
@@ -24,41 +48,28 @@
             {% endif %}
             <div class="grid-12">
                 <div class="col-4_sm-12">
-                    <!-- Actions -->
-                    <div class="mb-3">
-                        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-light-info mb-0"> <i class="ri-settings-2-line"></i> Editer</button>
-                        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-light-warning mb-0"> <i class="ri-settings-2-line"></i> Révoquer</button>
-                    </div>
-                    <div class="card {% if i.state == 'DRAFT' %}card-light-yellow{% else %}card-light-purple{% endif %}">
+                    <div class="card">
                         <div class="card-body p-3">
-                            {% if i.state == 'DRAFT' %}
-                                <a href="#" class="label badge-light-yellow d-inline-block mb-3"><i class="ri-checkbox-circle-line"></i> Valider cette intervention</a>
-                            {% endif %}
-                            <div>
-                                <span class="fw-500 d-block mb-1">Statut de l'intervention</span>
-                                <div class="flex label-twin">
-                            <span class="lt-button">
-                                <button type="button" class="btn-sm btn-light-purple">Mettre à jour</button>
-                            </span>
-                                    <span class="lt-text">
-                                {{ i.updated_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
-                            </span>
-                                </div>
+                            <div class="card-header">
+                                <h3>Temps estimé</h3>
                             </div>
-                            <div class="mt-4">
-                                <span class="fw-500 d-block mb-1">Date de dépôt</span>
-                                <div class="flex label-twin">
-                            <span class="lt-button">
-                                <button type="button" class="btn-sm btn-light-purple">Changer</button>
-                            </span>
-                                    <span class="lt-text">
-                                {{ form.inputDate('deposit_date', false) | raw }}
-                            </span>
-                                </div>
+                            <div>
+                                {% set total = i.total_time * i.package_price %}
+                                <span class="d-block">Heure totale : <strong>{{ i.total_time }}H00</strong></span>
+                                <span class="d-block">Tarif estimé : <span class="label btn-light-info">{{ total | number_format(2, ',','.') }}€</span></span>
                             </div>
                         </div>
                     </div>
-                    <!-- /Actions -->
+                    <div class="card mt-3">
+                        <div class="card-body p-3">
+                            <div class="card-header">
+                                <h3>Document(s) lié(s)</h3>
+                            </div>
+                            <div>
+                                <em>Indisponible pour le moment</em>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-8_sm-12">
                     <div class="grid-12">
@@ -70,15 +81,15 @@
                                         <div class="mr-3"><i class="ri-user-fill fs-32px"></i></div>
                                         <div>
                                             <h3>{{ i.customer_name }}</h3>
-                                            <span class="d-block">{{ i.zipcode }} - {{ i.city }}</span>
-                                            <span class="d-block">{{ i.department }}</span>
-                                            <span class="d-block"><strong>{{ i.phone }}</strong> / <strong>{{ i.mobile }}</strong></span>
+                                            <span class="d-block">{{ i.c_zipcode }} - {{ i.c_city }}</span>
+                                            <span class="d-block">{{ i.c_department }}</span>
+                                            <span class="d-block"><strong>{{ i.c_phone }}</strong> / <strong>{{ i.c_mobile }}</strong></span>
                                         </div>
                                     </div>
                                     <div class="pt-2">
                                         <div class="flex align-items-center justify-content-space-between">
                                             <div>Préférence de contact</div>
-                                            <div class="text-right fw-600">{{ i.favorite_contact }}</div>
+                                            <div class="text-right fw-600">{{ i.c_favorite_contact }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +173,7 @@
                             <div class="grid-12">
                                 <div class="col-3_sm-12">
                                     <strong class="d-block mb-2">Equipement</strong>
-                                    <a class="btn-sm btn-light-primary" href="{{ url_for('equipment_read', {id:i.equipments_id}) }}"><i class="ri-pencil-fill"></i> {{ i.equipment_name }}</a>
+                                    <a class="btn-sm btn-sk-one" href="{{ url_for('equipment_read', {id:i.equipments_id}) }}"><i class="ri-pencil-fill"></i> {{ i.equipment_name }}</a>
                                 </div>
                                 <div class="col-3_sm-12">
                                     <strong class="d-block mb-2">Priorité</strong>
@@ -174,7 +185,7 @@
                                 </div>
                                 <div class="col-3_sm-12">
                                     <strong class="d-block mb-2">Lien vers l'intervention</strong>
-                                    <a class="btn-sm btn-light-primary" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" target="_blank">#{{ i.ref_number }}</a>
+                                    <a class="btn-sm btn-sk-one" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" target="_blank">#{{ i.ref_number }}</a>
                                 </div>
                             </div>
                         </div>
@@ -199,8 +210,8 @@
                                     </label>
                                 </span>
                             <span class="lt-button">
-                                    <button type="submit" class="btn-sm btn-light-purple">Créer la tâche</button>
-                                </span>
+                                <button type="submit" class="btn-sm btn-light-four">Créer la tâche</button>
+                            </span>
                         </div>
                     </form>
                     <div class="mb-3">
@@ -212,7 +223,7 @@
                     </div>
                     <div class="flex align-items-center justify-content-space-between">
                         <div class="text-right flex-root">
-                            <button type="submit" class="btn-sm btn-light-purple">Mettre à jour</button>
+                            <button type="submit" class="btn-sm btn-light-four">Mettre à jour</button>
                         </div>
                     </div>
                     {{ formTasks.renderEnd(false) | raw }}
@@ -235,9 +246,37 @@
             <!-- /Tasks -->
         </div>
     </div>
-    <div>
-    </div>
     {{ include('backoffice/intervention/_modal/_update_fields.html.twig') }}
+    {% if i.with_deposit is null or i.with_deposit is empty %}
+    {{ include('backoffice/intervention/_modal/_add_deposit.html.twig') }}
+    {% endif %}
+    <div class="d-mobile">
+        <div class="fixed-nav-tools nav-tools nav-vertical-tools">
+            <button id="btn-tools" type="button" class="btn-nav-tools"><i class="fa-solid fa-gear"></i></button>
+            <div class="content-nav-tools">
+                <ul class="nav">
+                    <li><a data-target="update_intervention" data-toggle="modal" href="#"><i class="fa-solid fa-pen-to-square"></i> Editer</a></li>
+                    <li>
+                        {% if i.with_deposit is not null or i.with_deposit is not empty %}
+                            {% if i.d_is_signed is null %}
+                                <a href="{{ url_for('deposit_sign', {reference:i.with_deposit}) }}"><i class="fa-solid fa-pen-nib"></i> Faire signer</a>
+                            {% else %}
+                                <form action="{{ url_for('deposit_read') }}" method="get">
+                                    <input type="hidden" name="intervention_reference" value="{{ i.ref_number }}">
+                                    <input type="hidden" name="deposit_reference" value="{{ i.with_deposit }}">
+                                    <button type="submit" class=""><i class="fa-regular fa-file"></i> Afficher le bon</button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <a data-target="add_deposit" data-toggle="modal" href="#"><i class="fa-regular fa-file"></i> Bon de dépôt</a>
+                        {% endif %}
+                    </li>
+                    <li><a href="#"><i class="fa-regular fa-file-pdf"></i> Vers PDF</a></li>
+                    <li><a href="#" class="text-delete"><i class="fa-solid fa-trash-can"></i> Supprimer</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -248,6 +287,14 @@
     <script>
         $(document).ready(function() {
             $('#form_tasks-tasks').select2();
+        });
+    </script>
+    <script>
+        let button = document.getElementById('btn-tools')
+        let navTools = document.querySelector('.nav-tools')
+        button.addEventListener('click', function (e) {
+            document.querySelector('.overlay').style.display = document.querySelector('.overlay').style.display === 'block' ? '' : 'block';
+            navTools.classList.toggle('deployed');
         });
     </script>
 {% endblock %}

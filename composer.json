@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*",
         "slim/slim": "^4.12",
         "slim/twig-view": "^3.3",
@@ -47,6 +47,7 @@
         "ext-openssl": "*",
         "creitive/breadcrumbs": "^3.3",
         "phpmailer/phpmailer": "^6.9",
-        "intervention/image": "^3.2"
+        "intervention/image": "^3.2",
+        "dompdf/dompdf": "^2.0"
     }
 }

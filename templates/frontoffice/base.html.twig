@@ -6,14 +6,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- START::GridLex Local -->
-    <link rel="stylesheet" href="/assets/frameworks/gridlex/gridlex.min.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/frameworks/gridlex/gridlex.min.css">
     <!-- START::REMIXICON -->
-    <link href="/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <link href="{{ get_env('PATH_PUBLIC') }}/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
     <!-- START::CSS App -->
-    <link rel="stylesheet" href="/assets/stylesheets/app.css">
-    <link rel="stylesheet" href="/assets/stylesheets/utilities.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/app.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/utilities.css">
     <!-- START::Print -->
-    <link rel="stylesheet" href="/assets/stylesheets/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/print.css" type="text/css" media="print">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body class="portal-body bg-sk-color-base-foreground">
@@ -38,7 +38,7 @@
 </div>
 {{ include('_session_flash.html.twig') }}
 {% block javascripts %}
-    <script src="assets/js/app.js"></script>
+    <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/app.js"></script>
 {% endblock %}
 </body>
 </html>

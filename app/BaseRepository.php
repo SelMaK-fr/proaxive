@@ -38,6 +38,11 @@ class BaseRepository
         }
     }
 
+    public function allArray(): array
+    {
+        return $this->makeQueryDefault()->fetchAll();
+    }
+
     /**
      * Return all record for a key in an object
      * @throws Exception
@@ -112,6 +117,26 @@ class BaseRepository
         $query = $this->makeQueryDefault()->select('id')
             ->where($where .' = '. $id);
         return count($query);
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function count()
+    {
+        $query = $this->makeQueryDefault()->count();
+        return $query;
+    }
+
+    /**
+     * @param mixed $limit
+     * @return array|bool
+     * @throws Exception
+     */
+    public function allArrayForPaginator(mixed $limit)
+    {
+        return $this->makeQueryDefault()->limit($limit)->fetchAll();
     }
 
     /**

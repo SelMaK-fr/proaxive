@@ -1,5 +1,5 @@
 <?php
-
+Dotenv\Dotenv::createImmutable(__DIR__)->load();
 return
 [
     'paths' => [
@@ -11,20 +11,20 @@ return
         'default_environment' => 'development',
         'production' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
-            'name' => '',
-            'user' => '',
-            'pass' => '',
+            'host' => $_ENV['DB_HOST'],
+            'name' => $_ENV['DB_NAME'],
+            'user' => $_ENV['DB_USER'],
+            'pass' => $_ENV['DB_PASSWORD'],
             'port' => '3306',
             'charset' => 'utf8',
         ],
         'development' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
-            'name' => 'proaxive_slim',
-            'user' => 'root',
-            'pass' => '8WWc86av',
-            'port' => '3306',
+            'host' => $_ENV['DB_HOST'],
+            'name' => $_ENV['DB_NAME'],
+            'user' => $_ENV['DB_USER'],
+            'pass' => $_ENV['DB_PASSWORD'],
+            'port' => 3306,
             'charset' => 'utf8',
         ],
         'testing' => [

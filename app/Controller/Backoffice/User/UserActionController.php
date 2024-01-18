@@ -4,9 +4,11 @@ namespace App\Controller\Backoffice\User;
 
 use App\AbstractController;
 use App\Repository\UserRepository;
+use App\Service\MailService;
 use App\Type\UserType;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Service\RandomNumberService;
 
 class UserActionController extends AbstractController
 {
@@ -32,8 +34,14 @@ class UserActionController extends AbstractController
                     return $this->redirect($request->getServerParams()['HTTP_REFERER']);
                 }
             } else {
+                // Generate token and code (confirm_at)
+                $t = new RandomNumberService();
+                $data['token'] = $t->token(30);
+                $data['confirm_at'] = rand(7, 9999999);
                 $save = $this->getRepository(UserRepository::class)->add($data, true);
                 if($save){
+                    $mail = new MailService($this->getParameters('mailer'));
+                    $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
                     $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
                     return $this->redirectToRoute('dash_user');
                 }

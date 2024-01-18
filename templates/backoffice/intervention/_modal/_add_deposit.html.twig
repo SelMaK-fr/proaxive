@@ -1,0 +1,71 @@
+<div class="modal" id="add_deposit">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h1>Nouveau bon de dépôt</h1>
+        </div>
+        <form action="{{ url_for('deposit_create', {'id': i.id}) }}" method="post" id="form_deposit">
+        <div class="modal-content">
+            <div class="mb-4">
+                Vous êtes sur le point de créer un bon de dépôt pour l'intervention n°<strong>{{ i.ref_number }}</strong>
+                <br>
+                Ce bon sera au nom de <strong>{{ i.customer_name }}</strong>
+                <p>
+                    Votre client devrat signer le bon une fois ce dernier généré. Ce bon sera ensuite généré en PDF.
+                </p>
+            </div>
+            <div class="grid-center">
+                <div class="col-6_sm-12">
+                    <div class="form-group">
+                        <label for="" class="form-label">Veuillez choisir une date de dépôt</label>
+                        <input name="form_deposit[deposit_date]" id="" type="datetime-local" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="form-label">Etat du matériel</label>
+                        <select class="form-control" name="form_deposit[equipment_state]" id="form_deposit-equipment_state">
+                            <option value="0" selected>OK</option>
+                            <option value="1">Dommage(s)</option>
+                        </select>
+                    </div>
+                    <div id="form_about_state">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="form_deposit-equipment_accessories">Accessoires</label>
+                        <textarea class="form-control" name="form_deposit[equipment_accessories]" id="form_deposit-equipment_accessories" cols="30" rows="2" placeholder="Laissez vide si aucun"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer text-right">
+            <button type="submit" class="btn btn-light-four">Générer le bon</button>
+            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script>
+        let selectId = document.querySelector('#form_deposit-equipment_state')
+        let containerAbout = document.getElementById('form_about_state')
+        let formContent = document.getElementById('about_form_deposit')
+
+        selectId.addEventListener('change', function (e) {
+            if(this.value === '1'){
+                let container = document.createElement('div')
+                container.id = 'about_form_deposit'
+                container.className = 'form-group'
+                let label = document.createElement('label')
+                label.className = 'form-label'
+                label.innerText = 'Détails des dommages'
+                let formEle = document.createElement('textarea')
+                formEle.className = 'form-control'
+                formEle.name = 'form_deposit[about_state]'
+                container.prepend(label, formEle)
+                containerAbout.append(container)
+            } else if (this.value === '0') {
+                console.log(containerAbout)
+                containerAbout.innerHTML = ''
+            }
+        })
+    </script>
+{% endblock %}

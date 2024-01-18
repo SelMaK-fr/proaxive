@@ -123,4 +123,18 @@ abstract class AbstractController
     {
         return $this->session->get('auth')['id'];
     }
+
+    protected function getUserCompany()
+    {
+        return $this->session->get('auth')['company_id'];
+    }
+
+    protected function pdfResponse(string $attachmentFilename)
+    {
+        $response = new \Slim\Psr7\Response();
+        $response = $response->withHeader('Content-Type', mime_content_type($filename));
+        $response = $response->withHeader('Content-Transfer-Encoding', 'binary');
+        $response = $response->withHeader('Accept-Ranges', 'bytes');
+        return $response->withHeader('Content-Length', filesize($filename));
+    }
 }

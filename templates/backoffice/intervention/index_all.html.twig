@@ -4,50 +4,47 @@
 
 {% block body %}
     {% if interventions is not empty %}
-        <div class="card">
-            <div class="card-body p-4">
-                <div class="grid-12 -noGutter">
-                    <div class="col-8_sm-12">
-                        <div class="form-group form-icon form-icon-left mb-0">
+        <div class="card card-shadow mt-4">
+            <div class="p-4">
+                <div class="mb-3">
+                    <div class="filter-search">
+                        <button type="button" data-target="search_intervention" data-toggle="modal" class="btn btn-sk-one"><i class="fa-solid fa-filter"></i></button>
+                        <a href="{{ url_for('dash_intervention') }}" class="btn btn-sk-one"><i class="fa-solid fa-list"></i></a>
+                        <div class="form-group form-icon form-icon-left mb-0 flex-root">
                             <div class="flex">
                                 <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
                                 <div class="flex-root">
                                     <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/interventions/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
-
                                 </div>
-                                <button type="button" data-target="search_intervention" data-toggle="modal" class="btn-sm btn-light-info">Recherche avancée</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4_sm-12">
-                        <div class="ml-4 text-right">
-                            <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-purple mb-0 ri-add-fill fs-18px"></button>
+                        <div class="sk-topbar-search-button">
+                            <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-sk-tree"><i class="fa-solid fa-plus"></i> Nouvelle intervention</button>
                         </div>
                     </div>
+                    <div class="results" id="htmlContent"></div>
                 </div>
-            </div>
-            <div class="results" id="htmlContent"></div>
-        </div>
-        <div class="card mt-4">
-            <div class="card-table">
-                <table class="table-default">
+                <table id="table-visible" class="table-default table-striped">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Référence</th>
                         <th>Titre</th>
                         <th>Type</th>
                         <th>Client/Equipement</th>
                         <th>Etat/Priorité</th>
                         <th>Date</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for i in interventions %}
                         <tr>
-                            <td><a href="{{ url_for('intervention_read', {'id': i.id}) }}"><span class="text-green">{{ i.ref_number }}</span></a></td>
+                            <td><input type="checkbox" value=""></td>
+                            <td>{{ i.ref_number }}</td>
                             <td>
                                 {{ i.name }}
-                                <em>{{ i.description | slice(0,35) }}</em>
+                                <em class="d-block">{{ i.description | slice(0,35) }}</em>
                             </td>
                             <td>{{ i.sort }}</td>
                             <td>
@@ -58,8 +55,13 @@
                             <td>
                                 {{ i.created_at | date('d/m/Y') }}
                                 {% if pull_date is not null %}
+                                    <br>
                                     <em class="d-block">Retrait : {{ i.pull_date | date('d/m/Y') }}</em>
                                 {% endif %}
+                            </td>
+                            <td class="link-icon">
+                                <a class="link-default" href="{{ url_for('intervention_read', {'id': i.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="" class="text-pink"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -67,6 +69,7 @@
                 </table>
             </div>
         </div>
+        {{ dataPaginate | raw }}
     {% else %}
         <div class="text-center">
         <span>

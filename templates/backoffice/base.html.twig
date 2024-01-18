@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive">
+<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive" data-layout-mode="default">
 <head>
     <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
@@ -8,17 +8,19 @@
     <meta content="Proaxive by SelMaK" name="author">
     {% block stylesheets %}{% endblock %}
     <!-- START::GridLex Local -->
-    <link rel="stylesheet" href="/assets/frameworks/gridlex/gridlex.min.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/frameworks/gridlex/gridlex.min.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- START::REMIXICON -->
-    <link href="/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <link href="{{ get_env('PATH_PUBLIC') }}/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
     <!-- SimpleBar
     <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
     -->
     <!-- START::CSS App -->
-    <link rel="stylesheet" href="/assets/stylesheets/app.css">
-    <link rel="stylesheet" href="/assets/stylesheets/utilities.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/app.css">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/utilities.css">
     <!-- START::Print -->
-    <link rel="stylesheet" href="/assets/stylesheets/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/print.css" type="text/css" media="print">
     <noscript>
         <style>
             /**
@@ -30,52 +32,22 @@
         </style>
     </noscript>
 </head>
-<body id="body-wrapper">
+<body id="body-wrapper" class="style-2">
 <div class="overlay"></div>
 <div class="layout-wrapper">
-    <header id="sk-topbar">
-        <div class="layout-topbar">
-            <div class="top-navbar">
-                <div class="flex align-items-center">
-                    <div class="d-desktop">
-                        <a href="#" class="btn btn-light-purple"><i class="ri-question-line"></i> Support Proaxive</a>
-                        <a href="#" class="btn btn-light-pink"><i class="ri-hand-coin-line"></i> Portail Client</a>
-                    </div>
-                </div>
-                <div class="flex align-items-center">
-                    <ul class="right-navbar flex align-items-center">
-                        <li class="btn-button"><button type="button" onclick="toggleTheme()"><i class="ri-sun-fill"></i></button></li>
-                        <li class="btn-button"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
-                        <li class="profil-item">
-                            <div class="flex align-items-center">
-                                <span class="profil-icon d-block mr-2"><i class="ri-shield-user-fill"></i></span>
-                                <div class="profil-body">
-                                    <span class="fw-500">John Doe</span>
-                                    <p class="p-0 m-0 fs-12px">Admin</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="d-mobile">
-                        <span class="d-block btn-aside aside-deploy ml-3"><i class="fs-22px ri-menu-line"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
     <aside class="sk-menu aside-menu">
-        <div class="pr-4 pl-2 aside-logo flex justify-content-space-between align-items-center">
-            <div class="flex align-items-center">
-                <div class="mr-2"><a href="/admin"><img class="v-middle" style="height: 50px; width: auto" src="{{ appRoot.urlPath }}img/logos/logo_proaxive.png" alt=""></a></div>
-                <div class="flex-root app-title"><span class="fs-20px">Proaxive</span> <span class="fw-500 fs-20px">2.0</span></div>
-            </div>
-            <div class="d-desktop">
-                <span onclick="toggleSidebarStatus()" id="aside-btn" class="d-block btn-aside"><i class="fs-22px ri-layout-grid-fill"></i></span>
+        <div class="aside-logo text-center">
+            <div class="flex align-items-center justify-content-center">
+                <div><a href="/admin"><img class="v-middle" style="height: 40px; width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2_white.png" alt=""></a></div>
+                <div class="app-title ml-2"><span class="fs-24px fw-600">Proaxive</span><span class="text-one fs-13px">Alpha</span></div>
             </div>
         </div>
         <ul class="aside-navigation mt-4" data-simplebar>
+            <li class="item-nav {% if currentMenu is defined and currentMenu == 'home' %}current{% endif %}">
+                <a href="{{ url_for('dash_home') }}" title="Accueil"><span class="icon"><i class="ri-home-2-line"></i></span> <span class="title">Accueil</span></a>
+            </li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'customer' %}current{% endif %}">
-                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-user-line"></i></span> <span class="title">Clients <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span> </span></a>
+                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-user-line"></i></span> <span class="title">Clients <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span> </span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'customer' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -92,7 +64,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}current{% endif %}">
-                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-building-fill"></i></span> <span class="title">Magasins/Ateliers <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span> </span></a>
+                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-building-fill"></i></span> <span class="title">Magasins/Ateliers <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span> </span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -114,7 +86,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}current{% endif %}">
-                <a href="#" title="Gestion des interventions"><span class="icon"><i class="ri-list-check-2"></i></span> <span class="title">Interventions <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <a href="#" title="Gestion des interventions"><span class="icon"><i class="ri-list-check-2"></i></span> <span class="title">Interventions <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -131,7 +103,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}current{% endif %}">
-                <a href="#" title="Gestion des équipements"><span class="icon"><i class="ri-computer-line"></i></span> <span class="title">Equipements <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <a href="#" title="Gestion des équipements"><span class="icon"><i class="ri-computer-line"></i></span> <span class="title">Equipements <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -153,7 +125,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown">
-                <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
                 <div class="submenu-dropdown">
                     <ul class="dropdown-navigation">
                         <li>
@@ -175,12 +147,12 @@
             <li class="item-nav">
                 <a href="#" title="Gestion des rendez-vous"><span class="icon"><i class="ri-calendar-line"></i></span> <span class="title">Calendrier</span></a>
             </li>
-            <li class="title-navigation"><span class="item-title d-block">Administration</span><em>Gestion de l'application</em></li>
+            <li class="title-navigation"><span class="item-title d-block">Administration</span></li>
             <li class="item-nav {% if currentMenu is defined and currentMenu == 'settings' %}current{% endif %}">
                 <a href="{{ url_for('settings_preference') }}" title="Paramètres de l'application"><span class="icon"><i class="ri-settings-4-line"></i></span> <span class="title">Paramètres Généraux</span></a>
             </li>
             <li class="item-nav dropdown">
-                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne <span class="right-icon"><i class="ri-icon ri-arrow-down-s-line"></i></span></span></a>
+                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
                 <div class="submenu-dropdown">
                     <ul class="dropdown-navigation">
                         <li>
@@ -198,18 +170,55 @@
             </li>
         </ul>
     </aside>
+    <header class="sk-main-topbar">
+        <div class="sk-tools-topbar flex-root">
+            <div class="flex-root">
+                <div class="flex align-items-center">
+                    <div class="d-desktop">
+                        <span onclick="toggleSidebarStatus()" id="aside-btn" class="d-block btn-aside"><i class="fs-22px ri-menu-fold-line"></i></span>
+                    </div>
+                    <div class="d-mobile">
+                        <span class="d-block btn-aside aside-deploy ml-3"><i class="fs-22px ri-menu-line"></i></span>
+                    </div>
+                    <div class="flex-root">
+                        {% if toolbar_tool is not defined%}
+                            <div class="form-group m-0">
+                                <input type="text" class="form-input rd-2 ml-4" name="search" style="width: 60%" placeholder="Rechercher dans Proaxive...">
+                            </div>
+                        {% else %}
+                            {% block toolbar %}{% endblock %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="user-tools">
+                <ul class="right-navbar">
+                    <li class="a-button d-desktop"><a class="btn-bar btn-inverse-one" href="#"><i class="ri-question-line"></i> Support</a></li>
+                    <li class="btn-button"><button type="button" onclick="toggleTheme()"><i class="ri-sun-fill"></i></button></li>
+                    <li class="btn-button"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
+                    <li class="profil-item ml-6">
+                        <span class="profil-icon d-block mr-2 fs-12px text-one">Admin</span>
+                        <div class="profil-body">
+                            <span class="fw-500">John Doe</span>
+                        </div>
+                    </li>
+                    <li class="ml-2">
+                        <a href="#"><i class="ri-more-2-fill"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
     <main class="main-content">
         <div class="page-content">
             <div class="container-fluid">
-                <div class="flex flex-wrap">
-                    <div class="flex-0 w100 p-relative">
-                        <div class="breadcrumbs-wrapper flex align-items-center justify-content-space-between">
-                            <div class="page-title"><h3 class="fw-500 fs-22px m-0">{{ block('title') }}</h3></div>
-                            {% if breadcrumbs is defined and breadcrumbs is not null %}
-                                <div>{{ breadcrumbs | raw }}</div>
-                            {% endif %}
-                        </div>
+                <div class="breadcrumbs-wrapper">
+                    <div class="page-title">
+                        <h3>{{ block('title') }}</h3>
                     </div>
+                    {% if breadcrumbs is defined and breadcrumbs is not null %}
+                        <div class="sk-breadcrumb">{{ breadcrumbs | raw }}</div>
+                    {% endif %}
                 </div>
                 {% block body %}{% endblock %}
                 {% if layout_aside is defined %}
@@ -236,8 +245,8 @@
     </div>
 </div>
 {% block javascripts %}{% endblock %}
-<script src="/assets/js/setting.theme.js"></script>
-<script src="/assets/js/p2.app.js"></script>
+<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/setting.theme.js"></script>
+<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/p2.app.js"></script>
 <!--
 <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
 -->

@@ -10,8 +10,10 @@ use App\Service\MailInterventionService;
 use App\Type\InterventionCreateNextType;
 use App\Type\InterventionCreateType;
 use App\Type\InterventionFastType;
+use Knp\Snappy\Pdf;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Service\SerialNumberFormatterService;
 
 class InterventionCreateController extends AbstractController
@@ -43,11 +45,11 @@ class InterventionCreateController extends AbstractController
      */
     public function regular(Request $request, Response $response, array $args): Response
     {
-
         $customer = '';
         $equipment_id = null;
         $customer_id = (int)$args['id'];
         $equipment = (int)$request->getQueryParams()['e'];
+        $auth = $this->session->get('auth');
 
         if($equipment != null) {
             $e = $this->getRepository(EquipmentRepository::class)->find('id', $equipment);
@@ -70,10 +72,9 @@ class InterventionCreateController extends AbstractController
                 'a_priority' => $data['a_priority'],
                 'equipments_id' => $equipment_id,
                 'sort' => $data['sort'],
-                'company_id' => $data['company_id'],
+                'company_id' => (int)$data['company_id'],
                 'nb_equipments' => $findEquipment,
-                'ref_number' => $numberFormatter->generateSerialNumber(),
-                'users_id' => $this->getUserId()
+                'ref_number' => $numberFormatter->generateSerialNumber()
             ];
             // Save array in the session
             $this->session->set('form_intervention_next', $arrayData);
@@ -82,6 +83,7 @@ class InterventionCreateController extends AbstractController
         return $this->render($response, 'backoffice/intervention/create/start.html.twig', [
             'currentMenu' => 'intervention',
             'form' => $form,
+            'auth' => $auth,
             'customer' => $customer,
         ]);
     }
@@ -90,6 +92,7 @@ class InterventionCreateController extends AbstractController
     public function next(Request $request, Response $response, array $args): Response
     {
         $e = null;
+        $auth = $this->session->get('auth');
         // if not valid session, stop treatment and return to Create
         if(!$this->session->get('form_intervention_next')){
             $this->session->getFlash()->add('panel-error', "Aucune session n'est disponbile pour cette demande, veuillez reprendre le formulaire.");
@@ -110,12 +113,12 @@ class InterventionCreateController extends AbstractController
         $form->handleRequest();
         $this->session->set('intervention_2time', $data);
 
-
         return $this->render($response, 'backoffice/intervention/create/next.html.twig', [
             'currentMenu' => 'intervention',
             'form' => $form,
             'c' => $c,
             'e' => $e,
+            'auth' => $auth,
             'session' => $dataSession
         ]);
     }
@@ -125,22 +128,53 @@ class InterventionCreateController extends AbstractController
         if($request->getMethod() === 'POST') {
             $data_one = $this->session->get('form_intervention_next');
             $data = $request->getParsedBody()['form_intervention_2time'];
+            unset($data_one['nb_equipments']);
+            // Delete equipments_id if exist in the session "form_intervention_next"
+            // IMPORTANT
+            if($data_one['equipments_id'] === null){
+                unset($data_one['equipments_id']);
+            }
+            $validator = $this->validator->validate($data, [
+                'way_type' => [
+                    'rules' => v::notBlank()
+                ],
+                'way_steps' => [
+                    'rules' => v::notBlank()
+                ],
+                'users_id' => [
+                    'rules' => v::notBlank()
+                ]
+            ]);
+            if($validator->count() === 0){
+                $data_one['ref_for_link'] = bin2hex(random_bytes(5));
+                $data_one['state'] = "VALIDATED";
+                $customer = $this->getRepository(CustomerRepository::class)->find('id', (int)$data_one['customers_id']);
+                $data['customer_name'] = $customer->fullname;
+                $merge = $data_one + $data;
+                // send the email if the customer has an email address
+                if($customer->mail){
+                    $mail = new MailInterventionService($this->getParameters('mailer'));
+                    $mail->sendMailStart($customer->mail, $this->view('mailer/intervention/start.html.twig', ['data' => $merge]));
+                }
+                // Generate PDF for deposit if checked
+                /*
+                if($data['with_deposit']){
+                    $settings = $this->app->getContainer()->get('settings');
+                    $snappy = new Pdf($settings['settings']['rootPath'] . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
+                    $path = $settings['storage']['documents'] . 'deposits/';
+                    $snappy->generateFromHtml($this->view('snappy/deposit_pdf.html.twig', ['data' => $merge]), $path . $data_one['ref_number'] .'.pdf');
+                }
+                */
+                $save = $this->getRepository(InterventionRepository::class)->add($merge, true);
+                if($save){
+                    $this->session->getFlash()->add('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));
+                    return $this->redirectToRoute('dash_intervention');
+                }
+            } else {
+                $this->session->getFlash()->add('panel-error', 'Tous les champs ne sont pas remplis !');
+                return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+            }
 
-            unset($data_one['nb_equipments'], $data_one['equipments_id']);
-            $data_one['ref_for_link'] = bin2hex(random_bytes(5));
-            $data_one['state'] = "VALIDATED";
-            $customer = $this->getRepository(CustomerRepository::class)->find('id', (int)$data_one['customers_id']);
-            $merge = $data_one + $data;
-            // send the email if the customer has an email address
-            if($customer->mail){
-                $mail = new MailInterventionService($this->getParameters('mailer'));
-                $mail->sendMailStart($customer->mail, $this->view('mailer/intervention/start.html.twig', ['data' => $merge]));
-            }
-            $save = $this->getRepository(InterventionRepository::class)->add($merge, true);
-            if($save){
-                $this->session->getFlash()->add('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));
-                return $this->redirectToRoute('dash_intervention');
-            }
         }
         return new \Slim\Psr7\Response();
     }

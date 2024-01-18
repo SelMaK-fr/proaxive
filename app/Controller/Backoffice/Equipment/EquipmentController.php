@@ -4,8 +4,12 @@ namespace App\Controller\Backoffice\Equipment;
 
 use App\AbstractController;
 use App\Repository\EquipmentRepository;
+use App\Repository\InterventionRepository;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Paginator\Paginator;
 
 class EquipmentController extends AbstractController
 {
@@ -23,7 +27,10 @@ class EquipmentController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $e = $this->getRepository(EquipmentRepository::class)->all()->limit(9)->orderBy('created_at DESC');
+        $paginator = new Paginator('15', 'p', $request);
+        $paginator->set_total($this->getRepository(InterventionRepository::class)->count());
+        $e = $this->getRepository(EquipmentRepository::class)->allArrayForPaginator($paginator->get_limit());
+        $dataPaginate = $paginator->page_links();
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
         $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
@@ -32,7 +39,9 @@ class EquipmentController extends AbstractController
         // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/index.html.twig', [
             'equipments' => $e,
-            'breadcrumbs' => $bds
+            'breadcrumbs' => $bds,
+            'dataPaginate' => $dataPaginate,
+            'currentMenu' => 'equipment'
         ]);
     }
 }

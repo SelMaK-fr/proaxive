@@ -25,8 +25,7 @@ class UserType extends Type
                 'required' => true
             ])
             ->add('mail', 'email', [
-                'label' => 'Courriel',
-                'required' => false
+                'label' => 'Courriel'
             ])
             ->add('roles', 'choice', [
                 'placeholder' => 'Choisissez un rôle',

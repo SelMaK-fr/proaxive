@@ -3,15 +3,13 @@
 {% block title %}Nouveau client{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a class="selected" href="{{ url_for('customer_create_particular') }}"><i class="ri-user-line"></i> Client</a></li>
+        <li><a href="{{ url_for('customer_create_society') }}"><i class="ri-building-line"></i> Société/entreprise</a></li>
+    </ul>
     <div class="card">
-        <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a class="selected" href="{{ url_for('customer_create_particular') }}"><i class="ri-user-line"></i> Client</a></li>
-                <li><a href="{{ url_for('customer_create_society') }}"><i class="ri-building-line"></i> Société/entreprise</a></li>
-            </ul>
-            <div class="p-4">
-                {{ include('backoffice/customer/_form.html.twig') }}
-            </div>
+        <div class="p-4">
+            {{ include('backoffice/customer/_form.html.twig') }}
         </div>
     </div>
 {% endblock %}

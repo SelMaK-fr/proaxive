@@ -14,7 +14,10 @@ use Slim\Psr7\Response as RPSR7;
 class RedirectAuthIfCookieMiddleware implements MiddlewareInterface
 {
 
-    public function __construct(private readonly Query $query, private readonly SessionInterface $session, private readonly CookieFactory $cookie){}
+    public function __construct(
+        private readonly Query $query,
+        private readonly SessionInterface $session,
+        private readonly CookieFactory $cookie){}
 
     public function process(Request $request, RequestHandler $handler): Response
     {
@@ -27,7 +30,15 @@ class RedirectAuthIfCookieMiddleware implements MiddlewareInterface
                 ->fetch()
             ;
             if($user){
-                $this->session->set('auth', $user);
+                $this->session->set('auth', [
+                    'id' => $user['id'],
+                    'pseudo' => $user['pseudo'],
+                    'fullname' => $user['fullname'],
+                    'mail' => $user['mail'],
+                    'roles' => $user['roles'],
+                    'avatar' => $user['avatar'],
+                    'auth_token' => $user['auth_token'],
+                ]);
             }
             if($user['auth_token'] === $this->cookie->get('proaxive2-auth') && isset($_SESSION['auth'])){
                 return $response->withHeader('Location', '/admin')->withStatus(302);

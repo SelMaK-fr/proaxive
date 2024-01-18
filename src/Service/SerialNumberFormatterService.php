@@ -39,4 +39,5 @@ class SerialNumberFormatterService
 
         return $number;
     }
+
 }

@@ -19,7 +19,8 @@ class UserSeeder extends AbstractSeed{
             'mail' => 'admin@admin.local',
             'fullname' => 'John Doe',
             'password' => password_hash('admin', PASSWORD_DEFAULT),
-            'roles' => 'super admin',
+            'roles' => 'SUPER_ADMIN',
+            'company_id' => 1,
             'created_at' => '2024-03-25 04:21:52',
             'updated_at' => '2024-03-25 04:21:52'
         ];

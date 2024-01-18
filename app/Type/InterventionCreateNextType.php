@@ -5,6 +5,7 @@ namespace App\Type;
 use App\Type;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\CheckboxType;
 use Palmtree\Form\Type\ChoiceType;
 use Palmtree\Form\Type\HiddenType;
 use Palmtree\Form\Type\TextareaType;
@@ -21,18 +22,17 @@ class InterventionCreateNextType extends Type
             'html_validation' => false,
         ], $data))
             ->add('equipments_id', ChoiceType::class, [
-                'label' => 'Sélectionnez un équipement',
+                'label' => 'Equipement',
+                'placeholder' => "Sélectionnez un équipement",
                 'choices' => self::getEquipment((int)$args['customers_id']),
+            ])
+            ->add('users_id', ChoiceType::class, [
+                'label' => 'Technicien',
+                'placeholder' => "Sélectionnez un technicien",
+                'choices' => self::getUsers((int)$args['company_id']),
             ])
             ->add('equipment_name', HiddenType::class, [
                 'label' => "equipment_name",
-            ])
-            ->add('customer_name', HiddenType::class, [
-                'label' => "customer_name",
-            ])
-            ->add('deposit_date', DateType::class, [
-                'label' => 'Date de dépot',
-                'required' => false
             ])
             ->add('way_type', ChoiceType::class, [
                 'label' => "Statut",
@@ -85,6 +85,19 @@ class InterventionCreateNextType extends Type
             return $equipments;
         }
         return $equipments;
+    }
+
+    public function getUsers(int $data): array
+    {
+        $users = [];
+        $req = $this->query->from('users')->select(null)->select('users.id, users.fullname')->where('company_id = ?', $data)->fetchAll();
+        if($req){
+            foreach ($req as $u) {
+                $users[$u['id']] = $u['fullname'];
+            }
+            return $users;
+        }
+        return $users;
     }
 
     private function findEquipment($data): int

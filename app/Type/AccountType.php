@@ -7,6 +7,7 @@ use Envms\FluentPDO\Query;
 use Palmtree\Form\Constraint\Length;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\EmailType;
 use Slim\App;
 
 class AccountType extends Type
@@ -24,23 +25,12 @@ class AccountType extends Type
             ])
             ->add('pseudo', 'text', [
                 'required' => true
-            ]);
-        $builder->add('roles', 'choice', [
-                'placeholder' => 'Select role',
-                'choices'     => $this->getRoles(),
-                'mapped' => false
+            ])
+            ->add('mail', EmailType::class, [
+                'label' => "Adresse courriel",
+                'placeholder' => "Votre adresse courriel valide"
             ])
             ;
         return $builder->getForm();
-    }
-
-    private function getRoles(): array
-    {
-        $roles = [];
-        $req = $this->query->from('users')->select(null)->select('users.id, users.roles')->fetchAll();
-        foreach ($req as $role) {
-            $roles[$role['roles']] = $role['roles'];
-        }
-        return $roles;
     }
 }

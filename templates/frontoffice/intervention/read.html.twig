@@ -18,9 +18,9 @@
                                 <div class="input-inner-button mt-4">
                                     <div class="input-for-btn">
                                         <label for="search-i" class="form-label"></label>
-                                        <input type="text" name="s" id="search-i" class="form-control" placeholder="Entrez un numéro d'intervention">
+                                        <input type="text" name="s" id="search-i" class="form-control rd-10" placeholder="Entrez un numéro d'intervention">
                                     </div>
-                                    <button type="submit" class="btn-purple btn-lg d-block"><i class="ri-search-2-line"></i> Rechercher</button>
+                                    <button type="submit" class="btn-sk-one btn-lg d-block"><i class="ri-search-2-line"></i> Rechercher</button>
                                 </div>
                             </form>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="card all-border mb-4">
                                 <div class="card-body p-4">
                                     <p class="mt-0 mb-4">Les détails spécifiques de cette intervention ont volontairement été cachés pour raison de vie privée. Connectez vous pour visualiser les détails complet.</p>
-                                    <a href="" class="btn btn-light-purple">Se connecter maintenant</a>
+                                    <a href="{{ url_for('portal_login') }}" class="btn btn-sk-two">Se connecter maintenant</a>
                                 </div>
                             </div>
                             <h3 class="mb-3">Historique des tâches effectuées</h3>

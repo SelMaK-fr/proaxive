@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Interface\GeneratePdfInterface;
 use Awurth\Validator\Assertion\DataCollectorAsserter;
 use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Query;
@@ -9,6 +10,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
 use Odan\Session\SessionManagerInterface;
+use Pagerfanta\Twig\Extension\PagerfantaExtension;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -107,7 +109,7 @@ return [
             'cache' => $settings['view']['cache'],
         ];
         $twig = Twig::create($settings['view']['path'], $options);
-        $twig->getEnvironment()->addGlobal('getSession', $container->get(SessionInterface::class)); // DEV
+        $twig->getEnvironment()->addGlobal('getSession', $container->get(SessionInterface::class));
         $twig->getEnvironment()->addGlobal('appRoot', $container->get(SettingsInterface::class)->get('app'));// App Name etc
         $twig->getEnvironment()->addGlobal('config', $container->get('parameters'));
         $twig->addExtension($container->get(TwigMessageExtension::class));

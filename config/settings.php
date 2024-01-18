@@ -22,7 +22,8 @@ $settings = [
     'settings' => [
         'rootPath' => dirname(__DIR__),
         'publicPath' => dirname(__DIR__) . '/public/',
-        'active_premium' => '14fe4ht58r1158reezc'
+        'snappyPath' => dirname(__DIR__) . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64',
+        'licenceKey' => ''
     ],
     'view' => [
         'path'  => dirname(__DIR__) . '/templates',

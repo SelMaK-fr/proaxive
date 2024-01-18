@@ -1,0 +1,328 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit Receipt</title>
+    <style>
+        body{
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 11pt;
+        }
+        h3{
+            font-size: 13pt;
+            text-transform: uppercase;
+        }
+        .table-container{
+            width: 100%;margin: 0 auto;
+        }
+        .table-collapse{
+            border-collapse: collapse;
+        }
+        .table-components, .table-customer{
+            border-collapse: collapse;
+            font-size: 10pt;
+            border:1px solid #393382;
+        }
+        .table-components tr td, .table-components tr th, .table-customer tr td{
+            border:1px solid #393382;
+            text-align: center;
+            padding:4px 6px;
+        }
+        .table-customer tr td{
+            text-align: left;
+        }
+        .bg01{
+            background-color:#eef3ff;
+        }
+        .bg02{
+            background-color:rgba(115, 102, 255, 0.08);
+        }
+        .bg03{
+            background-color:#fafaff;
+        }
+        .bg04{
+            background-color:#393382;
+        }
+        .bgwhite{
+            background-color:white;
+        }
+        .color01{
+            color:#393382;
+        }
+        .colorwhite{
+            color:white;
+        }
+        .title{
+            color: #393382;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        .title-document{
+            color: #393382;
+            font-size: 17pt;
+            font-weight: bold;
+        }
+        .input-form{
+            background-color:rgba(115, 102, 255, 0.08);
+            border-bottom: 1px solid #9d9ac5;
+            border-top:0;
+            border-left: 0;
+            border-right: 0;
+            line-height: 30px;
+            padding: 0 8px;
+        }
+        .form-border-color{
+            border: 1px solid #9d9ac5;
+        }
+        .text-uppercase{
+            text-transform: uppercase;
+        }
+        .bold{
+            font-weight: 600;
+        }
+        .border-bottom{
+            border-bottom: 1px solid #9d9ac5;
+        }
+        .borders, .borders-2{
+            border:1px solid #9d9ac5;
+        }
+        .borders-2{
+            border-width: 2px;
+            border-color: #393382;
+        }
+        .p10px{
+            padding:10px;
+        }
+        .p15px{
+            padding:15px;
+        }
+        .p20px{
+            padding:20px;
+        }
+        .w5p{
+            width:5%
+        }
+        .w10p{
+            width:10%
+        }
+        .w15p{
+            width:15%
+        }
+        .w20p{
+            width:20%
+        }
+        .w25p{
+            width:25%
+        }
+        .w30p{
+            width:30%
+        }
+        .w35p{
+            width:35%
+        }
+        .w40p{
+            width:40%
+        }
+        .w45p{
+            width:45%
+        }
+        .w50p{
+            width:50%
+        }
+        .w55p{
+            width:55%
+        }
+        .w60p{
+            width:60%
+        }
+        .w65p{
+            width:65%
+        }
+        .w70p{
+            width:70%
+        }
+        .w100p{
+            width:100%
+        }
+        .wauto{
+            width:auto;
+        }
+        .with-lh{
+            line-height: 25px;
+        }
+        .with-lh tr td{
+            margin-bottom:2px;
+            padding:0 4px;
+        }
+        .space{
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed #393382;
+            margin:15px 0;
+        }
+        .text-left{
+            text-align: left;
+        }
+        .text-center{
+            text-align:center;
+        }
+        .text-right{
+            text-align: right;
+        }
+        .footer{
+            color:#393382;
+            font-size: 9pt;
+        }
+        .block{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<table class="table-container table-collapse">
+    <tbody>
+    <tr>
+        <td class="w30p">
+            <img style="height: 90px;width: auto" src="/public/img/logos/logo_proaxive.png" alt="">
+        </td>
+        <td class="text-center"><span class="title-document">Bon De Dépôt</span></td>
+        <td class="w30p" style="font-size: 10pt">
+            <div class="bg02 p20px">
+                N°{{ d.reference }} <br>
+                Date : {{ d.deposit_date | date('d/m/Y') }}<br>
+                Intervention n°{{ d.i_reference }}
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div style="height: 20px"></div>
+<div class="text-center" style="font-size: 10pt">
+    Merci de bien lire ce document avant toute signature.
+</div>
+<table class="table-container" style="margin-top:10px;">
+    <tbody>
+    <tr>
+        <td style="font-size: 11pt" class="text-center">
+            Je soussigné <strong>{{ d.customer_name }}</strong> propriétaire de l'équipement ci-dessus étant en accord total avec <strong>{{ d.cy_name }}</strong> sur l'état du matériel récupéré par l'entreprise <strong>{{ deposit.cy_name }}</strong>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="bg04 p10px colorwhite bold text-center" style="font-size: 11pt;margin:10px 0">
+    Les informations ci-dessous doivent être remplies complètement, correctement et lisiblement pour effectuer un dépôt.
+</div>
+<div class="title">Informations client</div>
+<table class="table-container table-customer">
+    <tbody>
+    <tr>
+        <td>
+            <span class="block bold" style="margin-bottom: 8px">Nom</span>{{ d.customer_name }}
+        </td>
+        <td colspan="2">
+            <span class="block bold" style="margin-bottom: 8px">Adresse</span>{{ d.c_address }}, {{ d.c_zipcode}} {{ d.c_city }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="block bold" style="margin-bottom: 8px">Departement</span>{{ d.c_department }}
+        </td>
+        <td>
+            <span class="block bold" style="margin-bottom: 8px">Téléphone</span>{{ d.c_phone }} {% if d.c_mobile is not empty %}OU {{ d.c_mobile }}{% endif %}
+        </td>
+        <td>
+            <span class="block bold" style="margin-bottom: 8px">Courriel</span>{{ d.c_mail }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="title" style="margin-top: 20px">Informations dépôt</div>
+<!-- Date and number -->
+<table class="table-container table-components">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Dénomination</th>
+        <th>N°série</th>
+        <th>Accessoires</th>
+        <th>Etat</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="bgwhite">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Accessoire(s) récupéré(s) avec l'équipement</td>
+        <td></td>
+    </tr>
+    <tr class="bg02">
+        <td>{{ d.e_type_name }}</td>
+        <td>{{ d.equipment_name }}</td>
+        <td>{{ d.e_serial }}</td>
+        <td>
+            {% if d.equipment_accessories is not null and d.equipment_accessories is not empty %}
+            {{ d.equipment_accessories }}
+            {% else %}
+            <em>Aucun</em>
+            {% endif %}
+        </td>
+        <td>
+            {% if d.equipment_state == 1 %}
+            DMG
+            {% else %}
+            OK
+            {% endif %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div style="height: 20px;"></div>
+{% if d.equipment_state == 1 %}
+<div class="borders-2 p20px">
+    <table class="table-container">
+        <tbody>
+        <tr>
+            <td class="w50p">
+                <h4 style="margin:0 0 20px 0">Défauts détectés</h4>
+                {{ d.about_state }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
+<div class="bgwhite">
+    <table class="table-container table-collapse">
+        <tbody>
+        <tr>
+            <td class="w50p bg02">
+                <div class="title" style="font-size: 9pt"></div>
+                <p style="font-size: 9pt;vertical-align: top;padding:0 15px">
+
+                </p>
+            </td>
+            <td class="w50p">
+                <table class="w100p table-collapse">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <h5 class="bg03 text-center" style="margin: 0 0 5px 0;line-height: 30px">Signature client</h5>
+                            <div style="height: 90px">
+                                <img src="{{ data.code_sign }}" alt="Signature Client" class="img-responsive">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="footer p20px">
+    <p class="text-center">
+        Texte de base de page (conditions etc.)
+    </p>
+</div>
+</body>
+</html>

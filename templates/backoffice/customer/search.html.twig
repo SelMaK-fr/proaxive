@@ -1,53 +1,30 @@
+<div class="click-list p-absolute">
 {% if customers is not empty %}
-    <table class="table-default">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Nom</th>
-            <th>Tél Fixe</th>
-            <th>Mobile</th>
-            <th>Ville</th>
-            <th>Courriel</th>
-            <th>Ajouté le</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for customer in customers %}
-            <tr onclick="document.location = '{{ url_for('customer_read', {'id' : customer.id}) }}'" style="cursor: pointer{% if client.is_blacklist == 1 %};background-color:rgba(247, 49, 100, 0.15){% endif %}">
-                <td style="padding:.42rem 0.5rem" class="text-center">
-            <span style="font-size:1.3rem;">
-            {% if customer.is_society == 1 and customer.is_society is defined %}
-                <i class="ri-building-fill"></i>
-            {% else %}
-                <i class="ri-user-2-fill"></i>
-            {% endif %}
-                {% if customer.is_blacklisted == 1 %}
-                    <i class="ri-spam-3-fill"></i>
-                {% endif %}
-            </span>
-                </td>
-                <td>
-                    {% if customer.is_society == 1 and customer.is_society is defined %} <em>{{ customer.type_status }}</em> {% endif %} <strong>{{ customer.fullname }}</strong>
-                </td>
-                <td>{% if customer.phone is not empty %}{{ customer.phone }}{% endif %}</td>
-                <td>{% if customer.mobile is not empty %}{{ customer.mobile }}{% endif %}</td>
-                <td>
-                    {% if customer.city is not null and customer.city is not empty %}
-                        <i>{{ customer.zipcode }}</i> - {{ customer.city }}
-                    {% else %}
-                        <i>Non renseigné</i>
-                    {% endif %}
-                </td>
-                <td>{{ customer.mail }}</td>
-                <td>{{ customer.updated_at | date('d/m/Y') }}</td>
-                <td>
-                    <a href="" class="btn-sm btn-light-purple" title="Modifier le compte client"><i class="ri-edit-2-fill"></i></a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <ul>
+            {% for customer in customers %}
+                <li>
+                    <a href="{{ url_for('customer_read', {'id' : customer.id}) }}" class="link-list">
+                        <span class="ll_name">
+                            {{ customer.fullname }} <br>
+                            <em class="fs-13px">{{ customer.zipcode }} - <span class="text-one">{{ customer.city }}</span></em>
+                        </span>
+                        <span class="ll_type">
+                            {% if customer.is_society == 1 and customer.is_society is defined %}
+                                <i class="ri-building-fill"></i>
+                            {% else %}
+                                <i class="ri-user-2-fill"></i>
+                            {% endif %}
+                        </span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
 {% else %}
-    <div class="p-4">Il n'y a aucun résultat pour cette recherche</div>
+    <div class="p-4 text-center">
+        <span class="d-block text-one"><i class="fa-solid fa-ban"></i> Aucun résultat !</span>
+        <p>Ce client n'existe pas.</p>
+        <a href="#" class="btn-sm btn-light-four">Le créer ?</a>
+    </div>
 {% endif %}
+</div>

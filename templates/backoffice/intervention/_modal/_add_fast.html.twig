@@ -1,9 +1,11 @@
 <div class="modal" id="add_intervention">
-    <div class="modal-container p-5">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h1>Nouvelle intervention</h1>
+        </div>
         {{ form.renderStart | raw }}
             <div class="modal-content">
                 <div class="mb-4">
-                    <h1>Nouvelle intervention</h1>
                     Vous êtes sur le point de créer une nouvelle intervention. Merci de renseigner les champs ci-dessous.
                     <br>
                     Cette intervention sera enregistrée en tant que <span class="label badge-light-yellow">brouillon</span>.
@@ -26,7 +28,7 @@
 
             </div>
             <div class="modal-footer text-right">
-                <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                <button type="submit" class="btn btn-light-four">Enregistrer</button>
                 <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
             </div>
         {{ form.renderEnd(false) | raw }}

@@ -1,10 +1,12 @@
 <div class="modal" id="search_intervention">
-    <div class="modal-container p-5" style="width:950px;margin: 5% auto;">
+    <div class="modal-container" style="width:950px;margin: 5% auto;">
+        <div class="modal-header">
+            <h1>
+                Rechercher des interventions par critère
+            </h1>
+        </div>
         {{ formSearch.renderStart | raw }}
         <div class="modal-content">
-            <div class="mb-4">
-                <h1>Rechercher des interventions par critère</h1>
-            </div>
             <div class="grid-12 mt-5">
                 <div class="col-12_sm-12">
                     <div class="grid-12">
@@ -26,7 +28,7 @@
 
         </div>
         <div class="modal-footer text-right">
-            <button type="submit" class="btn btn-light-purple">Rechercher</button>
+            <button type="submit" class="btn btn-sk-one">Rechercher</button>
         </div>
         {{ formSearch.renderEnd(false) | raw }}
     </div>

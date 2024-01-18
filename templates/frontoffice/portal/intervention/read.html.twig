@@ -27,12 +27,12 @@
                 </div>
             </div>
             <div class="col-7_sm-12">
-                <h3 class="fs-28px fw-600 txt-veryhard mb-0">Intervention n° {{ i.ref_number }}</h3>
+                <h3 class="fs-28px fw-500 txt-veryhard mb-0">Intervention n° {{ i.ref_number }}</h3>
                 <p class="fs-18px fw-300 mt-0">Intervention créée le {{ i.created_at | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }}</p>
                 {% if i.start_date is null %}
-                    <div class="card all-border-purple mt-3">
+                    <div class="card all-border-dashed mt-3">
                         <div class="card p-4">
-                            <span class="fw-500 fs-18px text-purple d-block mb-2">La maintenance n'a pas encore débutée</span>
+                            <span class="fw-500 fs-18px text-one d-block mb-2">La maintenance n'a pas encore débutée</span>
                             Votre équipement a bien été récupéré, mais l'intervention n'a pas encore débutée. Ca ne devrait plus être long, n'hésitez pas à revenir régulièrement.
                         </div>
                     </div>

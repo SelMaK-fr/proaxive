@@ -18,7 +18,7 @@
                                 <span>Ajouter ou supprimer des marques</span>
                             </div>
                             <div class="col-6_sm-12 text-right">
-                                <button type="button" data-target="add_os" data-toggle="modal" class="btn btn-light-primary"><i class="ri-add-line"></i> Ajouter une marque</button>
+                                <button type="button" data-target="add_brand" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une marque</button>
                             </div>
                         </div>
                     </div>
@@ -55,13 +55,12 @@
                                             </div>
                                             <!-- EDIT -->
                                             <div class="modal" id="update_brand-{{ b.id }}">
-                                                <div class="modal-container p-5">
-                                                    <div class="modal-header text-right">
-                                                        <button data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                                                <div class="modal-container">
+                                                    <div class="modal-header">
+                                                        <h1>Modification d'une marque</h1>
                                                     </div>
                                                     <form method="post" action="{{ url_for('settings_brand_update') }}?id={{ b.id }}" enctype="multipart/form-data">
                                                         <div class="modal-content">
-                                                            <div class="mb-4"><h1>Modification</h1></div>
                                                             <div>
                                                                 <img src="/uploads/brands/{{ b.logo_file }}" alt="">
                                                             </div>
@@ -87,7 +86,8 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <input type="hidden" value="{{ b.id }}" name="id">
-                                                            <button type="submit" class="btn btn-light-purple">Sauvegarder</button>
+                                                            <button type="submit" class="btn btn-light-four">Sauvegarder</button>
+                                                            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -111,15 +111,13 @@
         </div>
     </div>
     <!-- ADD -->
-    <div class="modal" id="add_os">
-        <div class="modal-container p-5">
+    <div class="modal" id="add_brand">
+        <div class="modal-container">
             {{ form.renderStart | raw }}
-                <div class="modal-header text-right">
-                    <button type="button" data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                <div class="modal-header">
+                    <h1>Création d'une nouvelle marque</h1>
                 </div>
                 <div class="modal-content">
-                    <div class="mb-4"><h1>Nouvelle marque</h1></div>
-                    Création d'une nouvelle marque
                     <div class="grid-2 mt-5">
                         <div class="col">
                             {{ form.renderField('name') | raw }}
@@ -132,7 +130,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-light-purple">Créer</button>
+                    <button type="submit" class="btn btn-light-four">Créer</button>
+                    <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
                 </div>
             {{ form.renderEnd(false) | raw }}
         </div>

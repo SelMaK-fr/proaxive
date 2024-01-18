@@ -2,6 +2,14 @@
 
 {% block title %}{{ e.name }} de {{ e.customer_name }}{% endblock %}
 
+{% set toolbar_tool = 1 %}
+
+{% block toolbar %}
+    <div class="toolbar-tools flex justify-content-space-between">
+        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-light-pink"> <i class="ri-delete-bin-7-line"></i> Supprimer cet équipement</button>
+    </div>
+{% endblock %}
+
 {% block body %}
     <div class="card">
         <div class="card-tabs">

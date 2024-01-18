@@ -21,6 +21,7 @@ final class InterventionsCreateModel extends AbstractMigration
         $this->table('interventions')
             ->addColumn('name', 'string')
             ->addColumn('sort', 'string')
+            ->addColumn('with_deposit', 'boolean', ['null' => true])
             ->addColumn('description', 'text', [
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG,
                 'null' => true

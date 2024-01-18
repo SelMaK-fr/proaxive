@@ -1,9 +1,11 @@
 <div class="modal" id="update_intervention">
-    <div class="modal-container p-5">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h1>Mise à jour d'une intervention</h1>
+        </div>
         {{ form.renderStart | raw }}
         <div class="modal-content">
             <div class="mb-4">
-                <h1>Mise à jour d'une intervention</h1>
                 Seuls les champs marqués d'un <abbr title="Required Field" class="text-pink">*</abbr> sont obligatoires.
             </div>
             <div class="grid-12 mt-5">
@@ -41,10 +43,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="modal-footer text-right">
-            <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+            <button type="submit" class="btn btn-light-four">Enregistrer</button>
             <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
         </div>
         {{ form.renderEnd(false) | raw }}

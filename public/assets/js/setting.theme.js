@@ -9,18 +9,36 @@ function setTheme(styleName){
 }
 // function to toggle between light and dark theme
 function toggleTheme() {
-    if (localStorage.getItem('data-layout-mode') === 'default'){
-        setTheme('light');
-    } else {
+    if (localStorage.getItem('data-layout-mode') === 'dark'){
         setTheme('default');
+    } else {
+        setTheme('dark');
     }
 }
 // Immediately invoked function to set the theme on initial load
 (function () {
     if (localStorage.getItem('data-layout-mode') === 'default') {
         setTheme('default');
+    }
+})();
+// Sidebar Style
+// function to set a given theme/color-scheme
+function setSidebar(sidebarStatus) {
+    localStorage.setItem('data-sidebar-width', sidebarStatus);
+    document.documentElement.setAttribute("data-sidebar-width", sidebarStatus)
+}
+// function to toggle between lg and sm aside navigation
+function toggleSidebarStatus() {
+    if (localStorage.getItem('data-sidebar-width') === 'sm'){
+        setSidebar('lg');
     } else {
-        setTheme('light');
+        setSidebar('sm');
+    }
+}
+// Immediately invoked function to set the theme on initial load
+(function () {
+    if (localStorage.getItem('data-sidebar-width') === 'lg') {
+        setSidebar('lg');
     }
 })();
 // Aside Mobile Device
@@ -38,28 +56,6 @@ document.querySelector('.aside-deploy').addEventListener('click', function(e){
         document.querySelector('.aside').addEventListener('click', function(e){
             document.querySelector('.aside').classList.toggle('deployed');
         })
-    }
-})();
-// Sidebar Style
-// function to set a given theme/color-scheme
-function setSidebar(sidebarStatus) {
-    localStorage.setItem('data-sidebar-width', sidebarStatus);
-    document.documentElement.setAttribute("data-sidebar-width", sidebarStatus)
-}
-// function to toggle between lg and sm aside navigation
-function toggleSidebarStatus() {
-    if (localStorage.getItem('data-sidebar-width') === 'lg'){
-        setSidebar('sm');
-    } else {
-        setSidebar('lg');
-    }
-}
-// Immediately invoked function to set the theme on initial load
-(function () {
-    if (localStorage.getItem('data-sidebar-width') === 'lg') {
-        setSidebar('lg');
-    } else {
-        setSidebar('sm');
     }
 })();
 

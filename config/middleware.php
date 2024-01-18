@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Middleware\Auth\RedirectIfNotAuthMiddleware;
+use App\Middleware\Auth\RegenSessionIfCookieExistMiddleware;
 use DI\NotFoundException;
 use Odan\Session\Middleware\SessionStartMiddleware;
 use Selmak\Proaxive2\Middleware\RespectValidationMiddleware;
@@ -26,6 +27,7 @@ return function (App $app) {
     $app->add(RespectValidationMiddleware::class);
     //$app->add($container->get('csrf'));
     $app->add(RedirectIfNotAuthMiddleware::class);
+    $app->add(RegenSessionIfCookieExistMiddleware::class);
     $app->addErrorMiddleware(true,true,true, $container->get('logger'));
     // Session by Odan for Slim
     $app->add(SessionStartMiddleware::class);

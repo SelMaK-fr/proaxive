@@ -23,7 +23,7 @@ class FrontFunctionTwig extends AbstractExtension
     public function getDataWithLink($data, $link): string
     {
         if($data == null){
-            return '<a href="'.$link.'" class="btn-sm d-block btn-light-purple">Ajouter</a>';
+            return '<a href="'.$link.'" class="btn-sm d-block btn-light-four">Ajouter</a>';
         } else {
             return $data;
         }
@@ -42,9 +42,9 @@ class FrontFunctionTwig extends AbstractExtension
         if($data == 'DRAFT'){
             return '<span class="label-mid badge-light-yellow">BROUILLON</span>';
         } elseif($data == 'VALIDATED'){
-            return '<span class="label-mid badge-light-green">VALIDÉE</span>';
+            return '<span class="label-mid btn-light-info">VALIDÉE</span>';
         } elseif ($data == 'COMPLETED'){
-            return '<span class="label-mid badge-light-green">COMPLÈTE</span>';
+            return '<span class="label-mid badge-light-green"><i class="ri-check-line"></i> COMPLÈTE</span>';
         }
         return '<span class="label-mid badge-light-pink">NC</span>';
     }

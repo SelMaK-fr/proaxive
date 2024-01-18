@@ -1,7 +1,20 @@
 /.idea
 /vendor/
 /.env
+/.env.local
+/.env.exemple
 /var/logs/*.log
+/var/pdf/*.pdf
 ###< Assets ###
 /public/assets/sass
 /public/assets/.sass-cache
+/public/assets/config.rb
+/proaxive-for-debian.sh
+/proaxive-for-hosting.sh
+/proaxive-update.sh
+/push.sh
+###< Storage ###
+/storage/backups/*
+/storage/tmp/*
+/storage/documents/deposits/*.pdf
+/storage/app/bao/*

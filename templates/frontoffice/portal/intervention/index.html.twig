@@ -6,11 +6,11 @@
     <div class="grid">
         <div class="col-7_sm-12">
             <div class="pt-5 pb-5">
-                <h3 class="fs-28px fw-600 txt-veryhard mb-0">Liste des interventions</h3>
+                <h3 class="fs-20px fw-600 txt-veryhard mb-0">Liste des interventions</h3>
                 <p class="fs-18px fw-300 mt-0">Vous avez actuellement <strong>{{ i | length }}</strong> intervention(s) d'enregistrées.</p>
                 <div class="card all-border table-radius">
                     <div class="card-title p-4">
-                        <h3 class="mb-0">Mes interventions</h3>
+                        <h3 class="mb-0 fs-16px">Mes interventions</h3>
                         <span>Toutes vos interventions sont listées ici</span>
                     </div>
                     <div class="card-table">
@@ -44,7 +44,7 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="{{ url_for('portal_intervention_read', {ref_number : item.ref_number}) }}" class="btn-sm btn-light-purple">Suivi</a>
+                                        <a href="{{ url_for('portal_intervention_read', {ref_number : item.ref_for_link}) }}" class="btn-sm btn-light-purple">Suivi</a>
                                     </td>
                                 </tr>
                             {% endfor %}

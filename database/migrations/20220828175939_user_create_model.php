@@ -36,6 +36,10 @@ final class UserCreateModel extends AbstractMigration
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_REGULAR,
                 'null' => true
             ])
+            ->addColumn('auth_token', 'text', [
+                'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_REGULAR,
+                'null' => true
+            ])
             ->addColumn('reset_at', 'datetime', ['null' => true])
             ->addColumn('reset_code', 'text',[
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG,

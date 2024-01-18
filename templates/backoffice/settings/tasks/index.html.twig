@@ -18,7 +18,7 @@
                                 <span>Ajouter ou supprimer une tâche pour les interventions</span>
                             </div>
                             <div class="col-6_sm-12 text-right">
-                                <button type="button" data-target="add_os" data-toggle="modal" class="btn btn-light-primary"><i class="ri-add-line"></i> Ajouter une tâche</button>
+                                <button type="button" data-target="add_task" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une tâche</button>
                             </div>
                         </div>
                     </div>
@@ -53,13 +53,12 @@
                                             </div>
                                             <!-- EDIT -->
                                             <div class="modal" id="edit_task-{{ t.id }}">
-                                                <div class="modal-container p-5">
-                                                    <div class="modal-header text-right">
-                                                        <button type="button" data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                                                <div class="modal-container">
+                                                    <div class="modal-header">
+                                                        <h1>Modification</h1>
                                                     </div>
                                                     <form method="post" action="{{ url_for('settings_task_update') }}?id={{ t.id }}">
                                                         <div class="modal-content">
-                                                            <div class="mb-4"><h1>Modification</h1></div>
                                                             <div class="grid-12 mt-5">
                                                                 <div class="col-12_sm-12">
                                                                     <div class="form-group">
@@ -74,7 +73,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-light-purple">Sauvegarder</button>
+                                                            <button type="submit" class="btn btn-light-four">Sauvegarder</button>
+                                                            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -99,14 +99,13 @@
     </div>
     <!-- ADD -->
 
-    <div class="modal" id="add_os">
-        <div class="modal-container p-5">
+    <div class="modal" id="add_task">
+        <div class="modal-container">
             {{ form.renderStart | raw }}
-                <div class="modal-header text-right">
-                    <button type="button" data-dismiss="modal" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+                <div class="modal-header">
+                    <h1>Nouvelle tâche</h1>
                 </div>
                 <div class="modal-content">
-                    <div class="mb-4"><h1>Nouvelle tâche</h1></div>
                     Création d'une nouvelle tâche afin de l'utiliser avec les interventions.
                     <div class="grid-12 mt-5">
                         <div class="col-12_sm-12">
@@ -117,7 +116,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-light-purple">Créer maintenant</button>
+                    <button type="submit" class="btn btn-light-four">Créer</button>
+                    <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
                 </div>
             {{ form.renderEnd(false) | raw }}
         </div>

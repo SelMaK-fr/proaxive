@@ -1,0 +1,151 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Paramètres de votre compte{% endblock %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="card-header mb-5">
+                        <h2>Paramètres de votre compte utilisateur</h2>
+                        <span>Mettre à jour ses paramètres de compte. Ces informations sont visibles dans le portail client.</span>
+                    </div>
+                    <div class="grid-12">
+                        <div class="col-6_sm-12">
+                            <form method="post" enctype="multipart/form-data" class="all-border-blue-light p-2 rd-2" style="width: 140px">
+                                <div class="upload-avatar">
+                                    <input type="file" id="avatar" tabindex="-1" name="avatar" accept="image/">
+                                    <div>
+                                        {% if user.avatar is not null and user.avatar is not empty %}
+                                            <img class="img-responsive" src="/uploads/avatars/{{ user.id }}/{{ user.avatar }}" alt="">
+                                        {% else %}
+                                            <img class="img-responsive" src="/assets/no-avatar-350x350.jpg" alt="">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-sm btn-light-info mt-2 w100" onclick="uploadFile(``, 'avatar')">Envoyer</button>
+                            </form>
+                        </div>
+                        <div class="col-6_sm-12">
+                            <div class="card-inside {% if user.key_totp is empty or user.key_totp is null %} inside-danger-border{% else %} inside-purple-border-dashed{% endif%}">
+                                <div class="card-body p-4">
+                                    <div class="flex align-items-center">
+                                        {% if user.key_totp is empty or user.key_totp is null %}
+                                            <span class="label badge-light-pink d-block mr-2">Inactif</span>
+                                        {% endif %}
+                                        <h3 class="mb-0">Authentification 2FA</h3>
+                                    </div>
+                                    <p>
+                                        Cette méthode ajoute une couche de protection à votre compte administrateur.
+                                        L'activation de cette option nécessite de lire un QR Code.
+                                    </p>
+                                    {% if user.key_totp is empty or user.key_totp is null %}
+                                        <button data-target="active_auth_2fa" data-toggle="modal" type="button" class="btn btn-light-pink">Activer l'authentification 2FA</button>
+                                    {% else %}
+                                        <button data-target="active_auth_2fa" data-toggle="modal" type="button" class="btn btn-gradient-purple">Désactiver l'authentification 2FA</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.renderStart | raw }}
+                        <div class="grid-2">
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('fullname') | raw }}
+                                {{ form.renderField('pseudo') | raw }}
+                            </div>
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('mail') | raw }}
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="m-0">Gestion du mot de passe</h4>
+                            <span class="d-block mb-2">Choisissez un mot compliqué afin de mieux sécuriser votre compte</span>
+                            <button type="button" data-target="change_password" data-toggle="modal" class="btn btn-light-info">Changer mot de passe</button>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-light-purple">Mettre à jour</button>
+                        </div>
+                    {{ form.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 2FA -->
+    <div class="modal" id="active_auth_2fa">
+        <div class="modal-container p-5">
+            <form method="post" action="">
+                <div class="modal-content">
+                    <div class="mb-4">
+                        <h1>Authentification 2FA</h1>
+                        {% if user.key_totp is empty or user.key_totp is null %}
+                        <p>
+                            Veuillez scanner et entrer le code secret.
+                        </p>
+                    </div>
+                    <div class="mt-5 mb-5 text-center">
+                        <img src="{{ qrcode }}" alt=""/>
+                        <div class="form-group mt-3">
+                            <label>
+                                <input type="text" class="form-input" name="code" placeholder="Code de vérification">
+                            </label>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="pt-4 pb-4">
+                            Vous êtes sur le point de <strong>désactiver</strong> l'authentification 2FA. <br>
+                            Etes-vous sûr ?
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer text-right">
+                    {% if user.key_totp is empty or user.key_totp is null %}
+                        <button type="submit" class="btn btn-light-purple">Activer maintenant</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-light-pink">Oui, désactiver 2FA</button>
+                    {% endif %}
+                    <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--- Modal Password -->
+    <div class="modal" id="change_password">
+        <div class="modal-container p-5">
+            <form method="post" action="" id="changePassword">
+                <div class="modal-content">
+                    <div class="mb-4">
+                        <h1>Nouveau mot de passe</h1>
+                        <p>
+                            Veuillez choisir un nouveau mot de passe
+                        </p>
+                        <div>
+                            <span class="d-block">- Mot de passe compris entre <strong>6</strong> et <strong>25</strong> caractères</span>
+                            <span class="d-block">- Si aucune message de confirmation, veuillez vérifier votre mot de passe et recommencer.</span>
+                        </div>
+                    </div>
+                    <div class="mt-5 mb-5">
+                        <div class="form-group">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" id="password" name="password" class="form-control">
+                            {% if has_error('password') %}<span>{{ error('password') }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password" class="form-label">Confirmez mot de passe</label>
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control">
+                            {% if has_error('confirm_password') %}<span>{{ error('confirm_password') }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="submit" class="btn btn-light-purple" id="post-data">Valider</button>
+                    <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

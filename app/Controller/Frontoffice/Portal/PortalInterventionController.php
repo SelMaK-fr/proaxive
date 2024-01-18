@@ -24,8 +24,8 @@ class PortalInterventionController extends AbstractController
 
     public function read(Request $request, Response $response, array $args): Response
     {
-        $ref_number = (int)$args['ref_number'];
-        $i = $this->getRepository(InterventionRepository::class)->joinForIdWithKey('ref_number', $ref_number);
+        $ref_number = (string)$args['ref_number'];
+        $i = $this->getRepository(InterventionRepository::class)->joinForIdWithKey('ref_for_link', $ref_number);
         $e = $this->getRepository(EquipmentRepository::class)->findWithBrand($i->equipments_id);
         $tasksForI = $this->getRepository(TaskAssocRepository::class)->findByIntervention((int)$i->i_id);
 

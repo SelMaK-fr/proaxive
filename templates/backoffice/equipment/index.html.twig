@@ -4,78 +4,71 @@
 
 {% block body %}
     {% if equipments is not empty %}
-        <div class="card">
-            <div class="card-body">
-                <div class="p-4">
-                    <div class="grid-12 -noGutter">
-                        <div class="col-8_sm-12">
-                            <div class="form-group form-icon form-icon-left mb-0">
-                                <div class="flex">
-                                    <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
-                                    <div class="flex-root">
-                                        <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/equipments/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4_sm-12">
-                            <div class="ml-4 text-right">
-                                <a title="Ajouter un périphérique" href="{{ url_for('equipment_create_device') }}" class="btn btn-purple m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-printer-fill"></i></a>
-                                <a title="Ajouter un ordinateur/smartphone" href="{{ url_for('equipment_create') }}" class="btn btn-purple m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-computer-fill"></i></a>
-                            </div>
+        <div class="card card-shadow p-4">
+            <div class="filter-search">
+                <div class="form-group form-icon form-icon-left mb-0 flex-root">
+                    <div class="flex">
+                        <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
+                        <div class="flex-root">
+                            <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/equipments/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
                         </div>
                     </div>
                 </div>
-                <div class="results" id="htmlContent"></div>
-            </div>
-        </div>
-
-        <div class="grid-12 mt-5" id="table-visible">
-            {% for e in equipments %}
-                <div class="col-4_sm-12">
-                    <a class="color-inherit p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">
-                        <span class="pin pin-top pin-right">
-                        {% if e.is_outofservice is not null %}
-                            <span class="label badge-light-pink">
-                        <i class="ri-forbid-2-fill"></i>
-                        </span>
-                        {% endif %}
-                        </span>
-                        <div class="card {% if e.is_outofservice is defined and e.is_outofservice is not null %}all-border-pink{% endif %}">
-                            <div class="card-body p-4">
-                                <div class="flex align-items-center">
-                                    <div class="mr-4">
-                                            <span class="text-{% if e.is_outofservice is not null %}pink{% else %}green{% endif %}">
-                                                <i class="fs-32px ri-{% if e.is_outofservice is not null %}forbid-2{% else %}thumb-up{% endif %}-fill"></i>
-                                            </span>
-                                    </div>
-                                    <div>
-                                        <h4>{{ e.name }}</h4>
-                                        <span class="d-block text-blue">{{ e.customer_name }}</span>
-                                        <p>
-                                            <span class="d-block">Ajouté le : {{ e.created_at | date('d/m/Y') }}</span>
-                                            <span class="d-block">Type : {{ e.type_name }}</span>
-                                            <span class="d-block">Marque : {{ e.brand_name }}</span>
-                                            <span class="d-block">{{ e.os_name }}</span>
-                                            <span class="d-block"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                <div class="sk-topbar-search-button">
+                    <a title="Ajouter un périphérique" href="{{ url_for('equipment_create_device') }}" class="btn btn-sk-tree m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-printer-fill"></i></a>
+                    <a title="Ajouter un ordinateur/smartphone" href="{{ url_for('equipment_create') }}" class="btn btn-sk-tree m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-computer-fill"></i></a>
                 </div>
-            {% endfor %}
+            </div>
+            <div class="results" id="htmlContent"></div>
+            <table class="table-default table-striped mt-3" id="table-visible">
+                <thead>
+                <tr>
+                    <th style="width: 2%"><input type="checkbox" onClick="toggle(this)"></th>
+                    <th style="width: 2%"></th>
+                    <th>Nom</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Marque</th>
+                    <th>OS</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for e in equipments %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="_delete" value="">
+                        </td>
+                        <td>
+                            <span class="label badge-{% if e.is_outofservice is not null %}light-pink{% else %}light-green{% endif %}">
+                                 OK
+                            </span>
+                        </td>
+                        <td><a class="{% if e.is_outofservice is defined and e.is_outofservice is not null %}pink{% else %}text-dark{% endif %} p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">{{ e.name }}</a></td>
+                        <td><span class="d-block">{{ e.customer_name }}</span></td>
+                        <td>{{ e.type_name }}</td>
+                        <td>{{ e.brand_name }} <em class="d-block">{{ e.e_model }}</em> </td>
+                        <td>{{ e.os_name }}</td>
+                        <td class="link-icon">
+                            <a class="link-default" href="{{ url_for('equipment_update', {id:e.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="" class="text-pink"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+        {{ dataPaginate | raw }}
     {% else %}
         <div class="text-center">
-        <span>
+        <span class="text-one">
             <i class="fs-80px ri-server-line"></i>
         </span>
             <h3>Aucun équipement</h3>
             Ajoutez des équipements et retrouvez-les ici
             <div class="mt-3">
-                <a href="" class="btn btn-light-purple"><i class="ri-add-line"></i> Nouvel équipement</a>
+                <a title="Ajouter un périphérique" href="{{ url_for('equipment_create_device') }}" class="btn btn-light-four m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-printer-fill"></i></a>
+                <a title="Ajouter un ordinateur/smartphone" href="{{ url_for('equipment_create') }}" class="btn btn-light-four m-0"><i class="fs-18px ri-add-fill"></i> <i class="fs-18px ri-computer-fill"></i></a>
             </div>
         </div>
     {% endif %}
@@ -83,4 +76,12 @@
 
 {% block javascripts %}
     <script src="/assets/js/search.js"></script>
+    <script>
+        function toggle(source) {
+            checkboxes = document.getElementsByName('_delete');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
 {% endblock %}

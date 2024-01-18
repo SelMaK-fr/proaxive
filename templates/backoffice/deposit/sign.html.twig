@@ -1,0 +1,81 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Bon de dépôt n°{{ d.reference }}{% endblock %}
+
+{% block body %}
+    <div class="grid-center">
+        <div class="col-6_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <h3>Signature du bon de dépôt n° {{ d.reference }}</h3>
+                    <p><strong>Mme/M {{ d.customer_name }}</strong>, Vous êtes sur le point d'apposer votre signature. Vous devez être en accord avec les éléments ci-dessous.</p>
+                    <div class="text-right">
+                        <strong>Date du dépôt</strong> : {{ d.deposit_date | date('d/m/Y') }}
+                    </div>
+                    <table class="table-default mt-3">
+                        <thead>
+                            <tr>
+                                <th>Equipement</th>
+                                <th>Etat</th>
+                                <th>Dommage(s)</th>
+                                <th>Accessoire(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ d.equipment_name }}</td>
+                                <td>
+                                    {% if d.equipment_state == 1 %}
+                                        <span class="label badge-light-pink">DMG</span>
+                                    {% else %}
+                                        <span class="label badge-light-green">OK</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if d.equipment_state == 1 %}
+                                    {{ d.about_state }}
+                                    {% else %}
+                                        <em>Aucun</em>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if d.equipment_accessories is not null and d.equipment_accessories is not empty %}
+                                        {{ d.equipment_accessories }}
+                                    {% else %}
+                                        <em>Aucun</em>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3 class="mt-4 mb-0">Votre signature</h3>
+                    <span>Veuillez signer dans le cadre ci-dessous.</span>
+                    <form method="post" class="mt-3" action="">
+                        <div class="content all-border-dashed mb-3">
+                            <canvas id="signature-pad" class="signature-pad" width=600 height=180></canvas>
+                            <input id="client_sign" type="hidden" name="code_sign" value=""/>
+                        </div>
+                        <button id="save" type="submit" class="btn btn-sk-tree">Confirmer</button>
+                        <button type="button" class="btn btn-sk-one clear f-right" data-action="clear">Effacer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-3_sm-12">
+            <div class="card">
+                <div class="p-4">
+                    <h3>Lieu du dépôt</h3>
+                    {{ c.type}} {{ c.name }} <br>
+                    {{ c.address }} <br>
+                    {{ c.zipcode }}, {{ c.city }} <br>
+                    {{ c.phone }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/signature.canva.js"></script>
+{% endblock %}

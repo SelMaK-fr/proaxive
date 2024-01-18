@@ -9,6 +9,7 @@ use App\Type\InterventionFastType;
 use App\Type\InterventionSearchType;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Paginator\Paginator;
 
 class InterventionController extends AbstractController
 {
@@ -26,11 +27,15 @@ class InterventionController extends AbstractController
     {
         $all = $request->getQueryParams()['v'];
         if($all === "all"){
-            $interventions = $this->getRepository(InterventionRepository::class)->all()->orderBy('created_at DESC');
+            $paginator = new Paginator('15', 'p', $request);
+            $paginator->set_total($this->getRepository(InterventionRepository::class)->count());
+            $interventions = $this->getRepository(InterventionRepository::class)->allArrayForPaginator($paginator->get_limit());
+            $dataPaginate = $paginator->page_links();
             $template = 'backoffice/intervention/index_all.html.twig';
         } else {
-            $interventions = $this->getRepository(InterventionRepository::class)->all()->orderBy('created_at DESC')->limit(9);
+            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->orderBy('interventions.created_at DESC')->limit(9);
             $template = 'backoffice/intervention/index.html.twig';
+            $dataPaginate = '';
         }
         $formSearch = $this->createForm(InterventionSearchType::class);
         $formSearch->handleRequest();
@@ -52,6 +57,7 @@ class InterventionController extends AbstractController
             'interventions' => $interventions,
             'form' => $form,
             'formSearch' => $formSearch,
+            'dataPaginate' => $dataPaginate,
             'breadcrumbs' => $breadcrumbs
         ]);
     }

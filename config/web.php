@@ -8,6 +8,10 @@ use App\Controller\Backoffice\Customer\CustomerCreateController;
 use App\Controller\Backoffice\Customer\CustomerDeleteController;
 use App\Controller\Backoffice\Customer\CustomerReadController;
 use App\Controller\Backoffice\Customer\CustomerUpdateController;
+use App\Controller\Backoffice\Deposit\DepositCreateController;
+use App\Controller\Backoffice\Deposit\DepositReadController;
+use App\Controller\Backoffice\Deposit\DepositSignController;
+use App\Controller\Backoffice\Deposit\DepositToPdfController;
 use App\Controller\Backoffice\Equipment\EquipmentAjaxController;
 use App\Controller\Backoffice\Equipment\EquipmentController;
 use App\Controller\Backoffice\Equipment\EquipmentCreateController;
@@ -22,6 +26,7 @@ use App\Controller\Backoffice\Intervention\InterventionDeleteController;
 use App\Controller\Backoffice\Intervention\InterventionReadController;
 use App\Controller\Backoffice\Intervention\InterventionUpdateController;
 use App\Controller\Backoffice\Intervention\InterventionValidatedController;
+use App\Controller\Backoffice\Settings\Account\AccountController;
 use App\Controller\Backoffice\Settings\BrandController;
 use App\Controller\Backoffice\Settings\OperatingSystemController;
 use App\Controller\Backoffice\Settings\ParametersController;
@@ -51,9 +56,11 @@ use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
     $app->get('/', IndexController::class)->setName('app_home');
-    // Authentification Panel
+    // Authentificator Panel
     $app->group('/auth/', function (RouteCollectorProxy $group) {
-        $group->any('login', [UserAccountController::class, 'getSignUp'])->setName('auth_user_login');
+        $group->any('login', [UserAccountController::class, 'getSignIn'])->setName('auth_user_login');
+        $group->any('confirm-account/[:{args}]', [UserAccountController::class, 'firstSignIn'])->setName('auth_first_login');
+        $group->any('logout', [UserAccountController::class, 'logout'])->setName('auth_user_logout');
     });
 
     $app->get('/search/i/', [FrontInterventionSearch::class, 'search'])->setName('app_search_intervention');
@@ -62,6 +69,10 @@ return function (App $app) {
     });
     // Administration
     $app->get('/admin', [\App\Controller\Backoffice\IndexController::class, 'index'])->setName('dash_home');
+    // Account Admin/Tech/Manager
+    $app->group('/admin/settings/account', function (RouteCollectorProxy $group) {
+        $group->any('', [AccountController::class, 'index'])->setName('dash_account');
+    });
     /* Customer */
     $app->group('/admin/customers', function (RouteCollectorProxy $group) {
         $group->get('', [CustomerController::class, 'index'])->setName('dash_customer');
@@ -132,6 +143,13 @@ return function (App $app) {
        $group->any('/{id:[0-9]+}/validation', [InterventionValidatedController::class, 'validated'])->setName('intervention_validation');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete');
     });
+    /* Deposit */
+    $app->group('/admin/deposit', function (RouteCollectorProxy $group) {
+       $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');
+       $group->any('/{reference}/sign', [DepositSignController::class, 'index'])->setName('deposit_sign');
+       $group->get('/[:{args}]', [DepositReadController::class, 'read'])->setName('deposit_read');
+       $group->get('/pdf/{reference}', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
+    });
     /* Task */
     $app->group('/admin/tasks', function (RouteCollectorProxy $group) {
         $group->post('/add/i-{id:[0-9]+}', [AddTaskToInterventionController::class, 'addToIntervention'])->setName('task_add_intervention');
@@ -162,7 +180,7 @@ return function (App $app) {
     $app->group('/wxy/customers', function (RouteCollectorProxy $group){
         $group->get('', [PortalController::class, 'index'])->setName('portal_home');
         $group->get('/interventions', [PortalInterventionController::class, 'index'])->setName('portal_interventions');
-        $group->get('/i/r/{ref_number:[0-9]+}', [PortalInterventionController::class, 'read'])->setName('portal_intervention_read');
+        $group->get('/i/r/{ref_number}', [PortalInterventionController::class, 'read'])->setName('portal_intervention_read');
         $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
         $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
     });

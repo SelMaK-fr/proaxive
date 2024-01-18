@@ -25,8 +25,7 @@ class InterventionCreateType extends Type
             ->add('customers_id', 'choice', [
                 'placeholder' => 'Sélectionnez un client',
                 'label' => 'Clients',
-                'choices' => self::getCustomer(),
-                'required' => false
+                'choices' => self::getCustomer()
             ])
             ->add('sort', ChoiceType::class, [
                 'label' => 'Type',
@@ -55,7 +54,8 @@ class InterventionCreateType extends Type
             ->add('company_id', ChoiceType::class, [
                 'label' => 'Magasin',
                 'placeholder' => 'Sélectionnez un magasin/atelier',
-                'choices' => self::getCompany()
+                'choices' => self::getCompany(),
+                'required' => false
             ])
             ;
         return $builder->getForm();

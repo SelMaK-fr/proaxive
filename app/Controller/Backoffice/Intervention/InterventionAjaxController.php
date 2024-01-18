@@ -115,7 +115,8 @@ class InterventionAjaxController extends AbstractController
         $intervention_id = (int)$args['id'];
         if($request->getMethod() === 'POST') {
             $this->getRepository(InterventionRepository::class)->update([
-               'start_date' => date('Y-m-d h:i:s')
+               'start_date' => date('Y-m-d h:i:s'),
+                'way_steps' => 2
             ], $intervention_id);
         }
         return $response;
@@ -135,7 +136,9 @@ class InterventionAjaxController extends AbstractController
         if($request->getMethod() === 'POST') {
             $this->getRepository(InterventionRepository::class)->update([
                 'end_date' => date('Y-m-d h:i:s'),
-                'state' => 'COMPLETED'
+                'state' => 'COMPLETED',
+                'way_steps' => 5,
+                'is_closed' => 1
             ], $intervention_id);
         }
         return $response;

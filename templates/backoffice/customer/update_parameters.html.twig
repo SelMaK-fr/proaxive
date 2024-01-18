@@ -3,183 +3,165 @@
 {% block title %}Compte client - {{ customer.fullname }}{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
+        <li><a href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+        <li><a class="selected" href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
+    </ul>
     <div class="card">
-        <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
-                <li><a href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-                <li><a class="selected" href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
-            </ul>
-            <div class="p-4">
-                <div class="grid-12">
-                    <div class="col-6_sm-12">
-                        <div class="mb-5">
-                            <h3 class="fs-18px fw-500">Paramètres du compte client</h3>
-                            <p class="m-0">Ici, vous pouvez modifier les paramètres du compte client.</p>
-                        </div>
-                        {% if customer.enable_portal is not null %}
-                            <!-- Portal password Customer -->
-                            <div class="card-inside inside-purple-border mb-4">
-                                <div class="card-body p-3 text-muted">
-                                    <span class="d-block fw-500 text-uppercase ">Connexion au portail</span>
-                                    <span class="d-block mb-4">Ajouter/remplacer le mot de passe de connexion au portail</span>
-                                    <span class="d-block mb-2">URL de connexion au portail client</span>
-                                    <div class="form-group">
-                                        <div class="form-input flex align-items-center">
-                                            <span id="portalUrl">{{ getBaseUrl() }}/wxy/customers/login</span>
-                                        </div>
-                                        <small class="text-muted" id="copy-status">Cliquez sur l'url pour copier</small>
-                                    </div>
-                                    {{ formPassword.renderStart | raw }}
-                                        <div class="grid-2">
-                                            <div class="col">
-                                                {{ formPassword.renderField('passwd') | raw }}
-                                            </div>
-                                            <div class="col">
-                                                {{ formPassword.renderField('passwd_2') | raw }}
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-light-purple">Confirmer</button>
-                                    {{ formPassword.renderEnd(false) | raw }}
-                                </div>
-                            </div>
-                        {% endif %}
-                        {{ form.renderStart | raw }}
-                            <div class="grid-12">
-                                <div class="col-12_sm-12">
-                                    <!-- Activate account -->
-                                    <div class="grid-2">
-                                        <div class="col">
-                                            <div class="card-inside {% if customer.mail is not null and customer.mail is not empty %}card-inside-purple{% else %}card-inside-default{% endif %}">
-                                                <div class="card-body p-3">
-                                                    <div class="flex align-items-center">
-                                                        <div class="flex align-items-center flex-root justify-content-space-between">
-                                                            {% if customer.mail is not null and customer.mail is not empty %}
-                                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
-                                                                <div class="flex-root">Ce compte client a été validé</div>
-                                                            {% else %}
-                                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
-                                                                <div class="flex-root">Ce compte client n'est pas validé</div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="text-italic">Un compte client peut être validé par son adresse courriel. Ce n'est cependant pas obligatoire. Le compte doit être validé afin d'envoyer les rapports par mail.</div>
-                                        </div>
-                                    </div>
-                                    <!-- Add to blacklist -->
-                                    <div class="grid-2">
-                                        <div class="col">
-                                            <div class="card-inside {% if customer.is_blacklisted is not null and customer.is_blacklisted is not empty %}card-inside-purple{% else %}card-inside-default{% endif %}">
-                                                <div class="card-body p-3">
-                                                    <div class="flex align-items-center">
-                                                        <div class="flex align-items-center flex-root justify-content-space-between">
-                                                            {% if customer.is_blacklisted is not null %}
-                                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
-                                                                <div class="flex-root">Présent dans la liste noire</div>
-                                                            {% else %}
-                                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
-                                                                <div class="flex-root">N'est pas dans la liste noire</div>
-                                                            {% endif %}
-                                                            <div>{{ form.renderField('is_blacklisted') | raw }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="text-italic">Un client en liste noire est simplement "tagué" en tant que tel. Il aura toujours accès au portail.</div>
-                                        </div>
-                                    </div>
-                                    <!-- Activate portal -->
-                                    <div class="grid-2">
-                                        <div class="col">
-                                            <div class="card-inside {% if customer.enable_portal is not null and customer.enable_portal is not empty %}card-inside-purple{% else %}card-inside-default{% endif %}">
-                                                <div class="card-body p-3">
-                                                    <div class="flex align-items-center">
-                                                        <div class="flex align-items-center flex-root justify-content-space-between">
-                                                            {% if customer.enable_portal is not null %}
-                                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
-                                                                <div class="flex-root">Portail client activé</div>
-                                                            {% else %}
-                                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
-                                                                <div class="flex-root">Portail client désactivé</div>
-                                                            {% endif %}
-                                                            <div>{{ form.renderField('enable_portal') | raw }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="text-italic">Son activation permet au client de consulter ses documents depuis le portail de Proaxive.</div>
-                                        </div>
-                                    </div>
-                                    <!-- Activate portal -->
-                                    <div class="grid-2">
-                                        <div class="col">
-                                            <div class="card-inside {% if customer.on_sale is not null and customer.on_sale is not empty %}card-inside-purple{% else %}card-inside-default{% endif %}">
-                                                <div class="card-body p-3">
-                                                    <div class="flex align-items-center">
-                                                        <div class="flex align-items-center flex-root justify-content-space-between">
-                                                            {% if customer.on_sale is not null %}
-                                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
-                                                                <div class="flex-root">Promotion activée</div>
-                                                            {% else %}
-                                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
-                                                                <div class="flex-root">Promotion désactivée</div>
-                                                            {% endif %}
-                                                            {{ form.renderField('on_sale') | raw }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="text-italic">Permet d'ajouter une promotion commercial. Retourne votre nombre en pourcentage négatif</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-light-purple">Enregistrer</button>
-                            {{ form.renderEnd(false) | raw }}
+        <div class="p-4">
+            <div class="grid-12">
+                <div class="col-6_sm-12">
+                    <div class="mb-5">
+                        <h3 class="fs-18px fw-500">Paramètres du compte client</h3>
+                        <p class="m-0">Ici, vous pouvez modifier les paramètres du compte client.</p>
                     </div>
-                    <div class="col-6_sm-12">
-                        <div class="col-12 grid">
-                            <div class="col-8">
-                                <div class="card-inside inside-bg-purple mb-4">
-                                    <div class="card-body p-3">
-                                        <form method="post" action="{{ url_for('customer_update_parameters_type', {'id': customer.id}) }}">
-                                            <input type="hidden" name="is_society">
-                                            {% if customer.is_society is null and customer.is_society is empty %}
-                                                <span class="d-block fw-500 text-uppercase">Client particulier</span>
-                                                <p>
-                                                    Vous pouvez changer le rang de ce client.<br>
-                                                    Après confirmation, {{ customer.fullname }} passera au rang <strong>Société</strong>
-                                                </p>
-                                                <button type="submit" class="btn btn-gradient-purple">Transformer en société</button>
-                                            {% else%}
-                                                <span class="d-block fw-500 text-uppercase">Client Entreprise</span>
-                                                <p>
-                                                    Vous pouvez changer le rang de ce client.<br>
-                                                    Après confirmation, {{ customer.fullname }} passera au rang <strong>Particulier</strong>
-                                                </p>
-                                                <button type="submit" class="btn btn-gradient-purple">Transformer en particulier</button>
-                                            {% endif %}
-                                        </form>
+                    {% if customer.enable_portal is not null %}
+                        <!-- Portal password Customer -->
+                        <div class="card-inside all-border-dashed mb-4">
+                            <div class="card-body p-3">
+                                <span class="d-block fw-500 text-uppercase text-one ">Connexion au portail</span>
+                                <span class="d-block mb-4 text-muted">Ajouter/remplacer le mot de passe de connexion au portail</span>
+                                <span class="d-block mb-2">URL de connexion au portail client</span>
+                                <div class="form-group">
+                                    <div class="form-input flex align-items-center">
+                                        <span id="portalUrl">{{ getBaseUrl() }}/wxy/customers/login</span>
+                                    </div>
+                                    <small class="text-muted" id="copy-status">Cliquez sur l'url pour copier</small>
+                                </div>
+                                {{ formPassword.renderStart | raw }}
+                                <div class="grid-2">
+                                    <div class="col">
+                                        {{ formPassword.renderField('passwd') | raw }}
+                                    </div>
+                                    <div class="col">
+                                        {{ formPassword.renderField('passwd_2') | raw }}
                                     </div>
                                 </div>
-                                <!-- DELETE CUSTOMER -->
-                                <div class="card-inside inside-danger-border mb-4">
-                                    <div class="card-body p-3 text-muted">
+                                <button type="submit" class="btn btn-light-four">Confirmer</button>
+                                {{ formPassword.renderEnd(false) | raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {{ form.renderStart | raw }}
+                    <div class="grid-12">
+                        <div class="col-12_sm-12">
+                            <!-- Activate account -->
+                            <div class="card-inside {% if customer.mail is not null and customer.mail is not empty %}card-inside-four{% else %}card-inside-default{% endif %}">
+                                <div class="card-body p-3">
+                                    <div class="flex align-items-center">
+                                        <div class="flex align-items-center flex-root justify-content-space-between">
+                                            {% if customer.mail is not null and customer.mail is not empty %}
+                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
+                                                <div class="flex-root">Ce compte client a été validé</div>
+                                            {% else %}
+                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
+                                                <div class="flex-root">Ce compte client n'est pas validé</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="fs-14px text-italic mt-2">
+                                        Un compte client peut être validé par son adresse courriel. Ce n'est cependant pas obligatoire. Le compte doit être validé afin d'envoyer les rapports par mail.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Add to blacklist -->
+                            <div class="card-inside mt-3 {% if customer.is_blacklisted is not null and customer.is_blacklisted is not empty %}card-inside-four{% else %}card-inside-default{% endif %}">
+                                <div class="card-body p-3">
+                                    <div class="flex align-items-center">
+                                        <div class="flex align-items-center flex-root justify-content-space-between">
+                                            {% if customer.is_blacklisted is not null %}
+                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
+                                                <div class="flex-root">Présent dans la liste noire</div>
+                                            {% else %}
+                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
+                                                <div class="flex-root">N'est pas dans la liste noire</div>
+                                            {% endif %}
+                                            <div>{{ form.renderField('is_blacklisted') | raw }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="fs-14px text-italic mt-2">
+                                        Un client en liste noire est simplement "tagué" en tant que tel. Il aura toujours accès au portail.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Activate portal -->
+                            <div class="card-inside mt-3 {% if customer.enable_portal is not null and customer.enable_portal is not empty %}card-inside-four{% else %}card-inside-default{% endif %}">
+                                <div class="card-body p-3">
+                                    <div class="flex align-items-center">
+                                        <div class="flex align-items-center flex-root justify-content-space-between">
+                                            {% if customer.enable_portal is not null %}
+                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
+                                                <div class="flex-root">Portail client activé</div>
+                                            {% else %}
+                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
+                                                <div class="flex-root">Portail client désactivé</div>
+                                            {% endif %}
+                                            <div>{{ form.renderField('enable_portal') | raw }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="fs-14px text-italic mt-2">
+                                        Son activation permet au client de consulter ses documents depuis le portail de Proaxive.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Activate portal -->
+                            <div class="card-inside mt-3 {% if customer.on_sale is not null and customer.on_sale is not empty %}card-inside-four{% else %}card-inside-default{% endif %}">
+                                <div class="card-body p-3">
+                                    <div class="flex align-items-center">
+                                        <div class="flex align-items-center flex-root justify-content-space-between">
+                                            {% if customer.on_sale is not null %}
+                                                <div class="mr-3"><i class="fs-26px ri-checkbox-circle-fill"></i></div>
+                                                <div class="flex-root">Promotion activée</div>
+                                            {% else %}
+                                                <div class="mr-3"><i class="fs-26px ri-close-circle-fill"></i></div>
+                                                <div class="flex-root">Promotion désactivée</div>
+                                            {% endif %}
+                                            {{ form.renderField('on_sale') | raw }}
+                                        </div>
+                                    </div>
+                                    <div class="fs-14px text-italic mt-2">
+                                        Permet d'ajouter une promotion commercial. Retourne votre nombre en pourcentage négatif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-light-four">Enregistrer</button>
+                    {{ form.renderEnd(false) | raw }}
+                </div>
+                <div class="col-6_sm-12">
+                    <div class="col-12 grid">
+                        <div class="col-8">
+                            <div class="card-inside inside-bg-tree mb-4">
+                                <div class="card-body p-3">
+                                    <form method="post" action="{{ url_for('customer_update_parameters_type', {'id': customer.id}) }}">
+                                        <input type="hidden" name="is_society">
+                                        {% if customer.is_society is null and customer.is_society is empty %}
+                                            <span class="d-block fw-500 text-uppercase">Client particulier</span>
+                                            <p>
+                                                Vous pouvez changer le rang de ce client.<br>
+                                                Après confirmation, {{ customer.fullname }} passera au rang <strong>Société</strong>
+                                            </p>
+                                            <button type="submit" class="btn btn-sk-one">Transformer en société</button>
+                                        {% else%}
+                                            <span class="d-block fw-500 text-uppercase">Client Entreprise</span>
+                                            <p>
+                                                Vous pouvez changer le rang de ce client.<br>
+                                                Après confirmation, {{ customer.fullname }} passera au rang <strong>Particulier</strong>
+                                            </p>
+                                            <button type="submit" class="btn btn-sk-one">Transformer en particulier</button>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- DELETE CUSTOMER -->
+                            <div class="card-inside inside-danger-border mb-4">
+                                <div class="card-body p-3 text-muted">
                                         <span class="d-block">
                                             Supprimer ce client supprimera également tous ses équipements. Les interventions resteront accessibles en lecture seule.
                                         </span>
-                                        <button data-target="delete_fullname" data-toggle="modal" type="button" class="btn btn-light-pink mt-3">Supprimer ce client</button>
-                                    </div>
+                                    <button data-target="delete_fullname" data-toggle="modal" type="button" class="btn btn-light-pink mt-3">Supprimer ce client</button>
                                 </div>
                             </div>
                         </div>

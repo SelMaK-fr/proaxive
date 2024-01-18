@@ -4,34 +4,23 @@
 
 {% block body %}
     {% if customers is not empty %}
-        <div class="card">
-            <div class="card-body">
-                <div class="p-4">
-                    <div class="grid-12 -noGutter">
-                        <div class="col-8_sm-12">
-                            <div class="form-group form-icon form-icon-left mb-0">
-                                <div class="flex">
-                                    <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
-                                    <div class="flex-root">
-                                        <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/customers/ajax/search')" class="form-input" id="txtHint" placeholder="Rechercher un client">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4_sm-12">
-                            <div class="ml-4 text-right">
-                                <a href="" class="btn btn-purple m-0"><i class="fs-18px ri-add-fill"></i></a>
-                            </div>
-                        </div>
+        <div class="filter-search">
+            <div class="form-group form-icon form-icon-left mb-0 flex-root">
+                <div class="flex">
+                    <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
+                    <div class="flex-root">
+                        <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/customers/ajax/search')" class="form-input" id="txtHint" placeholder="Rechercher un client">
                     </div>
                 </div>
-                <div class="results" id="htmlContent"></div>
+            </div>
+            <div class="sk-topbar-search-button">
+                <a title="Ajouter un client" href="{{ url_for('customer_create_particular') }}" class="btn btn-sk-one m-0"><i class="fs-18px ri-add-fill"></i></a>
             </div>
         </div>
-        <div class="grid-12 mt-5" id="table-visible">
+        <div class="results" id="htmlContent"></div>
+        <div class="grid-12 mt-5">
             {% for c in customers %}
                 <div class="col-3_sm-12">
-                    <a class="color-inherit p-relative" href="{{ url_for('customer_read', {'id': c.id}) }}">
                     <span class="pin pin-top pin-right">
                     {% if c.enable_portal is not null %}
                         <span class="label badge-light-green">
@@ -67,8 +56,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-footer-button" role="group">
+                                <div class="flex align-items-center">
+                                    <a href="{{ url_for('customer_read', {'id': c.id}) }}" class="btn"><i class="fa-regular fa-id-card"></i> Profil</a>
+                                    <a href="#" class="btn"><i class="fa-regular fa-envelope"></i> Message</a>
+                                </div>
+                            </div>
                         </div>
-                    </a>
                 </div>
             {% endfor %}
         </div>
@@ -80,7 +74,7 @@
             <h3>Aucun client</h3>
             Ajoutez des clients et retrouvez-les ici
             <div class="mt-3">
-                <a href="" class="btn btn-light-purple"><i class="ri-add-line"></i> Nouveau client</a>
+                <a href="{{ url_for('customer_create_particular') }}" class="btn btn-light-purple"><i class="ri-add-line"></i> Nouveau client</a>
             </div>
         </div>
     {% endif %}

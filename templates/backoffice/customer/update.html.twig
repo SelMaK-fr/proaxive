@@ -3,16 +3,14 @@
 {% block title %}Compte client - {{ customer.fullname }}{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
+        <li><a class="selected" href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+        <li><a href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
+    </ul>
     <div class="card">
-        <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
-                <li><a class="selected" href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-                <li><a href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
-            </ul>
-            <div class="p-4">
-                {{ include('backoffice/customer/_form.html.twig') }}
-            </div>
+        <div class="p-4">
+            {{ include('backoffice/customer/_form.html.twig') }}
         </div>
     </div>
 {% endblock %}

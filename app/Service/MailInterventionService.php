@@ -17,12 +17,19 @@ class MailInterventionService
     public function sendMailStart(string $to, mixed $view)
     {
         $mail = new MailerFactory($this->settings);
-        $sendmail = $mail->createMailer();
-        $sendmail->setFrom($this->settings['from']);
-        $sendmail->addAddress($to);
-        $sendmail->isHTML(true);
-        $sendmail->Subject = "Début d'intervention";
-        $sendmail->msgHTML($view);
-        $sendmail->send();
+        try{
+            $sendmail = $mail->createMailer();
+            $sendmail->isSMTP();
+            $sendmail->setFrom($this->settings['from']);
+            $sendmail->addAddress($to);
+            $sendmail->isHTML(true);
+            $sendmail->Subject = "Début d'intervention";
+            $sendmail->msgHTML($view);
+            $sendmail->send();
+        } catch (\Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$sendmail->ErrorInfo}";
+        }
+
+
     }
 }

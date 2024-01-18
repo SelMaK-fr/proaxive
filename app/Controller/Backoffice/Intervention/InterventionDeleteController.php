@@ -21,7 +21,6 @@ class InterventionDeleteController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         if($request->getMethod() === 'DELETE') {
-            $data = $request->getParsedBody();
             $this->getRepository(InterventionRepository::class)->delete($intervention_id);
             $this->session->getFlash()->add('panel-info', "L'intervention a bien été supprimée");
         }
