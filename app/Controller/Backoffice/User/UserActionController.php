@@ -38,10 +38,10 @@ class UserActionController extends AbstractController
                 $t = new RandomNumberService();
                 $data['token'] = $t->token(30);
                 $data['confirm_at'] = rand(7, 9999999);
+                $mail = new MailService($this->getParameters('mailer'));
+                $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
                 $save = $this->getRepository(UserRepository::class)->add($data, true);
                 if($save){
-                    $mail = new MailService($this->getParameters('mailer'));
-                    $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
                     $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
                     return $this->redirectToRoute('dash_user');
                 }

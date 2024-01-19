@@ -22,7 +22,7 @@ $settings = [
     'settings' => [
         'rootPath' => dirname(__DIR__),
         'publicPath' => dirname(__DIR__) . '/public/',
-        'snappyPath' => dirname(__DIR__) . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64',
+        'snappyPath' => '',
         'licenceKey' => ''
     ],
     'view' => [
@@ -63,11 +63,11 @@ $settings = [
         'debug' => false,
         'host' => env('MAIL_HOST', 'localhost'),
         'SMTPAuth' => true,
-        'from' => env('MAIL_FROM', 'local@localhost.dev'),
-        'username' => env('MAIL_USERNAME', 'localhost'),
-        'password' => env('MAIL_PASSWORD', 'localhost'),
+        'from' => env('MAIL_FROM', 'admin@proaxive.in'),
+        'username' => env('MAIL_USERNAME', 'user'),
+        'password' => env('MAIL_PASSWORD', 'password'),
         'SMTPSecure' => PHPMailer::ENCRYPTION_SMTPS,
-        'port' => env('MAIL_PORT', 587)
+        'port' => env('MAIL_PORT', 1025)
     ],
     'logger' => [
         'name' => 'proaxive-app',

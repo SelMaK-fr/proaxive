@@ -14,11 +14,13 @@ class MailService
     {
         $mail = new MailerFactory($this->settings);
         $sendmail = $mail->createMailer();
+        $sendmail->isSMTP();
         $sendmail->setFrom($this->settings['from']);
         $sendmail->addAddress($to);
         $sendmail->isHTML(true);
         $sendmail->Subject = $subject;
         $sendmail->msgHTML($view);
+        $sendmail->SMTPAuth = $this->settings['SMTPAuth'];
         $sendmail->send();
     }
 }
