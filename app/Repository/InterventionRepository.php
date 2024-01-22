@@ -99,5 +99,14 @@ class InterventionRepository extends BaseRepository
             ;
     }
 
+    public function findWithCustomer($id)
+    {
+        return $this->makeQueryDefault()
+            ->select('interventions.*, c.fullname c_fullname, c.mail')
+            ->leftJoin('customers as c ON c.id = interventions.customers_id')
+            ->where('interventions.id = ?', [$id])
+            ->fetch()
+            ;
+    }
 
 }

@@ -59,8 +59,7 @@ class WorkshopType extends Type
             ])
             ->add('siret', 'text', [
                 'label' => "N° siret ou siren",
-                'placeholder' => 'Entrez votre numéro de siret/siren',
-                'required' => false
+                'placeholder' => 'Entrez votre numéro de siret/siren'
             ])
             ->add('rcs', 'text', [
                 'label' => "Code RCS",
@@ -74,8 +73,7 @@ class WorkshopType extends Type
             ])
             ->add('ape', 'text', [
                 'label' => "Code NAF/APE/APRM",
-                'placeholder' => 'Entrez votre code APE',
-                'required' => false
+                'placeholder' => 'Entrez votre code APE'
             ])
             ->add('rm', 'text', [
                 'label' => "Code RM",

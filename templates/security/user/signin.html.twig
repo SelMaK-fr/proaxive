@@ -1,15 +1,19 @@
 {% extends 'frontoffice/base.html.twig' %}
 
+{% block title %}Proaxive Connexion{% endblock %}
+
 {% block body %}
     <div class="body-background mh-fullvh">
         <div class="container">
             <div class="flex justify-content-center">
-                <div style="min-width: 500px;">
-                    <div class="card card-shadow t-3">
-                        <div class="card-body p-4">
+                <div class="login-container">
+                    <div class="text-center mt-6">
+                        <img style="height: 100px;width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
+                    </div>
+                    <div class="card card-shadow mt-3">
+                        <div class="card-body text-center p-8">
                             <h1 class="title-login">Panel Proaxive</h1>
-                            <span class="text-muted">Bienvenue sur Proaxive, merci de vous connecter.</span>
-                            <div class="login-form-horizontal mt-4">
+                            <div class="login-form-horizontal input-with-icon mt-4">
                                 <form method="post" action="">
                                     <div class="form-group mb-3">
                                         <label for="email" class="form-label">Adresse courriel</label>
@@ -27,13 +31,10 @@
                                     </div>
                                     <div class="mb-2">
                                         <div class="form-group">
-                                            <div class="checkbox d-inline-block">
-                                                <input id="checkbox1" type="checkbox">
-                                                <label class="text-muted" for="checkbox1">Se souvenir de moi</label>
-                                            </div><a class="link" style="float: right" href="forget-password.html">Mot de passe oublié ?</a>
+                                            <a class="link" href="#">Mot de passe oublié ?</a>
                                         </div>
-                                        <div class="text-right mt-4">
-                                            <button type="submit" class="btn-sk-two btn-lg rd-1">Se connecter</button>
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn-sk-one btn-lg rd-10">Se connecter</button>
                                         </div>
                                     </div>
                                 </form>

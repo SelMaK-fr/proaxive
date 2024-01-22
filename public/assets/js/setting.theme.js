@@ -92,6 +92,8 @@ submenu_theme('.dropdown', '.submenu-dropdown', 'open');
 
 /* Tools settings */
 submenu_theme('.admin-tools', '.table-submenu', 'open');
+/* User/profil deploy */
+submenu_theme('.dropdown-profil', '.dropdown-submenu', 'collapsed-deployed');
 
 /**
  * SubMenu

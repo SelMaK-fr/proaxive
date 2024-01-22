@@ -3,6 +3,18 @@
 {% block title %}Equipement - {{ e.name }}{% endblock %}
 
 {% block body %}
+    {% if e.customers_id is null %}
+    <div class="alert alert-warning">
+        Le client pour cet équipement n'existe plus. Que voulez-vous faire ?
+        <div class="mt-2">
+            <form method="post" action="{{ url_for('equipment_delete',{id:e.id}) }}" class="d-inline-block">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+                <button type="submit" onclick="return confirm('Etes-vous sûr ?')" class="btn-mid btn-light-warning">Supprimer l'équipement</button>
+            </form>
+            <button type="button" class="btn-mid btn-light-warning">Sélectionner un nouveau client</button>
+        </div>
+    </div>
+    {% endif %}
     <div class="card">
         <div class="card-tabs">
             <ul id="tabs" class="border-bottom">

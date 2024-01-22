@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Controller\Account\UserAccountController;
+use App\Controller\Backoffice\Customer\CustomerActionController;
 use App\Controller\Backoffice\Customer\CustomerAjaxController;
 use App\Controller\Backoffice\Customer\CustomerController;
 use App\Controller\Backoffice\Customer\CustomerCreateController;
@@ -15,6 +16,7 @@ use App\Controller\Backoffice\Deposit\DepositToPdfController;
 use App\Controller\Backoffice\Equipment\EquipmentAjaxController;
 use App\Controller\Backoffice\Equipment\EquipmentController;
 use App\Controller\Backoffice\Equipment\EquipmentCreateController;
+use App\Controller\Backoffice\Equipment\EquipmentDeleteController;
 use App\Controller\Backoffice\Equipment\EquipmentReadController;
 use App\Controller\Backoffice\Equipment\EquipmentUpdateController;
 use App\Controller\Backoffice\Equipment\PeripheralDevice\PeripheralCreateController;
@@ -26,6 +28,7 @@ use App\Controller\Backoffice\Intervention\InterventionDeleteController;
 use App\Controller\Backoffice\Intervention\InterventionReadController;
 use App\Controller\Backoffice\Intervention\InterventionUpdateController;
 use App\Controller\Backoffice\Intervention\InterventionValidatedController;
+use App\Controller\Backoffice\PermsController;
 use App\Controller\Backoffice\Settings\Account\AccountController;
 use App\Controller\Backoffice\Settings\BrandController;
 use App\Controller\Backoffice\Settings\OperatingSystemController;
@@ -48,9 +51,14 @@ use App\Controller\Frontoffice\Portal\PortalController;
 use App\Controller\Frontoffice\Portal\PortalInterventionController;
 use App\Controller\Frontoffice\Portal\PortalParameterController;
 use App\Middleware\Auth\RedirectAuthIfCookieMiddleware;
+use App\Middleware\Equipment\IfUpdatePeripheralMiddleware;
 use App\Middleware\IfUpdateSocietyMiddleware;
 use App\Middleware\Intervention\IfDarftMiddleware;
 use App\Middleware\Intervention\IfLinkExpirateMiddleware;
+use App\Middleware\Perms\RedirectIfNotAdminMiddleware;
+use App\Middleware\Perms\RedirectIfNotAdminOrManagerMiddleware;
+use App\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
+use App\Middleware\Perms\RedirectNotPermitDemo;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -68,6 +76,11 @@ return function (App $app) {
         $group->get('{ref_for_link}', [FrontInterventionRead::class, 'read'])->setName('app_read_intervention')->add(IfLinkExpirateMiddleware::class);
     });
     // Administration
+    // Home and Perms page
+    $app->group('/admin', function (RouteCollectorProxy $group) {
+        $group->get('/auth/perms', [PermsController::class, 'not_perms'])->setName('admin_perms');
+        $group->get('/auth/perms/tech', [PermsController::class, 'not_perms_tech'])->setName('admin_perms_tech');
+    });
     $app->get('/admin', [\App\Controller\Backoffice\IndexController::class, 'index'])->setName('dash_home');
     // Account Admin/Tech/Manager
     $app->group('/admin/settings/account', function (RouteCollectorProxy $group) {
@@ -78,6 +91,7 @@ return function (App $app) {
         $group->get('', [CustomerController::class, 'index'])->setName('dash_customer');
         $group->any('/create', [CustomerCreateController::class, 'particular'])->setName('customer_create_particular');
         $group->any('/create/society', [CustomerCreateController::class, 'society'])->setName('customer_create_society');
+        $group->post('/create/post[:{args}]', [CustomerActionController::class, 'create'])->setName('customer_create_action');
         $group->get('/ajax/search/{key}', [CustomerAjaxController::class, 'search'])->setName('customer_search');
         $group->any('/{id:[0-9]+}/ajax/note-update', [CustomerAjaxController::class, 'updateNote']);
         $group->get('/{id:[0-9]+}', [CustomerReadController::class, 'read'])->setName('customer_read');
@@ -105,7 +119,7 @@ return function (App $app) {
         $group->any('/create', [UserActionController::class, 'action'])->setName('user_create');
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
-    });
+    })->add(RedirectNotPermitDemo::class);
     /* Equipment */
     $app->group('/admin/equipments', function (RouteCollectorProxy $group){
         $group->get('', [EquipmentController::class, 'index'])->setName('dash_equipment');
@@ -118,11 +132,13 @@ return function (App $app) {
         $group->any('/c/{id:[0-9]+}/create', [EquipmentCreateController::class, 'create'])->setName('equipment_create_customer');
         $group->any('/create/specs', [EquipmentCreateController::class, 'createSpecificities'])->setName('equipment_create_specs');
         $group->get('/{id:[0-9]+}', [EquipmentReadController::class, 'read'])->setName('equipment_read');
-        $group->any('/{id:[0-9]+}/update', [EquipmentUpdateController::class, 'update'])->setName('equipment_update');
+        $group->any('/{id:[0-9]+}/update', [EquipmentUpdateController::class, 'update'])->setName('equipment_update')->add(IfUpdatePeripheralMiddleware::class);
         $group->any('/ajax/{id:[0-9]+}/update-note', [EquipmentAjaxController::class, 'updateNote'])->setName('equipment_update_ajax_note');
         $group->any('/{id:[0-9]+}/update/specs', [EquipmentUpdateController::class, 'specificies'])->setName('equipment_update_specs');
         $group->post('/{id:[0-9]+}/update/specs/bao/upload', [EquipmentUpdateController::class, 'baoUpload'])->setName('equipment_update_specs_upload');
-    });
+        $group->delete('/{id}/delete', [EquipmentDeleteController::class, 'delete'])->setName('equipment_delete');
+        $group->delete('/delete/selected', [EquipmentDeleteController::class, 'deleteSelected'])->setName('equipment_delete_selected');
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Intervention */
     $app->group('/admin/interventions', function (RouteCollectorProxy $group){
        $group->get('', [InterventionController::class, 'index'])->setName('dash_intervention');
@@ -141,23 +157,23 @@ return function (App $app) {
        $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfDarftMiddleware::class);
        $group->post('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
        $group->any('/{id:[0-9]+}/validation', [InterventionValidatedController::class, 'validated'])->setName('intervention_validation');
-       $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete');
-    });
+       $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Deposit */
     $app->group('/admin/deposit', function (RouteCollectorProxy $group) {
        $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');
        $group->any('/{reference}/sign', [DepositSignController::class, 'index'])->setName('deposit_sign');
        $group->get('/[:{args}]', [DepositReadController::class, 'read'])->setName('deposit_read');
        $group->get('/pdf/{reference}', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
-    });
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Task */
     $app->group('/admin/tasks', function (RouteCollectorProxy $group) {
         $group->post('/add/i-{id:[0-9]+}', [AddTaskToInterventionController::class, 'addToIntervention'])->setName('task_add_intervention');
         $group->post('/delete/i-{id:[0-9]+}_t-{task:[0-9]+}', [DeleteTaskOfInterventionController::class, 'deleteOfI'])->setName('task_delete_intervention');
-    });
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Settings */
     $app->group('/admin/settings', function (RouteCollectorProxy $group) {
-       $group->any('/preferences', [ParametersController::class, 'parameters'])->setName('settings_preference');
+       $group->any('/preferences', [ParametersController::class, 'parameters'])->setName('settings_preference')->add(RedirectIfNotAdminMiddleware::class);
        $group->get('/tasks', [SettingTask::class, 'index'])->setName('settings_task');
        $group->post('/tasks/create', [SettingTask::class, 'actionForm'])->setName('settings_task_create');
        $group->post('/tasks/update[:{args}]', [SettingTask::class, 'actionForm'])->setName('settings_task_update');
@@ -174,7 +190,7 @@ return function (App $app) {
        $group->post('/operating-system/create', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_create');
        $group->post('/operating-system/update[:{args}]', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_update');
        $group->delete('/operating_system/delete', [OperatingSystemController::class, 'delete'])->setName('settings_os_delete');
-    });
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Portal */
     $app->any('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');
     $app->group('/wxy/customers', function (RouteCollectorProxy $group){
@@ -183,5 +199,6 @@ return function (App $app) {
         $group->get('/i/r/{ref_number}', [PortalInterventionController::class, 'read'])->setName('portal_intervention_read');
         $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
         $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
+        $group->any('/parameters/security', [])->setName('portal_parameters_security');
     });
 };

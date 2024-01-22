@@ -18,12 +18,13 @@ class DepositReadController extends AbstractController
             $deposit = $form['deposit_reference'];
             $d = $this->getRepository(DepositRepository::class)->findByReference($deposit);
             if($d->reference != $deposit OR $d->intervention_number != $intervention){
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_read', ['id' => $d->interventions_id]));
+                return $this->redirectToRoute('intervention_read', ['id' => $d->interventions_id]);
             }
             return $this->render($response, 'backoffice/deposit/read.html.twig', [
                 'd' => $d,
                 'currentMenu' => 'intervention'
             ]);
         }
+        return new \Slim\Psr7\Response();
     }
 }

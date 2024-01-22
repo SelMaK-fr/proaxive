@@ -20,7 +20,7 @@
                         </div>
                         <ul id="tabs" class="nav-tabs-js">
                             <li><a href="#generals">Informations générales</a></li>
-                            <li><a href="#legalinfos">Administratif</a></li>
+                            <li><a href="#legalinfos">Administratif <i class="fa-solid fa-circle-exclamation"></i></a></li>
                             <li><a href="#address">Adresse postale</a></li>
                             <li><a href="#network">Web et réseaux sociaux</a></li>
                         </ul>
@@ -104,7 +104,6 @@
                                         <div class="grid-2">
                                             <div class="col">
                                                 {{ form.renderField('website') | raw }}
-                                                {{ form.renderField('siret') | raw }}
                                                 {{ form.renderField('instagram') | raw }}
                                             </div>
                                             <div class="col">
@@ -117,7 +116,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                            <button type="submit" class="btn btn-light-four">Enregistrer</button>
                         </div>
                         {{ form.renderEnd(false) | raw }}
                     </div>

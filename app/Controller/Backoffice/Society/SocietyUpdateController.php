@@ -17,12 +17,24 @@ class SocietyUpdateController extends AbstractController
         $form = $this->createForm(SocietyType::class, $customer);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getRequestData();
-            dd($data['form_customer']);
+            $data = $form->getRequestData()['form_customer'];
+            $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
+            if($save){
+                $this->session->getFlash()->add('panel-info', "Mise à jour effectuée.");
+            }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Client (société)', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb($customer->fullname, $this->routeParser->urlFor('customer_read', ['id' => $customer->id]));
+        $bds->addCrumb('Modification', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/society/update.html.twig', [
             'currentMenu' => 'customer',
             'customer' => $customer,
+            'breadcrumbs' => $bds,
             'form' => $form
         ]);
     }

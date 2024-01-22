@@ -19,7 +19,6 @@ class MailInterventionService
         $mail = new MailerFactory($this->settings);
         try{
             $sendmail = $mail->createMailer();
-            $sendmail->isSMTP();
             $sendmail->setFrom($this->settings['from']);
             $sendmail->addAddress($to);
             $sendmail->isHTML(true);

@@ -3,7 +3,7 @@
 {% block title %}Validation de l'intervention n°{{ i.ref_number }}{% endblock %}
 
 {% block body %}
-    <div class="text-center mb-4"><h2><span class="text-purple-light">Validation</span> d'intervention</h2></div>
+    <div class="text-center mb-4"><h2><span class="text-one">Validation</span> d'intervention</h2></div>
     <div class="grid-center">
         <div class="col-10_sm-12">
             <div class="card">
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-light-purple">Enregistrer</button>
+                            <button class="btn btn-light-four">Enregistrer</button>
                         </div>
                         {{ form.renderEnd(false) | raw }}
                 </div>
@@ -58,21 +58,21 @@
         </div>
     </div>
     <div class="modal" id="delete_intervention">
-        <div class="modal-container p-5">
-            <div class="modal-header text-right">
-                <button data-dismiss="modal" type="button" class="modal__close"><i class="ri-close-line" aria-hidden="true"></i></button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h1>Confirmation de suppression</h1>
             </div>
             <div class="modal-content">
+                Vous êtes sur le point de supprimer l'intervention :
+                <p>
+                    <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
                 <form method="post" action="{{ url_for('intervention_delete', {'id':i.id}) }}">
-                    <input type="hidden" name="_METHOD" value="DELETE"/>
-                    <div class="text-center mb-4"><h1>Confirmation de suppression</h1></div>
-                    Vous êtes sur le point de supprimer l'intervention :
-                    <p>
-                        <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
-                    </p>
-                    <p class="text-center mt-6">
-                        <button type="submit" class="btn btn-light-pink"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
-                    </p>
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+                <button type="submit" class="btn btn-light-four mb-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink mb-0">Annuler</button>
                 </form>
             </div>
         </div>

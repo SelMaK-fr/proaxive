@@ -21,12 +21,12 @@ class CustomerDeleteController extends AbstractController
             if($data['fullname'] === $customer->fullname){
                 $this->getRepository(CustomerRepository::class)->delete($customer_id);
                 $this->session->getFlash()->add('panel-info', 'Le client a bien été supprimé');
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('dash_customer'));
+                return $this->redirectToRoute('dash_customer');
             } else {
                 $this->session->getFlash()->add('panel-error', 'Le nom ne correspond pas !');
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
-        return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('dash_customer'));
+        return $this->redirectToRoute('dash_customer');
     }
 }

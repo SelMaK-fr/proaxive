@@ -1,0 +1,52 @@
+<div class="flash-message">
+    {% for message in flash.get('panel-info') %}
+        <div class="alt-notification info" id="message-flash_admin">
+            <div class="icon_wrapper">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <p>
+                {{ message }}
+            </p>
+        </div>
+    {% endfor %}
+    {% for message in flash.get('panel-success') %}
+        <div class="alt-notification success" id="message-flash_admin">
+            <div class="icon_wrapper">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <p>
+                {{ message }}
+            </p>
+        </div>
+    {% endfor %}
+    {% for message in flash.get('panel-error') %}
+        <div class="alt-notification error" id="message-flash_admin">
+            <div class="icon_wrapper">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <p>
+                {{ message }}
+            </p>
+        </div>
+    {% endfor %}
+    {% for message in flash.get('panel-warning') %}
+        <div class="alt-notification warning" id="message-flash_admin">
+            <div class="icon_wrapper">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <p>
+                {{ message }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
+{% block javascripts %}
+    <script>
+        setTimeout( function(){
+            const oMsg = document.getElementById('message-flash_admin');
+            if(oMsg){
+                oMsg.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+{% endblock %}

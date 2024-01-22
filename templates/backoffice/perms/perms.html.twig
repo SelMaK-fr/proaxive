@@ -1,0 +1,20 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Permission denied{% endblock %}
+
+{% block body %}
+    <div class="grid-12">
+        <div class="col-12_sm-12">
+            <div class="card border-bottom-pink border-wh-2-solid">
+                <div class="card-body p-4">
+                    <h2>Vous n'avez pas l'autorisation</h2>
+                    <strong class="d-block mt-4">Cette action nécessite des droits "SUPER_ADMIN"</strong>
+                    <p>
+                        Nous ne pouvons pas poursuivre votre demande. L'action demandée demande un rôle superieur au votre.
+                        <br>Veuillez contacter votre administrateur.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

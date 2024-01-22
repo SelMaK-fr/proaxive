@@ -31,8 +31,16 @@ class InterventionCreateController extends AbstractController
     public function index(Request $request, Response $response, array $args): Response
     {
         $form = $this->createForm(InterventionFastType::class);
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
+        $bds->addCrumb('Création', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/intervention/index_create.html.twig', [
             'currentMenu' => 'intervention',
+            'breadcrumbs' => $bds,
             'form' => $form
         ]);
     }
@@ -80,10 +88,19 @@ class InterventionCreateController extends AbstractController
             $this->session->set('form_intervention_next', $arrayData);
             return $this->redirectToRoute('intervention_create_customer_regular_complete');
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
+        $bds->addCrumb('Création', $this->routeParser->urlFor('intervention_create_index'));
+        $bds->addCrumb('Complète', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/intervention/create/start.html.twig', [
             'currentMenu' => 'intervention',
             'form' => $form,
             'auth' => $auth,
+            'breadcrumbs' => $bds,
             'customer' => $customer,
         ]);
     }
@@ -96,7 +113,7 @@ class InterventionCreateController extends AbstractController
         // if not valid session, stop treatment and return to Create
         if(!$this->session->get('form_intervention_next')){
             $this->session->getFlash()->add('panel-error', "Aucune session n'est disponbile pour cette demande, veuillez reprendre le formulaire.");
-            return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_create_index'));
+            return $this->redirectToRoute('intervention_create_index');
         }
         // Retrieve session
         $dataSession = $this->session->get('form_intervention_next');
@@ -172,7 +189,7 @@ class InterventionCreateController extends AbstractController
                 }
             } else {
                 $this->session->getFlash()->add('panel-error', 'Tous les champs ne sont pas remplis !');
-                return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
 
         }

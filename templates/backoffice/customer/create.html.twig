@@ -23,9 +23,9 @@
     {% if config.api_address == 1 %}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-        <script src="/assets/js/opendata.js"></script>
+        <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/opendata.js"></script>
     {% endif %}
-    <script src="/assets/js/functions.customers.js"></script>
+    <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/functions.customers.js"></script>
     <script type="text/javascript">
         function viewLoader()
         {

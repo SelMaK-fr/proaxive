@@ -17,11 +17,11 @@ class DeleteTaskOfInterventionController extends AbstractController
             $t = $this->getRepository(TaskAssocRepository::class)->search($intervention_id, $task_id);
             if($t['interventions_id'] != $intervention_id){
                 $this->session->getFlash()->add('panel-error', 'aucune tâche trouvée !');
-                return $this->redirect($this->routeParser->urlFor('intervention_read', ['id' => $intervention_id]));
+                return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
             }
             $this->getRepository(TaskAssocRepository::class)->delete($t['id']);
             $this->session->getFlash()->add('panel-info', 'Tâche supprimée avec succès.');
-            return $this->redirect($this->routeParser->urlFor('intervention_read', ['id' => $intervention_id]));
+            return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
         }
         return $response;
     }

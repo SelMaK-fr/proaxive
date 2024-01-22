@@ -19,7 +19,6 @@ class RegenSessionIfCookieExistMiddleware
     public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if($_COOKIE['proaxive2-auth']){
-
             $parts = explode('==', $_COOKIE['proaxive2-auth']);
             $user_id = (int)$parts[0];
             $user = $this->query->from('users')

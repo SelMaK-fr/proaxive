@@ -32,12 +32,20 @@ class EquipmentCreateController extends AbstractController
             $cName = $this->getRepository(CustomerRepository::class)->find('id', $data_customer_id);
             $data['customer_name'] = $cName->fullname;
             $this->getRepository(EquipmentRepository::class)->add($data, true);
-            $this->session->getFlash()->add('panel-info', sprintf("Le nouvel équipement %s a bien été créé.", $data['name']));
+            $this->session->getFlash()->add('panel-info', sprintf("Le nouvel équipement <b> %s </b> a bien été créé.", $data['name']));
             return $this->redirectToRoute('dash_equipment');
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Équipements', $this->routeParser->urlFor('dash_equipment'));
+        $bds->addCrumb('Création', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/create.html.twig', [
             'form' => $form,
             'c' => $c,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'equipment'
         ]);
     }

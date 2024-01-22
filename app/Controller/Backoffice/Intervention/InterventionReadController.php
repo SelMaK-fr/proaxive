@@ -26,7 +26,6 @@ class InterventionReadController extends AbstractController
     public function read(Request $request, Response $response, array $args): Response
     {
         $intervention_id = (int)$args['id'];
-
         $i = $this->getRepository(InterventionRepository::class)->joinForId($intervention_id);
         if(!$i) {
             $this->session->getFlash()->add('panel-error', "Cette intervention n'existe pas !");
@@ -43,12 +42,23 @@ class InterventionReadController extends AbstractController
         $form->setAction($this->routeParser->urlFor('intervention_update', ['id' => $intervention_id]));
         $form->handleRequest();
 
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
+        $bds->addCrumb($i['customer_name'], $this->routeParser->urlFor('customer_read', ['id' => $i['customers_id']]));
+        $bds->addCrumb($i['equipment_name'], $this->routeParser->urlFor('equipment_read', ['id' => $i['equipments_id']]));
+        $bds->addCrumb($i['ref_number'], false);
+        $bds->render();
+        // .Breadcrumbs
+
         return $this->render($response, 'backoffice/intervention/read.html.twig', [
            'i' => $i,
            'intervention_id' => $intervention_id,
            'tasks' => '',
            'tForI' => $taskForI,
            'formTasks' => $formTasks,
+           'breadcrumbs' => $bds,
            'form' => $form,
            'currentMenu' => 'intervention'
         ]);

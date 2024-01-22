@@ -5,10 +5,10 @@
     <style>
         body{
             font-family: DejaVu Sans, sans-serif;
-            font-size: 11pt;
+            font-size: 10pt;
         }
         h3{
-            font-size: 13pt;
+            font-size: 12pt;
             text-transform: uppercase;
         }
         .table-container{
@@ -77,7 +77,7 @@
             text-transform: uppercase;
         }
         .bold{
-            font-weight: 600;
+            font-weight: bold;
         }
         .border-bottom{
             border-bottom: 1px solid #9d9ac5;
@@ -182,14 +182,17 @@
     <tbody>
     <tr>
         <td class="w30p">
-            <img style="height: 90px;width: auto" src="/public/img/logos/logo_proaxive.png" alt="">
+            <img style="height: 90px;width: auto" src="{{ qrcode }}" alt="">
         </td>
         <td class="text-center"><span class="title-document">Bon De Dépôt</span></td>
-        <td class="w30p" style="font-size: 10pt">
+        <td class="w30p" style="font-size: 9pt">
             <div class="bg02 p20px">
                 N°{{ d.reference }} <br>
                 Date : {{ d.deposit_date | date('d/m/Y') }}<br>
-                Intervention n°{{ d.i_reference }}
+                Intervention n°{{ d.i_reference }}<br>
+                {% if d.package_price is not empty or d.package_price is not null %}
+                Tarif horaire : <span class="color01 bold">{{ d.package_price }}€</span>
+                {% endif %}
             </div>
         </td>
     </tr>
@@ -202,13 +205,13 @@
 <table class="table-container" style="margin-top:10px;">
     <tbody>
     <tr>
-        <td style="font-size: 11pt" class="text-center">
+        <td class="text-center">
             Je soussigné <strong>{{ d.customer_name }}</strong> propriétaire de l'équipement ci-dessus étant en accord total avec <strong>{{ d.cy_name }}</strong> sur l'état du matériel récupéré par l'entreprise <strong>{{ deposit.cy_name }}</strong>
         </td>
     </tr>
     </tbody>
 </table>
-<div class="bg04 p10px colorwhite bold text-center" style="font-size: 11pt;margin:10px 0">
+<div class="bg04 p10px colorwhite bold text-center" style="margin:10px 0">
     Les informations ci-dessous doivent être remplies complètement, correctement et lisiblement pour effectuer un dépôt.
 </div>
 <div class="title">Informations client</div>
@@ -308,7 +311,7 @@
                         <td>
                             <h5 class="bg03 text-center" style="margin: 0 0 5px 0;line-height: 30px">Signature client</h5>
                             <div style="height: 90px">
-                                <img src="{{ data.code_sign }}" alt="Signature Client" class="img-responsive">
+                                <img src="{{ data.code_sign }}" alt="Signature Client" style="height: 90px;width: auto" class="img-responsive">
                             </div>
                         </td>
                     </tr>
@@ -319,10 +322,15 @@
         </tbody>
     </table>
 </div>
-<div class="footer p20px">
-    <p class="text-center">
-        Texte de base de page (conditions etc.)
-    </p>
-</div>
+<table style="position: fixed;bottom: 1rem;font-size: 8pt">
+    <tr>
+        <td>
+            <span style="text-transform: uppercase" class="bold">{{ d.cy_type }} {{ d.cy_name }}</span> | {{ d.cy_address }} {{ d.cy_zipcode }} {{ d.cy_city }} | Tél : {{ d.cy_phone }} | Courriel : {{ d.cy_mail }}
+        </td>
+    </tr>
+    <tr>
+        <td>Siret : {{ d.siret }} | APE : {{ d.ape }}</td>
+    </tr>
+</table>
 </body>
 </html>

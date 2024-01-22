@@ -22,12 +22,21 @@ class PeripheralUpdateController extends AbstractController
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
                 $this->session->getFlash()->add('panel-info', sprintf("Le périphérique - %s - a bien été mis à jour.", $data['name']));
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Équipements', $this->routeParser->urlFor('dash_equipment'));
+        $bds->addCrumb('Périphérique', false);
+        $bds->addCrumb($e->name, false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/device/update.html.twig', [
             'form' => $form,
             'e' => $e,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'equipment'
         ]);
     }

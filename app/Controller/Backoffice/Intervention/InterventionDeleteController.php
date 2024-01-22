@@ -21,9 +21,18 @@ class InterventionDeleteController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         if($request->getMethod() === 'DELETE') {
-            $this->getRepository(InterventionRepository::class)->delete($intervention_id);
-            $this->session->getFlash()->add('panel-info', "L'intervention a bien été supprimée");
+            $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+            $data = $request->getParsedBody()['form_delete_intervention'];
+            if($data['ref_number'] === $i->ref_number){
+                $this->getRepository(InterventionRepository::class)->delete($intervention_id);
+                $this->session->getFlash()->add('panel-info', "L'intervention a bien été supprimée");
+                return $this->redirectToRoute('dash_intervention');
+            } else {
+                $this->session->getFlash()->add('panel-error', "La référence ne correspond pas !");
+                return $this->redirectToReferer($request);
+            }
+
         }
-        return $this->redirect($this->routeParser->urlFor('dash_intervention'));
+        return $this->redirectToRoute('dash_intervention');
     }
 }

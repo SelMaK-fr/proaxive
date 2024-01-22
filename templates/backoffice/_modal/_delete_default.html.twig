@@ -1,10 +1,11 @@
 <div class="modal" id="delete_{{ field_name }}">
     <div class="modal-container">
+        <form method="post" action="{{ url }}">
         <div class="modal-header">
             <h1>Confirmation de suppression</h1>
         </div>
         <div class="modal-content">
-            <form method="post" action="{{ url }}">
+
                 <input type="hidden" name="_METHOD" value="DELETE"/>
                 Vous êtes sur le point de supprimer cette données :
                 <p>
@@ -15,10 +16,12 @@
                     <label class="form-label" for="fullname">Intitulé de la données</label>
                     <input class="form-input" type="text" id="" name="{{ field_name }}" placeholder="">
                 </div>
-            </form>
+
         </div>
         <div class="modal-footer text-right">
-            <button type="submit" class="btn btn-light-pink m-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
+            <button type="submit" class="btn btn-light-four m-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
+            <button data-dismiss="modal" class="modal__close btn btn-light-pink m-0">Annuler</button>
         </div>
+        </form>
     </div>
 </div>

@@ -80,7 +80,7 @@ class TaskController extends AbstractController
                         $this->session->getFlash()->add('panel-error', "Cet élément existe déjà !");
                     }
                 }
-                return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
 
@@ -102,7 +102,7 @@ class TaskController extends AbstractController
                 unset($data['_METHOD']);
                 $this->getRepository(TaskRepository::class)->delete((int)$data['id']);
                 $this->session->getFlash()->add('panel-info', "Tâche supprimée.");
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('settings_task'));
+                return $this->redirectToRoute('settings_task');
             }
         }
     }

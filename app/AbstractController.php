@@ -4,13 +4,13 @@ namespace App;
 
 use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Query;
-use Laminas\Diactoros\Response\RedirectResponse;
 use Odan\Session\SessionInterface;
 use Palmtree\Form\Form;
 use Psr\Http\Message\ResponseInterface as Response;
 use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\App;
 use Slim\Interfaces\RouteParserInterface;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 
 abstract class AbstractController
@@ -86,26 +86,48 @@ abstract class AbstractController
     }
 
     /**
-     * Returns a RedirectResponse to the given route
-     * @param $response
-     * @param string $route
-     * @param int $status
-     * @return RedirectResponse
+     * Returns a RedirectResponse to the given URL
+     * @param $request
+     * @param string $routeName
+     * @param array|null $params
+     * @return Response
      */
-    protected function redirectToRoute(string $route, int $status = 302): RedirectResponse
+    protected function redirectToRoute(string $routeName, ?array $data = [], ?array $params = []): Response
     {
-        return $this->redirect($this->generateUrl($route), $status);
+        $url = $this->routeParser->urlFor($routeName, $data, $params);
+        $response = new \Slim\Psr7\Response();
+        return $response
+            ->withHeader('Location', $url)
+            ->withStatus(302);
     }
 
     /**
-     * Returns a RedirectResponse to the given URL
+     * Creates a redirect response.
+     *
      * @param string $url
      * @param int $status
-     * @return RedirectResponse
+     *
+     * @return Response
      */
-    protected function redirect(string $url, int $status = 302): RedirectResponse
+    protected function redirectToUrl(string $url, int $status = 302): Response
     {
-        return new RedirectResponse($url, $status);
+        $response = new \Slim\Psr7\Response();
+        return $response
+            ->withHeader('Location', $url)
+            ->withStatus($status);
+    }
+
+    /**
+     * @param $request
+     * @param int $status
+     * @return Response
+     */
+    protected function redirectToReferer($request, int $status = 302): Response
+    {
+        $response = new \Slim\Psr7\Response();
+        return $response
+            ->withHeader('Location', $request->getServerParams()['HTTP_REFERER'])
+            ->withStatus($status);
     }
 
     /**

@@ -68,20 +68,37 @@
         </div>
     </div>
     <div class="col-6_sm-12">
-        {{ form.renderField('address') | raw }}
-        {{ form.renderField('addr_longitude') | raw }}
-        {{ form.renderField('addr_latitude') | raw }}
-        <div class="grid">
-            <div class="col-4_sm-12">
-                {{ form.renderField('city') | raw }}
+        {% if config.api_address == 1 %}
+            {{ form.renderField('address') | raw }}
+            {{ form.renderField('addr_longitude') | raw }}
+            {{ form.renderField('addr_latitude') | raw }}
+            <div class="grid">
+                <div class="col-4_sm-12">
+                    {{ form.renderField('city') | raw }}
+                </div>
+                <div class="col-4_sm-12">
+                    {{ form.renderField('zipcode') | raw }}
+                </div>
+                <div class="col-4_col-sm-12">
+                    {{ form.renderField('department') | raw }}
+                </div>
             </div>
-            <div class="col-4_sm-12">
-                {{ form.renderField('zipcode') | raw }}
+        {% else %}
+            {{ form.renderField('address') | raw }}
+            {{ form.renderField('addr_longitude') | raw }}
+            {{ form.renderField('addr_latitude') | raw }}
+            <div class="grid">
+                <div class="col-4_sm-12">
+                    {{ form.renderField('city') | raw }}
+                </div>
+                <div class="col-4_sm-12">
+                    {{ form.renderField('zipcode') | raw }}
+                </div>
+                <div class="col-4_col-sm-12">
+                    {{ form.renderField('department') | raw }}
+                </div>
             </div>
-            <div class="col-4_col-sm-12">
-                {{ form.renderField('department') | raw }}
-            </div>
-        </div>
+        {% endif %}
         <div class="grid">
             <div class="col-4_sm-12">
                 {{ form.renderField('h_floor') | raw }}

@@ -6,6 +6,7 @@ use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Type\CustomerType;
 use App\Type\SocietyType;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Factory\RandomStringGeneratorFactory;
@@ -25,9 +26,17 @@ class CustomerCreateController extends AbstractController
     public function particular(Request $request, Response $response): Response
     {
         $form = $this->createForm(CustomerType::class);
-        $this->create($request, $response, $form);
+        $form->setAction($this->routeParser->urlFor('customer_create_action'));
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb('Création', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/customer/create.html.twig', [
             'form' => $form,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'customer'
         ]);
     }
@@ -44,37 +53,19 @@ class CustomerCreateController extends AbstractController
     public function society(Request $request, Response $response): Response
     {
         $form = $this->createForm(SocietyType::class);
-        $this->create($request, $response, $form, true);
+        $form->setAction($this->routeParser->urlFor('customer_create_action', [], ['s' => 'active']));
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Clients (société)', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb('Création', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/society/create.html.twig', [
             'form' => $form,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'customer'
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param $form
-     * @param bool|null $society
-     * @return Response|void
-     * @throws \Envms\FluentPDO\Exception
-     */
-    private function create(Request $request, Response $response, $form, ?bool $society = null)
-    {
-        $form->handleRequest();
-        if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getRequestData()['form_customer'];
-            $data['activated'] = $data['activated'] ?? 1;
-            if($society){
-                $data['is_society'] = $data['is_society'] ?? 1;
-            }
-            $generateClientId = new RandomStringGeneratorFactory();
-            $data['login_id'] = 'C-' . $generateClientId->generate(9);
-            $save = $this->getRepository(CustomerRepository::class)->add($data, true);
-            if($save){
-                $this->session->getFlash()->add('panel-info', sprintf('Le nouveau client - %s - a bien été sauvegardé', $data['fullname']));
-                return $this->redirectToRoute('dash_customer');
-            }
-        }
-    }
 }

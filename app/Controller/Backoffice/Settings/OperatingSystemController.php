@@ -57,7 +57,7 @@ class OperatingSystemController extends AbstractController
                     $this->getRepository(OperatingSystemRepository::class)->add($data);
                     $this->session->getFlash()->add('panel-info', sprintf('Le système (%s) a bien été créé.', $data['os_full']));
                 }
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('settings_os'));
+                return $this->redirectToRoute('settings_os');
             }
         }
         return new \Slim\Psr7\Response();
@@ -77,7 +77,7 @@ class OperatingSystemController extends AbstractController
                 unset($data['_METHOD']);
                 $this->getRepository(OperatingSystemRepository::class)->delete((int)$data['id']);
                 $this->session->getFlash()->add('panel-info', "OS supprimé.");
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('settings_os'));
+                return $this->redirectToRoute('settings_os');
             }
         }
         return new \Slim\Psr7\Response();

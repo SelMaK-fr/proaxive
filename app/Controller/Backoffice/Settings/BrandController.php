@@ -79,7 +79,7 @@ class BrandController extends AbstractController
                     $this->session->getFlash()->add('panel-error', "Cet élément existe déjà !");
                 }
             }
-            return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('settings_brand'));
+            return $this->redirectToRoute('settings_brand');
         }
         return new \Slim\Psr7\Response();
     }
@@ -98,7 +98,7 @@ class BrandController extends AbstractController
                 unset($data['_METHOD']);
                 $this->getRepository(BrandRepository::class)->delete((int)$data['id']);
                 $this->session->getFlash()->add('panel-info', "Marque supprimée.");
-                return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
         return new \Slim\Psr7\Response();

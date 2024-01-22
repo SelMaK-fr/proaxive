@@ -48,6 +48,8 @@
         "creitive/breadcrumbs": "^3.3",
         "phpmailer/phpmailer": "^6.9",
         "intervention/image": "^3.2",
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "endroid/qr-code": "^5.0",
+        "symfony/mailer": "^7.0"
     }
 }

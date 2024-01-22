@@ -36,6 +36,7 @@ class DepositCreateController extends AbstractController
                 ], $i['id']);
                 // confirmation save data notification
                 $this->session->getFlash()->add('panel-info', 'Le dépôt a été sauvegardé.');
+                return $this->redirectToReferer($request);
             }
         }
     }

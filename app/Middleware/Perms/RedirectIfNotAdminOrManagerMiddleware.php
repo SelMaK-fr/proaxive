@@ -1,6 +1,6 @@
 <?php
-
-namespace App\Middleware;
+declare(strict_types=1);
+namespace App\Middleware\Perms;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;

@@ -75,7 +75,7 @@ class TypeEquipmentController extends AbstractController
                     }
                 }
 
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('settings_type_equipment'));
+                return $this->redirectToRoute('settings_type_equipment');
             }
         }
         return new \Slim\Psr7\Response();
@@ -95,7 +95,7 @@ class TypeEquipmentController extends AbstractController
                 unset($data['_METHOD']);
                 $this->getRepository(TypeEquipmentRepository::class)->delete((int)$data['id']);
                 $this->session->getFlash()->add('panel-info', "Type d'équipement supprimé.");
-                return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
         return new \Slim\Psr7\Response();

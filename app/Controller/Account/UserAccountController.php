@@ -66,6 +66,6 @@ final class UserAccountController extends AbstractController
             $this->session->delete('auth');
             setcookie('proaxive2-auth', '', -1, '/');
         }
-        return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('app_home'));
+        return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('auth_user_login'));
     }
 }

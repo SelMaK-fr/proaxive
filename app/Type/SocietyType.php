@@ -11,7 +11,7 @@ class SocietyType extends Type
 {
     public function createFormBuilder(string|\stdClass|null|array $data = null): Form
     {
-        $builder = (new FormBuilder('society', $data))
+        $builder = (new FormBuilder('customer', $data))
             ->add('login_id', 'text', [
                 'required' => false,
                 'placeholder' => 'Laissez vide pour désactiver'

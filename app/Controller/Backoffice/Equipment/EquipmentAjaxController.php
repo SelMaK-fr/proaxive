@@ -54,14 +54,14 @@ class EquipmentAjaxController extends AbstractController
                 $save = $this->getRepository(EquipmentRepository::class)->add($data, true);
                 if($save) {
                     $this->session->getFlash()->add('panel-info', sprintf("L'équipement - %s - a bien été créé", $data['name']));
-                    return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                    return $this->redirectToReferer($request);
                 }
             } else {
                 $this->session->getFlash()->add('panel-error', sprintf("Des champs ne sont pas remplis"));
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
-        return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+        return $this->redirectToReferer($request);
     }
 
     /**

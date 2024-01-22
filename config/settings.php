@@ -15,7 +15,7 @@ $settings = [
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',
-        'domainUrl' => $_SERVER['SERVER_NAME'],
+        'domainUrl' => env('DOMAIN_PATH', 'localhost:8080'),
         'locale' => 'fr',
         'timezone' => 'UTC',
     ],
@@ -60,13 +60,14 @@ $settings = [
         'cache_limiter' => 'nocache',
     ],
     'mailer' => [
+        'dsn' => env('MAIL_DSN', 'smtp://127.0.0.1:1025'),
         'debug' => false,
         'host' => env('MAIL_HOST', 'localhost'),
-        'SMTPAuth' => true,
+        'SMTPAuth' => false,
         'from' => env('MAIL_FROM', 'admin@proaxive.in'),
         'username' => env('MAIL_USERNAME', 'user'),
         'password' => env('MAIL_PASSWORD', 'password'),
-        'SMTPSecure' => PHPMailer::ENCRYPTION_SMTPS,
+        'SMTPSecure' => false, // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS
         'port' => env('MAIL_PORT', 1025)
     ],
     'logger' => [

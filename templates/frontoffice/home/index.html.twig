@@ -1,6 +1,8 @@
 {% extends 'frontoffice/base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Proaxive 2.0.0 Alpha{% endblock %}
+
+{% set topbar = 1 %}
 
 {% block body %}
     <div class="body-background mh-fullvh">
@@ -24,7 +26,7 @@
                                                 <div class="input-inner-button mt-4">
                                                     <div class="input-for-btn">
                                                         <label for="search-i" class="form-label"></label>
-                                                        <input type="text" name="s" id="search-i" class="form-control" placeholder="Entrez un numéro d'intervention">
+                                                        <input type="text" name="s" id="search-i" class="form-control rd-10" placeholder="Entrez un numéro d'intervention">
                                                     </div>
                                                     <button type="submit" class="btn-light-pink btn-lg d-block"><i class="ri-search-2-line"></i> Rechercher</button>
                                                 </div>
@@ -37,33 +39,8 @@
                                     <div class="text-center mb-6">
                                         <h2 class="fs-28px fw-600">Espace Client</h2>
                                         Connexion à votre espace client en ligne.
-                                    </div>
-                                    <div class="login-form-horizontal mt-4">
-                                        <form method="post" action="{{ url_for('portal_login') }}">
-                                            <div class="mb-4">
-                                                <div class="form-group mb-3">
-                                                    <div class="input-group input-group-prefix">
-                                                        <span class="input-group-case case-prefix"><i class="ri-mail-fill fs-18px"></i></span>
-                                                        <label>
-                                                            <input type="text" name="login_id" class="form-control" placeholder="C-xyz ou john@mail.com">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <div class="form-group mb-3">
-                                                    <div class="input-group input-group-prefix">
-                                                        <span class="input-group-case case-prefix"><i class="ri-key-2-fill fs-18px"></i></span>
-                                                        <label>
-                                                            <input type="password" name="passwd" class="form-control">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-center">
-                                                <button type="submit" class="btn-purple btn-lg rd-10">Se connecter</button>
-                                            </div>
-                                        </form>
+                                        <p>Si votre technicien vous a communiqué les identifiants de votre accès en ligne, merci de cliquer sur le lien ci-dessous. Si vous ne disposez pas d'accès, veuillez nous contacter.</p>
+                                        <a href="{{ url_for('portal_login') }}" class="btn-sk-one btn-lg rd-10 d-inline-block mt-3">Se connecter</a>
                                     </div>
                                     <div class="mt-4 text-center">
                                         <div class="alert alert-info">

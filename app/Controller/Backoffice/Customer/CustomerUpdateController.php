@@ -36,13 +36,22 @@ class CustomerUpdateController extends AbstractController
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             // To Do : refresh customer name of relation database (Service class ?)
             if($save){
-                $this->session->getFlash()->add('panel-info', 'Sauvegarde effectuée.');
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                $this->session->getFlash()->add('panel-info', 'Mise à jour effectuée.');
+                return $this->redirectToReferer($request);
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb($customer->fullname, false);
+        $bds->addCrumb('Modification', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/customer/update.html.twig', [
             'currentMenu' => 'customer',
             'customer' => $customer,
+            'breadcrumbs' => $bds,
             'form' => $form
         ]);
     }
@@ -77,13 +86,23 @@ class CustomerUpdateController extends AbstractController
             // To Do : refresh customer name of relation database (Service class ?)
             if($save){
                 $this->session->getFlash()->add('panel-info', 'Sauvegarde effectuée.');
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb($customer->fullname, $this->routeParser->urlFor('customer_read', ['id' => $customer->id]));
+        $bds->addCrumb('Modification', $this->routeParser->urlFor('customer_update', ['id' => $customer->id]));
+        $bds->addCrumb('Paramètres', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/customer/update_parameters.html.twig', [
             'currentMenu' => 'customer',
             'customer' => $customer,
             'form' => $form,
+            'breadcrumbs' => $bds,
             'formPassword' => $formPassword
         ]);
     }
@@ -111,10 +130,10 @@ class CustomerUpdateController extends AbstractController
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             if($save){
                 $this->session->getFlash()->add('panel-info', 'Paramètres "Type" mis à jour');
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
-        return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+        return $this->redirectToReferer($request);
     }
 
     /**
@@ -143,15 +162,15 @@ class CustomerUpdateController extends AbstractController
                 $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
                 if($save){
                     $this->session->getFlash()->add('panel-info', sprintf('Le mot de passe pour ID %s a été enregistré', $customer_id));
-                    return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                    return $this->redirectToReferer($request);
                 }
             } else {
                 foreach ($validator as $v){
                     $this->session->getFlash()->add('panel-error', sprintf('%s', $v->getMessage()));
                 }
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
-        return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+        return $this->redirectToReferer($request);
     }
 }

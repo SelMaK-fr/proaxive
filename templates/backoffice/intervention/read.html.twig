@@ -1,14 +1,15 @@
 {% extends 'backoffice/base.html.twig' %}
 
 {% block title %}
-    Intervention n°{{ i.ref_number }} enregistrée le {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
+    Intervention du {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
 {% endblock %}
 
 {% set toolbar_tool = 1 %}
 
 {% block toolbar %}
     <div class="toolbar-tools flex flex-wrap ml-5">
-        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-sk-one"> <i class="ri-settings-2-line"></i> Editer</button>
+        {% if i.equipments_id is not null %}
+        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-sk-tree"> <i class="ri-settings-2-line"></i> Editer</button>
         {% if i.with_deposit is not null or i.with_deposit is not empty %}
             {% if i.d_is_signed is null %}
                 <a href="{{ url_for('deposit_sign', {reference:i.with_deposit}) }}" class="btn btn-sk-tree">Faire signer le dépôt</a>
@@ -22,29 +23,40 @@
         {% else %}
             <button type="button" data-target="add_deposit" data-toggle="modal" class="btn btn-sk-tree"> <i class="ri-file-2-line"></i> Bon de dépôt</button>
         {% endif %}
-        <button type="button" class="btn btn-sk-tree"> <i class="ri-file-pdf-line"></i> PDF</button>
+        {% endif %}
+        <button type="button" class="btn btn-sk-tree"> <i class="ri-file-pdf-line"></i> Convertir en PDF</button>
+        <button type="submit" data-target="delete_intervention" data-toggle="modal" class="btn btn-sk-one"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
     </div>
-{% endblock %}
-
-{% block aside %}
-    {{ include('backoffice/intervention/_aside.html.twig') }}
 {% endblock %}
 
 {% block body %}
     <div class="grid-12">
         <div class="col-9_sm-12">
+            {% if i.equipments_id is null %}
+                <div class="alert alert-warning">
+                    L'équipement associé à cette intervention n'existe plus. Que voulez-vous faire ?
+                    <div class="mt-2">
+                        <form method="post" action="{{ url_for('equipment_delete',{id:e.id}) }}" class="d-inline-block">
+                            <input type="hidden" name="_METHOD" value="DELETE"/>
+                            <button type="submit" onclick="return confirm('Etes-vous sûr ?')" class="btn-mid btn-light-warning">Supprimer l'intervention</button>
+                        </form>
+                        <button type="button" class="btn-mid btn-light-warning">Archiver l'intervention</button>
+                    </div>
+                </div>
+            {% else %}
             {% if i.equipment_name != i.e_name %}
                 <div class="grid-12">
                     <div class="col-12_sm-12">
                         <div class="alert alert-info" id="alert-ajax">
                             <strong>Information</strong> : le nom de l'équipement de cette intervention ne correspond pas avec l'association "Equipment". Cliquez ci-dessous afin de mettre à jour les données.
                             <form method="post" action="#" id="update-equipment-name" class="mt-2">
-                                <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_u_equipment_name', {'id' : intervention_id, 'eid': i.equipments_id}) }}', 'update-equipment-name'); return false;" class="btn-sm btn-light-info submit-ajax">Mettre à jour maintenant</button>
+                                <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_u_equipment_name', {'id' : intervention_id, 'eid': i.e_id}) }}', 'update-equipment-name'); return false;" class="btn-sm btn-light-info submit-ajax">Mettre à jour maintenant</button>
                                 <span id="message"></span>
                             </form>
                         </div>
                     </div>
                 </div>
+            {% endif %}
             {% endif %}
             <div class="grid-12">
                 <div class="col-4_sm-12">
@@ -202,15 +214,15 @@
                     <div class="mb-3">
                         <em>Si une tâche n'existe pas, ajoutez-la ci-dessous.</em>
                     </div>
-                    <form method="post" action="">
+                    <form method="post" action="{{ url_for('settings_task_create') }}">
                         <div class="flex label-twin label-twin-left-btn mb-3">
                                 <span class="lt-text">
                                     <label for="name">
-                                        <input type="text" class="form-input-twin" id="name" name="name" placeholder="Nom de la tâche">
+                                        <input type="text" class="form-input-twin" id="name" name="form_setting_task[name]" placeholder="Nom de la tâche">
                                     </label>
                                 </span>
                             <span class="lt-button">
-                                <button type="submit" class="btn-sm btn-light-four">Créer la tâche</button>
+                                <button type="submit" class="btn-sm btn-light-four">Créer</button>
                             </span>
                         </div>
                     </form>
@@ -272,11 +284,13 @@
                         {% endif %}
                     </li>
                     <li><a href="#"><i class="fa-regular fa-file-pdf"></i> Vers PDF</a></li>
-                    <li><a href="#" class="text-delete"><i class="fa-solid fa-trash-can"></i> Supprimer</a></li>
+                    <li><a href="#" data-target="delete_intervention" data-toggle="modal" class="text-delete"><i class="fa-solid fa-trash-can"></i> Supprimer</a></li>
+
                 </ul>
             </div>
         </div>
     </div>
+    {{ include('backoffice/intervention/_modal/_delete.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}

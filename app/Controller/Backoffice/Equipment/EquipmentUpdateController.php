@@ -39,12 +39,22 @@ class EquipmentUpdateController extends AbstractController
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
                 $this->session->getFlash()->add('panel-info', sprintf("L'équipement %s a bien été mis à jour.", $data['name']));
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Equipements', $this->routeParser->urlFor('dash_equipment'));
+        $bds->addCrumb($e['customer_name'], $this->routeParser->urlFor('customer_read', ['id' => $e['customers_id']]));
+        $bds->addCrumb($e['type_name'], false);
+        $bds->addCrumb($e['name'], false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/update.html.twig', [
             'form' => $form,
             'e' => $e,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'equipment'
         ]);
     }
@@ -70,7 +80,7 @@ class EquipmentUpdateController extends AbstractController
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
                 $this->session->getFlash()->add('panel-info', sprintf("La fiche technique de l'équipement %s a bien été mise à jour.", $data['name']));
-                return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                return $this->redirectToReferer($request);
             }
         }
         // Upload BAO File
@@ -113,10 +123,10 @@ class EquipmentUpdateController extends AbstractController
                 $this->getRepository(EquipmentRepository::class)->update($parserBao, $equipment_id);
                 unlink($directory . '/' . $filename);
                 $this->session->getFlash()->add('panel-info', 'Données importées et modifications effectuées');
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('equipment_update_specs', ['id' => $equipment_id]));
+                return $this->redirectToRoute('equipment_update_specs', ['id' => $equipment_id]);
             } else {
                 $this->session->getFlash()->add('panel-error', "Veuillez charger un fichier avec l'extension .bao.");
-                return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('equipment_update_specs', ['id' => $equipment_id]));
+                return $this->redirectToRoute('equipment_update_specs', ['id' => $equipment_id]);
             }
         }
     }

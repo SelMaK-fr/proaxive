@@ -20,6 +20,9 @@
                 </div>
             </div>
             <div class="results" id="htmlContent"></div>
+            <form class="d-inline-block" method="post" action="{{ url_for('equipment_delete_selected') }}">
+            <input type="hidden" name="_METHOD" value="DELETE"/>
+            <button type="submit" onclick="return confirm('Etes-vous certains de supprimer cette séléction ?')" class="btn-mid-rounded btn-sk-one mt-3"><i class="fa-solid fa-trash-can"></i></button>
             <table class="table-default table-striped mt-3" id="table-visible">
                 <thead>
                 <tr>
@@ -37,7 +40,7 @@
                 {% for e in equipments %}
                     <tr>
                         <td>
-                            <input type="checkbox" name="_delete" value="">
+                            <input type="checkbox" name="delete_equipments[]" value="{{ e.id }}">
                         </td>
                         <td>
                             <span class="label badge-{% if e.is_outofservice is not null %}light-pink{% else %}light-green{% endif %}">
@@ -57,6 +60,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+            </form>
         </div>
         {{ dataPaginate | raw }}
     {% else %}
@@ -78,7 +82,7 @@
     <script src="/assets/js/search.js"></script>
     <script>
         function toggle(source) {
-            checkboxes = document.getElementsByName('_delete');
+            checkboxes = document.getElementsByName('delete_equipments[]');
             for(var i=0, n=checkboxes.length;i<n;i++) {
                 checkboxes[i].checked = source.checked;
             }

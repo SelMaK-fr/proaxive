@@ -69,14 +69,23 @@ class BaseRepository
      * Return one record for a key in an object
      * @throws Exception
      */
-    public function find(string $key, int $value, bool $type = false)
+    public function find(string $key, mixed $value, bool $type = false)
     {
         if($type){
             // For array
-            return $this->makeQueryDefault()->where("$key = ?", [$value])->fetch();
+            try {
+                return $this->makeQueryDefault()->where("$key = ?", [$value])->fetch();
+            } catch (\Exception){
+                return new Exception('Erreur de la base de données !');
+            }
+
         } else {
             // For object
-            return $this->makeQueryObject()->where("$key = ?", [$value])->fetch();
+            try {
+                return $this->makeQueryObject()->where("$key = ?", [$value])->fetch();
+            } catch (\Exception){
+                return new Exception('Erreur de la base de données !');
+            }
         }
     }
 
@@ -136,7 +145,7 @@ class BaseRepository
      */
     public function allArrayForPaginator(mixed $limit)
     {
-        return $this->makeQueryDefault()->limit($limit)->fetchAll();
+        return $this->makeQueryDefault()->limit($limit)->orderBy('created_at DESC')->fetchAll();
     }
 
     /**

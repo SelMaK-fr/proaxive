@@ -23,4 +23,4 @@
             myTabs[i].addEventListener("click", myTabClicks)
         }
     });
-})()
+})();

@@ -29,7 +29,7 @@ class ParametersController extends AbstractController
             $file = fopen(dirname(__DIR__, 4).'/config/parameters.json', 'w');
             fwrite($file, json_encode($data));
             //file_put_contents(dirname(__DIR__, 4).'/config/parameters.json', json_encode($data));
-            return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
+            return $this->redirectToReferer($request);
         }
 
         return $this->render($response, 'backoffice/settings/preference/index.html.twig', [

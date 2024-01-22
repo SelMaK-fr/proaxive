@@ -3,38 +3,41 @@
 {% block title %}Connexion au portail de Proaxive{% endblock %}
 
 {% block body %}
-    <div class="container-login" style="width:600px;margin:4rem auto;">
-        <div class="card all-border card-shadow">
-            <div class="card-body p-6">
-                <div class="text-center mb-6">
-                    <img class="v-middle mb-6" style="height:70px;" src="/assets/logo_circle_2.png" alt="">
-                    <h2 class="fs-28px fw-600">Espace Client</h2>
-                    Connexion à votre espace client en ligne.
-                </div>
-                <div class="login-form-horizontal mt-4">
-                    <form method="post" action="" class="form-lg">
-                        <div class="mb-4">
-                            <label for="login_id" class="form-label mb-2 d-block fw-500">Identifiant ou adresse courriel</label>
-                            <input type="text" class="form-control" name="login_id" placeholder="C-xyz ou john@mail.com">
-                        </div>
-                        <div class="mb-4">
-                            <label for="passwd" class="form-label mb-2 d-block fw-500">Votre mot de passe</label>
-                            <input type="password" name="passwd" class="form-control">
-                        </div>
-                        <div class="text-right">
-                            <button type="submit" class="btn-purple btn-lg d-block w100">Se connecter</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="mt-4 text-center">
-                    <div class="alert alert-info">
-                        Un problème pour vous connecter à votre espace ? Contactez-nous
+    <div class="body-background mh-fullvh">
+        <div class="customer-login">
+            <div class="card all-border card-shadow">
+                <div class="card-body p-6">
+                    <div class="text-center mb-6">
+                        <img class="v-middle mb-6" style="height:100px;" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
+                        <h2 class="fs-28px fw-600">Espace Client</h2>
+                        Connexion à votre espace client en ligne.
                     </div>
-                    <p>
-                        Votre accès est confidentiel, ne le communiquez jamais à autruis.
-                    </p>
+                    <div class="login-form-horizontal mt-4">
+                        <form method="post" action="" class="form-lg">
+                            <div class="mb-4">
+                                <label for="login_id" class="form-label mb-2 d-block fw-500">Identifiant ou adresse courriel</label>
+                                <input type="text" class="form-control" name="login_id" placeholder="C-xyz ou john@mail.com">
+                            </div>
+                            <div class="mb-4">
+                                <label for="passwd" class="form-label mb-2 d-block fw-500">Votre mot de passe</label>
+                                <input type="password" name="passwd" class="form-control">
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn-sk-one btn-lg d-block w100">Se connecter</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <div class="alert alert-info">
+                            Un problème pour vous connecter à votre espace ? Contactez-nous
+                        </div>
+                        <p>
+                            Votre accès est confidentiel, ne le communiquez jamais à autruis.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

@@ -5,9 +5,11 @@ namespace App\Controller\Backoffice\Deposit;
 use App\AbstractController;
 use App\Repository\CompanyRespository;
 use App\Repository\DepositRepository;
-use App\Repository\InterventionRepository;
+use App\Service\MailService;
 use Dompdf\Dompdf;
-use Knp\Snappy\Pdf;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as V;
@@ -21,8 +23,14 @@ class DepositSignController extends AbstractController
         $d = $this->getRepository(DepositRepository::class)->find('reference', $reference);
         $c = $this->getRepository(CompanyRespository::class)->find('id', $d->company_id);
 
+        // Check if deposit as signed
+        if($d->is_signed === 1){
+            $this->session->getFlash()->add('panel-info', "Ce dépôt a déjà été signé par le client.");
+            return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $d->i_reference, 'deposit_reference' => $d->reference]);
+        }
+
         if($request->getMethod() === 'POST'){
-            $data = $request->getParsedBody();
+            $data = $request->getParsedBody()['form_deposit'];
             $validator = $this->validator->validate($data, [
                 'code_sign' => [
                     'rules' => v::notBlank(),
@@ -32,31 +40,62 @@ class DepositSignController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0){
+
                 $deposit = $this->getRepository(DepositRepository::class)->joinForId($d->id);
                 if($deposit){
                     // Return settings array
                     $settings = $this->app->getContainer()->get('settings');
+                    // Generate QRcode
+                    $url = $settings['app']['domainUrl'] .'/i/' .$deposit['ref_for_link'];
+                    $writer = new PngWriter();
+                    $qrCode = QrCode::create($url)
+                        ->setEncoding(new Encoding('UTF-8'))
+                        ->setSize(300)
+                        ->setMargin(10)
+                    ;
+                    $result = $writer->write($qrCode);
+                    $qrcode = $result->getDataUri();
                     // Generate PDF and save in storage folder (storage/documents/deposits)
                     $dompdf = new Dompdf();
                     $dompdf->loadHtml($this->twig->fetch('/snappy/deposit_pdf.html.twig',
-                        ['d' => $deposit, 'data' => $data
+                        ['d' => $deposit, 'data' => $data, 'qrcode' => $qrcode
                         ]));
                     $dompdf->render();
                     // Save PDF
                     $output = $dompdf->output();
                     file_put_contents($settings['storage']['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
                     $this->session->getFlash()->add('panel-info', 'Le bon de dépôt a bien été généré.');
-                    $url = $this->routeParser->urlFor('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference']]);
-                    return $response->withStatus(302)->withHeader('Location', $url);
+                    // Deposit Ok (is_signed)
+                    $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id']);
+                    // Send Mail
+                    if($deposit['c_mail']){
+                        if(isset($data['send_mail'])){
+                            $mail = new MailService($this->getParameters('mailer'));
+                            $mail->sendMailWithAttachment(
+                                $deposit['c_mail'],
+                                $this->view('mailer/deposit/sendpdf.html.twig', ['data' => $deposit, 'setting' => $settings['app']]),
+                                'Votre bon de dépôt',
+                                $settings['storage']['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf'
+                            );
+                        }
+                    }
+
+                    // Redirect
+                    return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference']]);
                 }
             }
             $this->session->getFlash()->add('panel-error', "Le formulaire n'est pas rempli correctement !");
-            return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+            return $this->redirectToReferer($request);
         }
         return $this->render($response, 'backoffice/deposit/sign.html.twig', [
             'd' => $d,
             'c' => $c,
             'currentMenu' => 'deposit'
         ]);
+    }
+
+    public function sendDepositByMail()
+    {
+
     }
 }

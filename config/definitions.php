@@ -26,6 +26,7 @@ use Slim\Factory\AppFactory;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Views\Twig;
 use Selmak\Proaxive2\Settings\Settings;
+use Symfony\Component\Mailer\MailerInterface;
 use Twig\Extension\DebugExtension;
 use Twig\Extra\Intl\IntlExtension;
 
@@ -55,6 +56,10 @@ return [
     // Response Factory
     ResponseFactoryInterface::class => function (ContainerInterface $container) {
         return $container->get(Psr17Factory::class);
+    },
+
+    'mailer' => function (ContainerInterface $container) {
+        return $container->get(MailerInterface::class);
     },
 
     // Config Database (do not edited here, view /config/settings.php for configuration

@@ -31,7 +31,7 @@ class UserActionController extends AbstractController
                 $saveUpdate = $this->getRepository(UserRepository::class)->update($data, $user_id);
                 if($saveUpdate){
                     $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $data['fullname']));
-                    return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+                    return $this->redirectToReferer($request);
                 }
             } else {
                 // Generate token and code (confirm_at)

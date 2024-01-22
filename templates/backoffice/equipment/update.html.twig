@@ -6,7 +6,10 @@
 
 {% block toolbar %}
     <div class="toolbar-tools flex justify-content-space-between">
-        <button type="button" data-target="update_intervention" data-toggle="modal" class="btn btn-light-pink"> <i class="ri-delete-bin-7-line"></i> Supprimer cet équipement</button>
+        <form class="d-inline-block" method="post" action="{{ url_for('equipment_delete', {id:e.id}) }}">
+            <input type="hidden" name="_METHOD" value="DELETE"/>
+            <button type="submit" onclick="return confirm('Etes-vous sûr ?')" data-target="delete_equipment" data-toggle="modal" class="btn btn-sk-one ml-5"><i class="fa-solid fa-trash-can"></i> Supprimer cet équipement</button>
+        </form>
     </div>
 {% endblock %}
 
@@ -24,6 +27,7 @@
         </div>
     </div>
 {% endblock %}
+
 {% block stylesheets %}
     <link
             rel="stylesheet"

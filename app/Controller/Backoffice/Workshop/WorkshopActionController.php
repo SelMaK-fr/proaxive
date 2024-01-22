@@ -35,8 +35,16 @@ class WorkshopActionController extends AbstractController
                 }
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Magasins', $this->routeParser->urlFor('dash_workshop'));
+        $bds->addCrumb('Actions', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/workshop/action.html.twig', [
             'form' => $form,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'workshop'
         ]);
     }

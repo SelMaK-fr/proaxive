@@ -67,48 +67,6 @@ function updateTypeCustomer($id)
     ajax_request.send(form_data);
 }
 
-let count = 1;
-function new_line(type = null){
-    count++;
-    let e = document.createElement("tr");
-    e.id = count, e.className = "customer";
-    //getTableElement = document.querySelector('.item-table');
-    // currentIndex = getTableElement.rows.length;
-    let t = '<tr>'+
-        '<th scope="row" class="fw-500 product-id">'+ count +'</th>'+
-        '<td><div class="mb-2"><input type="text" id="productName-'+ count +'" class="form-control" placeholder="Titre du produit" required></div><textarea class="form-control d-block mt-2" name="" id="productDetail-'+ count +'" rows="2" placeholder="Description du produit"></textarea></td>'+
-        '<td class="text-right qty"><input type="text" class="form-control product-price" id="productRate-'+ count +'" placeholder="Price"></td>'+
-        '<td>'+
-        '<div class="input-qty">'+
-        '<button type="button" class="minus">–</button>'+
-        '<input type="number" id="product-qty-'+ count +'" class="product-quantity" value="0" placeholder="Qte" readonly>'+
-        '<button type="button" class="plus">+</button>'+
-        '</div>'+
-        ' </td>'+
-        '<td class="text-right price"><div><input type="text" class="form-control product-line-price" id="productPrice-'+ count +'" name="" placeholder="€0.00" readonly></div></td>'+
-        '<td class="text-center fs-22px delete-item-row"><button type="button" class="btn-sm btn-success delete-item">Retirer</button></td>'+
-        '</tr>';
-    e.innerHTML = document.getElementById("newForm").innerHTML + t, document.getElementById("newline").appendChild(e);
-    remove()
-}
-remove();
-/**
- * Call remove item product
- */
-function remove() {
-    Array.from(document.querySelectorAll(".delete-item")).forEach(function(e) {
-        e.addEventListener("click", function(e) {
-            removeItem(e)
-        })
-    })
-}
-/**
- * Remove product table
- */
-function removeItem(e) {
-    e.target.closest("tr").remove()
-}
-
 /** View Map **/
 function viewMap(la, lo) {
     // On initialise la latitude et la longitude de Paris (centre de la carte)
@@ -137,6 +95,8 @@ function viewMap(la, lo) {
 
 // Aside Mobile Device
 const btnDeployMap = document.getElementById('btnDeployMap');
-btnDeployMap.addEventListener('click', function(e){
-    document.getElementById('container-map').classList.toggle("map-visible");
-});
+if(btnDeployMap){
+    btnDeployMap.addEventListener('click', function(e){
+        document.getElementById('container-map').classList.toggle("map-visible");
+    });
+}

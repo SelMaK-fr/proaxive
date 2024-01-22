@@ -6,6 +6,7 @@ use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Repository\EquipmentRepository;
 use App\Repository\InterventionRepository;
+use App\Service\MailInterventionService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Validator as V;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -73,7 +74,7 @@ class InterventionAjaxController extends AbstractController
                 }
             }
             $this->session->getFlash()->add('panel-error', "Le formulaire n'est pas rempli correctement !");
-            return $this->redirect($request->getServerParams()['HTTP_REFERER']);
+            return $this->redirectToReferer($request);
         }
         $response->getBody()->write('Error form data - please contact administrator');
         return $response
@@ -140,6 +141,12 @@ class InterventionAjaxController extends AbstractController
                 'way_steps' => 5,
                 'is_closed' => 1
             ], $intervention_id);
+            $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
+            if($i['mail']){
+                $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
+                $mail = new MailInterventionService($this->getParameters('mailer'));
+                $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/end.html.twig', ['data' => $i]));
+            }
         }
         return $response;
     }
