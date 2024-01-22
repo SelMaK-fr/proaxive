@@ -1,9 +1,11 @@
 <div class="modal" id="add_equipment">
-    <div class="modal-container p-5">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h1>Nouvel équipement</h1>
+        </div>
         {{ formEquipment.renderStart | raw }}
             <div class="modal-content">
                 <div class="mb-4">
-                    <h1>Nouvel équipement</h1>
                     Vous êtes sur le point de créer une nouvel équipement. Merci de renseigner les champs ci-dessous.
                     <br>
                     Vous pourrez compléter ses informations par la suite.
@@ -22,7 +24,7 @@
 
             </div>
             <div class="modal-footer text-right">
-                <button type="submit" id="submit_add" class="btn btn-light-info">Mettre à jour maintenant</button>
+                <button type="submit" id="submit_add" class="btn btn-light-four">Mettre à jour maintenant</button>
                 <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
             </div>
             {{ formEquipment.renderEnd(false) | raw }}

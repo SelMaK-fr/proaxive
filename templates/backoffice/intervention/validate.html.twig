@@ -28,6 +28,7 @@
                                 {% if e == 0 %}
                                     <div class="mb-6">
                                         <span class="d-block mb-1">Ce client n'a pas d'équipement</span>
+                                        <input type="hidden" name="form_intervention_validation[empty_equipment]">
                                         <button type="button" data-target="add_equipment" data-toggle="modal" class="btn-sm btn-light-info"><i class="ri-add-circle-line"></i> Créer un équipement</button>
                                     </div>
                                 {% else %}

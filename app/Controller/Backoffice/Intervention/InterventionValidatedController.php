@@ -39,6 +39,11 @@ class InterventionValidatedController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_intervention_validation'];
             // Valid intervention
+            // If equipment is empty
+            if(isset($data['empty_equipment'])){
+                $this->session->getFlash()->add('panel-error', 'Veuillez créer un équipement pour ce client');
+                return $this->redirectToReferer($request);
+            }
             $data['state'] = 'VALIDATED';
             $save = $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
             if($save){

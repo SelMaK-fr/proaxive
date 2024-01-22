@@ -22,6 +22,7 @@ use App\Controller\Backoffice\Equipment\EquipmentUpdateController;
 use App\Controller\Backoffice\Equipment\PeripheralDevice\PeripheralCreateController;
 use App\Controller\Backoffice\Equipment\PeripheralDevice\PeripheralUpdateController;
 use App\Controller\Backoffice\Intervention\InterventionAjaxController;
+use App\Controller\Backoffice\Intervention\InterventionArchiveController;
 use App\Controller\Backoffice\Intervention\InterventionController;
 use App\Controller\Backoffice\Intervention\InterventionCreateController;
 use App\Controller\Backoffice\Intervention\InterventionDeleteController;
@@ -54,6 +55,7 @@ use App\Middleware\Auth\RedirectAuthIfCookieMiddleware;
 use App\Middleware\Equipment\IfUpdatePeripheralMiddleware;
 use App\Middleware\IfUpdateSocietyMiddleware;
 use App\Middleware\Intervention\IfDarftMiddleware;
+use App\Middleware\Intervention\IfIdIsNullMiddleware;
 use App\Middleware\Intervention\IfLinkExpirateMiddleware;
 use App\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use App\Middleware\Perms\RedirectIfNotAdminOrManagerMiddleware;
@@ -154,9 +156,11 @@ return function (App $app) {
        $group->any('/create-regular/c-{id:[0-9]+}', [InterventionCreateController::class, 'regular'])->setName('intervention_create_customer_regular');
        $group->any('/create-regular/complete', [InterventionCreateController::class, 'next'])->setName('intervention_create_customer_regular_complete');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
-       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfDarftMiddleware::class);
+       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
        $group->post('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
        $group->any('/{id:[0-9]+}/validation', [InterventionValidatedController::class, 'validated'])->setName('intervention_validation');
+       $group->any('/{id:[0-9]+}/archive', [InterventionArchiveController::class, 'index'])->setName('intervention_archive');
+       $group->any('/{id:[0-9]+}/archive/read', [InterventionArchiveController::class, 'readArchive'])->setName('intervention_archive_read');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Deposit */
