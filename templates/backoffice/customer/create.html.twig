@@ -26,12 +26,4 @@
         <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/opendata.js"></script>
     {% endif %}
     <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/functions.customers.js"></script>
-    <script type="text/javascript">
-        function viewLoader()
-        {
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('body-wrapper').style.overflow = 'hidden';
-        }
-        window.onsubmit = viewLoader;
-    </script>
 {% endblock %}

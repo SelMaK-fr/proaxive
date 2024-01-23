@@ -28,6 +28,7 @@
     </div>
     <div class="modal" id="delete_intervention">
         <div class="modal-container">
+            <form method="post" action="{{ url_for('intervention_delete', {'id':i.id}) }}">
             <div class="modal-header">
                 <h1>Confirmation de suppression</h1>
             </div>
@@ -36,14 +37,20 @@
                 <p>
                     <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
                 </p>
+                <span class="d-block mb-2">Veuillez confirmer la référence de cette intervention :</span>
+                <div class="form-group">
+                    <label class="form-label" for="ref_number">Référence</label>
+                    <input class="form-input" type="text" id="ref_number" name="form_delete_intervention[ref_number]" placeholder="">
+                </div>
             </div>
             <div class="modal-footer">
-                <form method="post" action="{{ url_for('intervention_delete', {'id':i.id}) }}">
+
                     <input type="hidden" name="_METHOD" value="DELETE"/>
                     <button type="submit" class="btn btn-light-four mb-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
                     <button data-dismiss="modal" class="modal__close btn btn-light-pink mb-0">Annuler</button>
-                </form>
+
             </div>
+            </form>
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,19 @@
+<div class="card mb-3 all-border-pink">
+    <div class="p-4">
+        <span class="d-block fw-500 mb-3">Etat de l'intervention</span>
+        <div class="flex justify-content-space-between">
+            <div class="step-title flex-root">
+                <span class="current text-one fw-500 fs-16px text-uppercase">{{ getDataWaySteps(i.way_steps) }}</span>
+                <span class="d-block fs-13px"><i class="fa-regular fa-clock"></i> {{ i.updated_at | date('d/m/Y') }}</span>
+            </div>
+            <div class="icon-step">
+                {% if i.way_steps <= 4 %}
+                <form method="post" action="" id="next-step">
+                    <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('ajax_intervention_next_step', {'id' : intervention_id}) }}', 'next-step'); return false;" class="btn btn-sk-one rd-10">{{ getDataWayStepsNext(i.way_steps) }} <i class="fa-solid fa-circle-arrow-right"></i></button>
+                    <span id="sync-start"></span>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

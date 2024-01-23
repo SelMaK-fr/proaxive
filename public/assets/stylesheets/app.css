@@ -116,7 +116,7 @@ Other Dark Colors
 }
 
 /* line 73, ../sass/base/_root.scss */
-[data-layout-mode=dark] {
+[data-layout_mode=dark] {
   --sk-color-tree: #414b6e;
   --sk-color-base-foreground: #323c58;
   --sk-color-base-foreground-child: #2f3852;
@@ -187,7 +187,7 @@ body .layout-wrapper {
 
 /* line 18, ../sass/layout/_body.scss */
 .preloader {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
@@ -207,10 +207,57 @@ body .layout-wrapper {
 }
 
 /* line 35, ../sass/layout/_body.scss */
-.preloader .title--preloader img {
-  display: inline-block;
+.preloader .title--preloader strong {
+  color: white;
 }
 
+/** Loader **/
+/* line 39, ../sass/layout/_body.scss */
+.loader {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+
+/* line 46, ../sass/layout/_body.scss */
+.loader::before, .loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite;
+}
+
+/* line 55, ../sass/layout/_body.scss */
+.loader::after {
+  inset: 8px;
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: var(--sk-color-one);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  75%, 100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+}
 /* line 1, ../sass/layout/_aside_nav.scss */
 .sk-menu.aside-menu {
   background-color: var(--sk-color-background-aside);

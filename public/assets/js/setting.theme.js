@@ -2,25 +2,7 @@
  By SelMaK
  */
 
-// Theme Switcher
-function setTheme(styleName){
-    localStorage.setItem('data-layout-mode', styleName);
-    document.documentElement.setAttribute("data-layout-mode", styleName)
-}
-// function to toggle between light and dark theme
-function toggleTheme() {
-    if (localStorage.getItem('data-layout-mode') === 'dark'){
-        setTheme('default');
-    } else {
-        setTheme('dark');
-    }
-}
-// Immediately invoked function to set the theme on initial load
-(function () {
-    if (localStorage.getItem('data-layout-mode') === 'default') {
-        setTheme('default');
-    }
-})();
+
 // Sidebar Style
 // function to set a given theme/color-scheme
 function setSidebar(sidebarStatus) {

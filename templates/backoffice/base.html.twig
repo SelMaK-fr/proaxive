@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive" data-layout-mode="default">
+<html lang="en" data-sidebar-width="lg" data-sidebar-mobile="inactive">
 <head>
     <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
@@ -196,7 +196,7 @@
             <div class="user-tools">
                 <ul class="right-navbar">
                     <li class="a-button d-desktop"><a class="btn-bar btn-inverse-one" href="#"><i class="ri-question-line"></i> Support</a></li>
-                    <li class="btn-button"><button type="button" onclick="toggleTheme()"><i class="ri-sun-fill"></i></button></li>
+                    <li class="btn-button"><button type="button" id="theme-toggle"><i class="ri-sun-fill"></i></button></li>
                     <li class="btn-button"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
                     <li class="profil-item ml-6">
                         <span class="profil-icon d-block mr-2 fs-12px text-one">{{ getSession.get('auth').roles }}</span>
@@ -244,8 +244,10 @@
     <div class="title--preloader">
         <div class="flex justify-content-center align-items-center h100">
             <div>
-                <span class="loader"></span>
-                <strong>Mise à jour des données, </strong><span class="text-pink">veuillez patientez ...</span>
+                <div class="flex justify-content-center"><span class="loader"></span></div>
+                <div class="mt-4">
+                    <strong>Mise à jour des données</strong><span class="text-pink d-block">veuillez patientez ...</span>
+                </div>
             </div>
         </div>
     </div>
@@ -253,6 +255,7 @@
 {% block javascripts %}{% endblock %}
 <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/setting.theme.js"></script>
 <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/p2.app.js"></script>
+<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/theme-toggle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
 {{ include('backoffice/_session_flash.html.twig') }}
 </body>

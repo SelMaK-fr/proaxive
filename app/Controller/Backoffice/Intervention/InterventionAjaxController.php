@@ -141,9 +141,9 @@ class InterventionAjaxController extends AbstractController
                 'way_steps' => 5,
                 'is_closed' => 1
             ], $intervention_id);
+            // If the client at a mail address, send mail
             $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
             if($i['mail']){
-                $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
                 $mail = new MailInterventionService($this->getParameters('mailer'));
                 $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/end.html.twig', ['data' => $i]));
             }
@@ -168,6 +168,44 @@ class InterventionAjaxController extends AbstractController
             $data = [
                 'equipment_name' => $e->name
             ];
+            $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+        }
+        return new \Slim\Psr7\Response();
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function nextStep(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        if($request->getMethod() === 'POST'){
+            $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+            $currentStep = $i->way_steps;
+            // Checks if way_steps is equal to 4, in this case end the intervention.
+            // Otherwise, continue incrementing
+            if($currentStep === 4){
+                $data = [
+                    'end_date' => date('Y-m-d h:i:s'),
+                    'state' => 'COMPLETED',
+                    'way_steps' => 5,
+                    'is_closed' => 1
+                ];
+                // If the client at a mail address, send mail
+                $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
+                if($i['mail']){
+                    $mail = new MailInterventionService($this->getParameters('mailer'));
+                    $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/end.html.twig', ['data' => $i]));
+                }
+            } else {
+                $data = [
+                    'way_steps' => $currentStep + 1
+                ];
+            }
             $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
         }
         return new \Slim\Psr7\Response();

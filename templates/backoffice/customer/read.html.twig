@@ -193,7 +193,7 @@
                         <h3>Aucune intervention</h3>
                         Ajoutez des interventions pour <strong>{{ customer.fullname}}</strong> et retrouvez-les ici
                         <div class="mt-3">
-                            <a href="" class="btn btn-light-four"><i class="ri-add-line"></i> Nouvelle intervention</a>
+                            <a href="{{ url_for('intervention_create_customer_regular', {id:customer.id}) }}" class="btn btn-light-four"><i class="ri-add-line"></i> Nouvelle intervention</a>
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                         <h3>Interventions ({{ nbInterventions }})</h3>
                     </div>
                     <div class="col-4_sm-12 text-right">
-                        <a href="" class="btn btn-light-four fw-600"><i class="ri-add-fill"></i> Créer</a>
+                        <a href="{{ url_for('intervention_create_customer_regular', {id:customer.id}) }}" class="btn btn-light-four fw-600"><i class="ri-add-fill"></i> Créer</a>
                     </div>
                 </div>
                 <div class="grid-2 mt-3">

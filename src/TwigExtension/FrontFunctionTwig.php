@@ -17,6 +17,8 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataState', [$this, 'getDataState'], ['is_safe' => ['html']]),
             new TwigFunction('getDataStatus', [$this, 'getDataStatus'], ['is_safe' => ['html']]),
             new TwigFunction('getDataPriority', [$this, 'getDataPriority'], ['is_safe' => ['html']]),
+            new TwigFunction('getDataWaySteps', [$this, 'getDataWaySteps']),
+            new TwigFunction('getDataWayStepsNext', [$this, 'getDataWayStepsNext']),
         ];
     }
 
@@ -81,5 +83,37 @@ class FrontFunctionTwig extends AbstractExtension
             $html = '<span class="label btn-light-pink">'.$text.' Absolue</span>';
         }
         return $html;
+    }
+
+    public function getDataWaySteps($data): string
+    {
+        $v = '';
+        if($data == 1){
+            $v = 'Matériel récupéré';
+        } elseif($data == 2){
+            $v = 'En atelier';
+        } elseif($data == 3){
+            $v = 'Tests finaux';
+        } elseif ($data == 4){
+            $v = 'En cours de sortie';
+        } elseif ($data == 5){
+            $v = 'Terminé';
+        }
+        return $v;
+    }
+
+    public function getDataWayStepsNext($data): string
+    {
+        $v = '';
+        if($data == 1){
+            $v = 'En atelier';
+        } elseif($data == 2){
+            $v = 'Tests finaux';
+        } elseif($data == 3){
+            $v = 'En cours de sortie';
+        } elseif ($data == 4){
+            $v = 'Terminé';
+        }
+        return $v;
     }
 }

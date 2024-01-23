@@ -98,7 +98,6 @@ return function (App $app) {
         $group->get('', [CustomerController::class, 'index'])->setName('dash_customer');
         $group->any('/create', [CustomerCreateController::class, 'particular'])->setName('customer_create_particular');
         $group->any('/create/society', [CustomerCreateController::class, 'society'])->setName('customer_create_society');
-        $group->post('/create/post[:{args}]', [CustomerActionController::class, 'create'])->setName('customer_create_action');
         $group->get('/ajax/search/{key}', [CustomerAjaxController::class, 'search'])->setName('customer_search');
         $group->any('/{id:[0-9]+}/ajax/note-update', [CustomerAjaxController::class, 'updateNote']);
         $group->get('/{id:[0-9]+}', [CustomerReadController::class, 'read'])->setName('customer_read');
@@ -126,7 +125,7 @@ return function (App $app) {
         $group->any('/create', [UserActionController::class, 'action'])->setName('user_create');
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
-    }); // ->add(RedirectNotPermitDemo::class)
+    })->add(RedirectNotPermitDemo::class); // ->add(RedirectNotPermitDemo::class)
     /* Equipment */
     $app->group('/admin/equipments', function (RouteCollectorProxy $group){
         $group->get('', [EquipmentController::class, 'index'])->setName('dash_equipment');
@@ -156,6 +155,7 @@ return function (App $app) {
        $group->post('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
        $group->post('/{id:[0-9]+}/ajax/end', [InterventionAjaxController::class, 'end'])->setName("intervention_ajax_end");
        $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
+       $group->post('/{id:[0-9]+}/ajax/next-step', [InterventionAjaxController::class, 'nextStep'])->setName('ajax_intervention_next_step');
        $group->get('/create', [InterventionCreateController::class, 'index'])->setName('intervention_create_index');
        $group->any('/create-regular[:{id:[0-9]+}]', [InterventionCreateController::class, 'regular'])->setName('intervention_create_regular');
        $group->any('/create-regular/c-{id:[0-9]+}', [InterventionCreateController::class, 'regular'])->setName('intervention_create_customer_regular');

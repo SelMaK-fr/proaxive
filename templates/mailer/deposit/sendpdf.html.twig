@@ -92,7 +92,7 @@
             <table class="w100">
                 <tr>
                     <td class="align-center" style="padding-top:15px;">
-                        <img style="height: 150px;width:auto;" src="https://{{ setting.domainUrl }}/img/logos/logo_proaxive2.png" alt="">
+                        <img style="height: 150px;width:auto;" src="https://{{ settings.app.domainUrl }}/img/logos/logo_proaxive2.png" alt="">
                         <h3 class="ptpb-10px title">Votre bon de dépôt d'équipement.</h3>
                     </td>
                 </tr>
@@ -104,7 +104,7 @@
                         <span class="block">Votre équipement a bien été déposé le {{ data.deposit_date | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}. La version PDF de ce dépôt est disponible en pièce jointe.</span>
                         <div class="pt-20px">
                             Vous pouvez suivre l'avancement de la réparation en vous randant sur la page de
-                            <a href="https://{{ setting.domainUrl }}/i/{{ data.ref_for_link }}" class="purple">Suivi d'une intervention</a> ou via votre espace client.
+                            <a href="https://{{ settings.app.domainUrl }}/i/{{ data.ref_for_link }}" class="purple">Suivi d'une intervention</a> ou via votre espace client.
                         </div>
                         <div class="pt-20px">
                             En vous remerciant,<br>
@@ -123,7 +123,7 @@
             <div style="padding:20px;">
                 <p class="align-center">
                     Ce courriel est automatique, merci de ne pas y répondre. <br>
-                    <a href="#" class="purple">Votre espace client</a>
+                    <a href="https://{{ settings.app.domainUrl }}/wxy/customers/login" class="purple">Votre espace client</a>
                 </p>
             </div>
         </td>

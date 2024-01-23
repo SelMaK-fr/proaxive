@@ -117,6 +117,7 @@ return [
         $twig->getEnvironment()->addGlobal('getSession', $container->get(SessionInterface::class));
         $twig->getEnvironment()->addGlobal('appRoot', $container->get(SettingsInterface::class)->get('app'));// App Name etc
         $twig->getEnvironment()->addGlobal('config', $container->get('parameters'));
+        $twig->getEnvironment()->addGlobal('settings', $container->get('settings'));
         $twig->addExtension($container->get(TwigMessageExtension::class));
         $twig->addExtension($container->get(TwigCsrfExtension::class));
         $twig->addExtension($container->get(DebugExtension::class));
