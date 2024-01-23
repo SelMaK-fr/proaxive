@@ -3,28 +3,36 @@
 {% block title %}Nouvel utilisateur{% endblock %}
 
 {% block body %}
-    <div class="card">
-        <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
+    <div class="grid-12">
+        <div class="col-8_sm-12">
+            <ul id="tabs" class="nav-components">
                 {% if u is not null %}
-                <li><a href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
-                <li><a class="selected" href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+                    <li><a href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
+                    <li><a class="selected" href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
                 {% else %}
-                <li><a href="#" class="selected"><i class="ri-pencil-fill"></i> Création d'un(e) employé(e)</a></li>
+                    <li><a href="#" class="selected"><i class="ri-pencil-fill"></i> Création d'un(e) employé(e)</a></li>
+                    <li><a href="{{ url_for('dash_user') }}">Retour à la liste</a></li>
                 {% endif %}
             </ul>
-            <div class="p-4">
-                <div class="alert alert-info">
-                    L'utilisateur devra créer son mot de passe lors de sa première connexion.
-                </div>
-                {{ form.renderStart | raw }}
-                {{ form.renderField('fullname') | raw }}
-                {{ form.renderField('pseudo') | raw }}
-                {{ form.renderField('mail') | raw }}
-                {{ form.renderField('roles') | raw }}
-                {{ form.renderField('company_id') | raw }}
-                <button type="submit" class="btn btn-light-purple">Enregistrer</button>
-                {{ form.renderEnd(false) | raw }}
+            <div class="card">
+                <div class="p-4">
+                        <div class="mb-5">
+                            <h3 class="fs-18px fw-500">Création d'un utilisateur (panel)</h3>
+                            <p class="m-0">
+                                L'utilisateur recevra une notification par courriel et devra créer son mot de passe lors de sa première connexion.
+                                <br>
+                                <i class="fa-solid fa-circle-info"></i> Une adresse courriel ne peut avoir qu'un seul compte.
+                            </p>
+                        </div>
+                        {{ form.renderStart | raw }}
+                        {{ form.renderField('fullname') | raw }}
+                        {{ form.renderField('pseudo') | raw }}
+                        {{ form.renderField('mail') | raw }}
+                        {{ form.renderField('roles') | raw }}
+                        {{ form.renderField('company_id') | raw }}
+                        <button type="submit" class="btn btn-light-four">Enregistrer</button>
+                        {{ form.renderEnd(false) | raw }}
+                    </div>
             </div>
         </div>
     </div>

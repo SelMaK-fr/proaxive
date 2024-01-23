@@ -125,7 +125,7 @@ return function (App $app) {
         $group->any('/create', [UserActionController::class, 'action'])->setName('user_create');
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
-    })->add(RedirectNotPermitDemo::class); // ->add(RedirectNotPermitDemo::class)
+    }); // ->add(RedirectNotPermitDemo::class)
     /* Equipment */
     $app->group('/admin/equipments', function (RouteCollectorProxy $group){
         $group->get('', [EquipmentController::class, 'index'])->setName('dash_equipment');

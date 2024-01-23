@@ -54,6 +54,7 @@ final class UserAccountController extends AbstractController
             unset($data['password_2']);
             $this->getRepository(UserRepository::class)->update($data, $user['id']);
             $this->session->getFlash()->add('info', 'Votre mot de passe a bien été sauvegardé.');
+            return $this->redirectToRoute('auth_user_login');
         }
         return $this->render($response, 'security/user/first_signin.html.twig', [
             'form' => $form

@@ -5,13 +5,12 @@
 {% set countInterventions = i | length %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a class="selected" href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
+        <li><a href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+    </ul>
     <div class="card">
-        <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a class="selected" href="{{ url_for('user_read', {'id' : u.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
-                <li><a href="{{ url_for('user_update', {id:u.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-            </ul>
-            <div class="p-4">
+        <div class="p-4">
                 <div class="grid-12">
                     <div class="col-4_sm-12">
                         <h3 class="mt-2 fw-500 fs-16px">Statistiques pour {{ u.fullname }}</h3>
@@ -56,7 +55,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 {% endblock %}
 

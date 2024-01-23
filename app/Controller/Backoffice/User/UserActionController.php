@@ -24,8 +24,8 @@ class UserActionController extends AbstractController
             $form = $this->createForm(UserType::class);
         }
         $form->handleRequest();
+        $data = $form->getRequestData()['form_user'];
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getRequestData()['form_user'];
             unset($data['password_2']);
             if($user_id){
                 $saveUpdate = $this->getRepository(UserRepository::class)->update($data, $user_id);
@@ -36,23 +36,22 @@ class UserActionController extends AbstractController
             } else {
                 // Generate token and code (confirm_at)
                 $checkIfExist = $this->getRepository(UserRepository::class)->ifExist('mail', $data['mail']);
-                if($checkIfExist){
+                if($checkIfExist == 1){
                     $this->session->getFlash()->add('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
-                    return $this->redirectToReferer($request);
-                }
-                $t = new RandomNumberService();
-                $data['token'] = $t->token(30);
-                $data['confirm_at'] = rand(7, 9999999);
-                $mail = new MailService($this->getParameters('mailer'));
-                $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
-                $save = $this->getRepository(UserRepository::class)->add($data, true);
-                if($save){
-                    $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
-                    return $this->redirectToRoute('dash_user');
+                } else {
+                    $t = new RandomNumberService();
+                    $data['token'] = $t->token(30);
+                    $data['confirm_at'] = rand(7, 9999999);
+                    $mail = new MailService($this->getParameters('mailer'));
+                    $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
+                    $save = $this->getRepository(UserRepository::class)->add($data, true);
+                    if($save){
+                        $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
+                        return $this->redirectToRoute('dash_user');
+                    }
                 }
             }
         }
-
         return $this->render($response, 'backoffice/user/action.html.twig', [
             'form' => $form,
             'currentMenu' => 'user',

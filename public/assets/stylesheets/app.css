@@ -86,7 +86,7 @@ Other Dark Colors
   --sk-body-line-height: 1.5;
   --sk-menu-submenu-text: #ffffff;
   --sk-color-overlay: rgba(0, 0, 0, 0.75);
-  --text-muted: #9b9b9b;
+  --text-muted: #8894a5;
   --purple: #393382;
   --purple-600: #44195e;
   --purple-light: #01608C;
@@ -1608,7 +1608,7 @@ a.btn-light-danger, .btn-light-danger {
 }
 
 /* line 99, ../sass/components/_button.scss */
-a.btn-light-warning, .btn-light-warning {
+a.btn-light-warning, .btn-light-warning, a.btn-light-yellow, .btn-light-yellow {
   background: rgba(241, 196, 15, 0.2);
   border-color: #fbeebc;
   color: #f1c40f;

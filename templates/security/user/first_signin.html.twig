@@ -3,37 +3,40 @@
 {% block title('Première connexion - Proaxive') %}
 
 {% block body %}
-    <div class="container">
-        <div class="flex justify-content-center">
-            <div style="min-width: 500px;">
-                <div class="card t-3 all-border">
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <img class="v-middle mb-4" style="height:90px;" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
-                            <h1>Proaxive</h1>
-                            <span>Veuillez entrer un mot de passe pour votre compte.</span>
-                        </div>
-                        <div class="login-form-horizontal mt-4">
-                            {{ form.renderStart | raw }}
-                            {{ form.renderField('password') | raw }}
-                            {{ form.renderField('password_2') | raw }}
+    <div class="body-background mh-fullvh">
+        <div class="container">
+            <div class="flex justify-content-center">
+                <div class="login-container">
+                    <div class="text-center mt-6">
+                        <img style="height: 100px;width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
+                    </div>
+                    <div class="card t-3 all-border">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h1>Proaxive</h1>
+                                <span>Veuillez entrer un mot de passe pour votre compte.</span>
+                            </div>
+                            <div class="login-form-horizontal mt-4">
+                                {{ form.renderStart | raw }}
+                                {{ form.renderField('password') | raw }}
+                                {{ form.renderField('password_2') | raw }}
                                 <div class="mb-2 text-center">
-                                    <button type="submit" class="btn-purple btn-lg rd-10">Créer mon mot de passe</button>
+                                    <button type="submit" class="btn-sk-one btn-lg rd-10">Créer mon mot de passe</button>
                                 </div>
-                            {{ form.renderEnd(false) | raw }}
-                        </div>
-                        <div class="text-center border-top-dashed pt-3 mt-3">
-                            <p class="pt-3">
-                                Votre accès est confidentiel, ne le communiquez jamais à autruis.
-                            </p>
+                                {{ form.renderEnd(false) | raw }}
+                            </div>
+                            <div class="text-center border-top-dashed pt-3 mt-3">
+                                <p class="pt-3">
+                                    Votre accès est confidentiel, ne le communiquez jamais à autruis.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="p-relative t-4 text-center">
-                    2021, {{ 'now'|date('Y')}} <strong>Proaxive 2.0</strong>
+                    <div class="p-relative t-4 text-center">
+                        2021, {{ 'now'|date('Y')}} <strong>Proaxive 2.0</strong>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
