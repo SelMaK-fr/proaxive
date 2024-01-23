@@ -1,0 +1,42 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% block body %}
+    <div class="body-background mh-fullvh">
+        <div class="container">
+            <div class="flex justify-content-center">
+                <div class="login-container">
+                    <div class="text-center mt-6">
+                        <img style="height: 100px;width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
+                    </div>
+                    <div class="card card-shadow mt-3">
+                        <div class="card-body text-center p-4">
+                            <div class="text-center">
+                                <h1>Validation du code</h1>
+                                <span>Merci de renseigner le code de validation reçu par courriel.</span>
+                            </div>
+                            <div class="login-form-horizontal input-with-icon mt-4">
+                                <form method="post" action="">
+                                    <div class="form-group mb-3">
+                                        <label for="email" class="form-label">Adresse courriel</label>
+                                        <div class="input-group input-group-prefix">
+                                            <span class="input-group-case case-prefix"><i class="ri-key-2-fill fs-18px"></i></span>
+                                            <input type="number" id="code" name="code" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 text-center">
+                                        <button type="submit" class="btn-sk-one btn-lg rd-10">Confirmer le code</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="text-center border-top-dashed pt-3 mt-3">
+                                <a href="{{ url_for('auth_user_login') }}" class="btn-sm btn-light-four btn-rounded nomg">Retour à la connexion ?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

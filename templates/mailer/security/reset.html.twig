@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            background-color:#f8f8f8;
+            color:#526484;
+            /* Font default for Windows, Linux, MacOS */
+            font-family: Arial, Monospace, SF Pro, sans-serif;
+            padding:0;
+            margin:0;
+        }
+        .all-border{
+            border:1px solid rgba(109, 153, 197, 0.2);
+        }
+        .w100{
+            width:100%;
+        }
+        .align-center{
+            text-align: center;
+        }
+        .center{
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card{
+            position:relative;
+            background-color:white;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+        .pt-10px{
+            padding-top:10px;
+        }
+        .pt-20px{
+            padding-top:20px;
+        }
+        .pb-10px{
+            padding-bottom:10px;
+        }
+        .ptpb-10px{
+            padding:10px 0;
+        }
+        h3.title{
+            font-weight: 400;
+            font-size:28px;
+            margin-bottom:25px;
+            margin-top:10px;
+        }
+        .block{
+            display:block;
+        }
+        .box-code{
+            display: inline-block;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background: rgba(115, 102, 255, 0.15);
+            padding: 10px 20px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .pink{
+            color:#f73164;
+        }
+        .purple{
+            color:#8f85ff;
+        }
+        .blue{
+            color:#31daf7;
+        }
+        .btn{
+            border-radius: 6px 6px 6px 6px;
+            -moz-border-radius: 6px 6px 6px 6px;
+            -webkit-border-radius:6px 6px 6px 6px;
+            padding:8px 14px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 10pt;
+            display:inline-block;
+            font-weight: 600;
+        }
+        .btn-primary{
+            background-color:#393382;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+<table class="center" style="width:700px;background-color:white;padding-bottom:35px">
+    <tbody>
+    <tr>
+        <td>
+            <table class="w100">
+                <tr>
+                    <td class="align-center" style="padding-top:15px;">
+                        <img style="height: 150px;width:auto;" src="https://proaxive.fr/assets/logo-beta_300.png" alt="">
+                        <h2>Proaxive</h2>
+                        <h4 class="ptpb-10px title">Réinitialisation de mot de passe</h4>
+                    </td>
+                </tr>
+            </table>
+            <div class="card center all-border" style="width:60%">
+                <div class="card-body align-center" style="padding:20px;">
+                    Bonjour <strong>{{ data.fullname }}</strong>,
+                    <div class="pt-10px">
+                        <span class="block">Vous avez fait une demande de réinitialisation de votre compte utilisateur.</span>
+                        <strong class="block" style="padding-top:25px">Votre code de dévrouillage</strong>
+                        <div class="pt-20px">
+                            <span class="box-code purple">{{ data.code }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="center" style="width:700px;background-color:#f1f0f0;">
+    <tr>
+        <td>
+            <div style="padding:20px;">
+                <p class="align-center">
+                    Ce courriel est automatique et a été envoyé via la solution web Proaxive.
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

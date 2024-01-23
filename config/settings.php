@@ -2,7 +2,6 @@
 declare(strict_types=1);
 // Settings
 // Error reporting
-use PHPMailer\PHPMailer\PHPMailer;
 
 error_reporting(0);
 ini_set('display_errors', '0');

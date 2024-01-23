@@ -30,13 +30,18 @@ class CustomerActionController extends AbstractController
                 $data['activated'] = 1;
                 $generateClientId = new RandomStringGeneratorFactory();
                 $data['login_id'] = 'C-' . $generateClientId->generate(9);
-                $save = $this->getRepository(CustomerRepository::class)->add($data, true);
-                if($save){
-                    $lastId = $this->getRepository(CustomerRepository::class)->lastInsertId();
-                    $this->session->getFlash()->add('panel-success', sprintf('Le nouveau client <b> %s </b> a bien été créé', $data['fullname']));
-                    return $this->redirectToRoute('customer_read', ['id' => $lastId]);
+                $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
+                if($checkIfExist){
+                    $this->session->getFlash()->add('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
+                } else {
+                    $save = $this->getRepository(CustomerRepository::class)->add($data, true);
+                    if($save){
+                        $lastId = $this->getRepository(CustomerRepository::class)->lastInsertId();
+                        $this->session->getFlash()->add('panel-success', sprintf('Le nouveau client <b> %s </b> a bien été créé', $data['fullname']));
+                        return $this->redirectToRoute('customer_read', ['id' => $lastId]);
+                    }
                 }
             }
-            return $this->redirectToRoute('dash_customer');
+            return $this->redirectToReferer($request);
         }
 }

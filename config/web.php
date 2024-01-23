@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Controller\Account\UserAccountController;
+use App\Controller\Account\UserResetController;
 use App\Controller\Backoffice\Customer\CustomerActionController;
 use App\Controller\Backoffice\Customer\CustomerAjaxController;
 use App\Controller\Backoffice\Customer\CustomerController;
@@ -61,6 +62,7 @@ use App\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use App\Middleware\Perms\RedirectIfNotAdminOrManagerMiddleware;
 use App\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
 use App\Middleware\Perms\RedirectNotPermitDemo;
+use Selmak\Proaxive2\Middleware\CheckDateCodeInitMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -70,6 +72,9 @@ return function (App $app) {
     $app->group('/auth/', function (RouteCollectorProxy $group) {
         $group->any('login', [UserAccountController::class, 'getSignIn'])->setName('auth_user_login');
         $group->any('confirm-account/[:{args}]', [UserAccountController::class, 'firstSignIn'])->setName('auth_first_login');
+        $group->any('reset', [UserResetController::class, 'index'])->setName('auth_reset_account');
+        $group->any('reset/code/{token}-{id:[0-9]+}', [UserResetController::class, 'validCodeReset'])->setName('auth_reset_valid_code')->add(CheckDateCodeInitMiddleware::class);
+        $group->any('reset/password/{token}', [UserResetController::class, 'newPassword'])->setName('auth_reset_password')->add(CheckDateCodeInitMiddleware::class);
         $group->any('logout', [UserAccountController::class, 'logout'])->setName('auth_user_logout');
     });
 
@@ -121,7 +126,7 @@ return function (App $app) {
         $group->any('/create', [UserActionController::class, 'action'])->setName('user_create');
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
-    })->add(RedirectNotPermitDemo::class);
+    }); // ->add(RedirectNotPermitDemo::class)
     /* Equipment */
     $app->group('/admin/equipments', function (RouteCollectorProxy $group){
         $group->get('', [EquipmentController::class, 'index'])->setName('dash_equipment');

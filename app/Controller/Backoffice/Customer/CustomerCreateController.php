@@ -26,7 +26,12 @@ class CustomerCreateController extends AbstractController
     public function particular(Request $request, Response $response): Response
     {
         $form = $this->createForm(CustomerType::class);
-        $form->setAction($this->routeParser->urlFor('customer_create_action'));
+        //$form->setAction($this->routeParser->urlFor('customer_create_action'));
+        $form->handleRequest();
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getRequestData()['form_customer'];
+            $this->saveCustomer($data);
+        }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
         $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
@@ -53,7 +58,13 @@ class CustomerCreateController extends AbstractController
     public function society(Request $request, Response $response): Response
     {
         $form = $this->createForm(SocietyType::class);
-        $form->setAction($this->routeParser->urlFor('customer_create_action', [], ['s' => 'active']));
+        //$form->setAction($this->routeParser->urlFor('customer_create_action', [], ['s' => 'active']));
+        $form->handleRequest();
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getRequestData()['form_customer'];
+            $data['is_society'] = 1;
+            $this->saveCustomer($data);
+        }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
         $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
@@ -66,6 +77,24 @@ class CustomerCreateController extends AbstractController
             'breadcrumbs' => $bds,
             'currentMenu' => 'customer'
         ]);
+    }
+
+    private function saveCustomer(array $data): Response
+    {
+        $data['activated'] = 1;
+        $generateClientId = new RandomStringGeneratorFactory();
+        $data['login_id'] = 'C-' . $generateClientId->generate(9);
+        $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
+        $save = $this->getRepository(CustomerRepository::class)->add($data, true);
+        if($checkIfExist){
+            $this->session->getFlash()->add('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
+        } else {
+            $save = $this->getRepository(CustomerRepository::class)->add($data, true);
+            $this->session->getFlash()->add('panel-success', sprintf('Le nouveau client <b> %s </b> a bien été créé', $data['fullname']));
+        }
+        if($save)
+        $lastId = $this->getRepository(CustomerRepository::class)->lastInsertId();
+        return $this->redirectToRoute('customer_read', ['id' => $lastId]);
     }
 
 }

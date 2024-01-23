@@ -35,6 +35,11 @@ class UserActionController extends AbstractController
                 }
             } else {
                 // Generate token and code (confirm_at)
+                $checkIfExist = $this->getRepository(UserRepository::class)->ifExist('mail', $data['mail']);
+                if($checkIfExist){
+                    $this->session->getFlash()->add('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
+                    return $this->redirectToReferer($request);
+                }
                 $t = new RandomNumberService();
                 $data['token'] = $t->token(30);
                 $data['confirm_at'] = rand(7, 9999999);
