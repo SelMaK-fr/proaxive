@@ -31,10 +31,17 @@ class ParametersController extends AbstractController
             //file_put_contents(dirname(__DIR__, 4).'/config/parameters.json', json_encode($data));
             return $this->redirectToReferer($request);
         }
-
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Paramètres', false);
+        $bds->addCrumb('Préférences', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/settings/preference/index.html.twig', [
             'setting_current' => 'preference',
             'form' => $form,
+            'breadcrumbs' => $bds,
             'getNumber' => $getNumber
         ]);
     }

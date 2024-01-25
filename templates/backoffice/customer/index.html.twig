@@ -20,16 +20,21 @@
         <div class="results" id="htmlContent"></div>
         <div class="grid-12 mt-5">
             {% for c in customers %}
-                <div class="col-3_sm-12">
+                <div class="col-3_sm-12 p-relative">
                     <span class="pin pin-top pin-right">
                     {% if c.enable_portal is not null %}
                         <span class="label badge-light-green">
                         <i class="ri-lock-unlock-line"></i>
                         </span>
                     {% endif %}
-                        {% if c.on_sale is not null %}
-                            <span class="label badge-light-green">-{{ c.on_sale }}%</span>
-                        {% endif %}
+                    {% if c.on_sale is not null %}
+                        <span class="label badge-light-green">-{{ c.on_sale }}%</span>
+                    {% endif %}
+                    {% if c.is_draft == 1 %}
+                        <span class="label badge-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Incomplet
+                        </span>
+                    {% endif %}
                     </span>
                         <div class="card {% if c.is_blacklisted is not null %}border-bottom-pink{% endif %}">
                             <div class="card-body p-4">
@@ -38,21 +43,13 @@
                                         <span><i class="fs-32px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
                                     </div>
                                     <div>
-                                        <h4>{{ c.fullname }}</h4>
-                                        <p class="m-0">
-                                    <span class="d-block">
-                                        Téléphone : {{ c.phone }}
-                                    </span>
-                                            <span class="d-block">
-                                        Ville : {{ c.zipcode }} - {{ c.city }}
-                                    </span>
-                                            <span class="d-block">
-                                        Courriel : <strong>{{ c.mail }}</strong>
-                                    </span>
-                                            <span class="d-block">
-                                        Ajouté le : {{ c.created_at | date('d/m/Y') }}
-                                    </span>
-                                        </p>
+                                    <h4>{{ c.fullname }}</h4>
+                                    <p class="m-0">
+                                        {{ getData('Téléphone : ', c.phone) }}
+                                        {{ getData('Ville : ', [c.zipcode, c.city]) }}
+                                        {{ getData('Courriel : ', c.mail, 'strong') }}
+                                        {{ getData('Ajouté le : ', c.created_at | date('d/m/Y')) }}
+                                    </p>
                                     </div>
                                 </div>
                             </div>

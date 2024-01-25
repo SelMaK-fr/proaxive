@@ -23,12 +23,11 @@
                             </div>
                         </div>
                         <div class="col-8_sm-12">
-                            <div class="card-inside all-border">
+                            <div class="card-inside all-border flex-root">
                                 <div class="p-3">
                                     {% if customer.is_blacklisted is not null %}<label class="label badge-light-pink mr-2">Blacklisté</label>{% endif %}
                                     {% if customer.on_sale is not null %}<label class="label badge-light-green mr-2">Promo -{{ customer.on_sale }}%</label>{% endif %}
                                     <h4 class="d-inline-block fw-500 fs-15px">{{ customer.fullname }}</h4>
-
                                     <form method="post" action="#" id="sample_form">
                                         <textarea id="form_data" maxlength="200" minlength="8" class="d-block ajax-input mt-3 w100 form_data" placeholder="Note dédiée à ce client" name="about">{{ customer.about }}</textarea>
                                         <div class="flex align-items-center mt-3">
@@ -37,12 +36,11 @@
                                             <span class="text-purple ml-2" id="message"></span>
                                         </div>
                                     </form>
-
                                 </div>
                             </div>
                             <div class="mt-4">
                                 <div class="grid-12">
-                                    <div class="col-6_sm-12">
+                                    <div class="col-4_sm-12">
                                         <div class="item flex align-items-center">
                                             <div class="mr-2">
                                                 <div class="item--icon br-8 text-center"><i class="fs-18px ri-mail-send-line text-muted"></i></div>
@@ -71,39 +69,53 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6_sm-12">
-                                        <div class="item flex align-items-center">
-                                            <div class="mr-2">
-                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-phone-line text-muted"></i></div>
-                                            </div>
+                                    <div class="col-4_sm-12 grid-center">
+                                        <!-- Change data-value in svg element to impact progress -->
+                                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" data-value="70">
+                                            <circle r="45" cx="50" cy="50" />
+                                            <!-- 282.78302001953125 is auto-calculated by path.getTotalLength() -->
+                                            <path class="meter" d="M5,50a45,45 0 1,0 90,0a45,45 0 1,0 -90,0" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="282.78302001953125" stroke-dasharray="282.78302001953125" />
+                                            <!-- Value automatically updates based on data-value set above -->
+                                            <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="20"></text>
+                                        </svg>
+                                        <p>
+                                            Ce compte client n'est pas complet.
+                                        </p>
+                                    </div>
+                                    <div class="col-4_sm-12">
+                                        <div class="item flex justify-content-end">
                                             <div>
                                                 <span class="d-block fw-500">{{ getDataWithLink(customer.phone, url_for('customer_update', {'id' : customer.id})) }}</span>
                                                 <span class="text-muted">Téléphone fixe</span>
                                             </div>
-                                        </div>
-                                        <div class="item mt-6 flex align-items-center">
-                                            <div class="mr-2">
-                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-smartphone-line text-muted"></i></div>
+                                            <div class="ml-2">
+                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-phone-line text-muted"></i></div>
                                             </div>
+                                        </div>
+                                        <div class="item mt-6 flex justify-content-end">
                                             <div>
                                                 <span class="d-block fw-500">{{ getDataWithLink(customer.mobile, url_for('customer_update', {'id' : customer.id}))}}</span>
                                                 <span class="text-muted">Téléphone mobile</span>
                                             </div>
+                                            <div class="ml-2">
+                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-smartphone-line text-muted"></i></div>
+                                            </div>
                                         </div>
                                         {% if customer.is_society is null %}
-                                            <div class="item mt-6 flex align-items-center">
-                                                <div class="mr-2">
-                                                    <div class="item--icon br-8 text-center"><i class="fs-18px ri-dossier-line text-muted"></i></div>
-                                                </div>
+                                            <div class="item mt-6 flex justify-content-end">
                                                 <div>
                                                     <span class="d-block fw-500">{{ getDataWithLink(customer.profil_type, url_for('customer_update', {'id' : customer.id})) }}</span>
                                                     <span class="text-muted">Profil particulié</span>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <div class="item--icon br-8 text-center"><i class="fs-18px ri-dossier-line text-muted"></i></div>
                                                 </div>
                                             </div>
                                         {% endif %}
                                     </div>
                                 </div>
                                 <div class="separator separator-default"></div>
+                                {% if customer.address %}
                                 <div class="item mt-4 flex align-items-center">
                                     <div class="mr-2">
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-map-pin-line text-muted"></i></div>
@@ -113,6 +125,12 @@
                                         <span class="text-muted">Adresse postale</span>
                                     </div>
                                 </div>
+                                {% else %}
+                                    <div class="alert alert-warning mt-3">
+                                        <strong class="d-block">Aucune adresse renseignée</strong>
+                                        Veuillez renseigner une adresse postale pour ce client.
+                                    </div>
+                                {% endif %}
                             </div>
                             {% if customer.addr_longitude is not null and customer.addr_latitude is not null %}
                                 <div class="mt-4">
@@ -129,8 +147,9 @@
             <div id="map"></div>
         </div>
     </div>
-    <!--Equipments-->
+
     <div class="grid-12 mt-4">
+        <!-- Equipments -->
         <div class="col-6_sm-12">
             {% if equipments is empty %}
                 <div class="card-inside inside-four-border-dashed text-center">
@@ -186,6 +205,7 @@
                 </div>
             {% endif %}
         </div>
+        <!-- Interventions -->
         <div class="col-6_sm-12">
             {% if interventions is empty %}
                 <div class="card-inside inside-four-border-dashed text-center">
@@ -240,6 +260,7 @@
             {% endif %}
         </div>
     </div>
+    <!-- Add/Choice new equipment -->
     <div class="modal" id="choice_add_equipment">
         <div class="modal-container">
             <div class="modal-header">
@@ -303,16 +324,36 @@
             {% if countDocument > 0 %}{{ countDocument }}{% else %}0{% endif %}
         ])
     </script>
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     <script src="/assets/js/functions.customers.js"></script>
     {% if customer.addr_latitude is not empty %}
         <script>
             viewMap({{ customer.addr_latitude }}, {{ customer.addr_longitude }})
         </script>
     {% endif %}
-
+    {% if customer.profil_progress is defined and customer.profil_progress < 100 %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            title: 'Compte incomplet !',
+            text: 'Ce compte client est incomplet, pensez à le finaliser.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'bg-foreground',
+                confirmButton: 'bg-sk-color-one',
+                title: 'text-foreground',
+                htmlContainer: 'text-muted'
+            }
+        })
+    </script>
+    {% endif %}
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
 {% endblock %}

@@ -65,6 +65,7 @@ final class CustomerCreateModel extends AbstractMigration
             ->addColumn('token_access', 'text', ['null' => true])
             ->addColumn('is_society', 'boolean', ['null' => true])
             ->addColumn('is_blacklisted', 'boolean', ['null' => true])
+            ->addColumn('is_draft', 'boolean', ['null' => true])
             ->addColumn('enable_portal', 'boolean', ['null' => true])
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')

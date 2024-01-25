@@ -4,6 +4,7 @@ namespace Selmak\Proaxive2\TwigExtension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function DI\string;
 
 class FrontFunctionTwig extends AbstractExtension
 {
@@ -22,6 +23,21 @@ class FrontFunctionTwig extends AbstractExtension
         ];
     }
 
+    protected function spanBlock($data, $title, $tag): string
+    {
+        $surround = '<span class="d-block">'.$title;
+        if($tag){
+            $surround .= "<$tag>" . $data . "</$tag>";
+        }
+        $surround .= '</span>';
+        return $surround;
+    }
+
+    /**
+     * @param $data
+     * @param $link
+     * @return string
+     */
     public function getDataWithLink($data, $link): string
     {
         if($data == null){
@@ -31,14 +47,40 @@ class FrontFunctionTwig extends AbstractExtension
         }
     }
 
-    public function getData(string $title, $data): string
+    /**
+     * @param string $title
+     * @param string|array|null $data
+     * @return string
+     */
+    public function getData(string $title, string|array|null $data, ?string $tag = 'span'): string
     {
-        if($data){
-            return '<span class="d-block">'.$title.' : '.$data.'</span>';
+        $v = [];
+        if($data != null){
+            if(is_array($data)){
+                foreach ($data as $value){
+                    if($value){
+                        $v[] = $value;
+                    }
+                }
+                if($v){
+                    $html = '<span class="d-block">'.$title.' <'.$tag.'>'.implode(' - ', $v).'</'.$tag.'></span>';
+                } else {
+                    $html = '';
+                }
+            } elseif(is_string($data)) {
+                $html = '<span class="d-block">'.$title.' <'.$tag.'>'.$data.'</'.$tag.'></span>';
+            } else {
+                $html = 'Data error';
+            }
+            return $html;
         }
         return '';
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function getDataState($data): string
     {
         if($data == 'DRAFT'){
@@ -51,11 +93,20 @@ class FrontFunctionTwig extends AbstractExtension
         return '<span class="label-mid badge-light-pink">NC</span>';
     }
 
+    /**
+     * @param string $name
+     * @param string $color
+     * @return string
+     */
     public function getDataStatus(string $name, string $color): string
     {
         return '<span class="label-mid" style="background-color:#'.$color.';color:#ffffff;">'.$name.'</span>';
     }
 
+    /**
+     * @param $var
+     * @return string
+     */
     public function getRoles($var): string
     {
         if($var == 'SUPER_ADMIN'){
@@ -68,6 +119,11 @@ class FrontFunctionTwig extends AbstractExtension
         return $var;
     }
 
+    /**
+     * @param $data
+     * @param string|null $text
+     * @return string
+     */
     public function getDataPriority($data, ?string $text = null): string
     {
         $html = '';
@@ -85,6 +141,10 @@ class FrontFunctionTwig extends AbstractExtension
         return $html;
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function getDataWaySteps($data): string
     {
         $v = '';
@@ -102,6 +162,10 @@ class FrontFunctionTwig extends AbstractExtension
         return $v;
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function getDataWayStepsNext($data): string
     {
         $v = '';

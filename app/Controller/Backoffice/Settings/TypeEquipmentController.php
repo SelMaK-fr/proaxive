@@ -23,6 +23,7 @@ class TypeEquipmentController extends AbstractController
         //
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
         $breadcrumbs->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb('Equipements', $this->routeParser->urlFor('dash_equipment'));
         $breadcrumbs->addCrumb('Catégories', false);
         $breadcrumbs->render();

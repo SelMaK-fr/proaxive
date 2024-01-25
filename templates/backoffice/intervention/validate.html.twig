@@ -58,26 +58,7 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="delete_intervention">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h1>Confirmation de suppression</h1>
-            </div>
-            <div class="modal-content">
-                Vous êtes sur le point de supprimer l'intervention :
-                <p>
-                    <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <form method="post" action="{{ url_for('intervention_delete', {'id':i.id}) }}">
-                <input type="hidden" name="_METHOD" value="DELETE"/>
-                <button type="submit" class="btn btn-light-four mb-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Oui, je confirme</button>
-                <button data-dismiss="modal" class="modal__close btn btn-light-pink mb-0">Annuler</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    {{ include('backoffice/intervention/_modal/_delete.html.twig', {intervention_id:i.id}) }}
     {{ include('backoffice/equipment/_modal/_add_fast.html.twig') }}
 {% endblock %}
 

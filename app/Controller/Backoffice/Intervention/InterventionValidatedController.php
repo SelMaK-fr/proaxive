@@ -51,10 +51,18 @@ class InterventionValidatedController extends AbstractController
                 return $this->redirectToRoute('intervention_read', ['id' => $i->id]);
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
+        $bds->addCrumb('Validation', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/intervention/validate.html.twig', [
             'i' => $i,
             'e' => $e,
             'formEquipment' => $formEquipment,
+            'breadcrumbs' => $bds,
             'form' => $form,
             'currentMenu' => 'intervention'
         ]);

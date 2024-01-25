@@ -24,14 +24,7 @@ function toggleSidebarStatus() {
     }
 })();
 // Aside Mobile Device
-document.querySelector('.aside-deploy').addEventListener('click', function(e){
-    if (document.documentElement.getAttribute('data-sidebar-mobile') === 'inactive'){
-        document.documentElement.setAttribute("data-sidebar-mobile", "active")
-    } else {
-        document.documentElement.setAttribute("data-sidebar-mobile", "inactive")
 
-    }
-});
 // Global aside
 (function (){
     if(document.querySelector('.aside') != null){

@@ -20,9 +20,10 @@ class OperatingSystemType extends Type
             ->add('os_architecture', ChoiceType::class, [
                 'label' => 'Architecture',
                 'choices' => [
-                    '64Bits' => '64Bits',
-                    '32Bits' => '32Bits',
-                ]
+                    'x64' => '64Bits',
+                    'x86' => '32Bits',
+                ],
+                'required' => false
             ])
             ->add('os_release', TextType::class, [
                 'label' => 'Version du système',

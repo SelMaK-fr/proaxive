@@ -48,12 +48,11 @@
                                             {{ i.total_time }}H
                                         </div>
                                         <div class="item">
-                                            <span></span>
+                                            <span>{{ getData('<i class="fa-solid fa-computer"></i>', i.equipment_name) }}</span>
                                         </div>
                                     </div>
                                     <p class="text-muted">
-                                        Intervention sur l'équipement : <strong>{{ i.equipment_name }}</strong> <br>
-                                        {{ i.description | slice(0,35) }}
+                                        {{ i.description | slice(0,130) }}
                                     </p>
                                 </div>
                                 <div class="card-footer flex align-items-center justify-content-space-between flex-wrap">

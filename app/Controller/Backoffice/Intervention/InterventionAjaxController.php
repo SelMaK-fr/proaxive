@@ -57,7 +57,8 @@ class InterventionAjaxController extends AbstractController
                 if(!is_null($data['create_customer'])) {
                     $newCustomer = [
                         'fullname' => $data['fullname'],
-                        'activated' => 0
+                        'activated' => 0,
+                        'is_draft' => 1
                     ];
                     $customerRepository = $this->getRepository(CustomerRepository::class);
                     $customerRepository->add($newCustomer, true);

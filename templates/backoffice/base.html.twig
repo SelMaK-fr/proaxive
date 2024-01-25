@@ -37,19 +37,31 @@
 <body id="body-wrapper" class="style-2">
 <div class="overlay"></div>
 <div class="layout-wrapper">
-    <aside class="sk-menu aside-menu" data-simplebar>
+    <aside class="sk-menu aside-menu">
         <div class="aside-logo text-center">
-            <div class="flex align-items-center justify-content-center">
-                <div><a href="/admin"><img class="v-middle" style="height: 40px; width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2_white.png" alt=""></a></div>
-                <div class="app-title ml-2"><span class="fs-24px fw-600">Proaxive</span><span class="text-one fs-13px">Alpha</span></div>
+            <div class="flex align-items-center justify-content-space-between">
+                <div>
+                    <a href="/admin"><img class="v-middle" style="height: 40px; width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2_white.png" alt=""></a>
+                    <span class="fs-24px fw-600 app-title">Proaxive</span>
+                </div>
+                <div class="d-desktop">
+                    <span onclick="toggleSidebarStatus()" id="aside-btn" class="btn-aside"><i class="fa-solid  fa-bars-staggered"></i></span>
+                </div>
+                <div class="d-mobile">
+                    <span id="navbarNavDropdown" class="d-block btn-aside aside-collapse ml-3"><i class="fa-solid  fa-bars-staggered"></i></span>
+                </div>
             </div>
         </div>
         <ul class="aside-navigation mt-4" data-simplebar>
+            <li class="title-navigation"><span class="item-title d-block">Général</span></li>
             <li class="item-nav {% if currentMenu is defined and currentMenu == 'home' %}current{% endif %}">
                 <a href="{{ url_for('dash_home') }}" title="Accueil"><span class="icon"><i class="ri-home-2-line"></i></span> <span class="title">Accueil</span></a>
             </li>
+            <li class="item-nav {% if currentMenu is defined and currentMenu == 'settings' %}current{% endif %}">
+                <a href="{{ url_for('settings_preference') }}" title="Paramètres de l'application"><span class="icon"><i class="ri-settings-4-line"></i></span> <span class="title">Paramètres Généraux</span></a>
+            </li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'customer' %}current{% endif %}">
-                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-user-line"></i></span> <span class="title">Clients <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span> </span></a>
+                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-user-line"></i></span> <span class="title">Clients <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span> </span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'customer' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -66,7 +78,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}current{% endif %}">
-                <a href="#" title="Gestion des clients"><span class="icon"><i class="ri-building-fill"></i></span> <span class="title">Magasins/Ateliers <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span> </span></a>
+                <a href="#" title="Gestion des magasins/ateliers"><span class="icon"><i class="ri-building-fill"></i></span> <span class="title">Magasins/Ateliers <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span> </span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and (currentMenu == 'workshop' or currentMenu == 'user') %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -87,8 +99,9 @@
                     </ul>
                 </div>
             </li>
+            <li class="title-navigation"><span class="item-title d-block">Interventions</span></li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}current{% endif %}">
-                <a href="#" title="Gestion des interventions"><span class="icon"><i class="ri-list-check-2"></i></span> <span class="title">Interventions <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
+                <a href="#" title="Gestion des interventions"><span class="icon"><i class="ri-list-check-2"></i></span> <span class="title">Interventions <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'intervention' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -105,7 +118,7 @@
                 </div>
             </li>
             <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}current{% endif %}">
-                <a href="#" title="Gestion des équipements"><span class="icon"><i class="ri-computer-line"></i></span> <span class="title">Equipements <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
+                <a href="#" title="Gestion des équipements"><span class="icon"><i class="ri-computer-line"></i></span> <span class="title">Equipements <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
                 <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'equipment' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
@@ -126,8 +139,9 @@
                     </ul>
                 </div>
             </li>
+            <li class="title-navigation"><span class="item-title d-block">Administration</span></li>
             <li class="item-nav dropdown">
-                <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours (WIP) <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
+                <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours (WIP) <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
                 <div class="submenu-dropdown">
                     <ul class="dropdown-navigation">
                         <li>
@@ -149,12 +163,8 @@
             <li class="item-nav">
                 <a href="#" title="Gestion des rendez-vous"><span class="icon"><i class="ri-calendar-line"></i></span> <span class="title">Calendrier</span></a>
             </li>
-            <li class="title-navigation"><span class="item-title d-block">Administration</span></li>
-            <li class="item-nav {% if currentMenu is defined and currentMenu == 'settings' %}current{% endif %}">
-                <a href="{{ url_for('settings_preference') }}" title="Paramètres de l'application"><span class="icon"><i class="ri-settings-4-line"></i></span> <span class="title">Paramètres Généraux</span></a>
-            </li>
             <li class="item-nav dropdown">
-                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne (WIP) <span class="right-icon"><i class="fa-solid fa-caret-right"></i></span></span></a>
+                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne (WIP) <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
                 <div class="submenu-dropdown">
                     <ul class="dropdown-navigation">
                         <li>
@@ -176,17 +186,20 @@
         <div class="sk-tools-topbar flex-root">
             <div class="flex-root">
                 <div class="flex align-items-center">
-                    <div class="d-desktop">
-                        <span onclick="toggleSidebarStatus()" id="aside-btn" class="d-block btn-aside"><i class="fs-22px ri-menu-fold-line"></i></span>
-                    </div>
                     <div class="d-mobile">
-                        <span class="d-block btn-aside aside-deploy ml-3"><i class="fs-22px ri-menu-line"></i></span>
+                        <span class="d-block btn-aside aside-deploy ml-3"><i class="fa-solid  fa-bars-staggered"></i></span>
                     </div>
                     <div class="flex-root">
                         {% if toolbar_tool is not defined%}
-                            <div class="form-group m-0">
-                                <input type="text" class="form-input rd-2 ml-4" name="search" style="width: 60%" placeholder="Rechercher dans Proaxive...">
+                        <div class="breadcrumbs-header">
+                            <h4>{{ block('title') }}</h4>
+                            <div class="flex align-items-center">
+                                <span class="d-inline-block mr-1"><i class="ri-home-5-line fs-18px"></i></span>
+                                {% if breadcrumbs is defined and breadcrumbs is not null %}
+                                    <div class="sk-breadcrumb"> {{ breadcrumbs | raw }}</div>
+                                {% endif %}
                             </div>
+                        </div>
                         {% else %}
                             {% block toolbar %}{% endblock %}
                         {% endif %}
@@ -196,18 +209,20 @@
             <div class="user-tools">
                 <ul class="right-navbar">
                     <li class="a-button d-desktop"><a class="btn-bar btn-inverse-one" href="#"><i class="ri-question-line"></i> Support</a></li>
-                    <li class="btn-button"><button type="button" id="theme-toggle"><i class="ri-sun-fill"></i></button></li>
-                    <li class="btn-button"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
-                    <li class="profil-item ml-6">
-                        <span class="profil-icon d-block mr-2 fs-12px text-one">{{ getSession.get('auth').roles }}</span>
-                        <div class="profil-body">
-                            <span class="fw-500">{{ getSession.get('auth').fullname }}</span>
+                    <li class="btn-icon"><button type="button" id="theme-toggle"><i class="ri-sun-fill"></i></button></li>
+                    <li class="btn-icon"><a title="Accueil de Proaxive" href="{{ url_for('app_home') }}" target="_blank"><i class="ri-global-fill"></i></a></li>
+                    <li class="profil-item dropdown dropdown-profil">
+                        <div class="flex align-items-center">
+                            <img src="{{ get_env('PATH_PUBLIC') }}/img/no-avatar-350x350.jpg" style="width: 30px;height: auto" class="avatar rd-10 mr-2" alt="Mon avatar">
+                            <div>
+                                <div class="profil-body">
+                                    <span class="fw-500">{{ getSession.get('auth').fullname }}</span>
+                                </div>
+                                <span class="profil-icon d-block mr-2 fs-10px text-one">{{ getSession.get('auth').roles }}</span>
+                            </div>
                         </div>
-                    </li>
-                    <li class="ml-2 dropdown dropdown-profil">
-                        <a href="#" id="btn-dropdown"><i class="ri-more-2-fill"></i></a>
                         <ul class="dropdown-submenu">
-                            <li><a href="#">Modifier mon compte</a></li>
+                            <li><a href="#"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
                             <li><a href="{{ url_for('auth_user_logout') }}" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</a></li>
                         </ul>
                     </li>
@@ -218,14 +233,6 @@
     <main class="main-content">
         <div class="page-content">
             <div class="container-fluid">
-                <div class="breadcrumbs-wrapper">
-                    <div class="page-title">
-                        <h3>{{ block('title') }}</h3>
-                    </div>
-                    {% if breadcrumbs is defined and breadcrumbs is not null %}
-                        <div class="sk-breadcrumb">{{ breadcrumbs | raw }}</div>
-                    {% endif %}
-                </div>
                 {% block body %}{% endblock %}
                 {% if layout_aside is defined %}
                     <div class="aside aside-right">
@@ -237,6 +244,18 @@
                 {% endif %}
             </div>
         </div>
+        <footer class="fw-600">
+            <div class="container-fluid">
+                <div class="flex justify-content-space-between">
+                    <div>
+                        2024 - Proaxive v2.0.0 (alpha 261.24)
+                    </div>
+                    <div class="text-right">
+                        Fabriqué à la main et avec <span class="text-pink"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </main>
 </div>
 <!-- LOADER -->
@@ -256,6 +275,7 @@
 <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/setting.theme.js"></script>
 <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/p2.app.js"></script>
 <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/theme-toggle.js"></script>
+<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/aside.nav.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
 {{ include('backoffice/_session_flash.html.twig') }}
 </body>

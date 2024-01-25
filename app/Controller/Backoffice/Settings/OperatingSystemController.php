@@ -45,7 +45,8 @@ class OperatingSystemController extends AbstractController
             }
             $validator = $this->validator->validate($data, [
                 'os_name' => [
-                    'rules' => v::length(5, 80)
+                    'rules' => v::length(3, 80),
+                    'message' => 'La clé "Nom du système" doit être comprise entre 3 et 80 caractère'
                 ]
             ]);
             if($validator->count() === 0) {
@@ -58,6 +59,11 @@ class OperatingSystemController extends AbstractController
                     $this->session->getFlash()->add('panel-info', sprintf('Le système (%s) a bien été créé.', $data['os_full']));
                 }
                 return $this->redirectToRoute('settings_os');
+            } else {
+                foreach ($validator as $v) {
+                    $this->session->getFlash()->add('panel-error', sprintf('%s', $v->getMessage()));
+                }
+                return $this->redirectToReferer($request);
             }
         }
         return new \Slim\Psr7\Response();

@@ -69,10 +69,11 @@ function updateTypeCustomer($id)
 
 /** View Map **/
 function viewMap(la, lo) {
+    const btnDeployMap = document.getElementById('btnDeployMap');
     // On initialise la latitude et la longitude de Paris (centre de la carte)
-    var lat = la;
-    var lon = lo;
-    var macarte = null;
+    let lat = la;
+    let lon = lo;
+    let macarte = null;
     // Fonction d'initialisation de la carte
     function initMap() {
         // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
@@ -88,15 +89,43 @@ function viewMap(la, lo) {
     window.onload = function(){
         // Fonction d'initialisation qui s'exécute lorsque le DOM est chargé
         initMap();
+        btnDeployMap.addEventListener('click', function(e){
+            document.getElementById('container-map').classList.toggle("map-visible");
+            setTimeout(function() {
+                macarte.invalidateSize();
+            }, 100);
+        });
         // Nous ajoutons un marqueur
-        var marker = L.marker([lat, lon]).addTo(macarte);
+        let marker = L.marker([lat, lon]).addTo(macarte);
     };
 }
 
-// Aside Mobile Device
-const btnDeployMap = document.getElementById('btnDeployMap');
-if(btnDeployMap){
-    btnDeployMap.addEventListener('click', function(e){
-        document.getElementById('container-map').classList.toggle("map-visible");
+// Deploy Map
+
+
+// PROGRESS CUSTOMER (PROFIL)
+// Inspired by https://codepen.io/davatron5000/pen/jzMmME
+// Get all the Meters
+const meters = document.querySelectorAll('svg[data-value] .meter');
+if(meters){
+    meters.forEach((path) => {
+        // Get the length of the path
+        let length = path.getTotalLength();
+
+        // console.log(length);
+
+        // Just need to set this once manually on the .meter element and then can be commented out
+        // path.style.strokeDashoffset = length;
+        // path.style.strokeDasharray = length;
+
+        // Get the value of the meter
+        let value = parseInt(path.parentNode.getAttribute('data-value'));
+        // Calculate the percentage of the total length
+        let to = length * ((100 - value) / 100);
+        // Trigger Layout in Safari hack https://jakearchibald.com/2013/animated-line-drawing-svg/
+        path.getBoundingClientRect();
+        // Set the Offset
+        path.style.strokeDashoffset = Math.max(0, to);   path.nextElementSibling.textContent = `${value}%`;
     });
 }
+

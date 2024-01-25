@@ -3,42 +3,25 @@
 {% block title %}Panel d'administration de Proaxive{% endblock %}
 
 {% block body %}
+    <div class="alert alert-info">
+        <strong>Mise à jour !</strong>
+        <p class="m-0">
+            Mise à jour majeur du thème, la version finale se précise. Pensez à vider le cache de votre navigateur.
+        </p>
+    </div>
     <div class="grid-12">
-        <div class="col-9_sm-12">
-            <div class="grid-12">
-                <div class="col-8_sm-12">
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <h3>Statistique {{ 'now'|date('Y') }}</h3>
+        <div class="col-5_sm-12">
+            <div class="card">
+                <div class="p-4">
+                    <div class="flex">
+                        <div>
+                            <h2 class="text-truncate fs-28px fw-500 mb-1">Bonjour, {{ getSession.get('auth').fullname }}</h2>
+                            <p class="text-muted fs-16px mt-0">Bienvenue sur Proaxive 2
+                                <br> motivation to pay their bills.</p>
+                            <a class="btn btn-sk-one mt-6" href="#">Documentations</a>
                         </div>
-                        <div id="chart">
-                        </div>
-                        <div class="p-4 border-top">
-                            <div class="grid-12">
-                                <div class="col-3_sm-12 text-center">
-                                    <p class="p-0 m-0 fs-18px fw-500">0</p>
-                                    <span class="d-block mb-2 text-muted">Nouveaux clients</span>
-
-                                </div>
-                                <div class="col-3_sm-12 text-center">
-                                    <p class="p-0 m-0 fs-18px fw-500">0</p>
-                                    <span class="d-block mb-2 text-muted">Intervention(s) terminée(s)</span>
-                                </div>
-                                <div class="col-3_sm-12 text-center">
-                                    <p class="p-0 m-0 fs-18px fw-500">0</p>
-                                    <span class="d-block mb-2 text-muted">D'heure(s) travaillée(s)</span>
-                                </div>
-                                <div class="col-3_sm-12 text-center">
-                                    <p class="p-0 m-0 fs-18px fw-500">0</p>
-                                    <span class="d-block mb-2 text-muted">Revenue estimé</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4_sm-12">
-                    <div class="card">
-                        <div class="card-body p-4">
+                        <div>
+                            tt
 
                         </div>
                     </div>
@@ -46,6 +29,17 @@
             </div>
         </div>
         <div class="col-3_sm-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h2>Estimation CA</h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted m-0">Estimation pour l'année {{ 'now' | date('Y') }}</p>
+                    <span class="text-center fw-500 fs-32px d-block">25,568.00€</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-4_sm-12">
             <div class="card">
                 <div class="card-body p-4">
                     <h4>Estimation du chiffre d'affaire</h4>
@@ -55,35 +49,44 @@
         </div>
     </div>
     <div class="grid-12">
-        <div class="col-4_sm-12">
-            {% if customers is not empty %}
+        <div class="col-7_sm-12">
+            {% if interventions is not empty %}
                 <div class="card mt-4">
-                    <h3 class="pt-4 pr-4 pl-4">Clients récents</h3>
-                    <div class="card-body customers p-4">
-                        <div class="list-group">
-                            {% for c in customers %}
-                                <a href="{{ url_for('customer_read', {id: c.id}) }}">
-                                    <div class="list-group-item">
-                                        <div class="flex">
-                                            <span class="d-block mr-3"><i class="fs-28px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
-                                            <div class="media-body">
-                                                <div class="flex align-items-center">
-                                                    <div class="m-0">
-                                                        <h5 class="fw-500 fs-14px mb-0">{{ c.fullname }}</h5>
-                                                        <p class="m-0 fs-13px">{{ c.city }} ({{ c.department }})</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            {% endfor %}
+                    <div class="card-header">
+                        <h2>Dernières interventions</h2>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-default table-card">
+                                <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Client</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                        <th>Etat</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in interventions %}
+                                    <tr>
+                                        <td><a href="#">{{ i.ref_number }}</a></td>
+                                        <td>{{ i.customer_name }}</td>
+                                        <td>{{ i.created_at | date('d.M.Y') }}</td>
+                                        <td>{{ getDataState(i.state) }}</td>
+                                        <td>{{ i.way_steps }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             {% endif %}
         </div>
-        <div class="col-8_sm-12">
+        <div class="col-4_sm-12">
         </div>
     </div>
 {% endblock %}
