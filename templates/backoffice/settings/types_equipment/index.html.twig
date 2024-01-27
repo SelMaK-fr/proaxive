@@ -10,18 +10,18 @@
         </div>
         <div class="col-10_sm-12">
             <div class="card">
-                <div class="card-body p-4">
-                    <div class="card-header mb-4">
-                        <div class="grid-2 -noGutter">
-                            <div class="col-6_sm-12">
-                                <h2>Catégories des équipements (Types)</h2>
-                                <span>Ajouter ou supprimer les catégories pour les équipements</span>
-                            </div>
-                            <div class="col-6_sm-12 text-right">
-                                <button type="button" data-target="add_type" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une catégorie</button>
-                            </div>
+                <div class="card-header pb-0">
+                    <div class="grid-2 -noGutter">
+                        <div class="col-6_sm-12">
+                            <h2>Catégories des équipements (Types)</h2>
+                            <span>Ajouter ou supprimer les catégories pour les équipements</span>
+                        </div>
+                        <div class="col-6_sm-12 text-right">
+                            <button type="button" data-target="add_type" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une catégorie</button>
                         </div>
                     </div>
+                </div>
+                <div class="card-body">
                     {% if types is not empty %}
                         <div class="boxed-shadow p-relative overflow-hidden br-5">
                             <table class="table-radius table-shadow" id="table-visible">

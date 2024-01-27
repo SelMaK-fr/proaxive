@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Controller\Backoffice\Equipment;
 
 use App\AbstractController;
@@ -7,12 +7,24 @@ use App\Repository\CustomerRepository;
 use App\Repository\EquipmentRepository;
 use App\Type\EquipmentSpecsType;
 use App\Type\EquipmentType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class EquipmentCreateController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function create(Request $request, Response $response, array $args): Response
     {
         // init var customer
@@ -32,13 +44,13 @@ class EquipmentCreateController extends AbstractController
             $cName = $this->getRepository(CustomerRepository::class)->find('id', $data_customer_id);
             $data['customer_name'] = $cName->fullname;
             $this->getRepository(EquipmentRepository::class)->add($data, true);
-            $this->session->getFlash()->add('panel-info', sprintf("Le nouvel équipement <b> %s </b> a bien été créé.", $data['name']));
+            $this->addFlash('panel-info', sprintf("Le nouvel équipement <b> %s </b> a bien été créé.", $data['name']));
             return $this->redirectToRoute('dash_equipment');
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Équipements', $this->routeParser->urlFor('dash_equipment'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Équipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb('Création', false);
         $bds->render();
         // .Breadcrumbs
@@ -50,14 +62,22 @@ class EquipmentCreateController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
     public function createSpecificities(Request $request, Response $response): Response
     {
-        if(!$this->session->get('form_equipment_specs')) {
-            $this->session->getFlash()->add('panel-error', "La session a expirée pour ce formulaire.");
+        if(!$this->getSession('form_equipment_specs')) {
+            $this->addFlash('panel-error', "La session a expirée pour ce formulaire.");
             return $this->redirectToRoute('equipment_create');
         }
 
-        $dataSession = $this->session->get('form_equipment_specs');
+        $dataSession = $this->getSession('form_equipment_specs');
 
         $session = $dataSession[1];
         $dataEquipment = $dataSession[0];
@@ -67,8 +87,8 @@ class EquipmentCreateController extends AbstractController
             $data = $form->getRequestData()['form_equipment_specs'];
             $pushAllData = $data + $session + $dataEquipment;
             $this->getRepository(EquipmentRepository::class)->add($pushAllData, true);
-            $this->session->getFlash()->add('panel-info', sprintf("Le nouvel équipement %s a bien été créé.", $pushAllData['name']));
-            $this->session->delete('form_equipment_specs');
+            $this->addFlash('panel-info', sprintf("Le nouvel équipement %s a bien été créé.", $pushAllData['name']));
+            $this->deleteSession('form_equipment_specs');
             return $this->redirectToRoute('dash_equipment');
         }
 

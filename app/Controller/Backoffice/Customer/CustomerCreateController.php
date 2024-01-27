@@ -6,7 +6,10 @@ use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Type\CustomerType;
 use App\Type\SocietyType;
+use Envms\FluentPDO\Exception;
 use Laminas\Diactoros\Response\RedirectResponse;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Factory\RandomStringGeneratorFactory;
@@ -18,10 +21,9 @@ class CustomerCreateController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function particular(Request $request, Response $response): Response
     {
@@ -35,7 +37,7 @@ class CustomerCreateController extends AbstractController
             $data['login_id'] = 'C-' . $generateClientId->generate(9);
             $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
             if($checkIfExist == 1){
-                $this->session->getFlash()->add('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
+                $this->addFlash('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
             } else {
                 $save = $this->getRepository(CustomerRepository::class)->add($data, true);
                 if($save){
@@ -46,8 +48,8 @@ class CustomerCreateController extends AbstractController
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
         $bds->addCrumb('Création', false);
         $bds->render();
         // .Breadcrumbs
@@ -62,10 +64,9 @@ class CustomerCreateController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function society(Request $request, Response $response): Response
     {
@@ -80,7 +81,7 @@ class CustomerCreateController extends AbstractController
             $data['login_id'] = 'C-' . $generateClientId->generate(9);
             $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
             if($checkIfExist == 1){
-                $this->session->getFlash()->add('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
+                $this->addFlash('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
             } else {
                 $save = $this->getRepository(CustomerRepository::class)->add($data, true);
                 if($save){
@@ -91,8 +92,8 @@ class CustomerCreateController extends AbstractController
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Clients (société)', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Clients (société)', $this->getUrlFor('dash_customer'));
         $bds->addCrumb('Création', false);
         $bds->render();
         // .Breadcrumbs

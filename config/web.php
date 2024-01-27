@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use App\Controller\Account\UserAccountController;
 use App\Controller\Account\UserResetController;
+use App\Controller\API\ApiInterventionController;
 use App\Controller\Backoffice\Customer\CustomerActionController;
 use App\Controller\Backoffice\Customer\CustomerAjaxController;
 use App\Controller\Backoffice\Customer\CustomerController;
@@ -76,6 +77,11 @@ return function (App $app) {
         $group->any('reset/code/{token}-{id:[0-9]+}', [UserResetController::class, 'validCodeReset'])->setName('auth_reset_valid_code')->add(CheckDateCodeInitMiddleware::class);
         $group->any('reset/password/{token}', [UserResetController::class, 'newPassword'])->setName('auth_reset_password')->add(CheckDateCodeInitMiddleware::class);
         $group->any('logout', [UserAccountController::class, 'logout'])->setName('auth_user_logout');
+    });
+
+    // API
+    $app->group('/api/', function (RouteCollectorProxy $group){
+        $group->get('intervention/status', [ApiInterventionController::class, 'interventionStatus'])->setName('api_interventions_status');
     });
 
     $app->get('/search/i/', [FrontInterventionSearch::class, 'search'])->setName('app_search_intervention');

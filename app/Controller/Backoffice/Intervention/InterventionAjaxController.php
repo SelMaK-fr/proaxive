@@ -7,21 +7,33 @@ use App\Repository\CustomerRepository;
 use App\Repository\EquipmentRepository;
 use App\Repository\InterventionRepository;
 use App\Service\MailInterventionService;
+use Awurth\Validator\StatefulValidator;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Validator as V;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Service\SerialNumberFormatterService;
+use Slim\App;
 use function DI\string;
 
 class InterventionAjaxController extends AbstractController
 {
 
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
+
     /**
-     * Add fast intervention in a modal
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \Random\RandomException
      */
     public function addFast(Request $request, Response $response): Response
     {
@@ -70,11 +82,11 @@ class InterventionAjaxController extends AbstractController
                 unset($data['create_customer']);
                 $save = $this->getRepository(InterventionRepository::class)->add($arrayData, true);
                 if($save){
-                    $this->session->getFlash()->add('panel-info', sprintf("La nouvelle intervention - %s - a bien été créée", $arrayData['ref_number']));
+                    $this->addFlash('panel-info', sprintf("La nouvelle intervention - %s - a bien été créée", $arrayData['ref_number']));
                     return $this->redirectToRoute('dash_intervention');
                 }
             }
-            $this->session->getFlash()->add('panel-error', "Le formulaire n'est pas rempli correctement !");
+            $this->addFast('panel-error', "Le formulaire n'est pas rempli correctement !");
             return $this->redirectToReferer($request);
         }
         $response->getBody()->write('Error form data - please contact administrator');
@@ -88,9 +100,8 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function search(Request $request, Response $response, array $args): Response
     {
@@ -105,12 +116,13 @@ class InterventionAjaxController extends AbstractController
     }
 
     /**
-     * Start Intervention
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function start(Request $request, Response $response, array $args): Response
     {
@@ -125,12 +137,13 @@ class InterventionAjaxController extends AbstractController
     }
 
     /**
-     * End Intervention
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function end(Request $request, Response $response, array $args): Response
     {
@@ -153,12 +166,13 @@ class InterventionAjaxController extends AbstractController
     }
 
     /**
-     * Update Equipment Name for this intervention
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function updateEquipmentName(Request $request, Response $response, array $args): Response
     {
@@ -179,7 +193,9 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function nextStep(Request $request, Response $response, array $args): Response
     {

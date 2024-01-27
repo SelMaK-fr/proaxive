@@ -9,21 +9,24 @@ use App\Type\EquipmentBaoFileType;
 use App\Type\EquipmentSpecsType;
 use App\Type\EquipmentType;
 use App\Type\EquipmentUpdateType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\UploadedFile;
 
 class EquipmentUpdateController extends AbstractController
 {
+
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function update(Request $request, Response $response, array $args): Response
     {
@@ -38,15 +41,15 @@ class EquipmentUpdateController extends AbstractController
             if(empty($data['end_guarantee'])){$data['end_guarantee'] = null;}
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
-                $this->session->getFlash()->add('panel-info', sprintf("L'équipement %s a bien été mis à jour.", $data['name']));
+                $this->addFlash('panel-info', sprintf("L'équipement %s a bien été mis à jour.", $data['name']));
                 return $this->redirectToReferer($request);
             }
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Equipements', $this->routeParser->urlFor('dash_equipment'));
-        $bds->addCrumb($e['customer_name'], $this->routeParser->urlFor('customer_read', ['id' => $e['customers_id']]));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
+        $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
         $bds->addCrumb($e['type_name'], false);
         $bds->addCrumb($e['name'], false);
         $bds->render();
@@ -64,10 +67,9 @@ class EquipmentUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function specificies(Request $request, Response $response, array $args): Response
     {
@@ -79,13 +81,13 @@ class EquipmentUpdateController extends AbstractController
             $data = $form->getRequestData()['form_equipment_specs'];
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
-                $this->session->getFlash()->add('panel-info', sprintf("La fiche technique de l'équipement %s a bien été mise à jour.", $data['name']));
+                $this->addFlash('panel-info', sprintf("La fiche technique de l'équipement %s a bien été mise à jour.", $data['name']));
                 return $this->redirectToReferer($request);
             }
         }
         // Upload BAO File
         $formBao = $this->createForm(EquipmentBaoFileType::class);
-        $formBao->setAction($this->routeParser->urlFor('equipment_update_specs_upload', ['id' => $equipment_id]));
+        $formBao->setAction($this->getUrlFor('equipment_update_specs_upload', ['id' => $equipment_id]));
         // .Upload BAO File
         return $this->render($response, 'backoffice/equipment/specificies.html.twig', [
             'form' => $form,
@@ -101,7 +103,9 @@ class EquipmentUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response|void
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function baoUpload(Request $request, Response $response, array $args)
     {
@@ -122,10 +126,10 @@ class EquipmentUpdateController extends AbstractController
                 $parserBao = $bao->parser_array($directory . '/' . $filename, true);
                 $this->getRepository(EquipmentRepository::class)->update($parserBao, $equipment_id);
                 unlink($directory . '/' . $filename);
-                $this->session->getFlash()->add('panel-info', 'Données importées et modifications effectuées');
+                $this->addFlash('panel-info', 'Données importées et modifications effectuées');
                 return $this->redirectToRoute('equipment_update_specs', ['id' => $equipment_id]);
             } else {
-                $this->session->getFlash()->add('panel-error', "Veuillez charger un fichier avec l'extension .bao.");
+                $this->addFlash('panel-error', "Veuillez charger un fichier avec l'extension .bao.");
                 return $this->redirectToRoute('equipment_update_specs', ['id' => $equipment_id]);
             }
         }
@@ -135,7 +139,7 @@ class EquipmentUpdateController extends AbstractController
      * @param $directory
      * @param UploadedFile $uploadedFile
      * @return string
-     * @throws \Exception
+     * @throws \Random\RandomException
      */
     private function moveUploadedFile($directory, UploadedFile $uploadedFile): string
     {

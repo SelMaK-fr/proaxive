@@ -4,6 +4,8 @@ namespace App\Controller\Backoffice\Settings;
 
 use App\AbstractController;
 use App\Type\ParametersType;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Service\SerialNumberFormatterService;
@@ -11,6 +13,10 @@ use Selmak\Proaxive2\Service\SerialNumberFormatterService;
 class ParametersController extends AbstractController
 {
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
     public function parameters(Request $request, Response $response): Response
     {
         $s = $this->app->getContainer()->get('parameters');
@@ -33,7 +39,7 @@ class ParametersController extends AbstractController
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Paramètres', false);
         $bds->addCrumb('Préférences', false);
         $bds->render();

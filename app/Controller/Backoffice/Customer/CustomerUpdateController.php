@@ -3,27 +3,43 @@ declare(strict_types=1);
 namespace App\Controller\Backoffice\Customer;
 
 use App\AbstractController;
+use App\Interface\CompletionInterface;
+use App\Repository\CustomerCompletionRepository;
 use App\Repository\CustomerRepository;
+use App\Service\CompletionService;
 use App\Type\CustomerParametersType;
 use App\Type\CustomerPasswordType;
 use App\Type\CustomerType;
+use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
+use Envms\FluentPDO\Query;
+use Odan\Session\SessionInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
+use Selmak\Proaxive2\Settings\SettingsInterface;
+use Slim\App;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Views\Twig;
 
 class CustomerUpdateController extends AbstractController
 {
+
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function update(Request $request, Response $response, array $args): Response
     {
@@ -36,14 +52,14 @@ class CustomerUpdateController extends AbstractController
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             // To Do : refresh customer name of relation database (Service class ?)
             if($save){
-                $this->session->getFlash()->add('panel-info', 'Mise à jour effectuée.');
+                $this->addFlash('panel-info', 'Mise à jour effectuée.');
                 return $this->redirectToReferer($request);
             }
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
         $bds->addCrumb($customer->fullname, false);
         $bds->addCrumb('Modification', false);
         $bds->render();
@@ -57,15 +73,13 @@ class CustomerUpdateController extends AbstractController
     }
 
     /**
-     * For update parameters account customer
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws NotFoundExceptionInterface
      */
     public function updateParameters(Request $request, Response $response, array $args): Response
     {
@@ -74,7 +88,7 @@ class CustomerUpdateController extends AbstractController
         $form = $this->createForm(CustomerParametersType::class, $customer);
         $form->handleRequest();
         $formPassword = $this->createForm(CustomerPasswordType::class);
-        $formPassword->setAction($this->routeParser->urlFor('customer_update_parameters_password', ['id' => $customer_id]));
+        $formPassword->setAction($this->getUrlFor('customer_update_parameters_password', ['id' => $customer_id]));
         $formPassword->handleRequest();
         // Here, do not use isValid and isSubmit of FormBuilder
         if($request->getMethod() === 'POST'){
@@ -85,16 +99,16 @@ class CustomerUpdateController extends AbstractController
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             // To Do : refresh customer name of relation database (Service class ?)
             if($save){
-                $this->session->getFlash()->add('panel-info', 'Sauvegarde effectuée.');
+                $this->addFlash('panel-info', 'Sauvegarde effectuée.');
                 return $this->redirectToReferer($request);
             }
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Clients', $this->routeParser->urlFor('dash_customer'));
-        $bds->addCrumb($customer->fullname, $this->routeParser->urlFor('customer_read', ['id' => $customer->id]));
-        $bds->addCrumb('Modification', $this->routeParser->urlFor('customer_update', ['id' => $customer->id]));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
+        $bds->addCrumb($customer->fullname, $this->getUrlFor('customer_read', ['id' => $customer->id]));
+        $bds->addCrumb('Modification', $this->getUrlFor('customer_update', ['id' => $customer->id]));
         $bds->addCrumb('Paramètres', false);
         $bds->render();
         // .Breadcrumbs
@@ -108,12 +122,13 @@ class CustomerUpdateController extends AbstractController
     }
 
     /**
-     * For update type account customer (1 = society account)
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function updateType(Request $request, Response $response, array $args): Response
     {
@@ -129,7 +144,7 @@ class CustomerUpdateController extends AbstractController
             }
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             if($save){
-                $this->session->getFlash()->add('panel-info', 'Paramètres "Type" mis à jour');
+                $this->addFlash('panel-info', 'Paramètres "Type" mis à jour');
                 return $this->redirectToReferer($request);
             }
         }
@@ -141,6 +156,9 @@ class CustomerUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function updatePortalPassword(Request $request, Response $response, array $args): Response
     {
@@ -161,12 +179,12 @@ class CustomerUpdateController extends AbstractController
                 $data['passwd'] = $passHash;
                 $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
                 if($save){
-                    $this->session->getFlash()->add('panel-info', sprintf('Le mot de passe pour ID %s a été enregistré', $customer_id));
+                    $this->addFlash('panel-info', sprintf('Le mot de passe pour ID %s a été enregistré', $customer_id));
                     return $this->redirectToReferer($request);
                 }
             } else {
                 foreach ($validator as $v){
-                    $this->session->getFlash()->add('panel-error', sprintf('%s', $v->getMessage()));
+                    $this->addFlash('panel-error', sprintf('%s', $v->getMessage()));
                 }
                 return $this->redirectToReferer($request);
             }

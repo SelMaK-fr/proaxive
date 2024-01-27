@@ -6,12 +6,24 @@ use App\AbstractController;
 use App\Repository\InterventionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WorkshopRepository;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UserReadController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function read(Request $request, Response $response, array $args): Response
     {
         $user_id = (int)$args['id'];

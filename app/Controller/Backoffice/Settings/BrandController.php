@@ -17,15 +17,23 @@ use Selmak\Proaxive2\Service\TextFormatterService;
 class BrandController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response): Response
     {
         $brands = $this->getRepository(BrandRepository::class)->all();
         $form = $this->createForm(BrandType::class);
-        $form->setAction($this->routeParser->urlFor('settings_brand_create'));
+        $form->setAction($this->getUrlFor('settings_brand_create'));
         $form->handleRequest();
         //
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
-        $breadcrumbs->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb('Marques', false);
         $breadcrumbs->render();
@@ -74,9 +82,9 @@ class BrandController extends AbstractController
             } else {
                 if($checkIfExist != 1) {
                     $this->getRepository(BrandRepository::class)->add($data);
-                    $this->session->getFlash()->add('panel-info', "Action effectuée avec succès.");
+                    $this->addFlash('panel-info', "Action effectuée avec succès.");
                 } else {
-                    $this->session->getFlash()->add('panel-error', "Cet élément existe déjà !");
+                    $this->addFlash('panel-error', "Cet élément existe déjà !");
                 }
             }
             return $this->redirectToRoute('settings_brand');
@@ -88,7 +96,9 @@ class BrandController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response): Response
     {
@@ -97,7 +107,7 @@ class BrandController extends AbstractController
             if($data){
                 unset($data['_METHOD']);
                 $this->getRepository(BrandRepository::class)->delete((int)$data['id']);
-                $this->session->getFlash()->add('panel-info', "Marque supprimée.");
+                $this->addFlash('panel-info', "Marque supprimée.");
                 return $this->redirectToReferer($request);
             }
         }

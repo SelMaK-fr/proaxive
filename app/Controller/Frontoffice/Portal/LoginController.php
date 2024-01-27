@@ -4,13 +4,29 @@ namespace App\Controller\Frontoffice\Portal;
 
 use App\AbstractController;
 use App\Repository\CustomerRepository;
+use Awurth\Validator\StatefulValidator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
+use Slim\App;
 
 class LoginController extends AbstractController
 {
 
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response): Response
     {
         if($request->getMethod() === 'POST') {
@@ -25,20 +41,20 @@ class LoginController extends AbstractController
                 if($customer) {
                     if (($customer['login_id'] OR $customer['mail']) == $params['login_id'] AND password_verify($params['passwd'], $customer['passwd'])) {
                         if($customer['enable_portal'] === 1) {
-                            $this->session->set('customer', $customer);
+                            $this->setSession('customer', $customer);
                             return $this->redirectToRoute('portal_home');
                         }else {
-                            $this->session->getFlash()->add('error', "Ce compte en ligne n'est pas activé !");
+                            $this->addFlash('error', "Ce compte en ligne n'est pas activé !");
                             return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
                         }
                     } else {
-                        $this->session->getFlash()->add('error', 'Compte client inconnu !');
+                        $this->addFlash('error', 'Compte client inconnu !');
                         return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
                     }
                 }
             } else {
                 foreach ($validator as $v) {
-                    $this->session->getFlash()->add('error', sprintf('%s', $v->getMessage()));
+                    $this->addFlash('error', sprintf('%s', $v->getMessage()));
                 }
                 return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
             }

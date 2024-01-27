@@ -4,6 +4,9 @@ namespace App\Controller\Backoffice\Intervention;
 
 use App\AbstractController;
 use App\Repository\InterventionRepository;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -15,7 +18,9 @@ class InterventionDeleteController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response, array $args): Response
     {
@@ -25,10 +30,10 @@ class InterventionDeleteController extends AbstractController
             $data = $request->getParsedBody()['form_delete_intervention'];
             if($data['ref_number'] === $i->ref_number){
                 $this->getRepository(InterventionRepository::class)->delete($intervention_id);
-                $this->session->getFlash()->add('panel-info', "L'intervention a bien été supprimée");
+                $this->addFlash('panel-info', "L'intervention a bien été supprimée");
                 return $this->redirectToRoute('dash_intervention');
             } else {
-                $this->session->getFlash()->add('panel-error', "La référence ne correspond pas !");
+                $this->addFlash('panel-error', "La référence ne correspond pas !");
                 return $this->redirectToReferer($request);
             }
 

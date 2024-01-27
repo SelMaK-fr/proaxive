@@ -3,6 +3,9 @@ declare(strict_types=1);
 namespace App\Controller\Backoffice;
 
 use App\AbstractController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class PermsController extends AbstractController
 {
@@ -10,10 +13,9 @@ class PermsController extends AbstractController
     /**
      * @param $request
      * @param $response
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @return ResponseInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function not_perms($request, $response)
     {
@@ -23,10 +25,9 @@ class PermsController extends AbstractController
     /**
      * @param $request
      * @param $response
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @return ResponseInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function not_perms_tech($request, $response)
     {

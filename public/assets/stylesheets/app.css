@@ -291,7 +291,7 @@ body .layout-wrapper {
 
 /* line 19, ../sass/layout/_aside_nav.scss */
 .sk-menu.aside-menu .btn-aside {
-  padding: 7px;
+  padding: 10px;
   background-color: #374462;
   border-radius: 6px;
   color: white;
@@ -2502,18 +2502,24 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 110, ../sass/components/_card.scss */
+.inside-bg-tree {
+  background-color: var(--sk-color-tree);
+  color: white;
+}
+
+/* line 114, ../sass/components/_card.scss */
 .bg-light-four {
   background-color: var(--bg-four-light);
   color: white;
 }
 
-/* line 114, ../sass/components/_card.scss */
+/* line 118, ../sass/components/_card.scss */
 .card-light-four {
   background-color: var(--bg-four);
   color: #918bd5;
 }
 
-/* line 118, ../sass/components/_card.scss */
+/* line 122, ../sass/components/_card.scss */
 .card-light-yellow {
   background-color: var(--yellow-light);
   color: var(--yellow);
@@ -3455,4 +3461,27 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   color: #0d462c !important;
   background-color: #d1e7dd;
   border: 1px solid #bfddcf;
+}
+
+/* line 3, ../sass/components/_widget.scss */
+.dashboard-overview_item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem !important;
+  margin-bottom: 10px;
+}
+
+/* line 9, ../sass/components/_widget.scss */
+.dashboard-overview_item h6 {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/* line 14, ../sass/components/_widget.scss */
+.dashboard-overview_item span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
 }

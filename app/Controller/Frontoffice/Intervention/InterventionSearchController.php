@@ -4,13 +4,31 @@ namespace App\Controller\Frontoffice\Intervention;
 
 use App\AbstractController;
 use App\Repository\InterventionRepository;
+use Awurth\Validator\StatefulValidator;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as V;
+use Slim\App;
 
 class InterventionSearchController extends AbstractController
 {
 
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function search(Request $request, Response $response): Response
     {
         if($request->getMethod() === 'GET'){
@@ -27,14 +45,14 @@ class InterventionSearchController extends AbstractController
             if($validator->count() === 0){
                 $i = $this->getRepository(InterventionRepository::class)->searchWithNumber($param['s'])->fetch();
                 if($i){
-                    return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('app_read_intervention', ['ref_for_link' => $i['ref_for_link']]));
+                    return $response->withStatus(302)->withHeader('Location', $this->getUrlFor('app_read_intervention', ['ref_for_link' => $i['ref_for_link']]));
                 } else {
-                    $this->session->getFlash()->add('error', 'Aucune intervention pour ce numéro !');
+                    $this->addFlash('error', 'Aucune intervention pour ce numéro !');
                     return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
                 }
             } else {
                 foreach ($validator as $failure) {
-                    $this->session->getFlash()->add('error', sprintf("Raison -> %s", $failure->getMessage()));
+                    $this->addFlash('error', sprintf("Raison -> %s", $failure->getMessage()));
                 }
                 return $response->withStatus(302)->withHeader('Location', $request->getServerParams()['HTTP_REFERER']);
             }

@@ -13,18 +13,10 @@
         <div class="col-5_sm-12">
             <div class="card">
                 <div class="p-4">
-                    <div class="flex">
-                        <div>
-                            <h2 class="text-truncate fs-28px fw-500 mb-1">Bonjour, {{ getSession.get('auth').fullname }}</h2>
-                            <p class="text-muted fs-16px mt-0">Bienvenue sur Proaxive 2
-                                <br> motivation to pay their bills.</p>
-                            <a class="btn btn-sk-one mt-6" href="#">Documentations</a>
-                        </div>
-                        <div>
-                            tt
-
-                        </div>
-                    </div>
+                    <h2 class="text-truncate fs-28px fw-500 mb-1">Bonjour, {{ getSession.get('auth').fullname }}</h2>
+                    <p class="text-muted fs-16px mt-0">Bienvenue sur Proaxive 2
+                        <br> **</p>
+                    <a class="btn btn-sk-one mt-6" href="#">Documentations</a>
                 </div>
             </div>
         </div>
@@ -41,9 +33,48 @@
         </div>
         <div class="col-4_sm-12">
             <div class="card">
+                <div class="card-header pb-0">
+                    <h2>Interventions</h2>
+                </div>
                 <div class="card-body p-4">
-                    <h4>Estimation du chiffre d'affaire</h4>
-                    <span class="text-center fw-500 fs-32px d-block">25,568.00€</span>
+                    <div class="grid-2">
+                        <div class="col-5_sm-12 text-center">
+                            <canvas id="myChart" style="position: relative; height:100px; width:100%"></canvas>
+                        </div>
+                        <div class="col-7_sm-12 dashboard-overview">
+                            <div class="dashboard-overview_item">
+                                <div>
+                                    <span class="bg-pink"></span>
+                                </div>
+                                <div class="flex-root"><h6>Non démarrées</h6></div>
+                                <span id="count_not_start"></span>
+                            </div>
+                            <div class="dashboard-overview_item">
+                                <div>
+                                    <span style="background-color:#48A3D7;"></span>
+                                </div>
+                                <div class="flex-root"><h6>En atelier</h6></div>
+                                <span id="count_work"></span>
+                            </div>
+                            <div class="dashboard-overview_item">
+                                <div>
+                                    <span style="background-color:#c95e9e;"></span>
+                                </div>
+                                <div class="flex-root"><h6>Tests finaux</h6></div>
+                                <span id="count_final">6</span>
+                            </div>
+                            <div class="dashboard-overview_item">
+                                <div>
+                                    <span style="background-color: #fa896b;"></span>
+                                </div>
+                                <div class="flex-root"><h6>En cours de sortie</h6></div>
+                                <span id="count_exit"></span>
+                            </div>
+                            <div class="text-center mt-4 fs-18px">
+                                <strong id="count_total"></strong> Intervention(s) en cours.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,7 +102,7 @@
                                 <tbody>
                                 {% for i in interventions %}
                                     <tr>
-                                        <td><a href="#">{{ i.ref_number }}</a></td>
+                                        <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
                                         <td>{{ i.customer_name }}</td>
                                         <td>{{ i.created_at | date('d.M.Y') }}</td>
                                         <td>{{ getDataState(i.state) }}</td>
@@ -92,4 +123,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript" src="/assets/js/chartjs/chart.min.js"></script>
+    <script type="text/javascript" src="/assets/js/charts-data/dash.home.js"></script>
+    <script>
+        dashHomeStatIntervention();
+    </script>
 {% endblock %}

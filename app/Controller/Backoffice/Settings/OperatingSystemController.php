@@ -5,6 +5,9 @@ namespace App\Controller\Backoffice\Settings;
 use App\AbstractController;
 use App\Repository\OperatingSystemRepository;
 use App\Type\OperatingSystemType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
@@ -12,15 +15,20 @@ use Respect\Validation\Validator as v;
 class OperatingSystemController extends AbstractController
 {
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     */
     public function index(Request $request, Response $response): Response
     {
         $operatingSystem = $this->getRepository(OperatingSystemRepository::class)->all();
         $form = $this->createForm(OperatingSystemType::class);
-        $form->setAction($this->routeParser->urlFor('settings_os_create'));
+        $form->setAction($this->getUrlFor('settings_os_create'));
         $form->handleRequest();
         //
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
-        $breadcrumbs->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb("Systèmes d'exploitation", false);
         $breadcrumbs->render();

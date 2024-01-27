@@ -10,31 +10,39 @@ use App\Service\MailInterventionService;
 use App\Type\InterventionCreateNextType;
 use App\Type\InterventionCreateType;
 use App\Type\InterventionFastType;
-use Knp\Snappy\Pdf;
+use Awurth\Validator\StatefulValidator;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Service\SerialNumberFormatterService;
+use Slim\App;
 
 class InterventionCreateController extends AbstractController
 {
+
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function index(Request $request, Response $response, array $args): Response
     {
         $form = $this->createForm(InterventionFastType::class);
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb('Création', false);
         $bds->render();
         // .Breadcrumbs
@@ -50,6 +58,9 @@ class InterventionCreateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function regular(Request $request, Response $response, array $args): Response
     {
@@ -57,7 +68,7 @@ class InterventionCreateController extends AbstractController
         $equipment_id = null;
         $customer_id = (int)$args['id'];
         $equipment = (int)$request->getQueryParams()['e'];
-        $auth = $this->session->get('auth');
+        $auth = $this->getSession('auth');
 
         if($equipment != null) {
             $e = $this->getRepository(EquipmentRepository::class)->find('id', $equipment);
@@ -85,14 +96,14 @@ class InterventionCreateController extends AbstractController
                 'ref_number' => $numberFormatter->generateSerialNumber()
             ];
             // Save array in the session
-            $this->session->set('form_intervention_next', $arrayData);
+            $this->setSession('form_intervention_next', $arrayData);
             return $this->redirectToRoute('intervention_create_customer_regular_complete');
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
-        $bds->addCrumb('Création', $this->routeParser->urlFor('intervention_create_index'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
+        $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
         $bds->addCrumb('Complète', false);
         $bds->render();
         // .Breadcrumbs
@@ -106,17 +117,26 @@ class InterventionCreateController extends AbstractController
     }
 
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
     public function next(Request $request, Response $response, array $args): Response
     {
         $e = null;
-        $auth = $this->session->get('auth');
+        $auth = $this->getSession('auth');
         // if not valid session, stop treatment and return to Create
-        if(!$this->session->get('form_intervention_next')){
-            $this->session->getFlash()->add('panel-error', "Aucune session n'est disponbile pour cette demande, veuillez reprendre le formulaire.");
+        if(!$this->getSession('form_intervention_next')){
+            $this->addFlash('panel-error', "Aucune session n'est disponbile pour cette demande, veuillez reprendre le formulaire.");
             return $this->redirectToRoute('intervention_create_index');
         }
         // Retrieve session
-        $dataSession = $this->session->get('form_intervention_next');
+        $dataSession = $this->getSession('form_intervention_next');
         // Retrieve customer
         $c = $this->getRepository(CustomerRepository::class)->find('id', (int)$dataSession['customers_id']);
         // Check if ID equipment exist
@@ -125,10 +145,10 @@ class InterventionCreateController extends AbstractController
         }
         // Create Form
         $form = $this->createForm(InterventionCreateNextType::class, null, $dataSession);
-        $form->setAction($this->routeParser->urlFor('intervention_create_save'));
+        $form->setAction($this->getUrlFor('intervention_create_save'));
         $data = $form->getRequestData()['form_intervention_2time'];
         $form->handleRequest();
-        $this->session->set('intervention_2time', $data);
+        $this->setSession('intervention_2time', $data);
 
         return $this->render($response, 'backoffice/intervention/create/next.html.twig', [
             'currentMenu' => 'intervention',
@@ -140,10 +160,20 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws \Random\RandomException
+     */
     public function save(Request $request, Response $response, array $args): Response
     {
         if($request->getMethod() === 'POST') {
-            $data_one = $this->session->get('form_intervention_next');
+            $data_one = $this->getSession('form_intervention_next');
             $data = $request->getParsedBody()['form_intervention_2time'];
             unset($data_one['nb_equipments']);
             // Delete equipments_id if exist in the session "form_intervention_next"
@@ -184,11 +214,11 @@ class InterventionCreateController extends AbstractController
                 */
                 $save = $this->getRepository(InterventionRepository::class)->add($merge, true);
                 if($save){
-                    $this->session->getFlash()->add('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));
+                    $this->addFlash('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));
                     return $this->redirectToRoute('dash_intervention');
                 }
             } else {
-                $this->session->getFlash()->add('panel-error', 'Tous les champs ne sont pas remplis !');
+                $this->addFlash('panel-error', 'Tous les champs ne sont pas remplis !');
                 return $this->redirectToReferer($request);
             }
 

@@ -5,20 +5,30 @@ namespace App\Controller\Backoffice\Settings;
 use App\AbstractController;
 use App\Repository\TaskRepository;
 use App\Type\TaskType;
+use Awurth\Validator\StatefulValidator;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
+use Slim\App;
 
 class TaskController extends AbstractController
 {
+
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -29,11 +39,11 @@ class TaskController extends AbstractController
 
         // For create
         $form = $this->createForm(TaskType::class);
-        $form->setAction($this->routeParser->urlFor('settings_task_create'));
+        $form->setAction($this->getUrlFor('settings_task_create'));
         $form->handleRequest();
         //
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
-        $breadcrumbs->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb("Tâches", false);
         $breadcrumbs->render();
@@ -53,6 +63,9 @@ class TaskController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function actionForm(Request $request, Response $response, array $args): Response
     {
@@ -75,9 +88,9 @@ class TaskController extends AbstractController
                 } else {
                     if($checkIfExist === 0) {
                         $this->getRepository(TaskRepository::class)->add($data);
-                        $this->session->getFlash()->add('panel-info', "Action effectuée avec succès");
+                        $this->addFlash('panel-info', "Action effectuée avec succès");
                     } else {
-                        $this->session->getFlash()->add('panel-error', "Cet élément existe déjà !");
+                        $this->addFlash('panel-error', "Cet élément existe déjà !");
                     }
                 }
                 return $this->redirectToReferer($request);
@@ -92,7 +105,9 @@ class TaskController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response): Response
     {
@@ -101,7 +116,7 @@ class TaskController extends AbstractController
             if($data){
                 unset($data['_METHOD']);
                 $this->getRepository(TaskRepository::class)->delete((int)$data['id']);
-                $this->session->getFlash()->add('panel-info', "Tâche supprimée.");
+                $this->addFlash('panel-info', "Tâche supprimée.");
                 return $this->redirectToRoute('settings_task');
             }
         }

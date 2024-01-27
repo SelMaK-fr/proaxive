@@ -35,7 +35,7 @@ signaturePad.fromDataURL("data:image/png;base64,iVBORw0K...");
 signaturePad.fromDataURL("data:image/png;base64,iVBORw0K...", { ratio: 1, width: 400, height: 200, xOffset: 100, yOffset: 50 });
 
 // Returns signature image as an array of point groups
-const data = signaturePad.toData();
+let data = signaturePad.toData();
 
 // Draws signature image from an array of point groups
 signaturePad.fromData(data);

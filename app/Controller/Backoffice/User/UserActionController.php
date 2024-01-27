@@ -6,6 +6,9 @@ use App\AbstractController;
 use App\Repository\UserRepository;
 use App\Service\MailService;
 use App\Type\UserType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Service\RandomNumberService;
@@ -13,6 +16,15 @@ use Selmak\Proaxive2\Service\RandomNumberService;
 class UserActionController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function action(Request $request, Response $response, array $args): Response
     {
         $user_id = (int)$args['id'];
@@ -30,14 +42,14 @@ class UserActionController extends AbstractController
             if($user_id){
                 $saveUpdate = $this->getRepository(UserRepository::class)->update($data, $user_id);
                 if($saveUpdate){
-                    $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $data['fullname']));
+                    $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $data['fullname']));
                     return $this->redirectToReferer($request);
                 }
             } else {
                 // Generate token and code (confirm_at)
                 $checkIfExist = $this->getRepository(UserRepository::class)->ifExist('mail', $data['mail']);
                 if($checkIfExist == 1){
-                    $this->session->getFlash()->add('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
+                    $this->addFlash('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
                 } else {
                     $t = new RandomNumberService();
                     $data['token'] = $t->token(30);
@@ -46,7 +58,7 @@ class UserActionController extends AbstractController
                     $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
                     $save = $this->getRepository(UserRepository::class)->add($data, true);
                     if($save){
-                        $this->session->getFlash()->add('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
+                        $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
                         return $this->redirectToRoute('dash_user');
                     }
                 }

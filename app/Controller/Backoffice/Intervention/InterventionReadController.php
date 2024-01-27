@@ -7,6 +7,9 @@ use App\Repository\InterventionRepository;
 use App\Repository\TaskAssocRepository;
 use App\Type\InterventionUpdateType;
 use App\Type\TaskListType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -18,36 +21,35 @@ class InterventionReadController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function read(Request $request, Response $response, array $args): Response
     {
         $intervention_id = (int)$args['id'];
         $i = $this->getRepository(InterventionRepository::class)->joinForId($intervention_id);
         if(!$i) {
-            $this->session->getFlash()->add('panel-error', "Cette intervention n'existe pas !");
+            $this->addFlash('panel-error', "Cette intervention n'existe pas !");
             return $this->redirectToRoute('dash_intervention');
         }
         $taskForI = $this->getRepository(TaskAssocRepository::class)->findByIntervention($intervention_id);
 
         // Add task
         $formTasks = $this->createForm(TaskListType::class);
-        $formTasks->setAction($this->routeParser->urlFor('task_add_intervention', ['id' => $intervention_id]));
+        $formTasks->setAction($this->getUrlFor('task_add_intervention', ['id' => $intervention_id]));
 
         // Form Update Intervention
         $form = $this->createForm(InterventionUpdateType::class, $i);
-        $form->setAction($this->routeParser->urlFor('intervention_update', ['id' => $intervention_id]));
+        $form->setAction($this->getUrlFor('intervention_update', ['id' => $intervention_id]));
         $form->handleRequest();
 
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Interventions', $this->routeParser->urlFor('dash_intervention'));
-        $bds->addCrumb($i['customer_name'], $this->routeParser->urlFor('customer_read', ['id' => $i['customers_id']]));
-        $bds->addCrumb($i['equipment_name'], $this->routeParser->urlFor('equipment_read', ['id' => $i['equipments_id']]));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
+        $bds->addCrumb($i['customer_name'], $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
+        $bds->addCrumb($i['equipment_name'], $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
         $bds->addCrumb($i['ref_number'], false);
         $bds->render();
         // .Breadcrumbs

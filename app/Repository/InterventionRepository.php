@@ -109,4 +109,15 @@ class InterventionRepository extends BaseRepository
             ;
     }
 
+    // For API
+
+    public function apiStats()
+    {
+        return $this->makeQueryDefault()
+            ->select(null)
+            ->select('way_steps, COUNT(*) AS count')
+            ->groupBy('way_steps')
+            ->fetchAll()
+            ;
+    }
 }

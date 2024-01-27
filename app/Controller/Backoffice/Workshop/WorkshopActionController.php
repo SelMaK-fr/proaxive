@@ -5,12 +5,24 @@ namespace App\Controller\Backoffice\Workshop;
 use App\AbstractController;
 use App\Repository\WorkshopRepository;
 use App\Type\WorkshopType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class WorkshopActionController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function action(Request $request, Response $response, array $args): Response
     {
         $workshop_id = (int)$args['id'];
@@ -26,19 +38,19 @@ class WorkshopActionController extends AbstractController
             if($workshop_id) {
                 $saveUpdate = $this->getRepository(WorkshopRepository::class)->update($data, $workshop_id);
                 if($saveUpdate) {
-                    $this->session->getFlash()->add('panel-info', sprintf('Mise à jour pour - %s - effectuée', $data['name']));
+                    $this->addFlash('panel-info', sprintf('Mise à jour pour - %s - effectuée', $data['name']));
                 }
             } else {
                 $save = $this->getRepository(WorkshopRepository::class)->add($data, true);
                 if($save) {
-                    $this->session->getFlash()->add('panel-info', sprintf("Le nouveau magasin/atelier - %s - a bien été créé", $data['name']));
+                    $this->addFlash('panel-info', sprintf("Le nouveau magasin/atelier - %s - a bien été créé", $data['name']));
                 }
             }
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Magasins', $this->routeParser->urlFor('dash_workshop'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Magasins', $this->getUrlFor('dash_workshop'));
         $bds->addCrumb('Actions', false);
         $bds->render();
         // .Breadcrumbs

@@ -4,17 +4,23 @@ namespace App\Controller\Backoffice\Task;
 
 use App\AbstractController;
 use App\Repository\TaskAssocRepository;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AddTaskToInterventionController extends AbstractController
 {
+
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addToIntervention(Request $request, Response $response, array $args): Response
     {
@@ -37,16 +43,16 @@ class AddTaskToInterventionController extends AbstractController
             foreach ($tasksForI as $dt){
                 foreach ($array as $dataT){
                     if((int)$dataT['tasks_id'] === $dt['tasks_id']){
-                        $this->session->getFlash()->add('error', 'Cette tâche a déjà été effectuée !');
+                        $this->addFlash('error', 'Cette tâche a déjà été effectuée !');
                         return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
                     }
                 }
             }
             $tasksAssoc = $this->getRepository(TaskAssocRepository::class)->add($array);
             if($tasksAssoc){
-                $this->session->getFlash()->add('panel-info', 'Tâche(s) sauvegardée(s) pour cette intervention.');
+                $this->addFlash('panel-info', 'Tâche(s) sauvegardée(s) pour cette intervention.');
             } else {
-                $this->session->getFlash()->add('panel-error', 'Impossible de poursuivre.');
+                $this->addFlash('panel-error', 'Impossible de poursuivre.');
             }
             return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
         }

@@ -10,18 +10,18 @@
         </div>
         <div class="col-10_sm-12">
             <div class="card">
-                <div class="card-body p-4">
-                    <div class="card-header mb-4">
-                        <div class="grid-2 -noGutter">
-                            <div class="col-6_sm-12">
-                                <h2>Gestion des tâches</h2>
-                                <span>Ajouter ou supprimer une tâche pour les interventions</span>
-                            </div>
-                            <div class="col-6_sm-12 text-right">
-                                <button type="button" data-target="add_task" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une tâche</button>
-                            </div>
+                <div class="card-header pb-0">
+                    <div class="grid-2 -noGutter">
+                        <div class="col-6_sm-12">
+                            <h2>Gestion des tâches</h2>
+                            <span>Ajouter ou supprimer une tâche pour les interventions</span>
+                        </div>
+                        <div class="col-6_sm-12 text-right">
+                            <button type="button" data-target="add_task" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une tâche</button>
                         </div>
                     </div>
+                </div>
+                <div class="card-body">
                     {% if tasks is not empty %}
                         <div class="boxed-shadow p-relative br-5">
                             <table class="table-radius table-shadow overflow-hidden" id="table-visible">

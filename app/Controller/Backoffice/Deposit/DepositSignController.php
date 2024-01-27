@@ -6,17 +6,36 @@ use App\AbstractController;
 use App\Repository\CompanyRespository;
 use App\Repository\DepositRepository;
 use App\Service\MailService;
+use Awurth\Validator\StatefulValidator;
 use Dompdf\Dompdf;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as V;
+use Slim\App;
 
 class DepositSignController extends AbstractController
 {
 
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response, array $args): Response
     {
         $reference = (int)$args['reference'];
@@ -25,7 +44,7 @@ class DepositSignController extends AbstractController
 
         // Check if deposit as signed
         if($d->is_signed === 1){
-            $this->session->getFlash()->add('panel-info', "Ce dépôt a déjà été signé par le client.");
+            $this->addFlash('panel-info', "Ce dépôt a déjà été signé par le client.");
             return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $d->i_reference, 'deposit_reference' => $d->reference]);
         }
 
@@ -57,14 +76,14 @@ class DepositSignController extends AbstractController
                     $qrcode = $result->getDataUri();
                     // Generate PDF and save in storage folder (storage/documents/deposits)
                     $dompdf = new Dompdf();
-                    $dompdf->loadHtml($this->twig->fetch('/snappy/deposit_pdf.html.twig',
+                    $dompdf->loadHtml($this->view('/snappy/deposit_pdf.html.twig',
                         ['d' => $deposit, 'data' => $data, 'qrcode' => $qrcode
                         ]));
                     $dompdf->render();
                     // Save PDF
                     $output = $dompdf->output();
                     file_put_contents($settings['storage']['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
-                    $this->session->getFlash()->add('panel-info', 'Le bon de dépôt a bien été généré.');
+                    $this->addFlash('panel-info', 'Le bon de dépôt a bien été généré.');
                     // Deposit Ok (is_signed)
                     $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id']);
                     // Send Mail
@@ -84,7 +103,7 @@ class DepositSignController extends AbstractController
                     return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference']]);
                 }
             }
-            $this->session->getFlash()->add('panel-error', "Le formulaire n'est pas rempli correctement !");
+            $this->addFlash('panel-error', "Le formulaire n'est pas rempli correctement !");
             return $this->redirectToReferer($request);
         }
         return $this->render($response, 'backoffice/deposit/sign.html.twig', [

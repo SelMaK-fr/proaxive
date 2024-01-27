@@ -5,12 +5,24 @@ namespace App\Controller\Backoffice\Equipment\PeripheralDevice;
 use App\AbstractController;
 use App\Repository\EquipmentRepository;
 use App\Type\PeripheralType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PeripheralUpdateController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function update(Request $request, Response $response, array $args): Response
     {
         $equipment_id = (int)$args['id'];
@@ -21,14 +33,14 @@ class PeripheralUpdateController extends AbstractController
             $data = $form->getRequestData()['form_equipment'];
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
-                $this->session->getFlash()->add('panel-info', sprintf("Le périphérique - %s - a bien été mis à jour.", $data['name']));
+                $this->addFlash('panel-info', sprintf("Le périphérique - %s - a bien été mis à jour.", $data['name']));
                 return $this->redirectToReferer($request);
             }
         }
         // Breadcrumbs
         $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
-        $bds->addCrumb('Équipements', $this->routeParser->urlFor('dash_equipment'));
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Équipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb('Périphérique', false);
         $bds->addCrumb($e->name, false);
         $bds->render();

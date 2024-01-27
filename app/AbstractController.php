@@ -4,102 +4,132 @@ namespace App;
 
 use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Query;
+use mysql_xdevapi\Exception;
 use Odan\Session\SessionInterface;
 use Palmtree\Form\Form;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\App;
 use Slim\Interfaces\RouteParserInterface;
-use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 
 abstract class AbstractController
 {
 
     public function __construct(
-        protected readonly Twig $twig,
-        protected readonly Query $query,
-        protected readonly SessionInterface $session,
-        protected readonly SettingsInterface $settings,
-        protected readonly RouteParserInterface $routeParser,
         protected readonly App $app,
-        protected readonly StatefulValidator $validator
+        //protected readonly StatefulValidator $validator
     ){
     }
 
     /**
-     * Return array key and value parameters (cf /config/settings.php)
      * @param string $key
      * @param string $value
      * @return array|bool|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getParameter(string $key, string $value): array|bool|string
     {
-        return $this->settings->get($key)[$value];
-    }
-
-    protected function getParameters(string $key): array|bool|string
-    {
-        return $this->settings->get($key);
+        return $this->app->getContainer()->get(SettingsInterface::class)->get($key)[$value];
     }
 
     /**
-     * Return view Twig in the controller
+     * @param string $key
+     * @return array|bool|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getParameters(string $key): array|bool|string
+    {
+        return $this->app->getContainer()->get(SettingsInterface::class)->get($key);
+    }
+
+    /**
      * @param Response $response
      * @param string $template
      * @param array|null $data
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function render(Response $response, string $template, ?array $data = []): Response
     {
         $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $this->twig->render($response, $template, $data);
+        return $this->app->getContainer()->get(Twig::class)->render($response, $template, $data);
     }
 
+    /**
+     * @param string $template
+     * @param array|null $data
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     protected function view(string $template, ?array $data = []): mixed
     {
-        return $this->twig->fetch($template, $data);
+        return $this->app->getContainer()->get(Twig::class)->fetch($template, $data);
     }
 
-    // Return the table data's in the controller. $classname => your repository class in /app/Repository
-    protected function getRepository(string $classname)
+    /**
+     * Return the table data's in the controller. $classname => your repository class in /app/Repository
+     * @param string $classname
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getRepository(string $classname): mixed
     {
-        return new $classname($this->query);
+        try {
+            return new $classname($this->app->getContainer()->get(Query::class));
+        } catch (\Exception $e){
+            return new Exception('Repository empty');
+        }
     }
 
     /**
      * @param string $type
      * @param mixed|null $data
+     * @param array|null $args
      * @return Form
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function createForm(string $type, mixed $data = null, ?array $args = []): Form
     {
-        return (new $type($this->query))->createFormBuilder($data, $args);
-    }
-
-    protected function generateUrl(string $route): string
-    {
-        return $this->routeParser->urlFor($route);
+        return (new $type($this->app->getContainer()->get(Query::class)))->createFormBuilder($data, $args);
     }
 
     /**
-     * Returns a RedirectResponse to the given URL
-     * @param $request
+     * @param string $route
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function generateUrl(string $route): string
+    {
+        return $this->getUrlFor($route);
+    }
+
+    /**
      * @param string $routeName
+     * @param array|null $data
      * @param array|null $params
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function redirectToRoute(string $routeName, ?array $data = [], ?array $params = []): Response
     {
-        $url = $this->routeParser->urlFor($routeName, $data, $params);
+        $url = $this->getUrlFor($routeName, $data, $params);
         $response = new \Slim\Psr7\Response();
         return $response
             ->withHeader('Location', $url)
             ->withStatus(302);
     }
+
 
     /**
      * Creates a redirect response.
@@ -118,6 +148,26 @@ abstract class AbstractController
     }
 
     /**
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getRouteParser(): mixed
+    {
+        return $this->app->getContainer()->get(RouteParserInterface::class);
+    }
+
+    /**
+     * Return route URL
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUrlFor(string $routeName, ?array $data = [], ?array $params = []): mixed
+    {
+        return $this->app->getContainer()->get(RouteParserInterface::class)->urlFor($routeName, $data, $params);
+    }
+
+    /**
      * @param $request
      * @param int $status
      * @return Response
@@ -131,24 +181,50 @@ abstract class AbstractController
     }
 
     /**
-     * Return flash Message
      * @param string $key
      * @param string $message
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function addFlash(string $key, string $message): void
     {
-        $this->session->getFlash()->add($key, $message);
+        $this->app->getContainer()->get(SessionInterface::class)->getFlash()->add($key, $message);
     }
 
-    protected function getUserId()
+    protected function getSession(string $key)
     {
-        return $this->session->get('auth')['id'];
+        return $this->app->getContainer()->get(SessionInterface::class)->get($key);
     }
 
-    protected function getUserCompany()
+    protected function setSession(string $key, array $data)
     {
-        return $this->session->get('auth')['company_id'];
+        return $this->app->getContainer()->get(SessionInterface::class)->add($key, $data);
+    }
+
+    protected function deleteSession(string $key)
+    {
+        return $this->app->getContainer()->get(SessionInterface::class)->delete($key);
+    }
+
+    /**
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserId(): mixed
+    {
+        return $this->app->getContainer()->get(SessionInterface::class)->get('auth')['id'];
+    }
+
+    /**
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserCompany(): mixed
+    {
+        return $this->app->getContainer()->get(SessionInterface::class)->get('auth')['company_id'];
     }
 
     protected function pdfResponse(string $attachmentFilename)

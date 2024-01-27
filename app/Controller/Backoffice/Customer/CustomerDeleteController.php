@@ -5,6 +5,9 @@ namespace App\Controller\Backoffice\Customer;
 use App\AbstractController;
 use App\Repository\CustomerRepository;
 use Awurth\Validator\ValidatorInterface;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
@@ -12,6 +15,15 @@ use Respect\Validation\Validator;
 class CustomerDeleteController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function delete(Request $request, Response $response, array $args): Response
     {
         $customer_id = (int)$args['id'];
@@ -20,10 +32,10 @@ class CustomerDeleteController extends AbstractController
             $data = $request->getParsedBody();
             if($data['fullname'] === $customer->fullname){
                 $this->getRepository(CustomerRepository::class)->delete($customer_id);
-                $this->session->getFlash()->add('panel-info', 'Le client a bien été supprimé');
+                $this->addFlash('panel-info', 'Le client a bien été supprimé');
                 return $this->redirectToRoute('dash_customer');
             } else {
-                $this->session->getFlash()->add('panel-error', 'Le nom ne correspond pas !');
+                $this->addFlash('panel-error', 'Le nom ne correspond pas !');
                 return $this->redirectToReferer($request);
             }
         }

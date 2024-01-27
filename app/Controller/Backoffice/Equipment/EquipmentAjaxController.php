@@ -4,20 +4,30 @@ namespace App\Controller\Backoffice\Equipment;
 
 use App\AbstractController;
 use App\Repository\EquipmentRepository;
+use Awurth\Validator\StatefulValidator;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Respect\Validation\Validator as V;
+use Slim\App;
 
 class EquipmentAjaxController extends AbstractController
 {
+
+    public function __construct(private readonly StatefulValidator $validator, App $app)
+    {
+        parent::__construct($app);
+    }
+
     /**
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function search(Request $request, Response $response): Response
     {
@@ -32,6 +42,14 @@ class EquipmentAjaxController extends AbstractController
     }
 
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
     public function addFast(Request $request, Response $response): Response
     {
         if($request->getMethod() === 'POST') {
@@ -53,11 +71,11 @@ class EquipmentAjaxController extends AbstractController
             if($validator->count() === 0) {
                 $save = $this->getRepository(EquipmentRepository::class)->add($data, true);
                 if($save) {
-                    $this->session->getFlash()->add('panel-info', sprintf("L'équipement - %s - a bien été créé", $data['name']));
+                    $this->addFlash('panel-info', sprintf("L'équipement - %s - a bien été créé", $data['name']));
                     return $this->redirectToReferer($request);
                 }
             } else {
-                $this->session->getFlash()->add('panel-error', sprintf("Des champs ne sont pas remplis"));
+                $this->addFlash('panel-error', sprintf("Des champs ne sont pas remplis"));
                 return $this->redirectToReferer($request);
             }
         }
@@ -69,6 +87,9 @@ class EquipmentAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function updateNote(Request $request, Response $response, array $args): Response
     {

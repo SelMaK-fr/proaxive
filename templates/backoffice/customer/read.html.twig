@@ -40,7 +40,7 @@
                             </div>
                             <div class="mt-4">
                                 <div class="grid-12">
-                                    <div class="col-4_sm-12">
+                                    <div class="col-6_sm-12">
                                         <div class="item flex align-items-center">
                                             <div class="mr-2">
                                                 <div class="item--icon br-8 text-center"><i class="fs-18px ri-mail-send-line text-muted"></i></div>
@@ -69,46 +69,33 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4_sm-12 grid-center">
-                                        <!-- Change data-value in svg element to impact progress -->
-                                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" data-value="70">
-                                            <circle r="45" cx="50" cy="50" />
-                                            <!-- 282.78302001953125 is auto-calculated by path.getTotalLength() -->
-                                            <path class="meter" d="M5,50a45,45 0 1,0 90,0a45,45 0 1,0 -90,0" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="282.78302001953125" stroke-dasharray="282.78302001953125" />
-                                            <!-- Value automatically updates based on data-value set above -->
-                                            <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="20"></text>
-                                        </svg>
-                                        <p>
-                                            Ce compte client n'est pas complet.
-                                        </p>
-                                    </div>
-                                    <div class="col-4_sm-12">
-                                        <div class="item flex justify-content-end">
+                                    <div class="col-6_sm-12">
+                                        <div class="item flex align-items-center">
+                                            <div class="mr-2">
+                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-phone-line text-muted"></i></div>
+                                            </div>
                                             <div>
                                                 <span class="d-block fw-500">{{ getDataWithLink(customer.phone, url_for('customer_update', {'id' : customer.id})) }}</span>
                                                 <span class="text-muted">Téléphone fixe</span>
                                             </div>
-                                            <div class="ml-2">
-                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-phone-line text-muted"></i></div>
-                                            </div>
                                         </div>
-                                        <div class="item mt-6 flex justify-content-end">
+                                        <div class="item mt-6 flex align-items-center">
+                                            <div class="mr-2">
+                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-smartphone-line text-muted"></i></div>
+                                            </div>
                                             <div>
                                                 <span class="d-block fw-500">{{ getDataWithLink(customer.mobile, url_for('customer_update', {'id' : customer.id}))}}</span>
                                                 <span class="text-muted">Téléphone mobile</span>
                                             </div>
-                                            <div class="ml-2">
-                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-smartphone-line text-muted"></i></div>
-                                            </div>
                                         </div>
                                         {% if customer.is_society is null %}
-                                            <div class="item mt-6 flex justify-content-end">
+                                            <div class="item mt-6 flex align-items-center">
+                                                <div class="mr-2">
+                                                    <div class="item--icon br-8 text-center"><i class="fs-18px ri-dossier-line text-muted"></i></div>
+                                                </div>
                                                 <div>
                                                     <span class="d-block fw-500">{{ getDataWithLink(customer.profil_type, url_for('customer_update', {'id' : customer.id})) }}</span>
                                                     <span class="text-muted">Profil particulié</span>
-                                                </div>
-                                                <div class="ml-2">
-                                                    <div class="item--icon br-8 text-center"><i class="fs-18px ri-dossier-line text-muted"></i></div>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -333,7 +320,7 @@
             viewMap({{ customer.addr_latitude }}, {{ customer.addr_longitude }})
         </script>
     {% endif %}
-    {% if customer.profil_progress is defined and customer.profil_progress < 100 %}
+    {% if customer.address is null %}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
@@ -341,6 +328,7 @@
             text: 'Ce compte client est incomplet, pensez à le finaliser.',
             icon: 'warning',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#F9556D',
             customClass: {
                 popup: 'bg-foreground',
                 confirmButton: 'bg-sk-color-one',

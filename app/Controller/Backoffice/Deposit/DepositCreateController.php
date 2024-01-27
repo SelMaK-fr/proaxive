@@ -5,12 +5,24 @@ namespace App\Controller\Backoffice\Deposit;
 use App\AbstractController;
 use App\Repository\DepositRepository;
 use App\Repository\InterventionRepository;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class DepositCreateController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function create(Request $request, Response $response, array $args): Response
     {
         $intervention_id = (int)$args['id'];
@@ -35,7 +47,7 @@ class DepositCreateController extends AbstractController
                     'with_deposit' => $data['reference']
                 ], $i['id']);
                 // confirmation save data notification
-                $this->session->getFlash()->add('panel-info', 'Le dépôt a été sauvegardé.');
+                $this->addFlash('panel-info', 'Le dépôt a été sauvegardé.');
                 return $this->redirectToReferer($request);
             }
         }

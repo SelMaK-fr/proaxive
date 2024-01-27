@@ -6,13 +6,24 @@ use App\AbstractController;
 use App\Repository\CustomerRepository;
 use App\Repository\InterventionRepository;
 use App\Service\GeneratePdfService;
+use Envms\FluentPDO\Exception;
 use Knp\Snappy\Pdf;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IndexController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response): Response
     {
         $interventions = $this->getRepository(InterventionRepository::class)->all()->limit(10)->orderBy('created_at DESC');

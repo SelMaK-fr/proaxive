@@ -18,6 +18,8 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use Knp\Snappy\Pdf;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Service\RandomNumberService;
@@ -32,11 +34,8 @@ class DepositToPdfController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function generatePdf(Request $request, Response $response, array $args): Response
     {
@@ -45,18 +44,26 @@ class DepositToPdfController extends AbstractController
             // Return Deposit
             $deposit = $this->getRepository(DepositRepository::class)->joinForId($deposit_id);
             // confirmation save data notification
-            $this->session->getFlash()->add('panel-info', 'Le dépôt a été sauvegardé.');
+            $this->addFlash('panel-info', 'Le dépôt a été sauvegardé.');
             // Return settings array
             $settings = $this->app->getContainer()->get('settings');
             //DomPDF
             $dompdf = new Dompdf();
-            $dompdf->loadHtml($this->twig->fetch('/snappy/deposit_pdf.html.twig',
+            $dompdf->loadHtml($this->view('/snappy/deposit_pdf.html.twig',
                 ['d' => $deposit
                 ]), $settings['storage']['documents'] . 'deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['ref_number'].'.pdf');
         }
         return new \Slim\Psr7\Response();
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function viewDepositPdf(Request $request, Response $response, array $args): Response
     {
         /* Regen PDF IN PROGRESS */
@@ -80,7 +87,7 @@ class DepositToPdfController extends AbstractController
             $result = $writer->write($qrCode);
             $qrcode = $result->getDataUri();
             $dompdf = new Dompdf();
-            $dompdf->loadHtml($this->twig->fetch('/snappy/deposit_pdf.html.twig',
+            $dompdf->loadHtml($this->view('/snappy/deposit_pdf.html.twig',
                 ['d' => $depositToPdf, 'qrcode' => $qrcode
                 ]));
             $dompdf->render();

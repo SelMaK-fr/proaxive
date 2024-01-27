@@ -1,60 +1,60 @@
-function dashHomeStatYear(yearDate, pathUrl) {
+function dashHomeStatIntervention() {
     let xmlhttp = new XMLHttpRequest();
-    let url = "/api/i/c/current-year";
+    let url = "/api/intervention/status";
     xmlhttp.open("GET",url,true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 200){
+        if (this.readyState === 4 && this.status === 200) {
             data = JSON.parse(this.response);
-            console.log(data)
-            month_name = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-
-            num_count = data.interventions.map(function(elem){
-                return elem.i_count;
-            })
-            num_customer = data.customers.map(function(elem){
-                return elem.c_count;
-            })
-            const ctx = document.getElementById('canvas').getContext('2d');
+            step00 = data[0]['count']
+            step01 = data[1]['count']
+            step02 = data[2]['count']
+            step03 = data[3]['count']
+            // Value for span HTML
+            let countNotStart = document.getElementById('count_not_start');
+            countNotStart.innerHTML = step00;
+            let countWork = document.getElementById('count_work');
+            countWork.innerHTML = step01;
+            let countFinal = document.getElementById('count_final');
+            countFinal.innerHTML = step02;
+            let countExit = document.getElementById('count_exit');
+            countExit.innerHTML = step03;
+            let countTotal = document.getElementById('count_total');
+            countTotal.innerHTML = step00 + step01 + step02 + step03;
+            //
+            const ctx = document.getElementById('myChart').getContext('2d');
             let darker = document.documentElement.getAttribute('data-layout-mode');
             if(darker === 'default'){
                 Chart.defaults.color = "#ffffff";
             }
             const myChart = new Chart(ctx, {
-                type: 'line',
+                type: 'doughnut',
                 data: {
-                    labels: month_name,
+                    labels: [],
                     datasets: [{
-                        label: 'Interventions',
-                        data: num_count,
-                        borderColor: '#f73164',
-                        backgroundColor: "#f73164"
-
-                    },
-                        {
-                            label: 'Clients',
-                            data: num_customer,
-                            borderColor: '#31f0f7',
-                            backgroundColor: "#31f0f7"
-
-                        }
-                    ]
+                        label: 'Qty',
+                        data: [step00, step01, step02, step03],
+                        backgroundColor: [
+                            '#f73164',
+                            '#48A3D7',
+                            '#c95e9e',
+                            '#fa896b'
+                        ],
+                        borderWidth: 0
+                    }]
                 },
                 options: {
+                    responsive: true,
                     plugins: {
+                        legend: {
+                            position: 'top',
+                        },
                         title: {
-                            display: true,
-                            text: 'Statistique des interventions et clients en ' + yearDate
-                        }
-                    },
-                    scales: {
-                        y: {
-                            stacked: false
+                            display: false,
                         }
                     }
                 }
             });
         }
-
     }
 }

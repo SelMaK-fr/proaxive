@@ -138,7 +138,7 @@
                                     <form method="post" action="{{ url_for('customer_update_parameters_type', {'id': customer.id}) }}">
                                         <input type="hidden" name="is_society">
                                         {% if customer.is_society is null and customer.is_society is empty %}
-                                            <span class="d-block fw-500 text-uppercase">Client particulier</span>
+                                            <span class="d-block fw-600 text-uppercase">Client particulier</span>
                                             <p>
                                                 Vous pouvez changer le rang de ce client.<br>
                                                 Après confirmation, {{ customer.fullname }} passera au rang <strong>Société</strong>

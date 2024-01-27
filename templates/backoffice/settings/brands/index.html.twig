@@ -10,18 +10,18 @@
         </div>
         <div class="col-10_sm-12">
             <div class="card">
-                <div class="card-body p-4">
-                    <div class="card-header mb-4">
-                        <div class="grid-2 -noGutter">
-                            <div class="col-6_sm-12">
-                                <h2>Marques</h2>
-                                <span>Ajouter ou supprimer des marques</span>
-                            </div>
-                            <div class="col-6_sm-12 text-right">
-                                <button type="button" data-target="add_brand" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une marque</button>
-                            </div>
+                <div class="card-header pb-0">
+                    <div class="grid-2 -noGutter">
+                        <div class="col-6_sm-12">
+                            <h2>Marques</h2>
+                            <span>Ajouter ou supprimer des marques</span>
+                        </div>
+                        <div class="col-6_sm-12 text-right">
+                            <button type="button" data-target="add_brand" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une marque</button>
                         </div>
                     </div>
+                </div>
+                <div class="card-body">
                     {% if brands is not empty %}
                         <div class="boxed-shadow p-relative br-5">
                             <table class="table-radius table-shadow overflow-hidden" id="table-visible">
@@ -131,7 +131,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-light-four">Créer</button>
-                    <button data-dismiss="modal" class="modal__close btn btn-light-four">Annuler</button>
+                    <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
                 </div>
             {{ form.renderEnd(false) | raw }}
         </div>

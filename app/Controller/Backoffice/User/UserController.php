@@ -4,12 +4,21 @@ namespace App\Controller\Backoffice\User;
 
 use App\AbstractController;
 use App\Repository\UserRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UserController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response): Response
     {
         $users = $this->getRepository(UserRepository::class)->allWithCompany();

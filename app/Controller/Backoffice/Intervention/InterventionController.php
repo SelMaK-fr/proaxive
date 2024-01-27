@@ -7,6 +7,9 @@ use App\Repository\CustomerRepository;
 use App\Repository\InterventionRepository;
 use App\Type\InterventionFastType;
 use App\Type\InterventionSearchType;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Paginator\Paginator;
@@ -17,11 +20,11 @@ class InterventionController extends AbstractController
     /**
      * @param Request $request
      * @param Response $response
+     * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function index(Request $request, Response $response, array $args): Response
     {
@@ -46,7 +49,7 @@ class InterventionController extends AbstractController
         }
         // Breadcrumbs
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
-        $breadcrumbs->addCrumb('Accueil', $this->routeParser->urlFor('dash_home'));
+        $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Interventions', false);
         $breadcrumbs->render();
         // .Breadcrumbs

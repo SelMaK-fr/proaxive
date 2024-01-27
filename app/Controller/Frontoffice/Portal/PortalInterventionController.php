@@ -6,22 +6,42 @@ use App\AbstractController;
 use App\Repository\EquipmentRepository;
 use App\Repository\InterventionRepository;
 use App\Repository\TaskAssocRepository;
+use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PortalInterventionController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function index(Request $request, Response $response): Response
     {
 
-        $i = $this->getRepository(InterventionRepository::class)->allBy('customers_id', $this->session->get('customer')['id']);
+        $i = $this->getRepository(InterventionRepository::class)->allBy('customers_id', $this->getSession('customer')['id']);
 
         return $this->render($response, '/frontoffice/portal/intervention/index.html.twig', [
             'i' => $i
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
     public function read(Request $request, Response $response, array $args): Response
     {
         $ref_number = (string)$args['ref_number'];
