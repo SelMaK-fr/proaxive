@@ -5,15 +5,22 @@ namespace App\Controller\Backoffice\Settings;
 use App\AbstractController;
 use App\Repository\OperatingSystemRepository;
 use App\Type\OperatingSystemType;
+use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
+use Slim\App;
 
 class OperatingSystemController extends AbstractController
 {
+
+    public function __construct(App $app, private readonly StatefulValidator $validator)
+    {
+        parent::__construct($app);
+    }
 
     /**
      * @throws NotFoundExceptionInterface
@@ -61,10 +68,10 @@ class OperatingSystemController extends AbstractController
                 $data['os_full'] = $data['os_name'].' - '.$data['os_architecture'].' ('. $data['os_release'] .')';
                 if($id != 0) {
                     $this->getRepository(OperatingSystemRepository::class)->update($data, $id);
-                    $this->session->getFlash()->add('panel-info', "Action effectuée avec succès.");
+                    $this->addFlash('panel-info', "Action effectuée avec succès.");
                 } else {
                     $this->getRepository(OperatingSystemRepository::class)->add($data);
-                    $this->session->getFlash()->add('panel-info', sprintf('Le système (%s) a bien été créé.', $data['os_full']));
+                    $this->addFlash('panel-info', sprintf('Le système (%s) a bien été créé.', $data['os_full']));
                 }
                 return $this->redirectToRoute('settings_os');
             } else {

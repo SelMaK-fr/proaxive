@@ -6,13 +6,21 @@ use App\AbstractController;
 use App\Repository\UserRepository;
 use App\Service\MailService;
 use App\Type\AccountPasswordType;
+use Envms\FluentPDO\Query;
+use Odan\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Factory\CookieFactory;
+use Slim\App;
 
 final class UserAccountController extends AbstractController
 {
+
+    public function __construct(App $app, private readonly SessionInterface $session, private readonly Query $query)
+    {
+        parent::__construct($app);
+    }
 
     public function getSignIn(Request $request, Response $response): Response
     {
@@ -53,7 +61,7 @@ final class UserAccountController extends AbstractController
             $data['confirm_at'] = '';
             unset($data['password_2']);
             $this->getRepository(UserRepository::class)->update($data, $user['id']);
-            $this->session->getFlash()->add('info', 'Votre mot de passe a bien été sauvegardé.');
+            $this->addFlash('info', 'Votre mot de passe a bien été sauvegardé.');
             return $this->redirectToRoute('auth_user_login');
         }
         return $this->render($response, 'security/user/first_signin.html.twig', [
@@ -67,6 +75,6 @@ final class UserAccountController extends AbstractController
             $this->session->delete('auth');
             setcookie('proaxive2-auth', '', -1, '/');
         }
-        return $response->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('auth_user_login'));
+        return $response->withStatus(302)->withHeader('Location', $this->getUrlFor('auth_user_login'));
     }
 }

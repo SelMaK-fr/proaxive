@@ -3,12 +3,12 @@ declare(strict_types=1);
 namespace App\Controller\Account;
 
 use App\AbstractController;
-use App\Factory\MailerFactory;
 use App\Repository\UserRepository;
 use App\Type\AccountPasswordType;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
+use Selmak\Proaxive2\Factory\MailerFactory;
 
 class UserResetController extends AbstractController
 {

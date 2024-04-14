@@ -12,6 +12,7 @@ use App\Type\InterventionCreateType;
 use App\Type\InterventionFastType;
 use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
+use Odan\Session\SessionInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -23,7 +24,7 @@ use Slim\App;
 class InterventionCreateController extends AbstractController
 {
 
-    public function __construct(private readonly StatefulValidator $validator, App $app)
+    public function __construct(private readonly StatefulValidator $validator, App $app, private readonly SessionInterface $session)
     {
         parent::__construct($app);
     }
@@ -69,7 +70,6 @@ class InterventionCreateController extends AbstractController
         $customer_id = (int)$args['id'];
         $equipment = (int)$request->getQueryParams()['e'];
         $auth = $this->getSession('auth');
-
         if($equipment != null) {
             $e = $this->getRepository(EquipmentRepository::class)->find('id', $equipment);
             $customer_id = $e->customers_id;
@@ -91,12 +91,12 @@ class InterventionCreateController extends AbstractController
                 'a_priority' => $data['a_priority'],
                 'equipments_id' => $equipment_id,
                 'sort' => $data['sort'],
-                'company_id' => (int)$data['company_id'],
+                'company_id' => $auth['company_id'],
                 'nb_equipments' => $findEquipment,
                 'ref_number' => $numberFormatter->generateSerialNumber()
             ];
             // Save array in the session
-            $this->setSession('form_intervention_next', $arrayData);
+            $this->session->set('form_intervention_next', $arrayData);
             return $this->redirectToRoute('intervention_create_customer_regular_complete');
         }
         // Breadcrumbs
@@ -146,9 +146,18 @@ class InterventionCreateController extends AbstractController
         // Create Form
         $form = $this->createForm(InterventionCreateNextType::class, null, $dataSession);
         $form->setAction($this->getUrlFor('intervention_create_save'));
-        $data = $form->getRequestData()['form_intervention_2time'];
+        $data = $form->getRequestData();
         $form->handleRequest();
-        $this->setSession('intervention_2time', $data);
+        $this->session->set('intervention_2time', $data);
+
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
+        $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
+        $bds->addCrumb('Etape 2', false);
+        $bds->render();
+        // .Breadcrumbs
 
         return $this->render($response, 'backoffice/intervention/create/next.html.twig', [
             'currentMenu' => 'intervention',
@@ -156,6 +165,7 @@ class InterventionCreateController extends AbstractController
             'c' => $c,
             'e' => $e,
             'auth' => $auth,
+            'breadcrumbs' => $bds,
             'session' => $dataSession
         ]);
     }
@@ -203,15 +213,6 @@ class InterventionCreateController extends AbstractController
                     $mail = new MailInterventionService($this->getParameters('mailer'));
                     $mail->sendMailStart($customer->mail, $this->view('mailer/intervention/start.html.twig', ['data' => $merge]));
                 }
-                // Generate PDF for deposit if checked
-                /*
-                if($data['with_deposit']){
-                    $settings = $this->app->getContainer()->get('settings');
-                    $snappy = new Pdf($settings['settings']['rootPath'] . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
-                    $path = $settings['storage']['documents'] . 'deposits/';
-                    $snappy->generateFromHtml($this->view('snappy/deposit_pdf.html.twig', ['data' => $merge]), $path . $data_one['ref_number'] .'.pdf');
-                }
-                */
                 $save = $this->getRepository(InterventionRepository::class)->add($merge, true);
                 if($save){
                     $this->addFlash('panel-info', sprintf("L'intervention - %s - a bien été créée.", $data_one['ref_number']));

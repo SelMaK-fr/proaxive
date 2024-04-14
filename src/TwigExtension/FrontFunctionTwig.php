@@ -20,6 +20,7 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataPriority', [$this, 'getDataPriority'], ['is_safe' => ['html']]),
             new TwigFunction('getDataWaySteps', [$this, 'getDataWaySteps']),
             new TwigFunction('getDataWayStepsNext', [$this, 'getDataWayStepsNext']),
+            new TwigFunction('getDataWayStepsStatus', [$this, 'getDataWayStepsStatus'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -177,6 +178,23 @@ class FrontFunctionTwig extends AbstractExtension
             $v = 'En cours de sortie';
         } elseif ($data == 4){
             $v = 'Terminé';
+        }
+        return $v;
+    }
+
+    public function getDataWayStepsStatus($data): string
+    {
+        $v = '';
+        if($data == 1){
+            $v = '<span class="label-mid btn-light-info text-uppercase"><i class="ri-home-2-line"></i> Matériel récupéré</span>';
+        } elseif($data == 2){
+            $v = '<span class="label-mid btn-light-info text-uppercase"><i class="ri-tools-line"></i> En atelier</span>';
+        } elseif($data == 3){
+            $v = '<span class="label-mid btn-light-info text-uppercase"><i class="ri-list-check-2"></i> Tests finaux</span>';
+        } elseif ($data == 4){
+            $v = '<span class="label-mid btn-light-warning text-uppercase"><i class="ri-door-open-line"></i> En cours de sortie</span>';
+        } elseif ($data == 5){
+            $v = '<span class="label-mid badge-light-green text-uppercase"><i class="ri-check-line"></i> Terminé</span>';
         }
         return $v;
     }

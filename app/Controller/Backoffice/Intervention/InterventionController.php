@@ -36,7 +36,7 @@ class InterventionController extends AbstractController
             $dataPaginate = $paginator->page_links();
             $template = 'backoffice/intervention/index_all.html.twig';
         } else {
-            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->orderBy('interventions.created_at DESC')->limit(9);
+            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->where('state != "COMPLETED"')->orderBy('interventions.created_at DESC')->limit(9);
             $template = 'backoffice/intervention/index.html.twig';
             $dataPaginate = '';
         }

@@ -89,10 +89,21 @@ class EquipmentUpdateController extends AbstractController
         $formBao = $this->createForm(EquipmentBaoFileType::class);
         $formBao->setAction($this->getUrlFor('equipment_update_specs_upload', ['id' => $equipment_id]));
         // .Upload BAO File
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
+        $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
+        $bds->addCrumb($e['type_name'], false);
+        $bds->addCrumb($e['name'], $this->getUrlFor('equipment_read', ['id' => $equipment_id]));
+        $bds->addCrumb('Configuration système', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/specificies.html.twig', [
             'form' => $form,
             'formBao' => $formBao,
             'e' => $e,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'equipment'
         ]);
     }

@@ -159,7 +159,7 @@
                 </div>
                 <div class="grid-2 mt-3">
                     {% for e in equipments %}
-                        <div class="col">
+                        <div class="col-6_sm-12">
                             <a href="{{ url_for('equipment_read', {id:e.id}) }}" title="Détails de l'équipement" class="card d-block color-inherit {% if e.is_outofservice == false %}all-border-pink{% endif %}">
                                 <div class="card-body p-4">
                                     <div class="flex align-items-center">
@@ -215,7 +215,7 @@
                 </div>
                 <div class="grid-2 mt-3">
                     {% for i in interventions %}
-                        <div class="col">
+                        <div class="col-6_sm-12">
                             <div class="card">
                                 <div class="card-body p-4">
                                     <a href="{{ url_for('intervention_read', {id:i.id}) }}" class="flex align-items-center color-inherit">

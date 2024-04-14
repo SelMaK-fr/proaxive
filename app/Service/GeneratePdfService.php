@@ -2,9 +2,8 @@
 declare(strict_types=1);
 namespace App\Service;
 
-use App\Interface\GeneratePdfInterface;
-use http\Env\Response;
 use Knp\Snappy\Pdf;
+use Selmak\Proaxive2\Interface\GeneratePdfInterface;
 use Slim\App;
 use Slim\Views\Twig;
 use Twig\Error\LoaderError;

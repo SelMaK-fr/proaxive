@@ -66,7 +66,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_model, '') }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_model, url_for('equipment_update', {'id' : e.id})) }}</span>
                                         <span class="text-muted">Modèle</span>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.type_name, '') }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.type_name, url_for('equipment_update', {'id' : e.id})) }}</span>
                                         <span class="text-muted">Type</span>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_serial, '')  }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_serial, url_for('equipment_update', {'id' : e.id}))  }}</span>
                                         <span class="text-muted">Numéro de série</span>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.brand_name, '') }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.brand_name, url_for('equipment_update', {'id' : e.id})) }}</span>
                                         <span class="text-muted">Marque</span>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.os_name, '') }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.os_name, url_for('equipment_update', {'id' : e.id})) }}</span>
                                         <span class="text-muted">Système d'exploitation</span>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                                         <div class="item--icon br-8 text-center"><i class="fs-18px ri-profile-line text-muted"></i></div>
                                     </div>
                                     <div>
-                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_licence, '') }}</span>
+                                        <span class="d-block fw-500">{{ getDataWithLink(e.e_licence, url_for('equipment_update', {'id' : e.id})) }}</span>
                                         <span class="text-muted">Licence OS</span>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="grid-2 mt-3">
                     {% for v in i %}
-                        <div class="col">
+                        <div class="col-6_sm-12">
                             <div class="card">
                                 <div class="card-body p-4">
                                     <a href="{{ url_for('intervention_read', {id:v.id}) }}" class="flex align-items-center color-inherit">
@@ -201,7 +201,7 @@
                 </div>
                 <div class="grid-2 mt-3">
                     {% for v in o %}
-                        <div class="col">
+                        <div class="col-6_sm-12">
                             <div class="card {% if v.is_outofservice == false %}all-border-pink{% endif %}">
                                 <div class="card-body p-4">
                                     <div class="flex align-items-center">

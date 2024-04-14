@@ -44,6 +44,11 @@ strong {
   font-weight: 600;
 }
 
+/* line 23, ../sass/base/_reset.scss */
+.swal2-html-container {
+  color: var(--text-muted) !important;
+}
+
 /**
 Fichier de couleurs Proaxive
 Créé le 16/08/2022 par @SelMaK
@@ -73,10 +78,11 @@ Other Dark Colors
   --sk-color-base-foreground-child: #f5f6fa;
   --sk-color-base-background: #f4f7f9;
   --sk-color-background-aside: #2A3650;
-  --sk-input-form-background: #ffffff;
+  --sk-input-form-background: #fbfbfb;
   --sk-input-form-border: #d5d5d5;
   --sk-color-base-frontground: #fbfbfb;
   --sk-color-base-border: rgba(109, 153, 197, 0.2);
+  --sk-color-four-border: #5c6687;
   --sk-color-base-text: #637381;
   --sk-color-base-h: #364a63;
   --sk-color-base-text-hover: #5375e4;
@@ -117,16 +123,17 @@ Other Dark Colors
   --shadow-color: rgba(175, 175, 175, 0.1);
 }
 
-/* line 75, ../sass/base/_root.scss */
+/* line 76, ../sass/base/_root.scss */
 [data-layout_mode=dark] {
   --sk-color-tree: #414b6e;
   --sk-color-base-foreground: #2a3650;
   --sk-color-base-foreground-child: #2f3852;
   --sk-color-base-background: #374462;
   --sk-input-form-background: #374462;
-  --sk-input-form-border: #3f4968;
+  --sk-input-form-border: #4b5678;
   --sk-color-base-frontground: #293145;
   --sk-color-base-border: rgba(109, 153, 197, 0.2);
+  --sk-color-four-border: #5c6687;
   --sk-color-base-text: #afb9cd;
   --sk-color-base-h: #ffffff;
   --sk-color-base-text-hover: #5375e4;
@@ -153,7 +160,7 @@ Other Dark Colors
   --sk-color-two: var(--blue-hard);
   --sk-color-link: #97A1B3;
   --sk-color-four: #ffffff;
-  --bg-four: rgba(81, 168, 217, 0.5);
+  --bg-four: rgba(68, 126, 159, 0.5);
 }
 
 /* line 1, ../sass/base/_var.scss */
@@ -853,6 +860,16 @@ body .layout-wrapper {
 
 @media (max-width: 872px) {
   /* line 14, ../sass/layout/_main.scss */
+  .content-with-aside .c__center {
+    margin-left: 0;
+  }
+
+  /* line 17, ../sass/layout/_main.scss */
+  .content-with-aside .c__aside {
+    display: none;
+  }
+
+  /* line 20, ../sass/layout/_main.scss */
   .page-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -860,12 +877,17 @@ body .layout-wrapper {
 }
 /** Small Aside **/
 @media (min-width: 873px) {
-  /* line 22, ../sass/layout/_main.scss */
+  /* line 27, ../sass/layout/_main.scss */
+  .content-with-aside .c__center {
+    margin-left: 100px;
+  }
+
+  /* line 31, ../sass/layout/_main.scss */
   [data-sidebar-width=sm] .main-content {
     margin-left: var(--aside-max-width);
   }
 }
-/* line 29, ../sass/layout/_main.scss */
+/* line 36, ../sass/layout/_main.scss */
 .content-with-aside .c__aside {
   width: 100px;
   position: fixed;
@@ -876,17 +898,12 @@ body .layout-wrapper {
   z-index: 1;
 }
 
-/* line 38, ../sass/layout/_main.scss */
-.content-with-aside .c__center {
-  margin-left: 100px;
-}
-
-/* line 41, ../sass/layout/_main.scss */
+/* line 45, ../sass/layout/_main.scss */
 .content-with-aside .c__aside .toolbar-tools {
   text-align: center;
 }
 
-/* line 44, ../sass/layout/_main.scss */
+/* line 48, ../sass/layout/_main.scss */
 .content-with-aside .c__aside .toolbar-tools .btn {
   width: 45px;
   height: 45px;
@@ -895,13 +912,13 @@ body .layout-wrapper {
   padding: 2px;
 }
 
-/* line 51, ../sass/layout/_main.scss */
+/* line 55, ../sass/layout/_main.scss */
 .content-with-aside .c__aside .toolbar-tools .btn i {
   font-size: 16px;
 }
 
 @media (max-width: 872px) {
-  /* line 55, ../sass/layout/_main.scss */
+  /* line 59, ../sass/layout/_main.scss */
   .page-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -909,7 +926,7 @@ body .layout-wrapper {
 }
 /** Small Aside **/
 @media (min-width: 873px) {
-  /* line 63, ../sass/layout/_main.scss */
+  /* line 67, ../sass/layout/_main.scss */
   [data-sidebar-width=sm] .content-with-aside .c__aside {
     left: var(--aside-max-width);
   }
@@ -2315,25 +2332,24 @@ body.portal-body .input-with-icon .form-group .input-group .input-group-case.cas
 body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .form-control {
   position: relative;
   border-radius: 50px;
-  border: 0;
   padding-left: 3rem;
   line-height: 3;
 }
 
 /** Select2 JS **/
-/* line 392, ../sass/components/_form.scss */
+/* line 391, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 396, ../sass/components/_form.scss */
+/* line 395, ../sass/components/_form.scss */
 #body-wrapper .select2-dropdown {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 400, ../sass/components/_form.scss */
+/* line 399, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: var(--bg-purple);
   color: var(--purple-light);
@@ -2356,11 +2372,6 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 10, ../sass/components/_card.scss */
-.card-header {
-  padding: 16px 24px;
-}
-
-/* line 13, ../sass/components/_card.scss */
 .card-header h2 {
   font-size: 20px;
   font-weight: 600;
@@ -2368,12 +2379,12 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 0;
 }
 
-/* line 19, ../sass/components/_card.scss */
+/* line 16, ../sass/components/_card.scss */
 .card .card-body {
   padding: 16px 24px;
 }
 
-/* line 22, ../sass/components/_card.scss */
+/* line 19, ../sass/components/_card.scss */
 .card .card-title {
   font-size: 1.15rem;
   font-weight: 500;
@@ -2381,13 +2392,13 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 0.5rem;
 }
 
-/* line 28, ../sass/components/_card.scss */
+/* line 25, ../sass/components/_card.scss */
 .card .card-footer {
   border-top: 1px solid var(--sk-color-base-border);
   padding: 1.25rem 1.875rem 1.25rem;
 }
 
-/* line 32, ../sass/components/_card.scss */
+/* line 29, ../sass/components/_card.scss */
 .card-footer-button .btn {
   border-top: 1px solid var(--sk-color-base-border);
   position: relative;
@@ -2399,95 +2410,95 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
   border-radius: 0 0 10px 10px;
 }
-/* line 42, ../sass/components/_card.scss */
+/* line 39, ../sass/components/_card.scss */
 .card-footer-button .btn:hover {
   background-color: var(--bg-four);
 }
 
-/* line 46, ../sass/components/_card.scss */
+/* line 43, ../sass/components/_card.scss */
 .card-footer-button .btn:last-child {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-/* line 50, ../sass/components/_card.scss */
+/* line 47, ../sass/components/_card.scss */
 .card-footer-button .btn:first-child {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-left: 0;
 }
 
-/* line 55, ../sass/components/_card.scss */
+/* line 52, ../sass/components/_card.scss */
 .card-tabs ul {
   margin: 0;
   padding: 0;
   display: block;
 }
 
-/* line 60, ../sass/components/_card.scss */
+/* line 57, ../sass/components/_card.scss */
 .card-tabs ul li {
   display: inline-block;
 }
 
-/* line 63, ../sass/components/_card.scss */
+/* line 60, ../sass/components/_card.scss */
 .card-tabs ul li a {
   display: block;
   padding: 1rem 2rem;
   font-weight: 500;
   color: var(--sk-color-base-text);
 }
-/* line 68, ../sass/components/_card.scss */
+/* line 65, ../sass/components/_card.scss */
 .card-tabs ul li a.selected {
   border-bottom: 2px solid var(--sk-color-one);
 }
 
-/* line 72, ../sass/components/_card.scss */
+/* line 69, ../sass/components/_card.scss */
 .card-inside {
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
 
-/* line 75, ../sass/components/_card.scss */
+/* line 72, ../sass/components/_card.scss */
 .card-inside-purple {
   background: rgba(115, 102, 255, 0.15);
   border-color: transparent;
   color: #9087e7;
 }
 
-/* line 80, ../sass/components/_card.scss */
+/* line 77, ../sass/components/_card.scss */
 .card-inside-default {
   background-color: var(--sk-color-base-background);
 }
 
-/* line 83, ../sass/components/_card.scss */
+/* line 80, ../sass/components/_card.scss */
 .card-inside-four {
   background-color: var(--bg-four);
   border-color: transparent;
   color: var(--sk-color-four);
 }
 
-/* line 88, ../sass/components/_card.scss */
+/* line 85, ../sass/components/_card.scss */
 .inside-danger-border {
   border: 1px dashed var(--pink);
 }
 
-/* line 91, ../sass/components/_card.scss */
+/* line 88, ../sass/components/_card.scss */
 .inside-four-border {
   border: 1px solid var(--sk-color-four);
 }
 
-/* line 94, ../sass/components/_card.scss */
+/* line 91, ../sass/components/_card.scss */
 .inside-four-border-dashed {
-  border: 1px dashed var(--sk-color-four);
+  border: 1px dashed var(--sk-color-four-border);
 }
 
-/* line 97, ../sass/components/_card.scss */
+/* line 94, ../sass/components/_card.scss */
 .inside-four-border-dashed-2px {
   border: 2px dashed var(--sk-color-four);
 }
 
-/* line 100, ../sass/components/_card.scss */
+/* line 97, ../sass/components/_card.scss */
 .inside-bg-purple {
   background-image: url(../../img/bg.jpg);
   color: white;
@@ -2495,31 +2506,31 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   background-repeat: no-repeat;
 }
 
-/* line 106, ../sass/components/_card.scss */
+/* line 103, ../sass/components/_card.scss */
 .inside-bg-light-four {
   background-color: var(--bg-four);
   color: white;
 }
 
-/* line 110, ../sass/components/_card.scss */
+/* line 107, ../sass/components/_card.scss */
 .inside-bg-tree {
   background-color: var(--sk-color-tree);
   color: white;
 }
 
-/* line 114, ../sass/components/_card.scss */
+/* line 111, ../sass/components/_card.scss */
 .bg-light-four {
   background-color: var(--bg-four-light);
   color: white;
 }
 
-/* line 118, ../sass/components/_card.scss */
+/* line 115, ../sass/components/_card.scss */
 .card-light-four {
   background-color: var(--bg-four);
   color: #918bd5;
 }
 
-/* line 122, ../sass/components/_card.scss */
+/* line 119, ../sass/components/_card.scss */
 .card-light-yellow {
   background-color: var(--yellow-light);
   color: var(--yellow);
@@ -2689,7 +2700,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   --sk-table-bg-type: #f4f7f9;
   --sk-table-color-state: initial;
   --sk-table-bg-state: initial;
-  --sk-table-color: #000;
+  --sk-table-color: initial;
   --sk-table-bg: #ffffff;
   --sk-table-border-color: #dee2e6;
   --sk-table-accent-bg: transparent;
@@ -2702,19 +2713,37 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 17, ../sass/components/_table.scss */
+[data-layout_mode=dark] .table {
+  --sk-table-color-type: initial;
+  --sk-table-bg-type: #35415c;
+  --sk-table-color-state: initial;
+  --sk-table-bg-state: initial;
+  --sk-table-color: initial;
+  --sk-table-bg: #2a3650;
+  --sk-table-border-color: #dee2e6;
+  --sk-table-accent-bg: transparent;
+  --sk-table-striped-color: #000;
+  --sk-table-striped-bg: rgba(0, 0, 0, 0.05);
+  --sk-table-active-color: #000;
+  --sk-table-active-bg: rgba(0, 0, 0, 0.1);
+  --sk-table-hover-color: #000;
+  --sk-table-hover-bg: rgba(0, 0, 0, 0.075);
+}
+
+/* line 33, ../sass/components/_table.scss */
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* line 21, ../sass/components/_table.scss */
+/* line 37, ../sass/components/_table.scss */
 .table-default, .table-radius {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 26, ../sass/components/_table.scss */
+/* line 42, ../sass/components/_table.scss */
 .table-default tr th {
   background-color: var(--sk-color-base-frontground);
   padding: 10px;
@@ -2722,133 +2751,133 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   font-weight: 500;
 }
 
-/* line 32, ../sass/components/_table.scss */
+/* line 48, ../sass/components/_table.scss */
 .table-default th, .table-radius th {
   text-transform: uppercase;
   font-size: 85%;
   text-align: left;
 }
 
-/* line 37, ../sass/components/_table.scss */
+/* line 53, ../sass/components/_table.scss */
 .table-default td, .table-radius td {
   padding: 10px;
 }
 
-/* line 40, ../sass/components/_table.scss */
+/* line 56, ../sass/components/_table.scss */
 .table-default td.link-icon a, .table-radius td.link-icon a {
   display: inline-block;
   margin-left: 8px;
   font-size: 20px;
 }
 
-/* line 45, ../sass/components/_table.scss */
+/* line 61, ../sass/components/_table.scss */
 .table-default td.link-icon a.link-default, .table-radius td.link-icon a.link-default {
   color: inherit;
 }
 
-/* line 48, ../sass/components/_table.scss */
+/* line 64, ../sass/components/_table.scss */
 .table-default td, .table-radius td, .table-radius th {
   border-bottom: 1px solid var(--sk-color-base-border);
 }
 
-/* line 51, ../sass/components/_table.scss */
+/* line 67, ../sass/components/_table.scss */
 .table-default tr.equals .form-group .form-input {
   border: 1px solid var(--pink);
 }
 
-/* line 55, ../sass/components/_table.scss */
+/* line 71, ../sass/components/_table.scss */
 .table-striped > tbody > tr:nth-of-type(even) > * {
   background-color: var(--sk-color-base-foreground-child);
 }
 
-/* line 59, ../sass/components/_table.scss */
+/* line 75, ../sass/components/_table.scss */
 .table-responsive .table-card {
   margin: 0.5em 0 !important;
 }
 
-/* line 62, ../sass/components/_table.scss */
+/* line 78, ../sass/components/_table.scss */
 .table-responsive .table-card tbody > tr > td:first-child,
 .table-responsive .table-card thead > tr > th:first-child {
   padding-left: 24px;
   padding-right: 0;
 }
 
-/* line 67, ../sass/components/_table.scss */
+/* line 83, ../sass/components/_table.scss */
 .table-responsive .table-card tbody > tr > td:last-child,
 .table-responsive .table-card thead > tr > th:last-child {
   padding-right: 24px;
   padding-left: 0;
 }
 
-/* line 72, ../sass/components/_table.scss */
+/* line 88, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card thead, .table-responsive .table-default.table-card thead tr th {
   background-color: var(--sk-table-bg-type);
   text-transform: capitalize;
   font-weight: 700;
   padding-top: 9px;
   font-size: 14px;
-  color: #3d434a;
+  color: var(--sk-table-color-type);
 }
 
-/* line 80, ../sass/components/_table.scss */
+/* line 96, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr:hover {
   background-color: var(--sk-table-bg-type);
 }
 
-/* line 83, ../sass/components/_table.scss */
+/* line 99, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr a {
   color: inherit;
 }
 
-/* line 86, ../sass/components/_table.scss */
+/* line 102, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr:hover a {
   color: var(--sk-color-one);
 }
 
-/* line 89, ../sass/components/_table.scss */
+/* line 105, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr td {
   border-bottom: 0;
 }
 
-/* line 92, ../sass/components/_table.scss */
+/* line 108, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr {
   background-color: var(--sk-table-bg);
   border-bottom: 1px dashed var(--sk-color-base-border);
 }
-/* line 95, ../sass/components/_table.scss */
+/* line 111, ../sass/components/_table.scss */
 .table-responsive .table-default.table-card tbody tr:last-child {
   border-bottom: 0;
 }
 
-/* line 99, ../sass/components/_table.scss */
+/* line 115, ../sass/components/_table.scss */
 .table-responsive .table-default tr td {
   font-family: Outfit,sans-serif;
   font-weight: 500;
   border-bottom: none;
-  color: #3d434a;
+  color: var(--sk-table-color);
 }
 
 /* Table Div */
-/* line 107, ../sass/components/_table.scss */
+/* line 123, ../sass/components/_table.scss */
 .table .form-group, .table-form .form-group {
   margin-bottom: 0;
 }
 
-/* line 110, ../sass/components/_table.scss */
+/* line 126, ../sass/components/_table.scss */
 .table-radius {
   -moz-border-radius: 0.5rem;
   -webkit-border-radius: 0.5rem;
   border-radius: 0.5rem;
 }
 
-/* line 113, ../sass/components/_table.scss */
+/* line 129, ../sass/components/_table.scss */
 .table-radius tr th {
   background-color: var(--sk-color-base-background);
   padding: 0.82rem 2rem;
   border-top: 0;
 }
 
-/* line 118, ../sass/components/_table.scss */
+/* line 134, ../sass/components/_table.scss */
 .table-submenu {
   display: none;
   min-width: 50px;
@@ -2860,7 +2889,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   z-index: 99;
 }
 
-/* line 128, ../sass/components/_table.scss */
+/* line 144, ../sass/components/_table.scss */
 .table-submenu button {
   display: block;
   background: transparent;
@@ -2870,32 +2899,32 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   text-align: left;
 }
 
-/* line 136, ../sass/components/_table.scss */
+/* line 152, ../sass/components/_table.scss */
 .table-submenu.open {
   display: flex;
   align-items: center;
 }
 
 /* Table Div */
-/* line 141, ../sass/components/_table.scss */
+/* line 157, ../sass/components/_table.scss */
 .table div {
   box-sizing: border-box;
 }
 
-/* line 144, ../sass/components/_table.scss */
+/* line 160, ../sass/components/_table.scss */
 .table .flex-grow-root {
   flex-basis: 400px !important;
   display: block !important;
 }
 
-/* line 148, ../sass/components/_table.scss */
+/* line 164, ../sass/components/_table.scss */
 .table .th {
   font-weight: 700;
   padding: 0.75rem 1em !important;
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 153, ../sass/components/_table.scss */
+/* line 169, ../sass/components/_table.scss */
 .table .tr {
   background-color: var(--sk-color-base-foreground);
   width: 100%;
@@ -2912,17 +2941,17 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   -webkit-border-radius: 6px;
   border-radius: 6px;
 }
-/* line 168, ../sass/components/_table.scss */
+/* line 184, ../sass/components/_table.scss */
 .table .tr:nth-of-type(even) {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 172, ../sass/components/_table.scss */
+/* line 188, ../sass/components/_table.scss */
 .table .th > .td {
   white-space: normal;
 }
 
-/* line 175, ../sass/components/_table.scss */
+/* line 191, ../sass/components/_table.scss */
 .table .td {
   background-color: var(--sk-color-base-foreground);
   flex-flow: row nowrap;
@@ -2934,7 +2963,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   min-width: 0px;
   margin-right: 0.7rem;
 }
-/* line 185, ../sass/components/_table.scss */
+/* line 201, ../sass/components/_table.scss */
 .table .td:last-child {
   margin-right: 0;
 }

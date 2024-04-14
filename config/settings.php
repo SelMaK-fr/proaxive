@@ -62,11 +62,11 @@ $settings = [
         'dsn' => env('MAIL_DSN', 'smtp://127.0.0.1:1025'),
         'debug' => false,
         'host' => env('MAIL_HOST', 'localhost'),
-        'SMTPAuth' => false,
+        'SMTPAuth' => false, // false if local server
         'from' => env('MAIL_FROM', 'admin@proaxive.in'),
         'username' => env('MAIL_USERNAME', 'user'),
         'password' => env('MAIL_PASSWORD', 'password'),
-        'SMTPSecure' => false, // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS
+        'SMTPSecure' => false, // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS // false if local server
         'port' => env('MAIL_PORT', 1025)
     ],
     'logger' => [

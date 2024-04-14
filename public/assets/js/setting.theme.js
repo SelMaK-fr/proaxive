@@ -19,8 +19,8 @@ function toggleSidebarStatus() {
 }
 // Immediately invoked function to set the theme on initial load
 (function () {
-    if (localStorage.getItem('data-sidebar-width') === 'lg') {
-        setSidebar('lg');
+    if (localStorage.getItem('data-sidebar-width') === 'sm') {
+        setSidebar('sm');
     }
 })();
 // Aside Mobile Device

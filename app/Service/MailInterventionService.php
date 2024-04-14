@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Service;
 
-use App\Factory\MailerFactory;
+use Selmak\Proaxive2\Factory\MailerFactory;
 
 class MailInterventionService
 {

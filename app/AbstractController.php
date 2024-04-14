@@ -19,7 +19,7 @@ abstract class AbstractController
 {
 
     public function __construct(
-        protected readonly App $app,
+        protected readonly App $app
         //protected readonly StatefulValidator $validator
     ){
     }
@@ -197,9 +197,9 @@ abstract class AbstractController
         return $this->app->getContainer()->get(SessionInterface::class)->get($key);
     }
 
-    protected function setSession(string $key, array $data)
+    protected function setSession(string $key, mixed $value)
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->add($key, $data);
+        return $this->app->getContainer()->get(SessionInterface::class)->set($key, $value);
     }
 
     protected function deleteSession(string $key)

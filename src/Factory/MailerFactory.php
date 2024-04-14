@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace App\Factory;
+namespace Selmak\Proaxive2\Factory;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
