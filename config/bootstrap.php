@@ -16,6 +16,7 @@ try {
 }
 $app = $container->get(App::class);
 (require dirname(__DIR__) . '/config/web.php')($app);
+(require dirname(__DIR__) . '/config/api.php')($app);
 
 (require dirname(__DIR__) . '/config/middleware.php')($app);
 // Create App instance

@@ -8,8 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Selmak\\Proaxive2\\": "src/",
-            "App\\": "app/"
+            "Selmak\\Proaxive2\\": "src/"
         }
     },
     "authors": [
@@ -50,6 +49,8 @@
         "intervention/image": "^3.2",
         "dompdf/dompdf": "^2.0",
         "endroid/qr-code": "^5.0",
-        "symfony/mailer": "^7.0"
+        "symfony/mailer": "^7.0",
+        "firebase/php-jwt": "^6.10",
+        "ext-http": "*"
     }
 }

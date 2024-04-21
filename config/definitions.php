@@ -12,18 +12,22 @@ use Odan\Session\SessionManagerInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Selmak\Proaxive2\Http\API\Service\ApiTokenInterface;
+use Selmak\Proaxive2\Http\API\Service\ApiTokenService;
+use Selmak\Proaxive2\Http\Twig\AppExtension;
+use Selmak\Proaxive2\Http\Twig\BasePathExtension;
+use Selmak\Proaxive2\Http\Twig\FrontFunctionTwig;
+use Selmak\Proaxive2\Http\Twig\TwigCsrfExtension;
+use Selmak\Proaxive2\Http\Twig\TwigMessageExtension;
+use Selmak\Proaxive2\Infrastructure\Statistics\Interface\StatisticsInterface;
+use Selmak\Proaxive2\Infrastructure\Statistics\StatisticsService;
+use Selmak\Proaxive2\Settings\Settings;
 use Selmak\Proaxive2\Settings\SettingsInterface;
-use Selmak\Proaxive2\TwigExtension\AppExtension;
-use Selmak\Proaxive2\TwigExtension\BasePathExtension;
-use Selmak\Proaxive2\TwigExtension\FrontFunctionTwig;
-use Selmak\Proaxive2\TwigExtension\TwigCsrfExtension;
-use Selmak\Proaxive2\TwigExtension\TwigMessageExtension;
 use Slim\App;
 use Slim\Csrf\Guard;
 use Slim\Factory\AppFactory;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Views\Twig;
-use Selmak\Proaxive2\Settings\Settings;
 use Symfony\Component\Mailer\MailerInterface;
 use Twig\Extension\DebugExtension;
 use Twig\Extra\Intl\IntlExtension;
@@ -58,6 +62,10 @@ return [
 
     'mailer' => function (ContainerInterface $container) {
         return $container->get(MailerInterface::class);
+    },
+
+    StatisticsInterface::class => function (ContainerInterface $container) {
+        return $container->get(StatisticsService::class);
     },
 
     // Config Database (do not edited here, view /config/settings.php for configuration
@@ -147,6 +155,11 @@ return [
 
     Guard::class => function(ContainerInterface $container) {
         return $container->get('csrf');
+    },
+
+    ApiTokenInterface::class => function (ContainerInterface $container) {
+        return new ApiTokenService();
     }
+
 
 ];

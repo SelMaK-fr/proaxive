@@ -6,6 +6,7 @@ function dashHomeStatIntervention() {
     xmlhttp.onreadystatechange = function(){
         if (this.readyState === 4 && this.status === 200) {
             data = JSON.parse(this.response);
+            console.log(data);
             // Value for span HTML
             let countNotStart = document.getElementById('count_not_start');
             countNotStart.innerHTML = data[0]['count'];

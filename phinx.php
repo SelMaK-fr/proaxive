@@ -3,8 +3,8 @@ Dotenv\Dotenv::createImmutable(__DIR__)->load();
 return
 [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/database/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/src/Infrastructure/Migrations',
+        'seeds' => '%%PHINX_CONFIG_DIR%%/src/Infrastructure/Seeder'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

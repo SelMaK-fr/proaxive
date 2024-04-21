@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use App\Middleware\Auth\RedirectIfNotAuthMiddleware;
-use App\Middleware\Auth\RegenSessionIfCookieExistMiddleware;
 use DI\NotFoundException;
 use Odan\Session\Middleware\SessionStartMiddleware;
-use Selmak\Proaxive2\Middleware\RespectValidationMiddleware;
-use Selmak\Proaxive2\Middleware\SessionMiddleware;
-use Selmak\Proaxive2\Middleware\TwigFlashMiddleware;
+use Selmak\Proaxive2\Domain\Application\Middleware\RespectValidationMiddleware;
+use Selmak\Proaxive2\Domain\Application\Middleware\TwigFlashMiddleware;
+use Selmak\Proaxive2\Domain\Auth\Middleware\RedirectIfNotAuthMiddleware;
+use Selmak\Proaxive2\Domain\Auth\Middleware\RegenSessionIfCookieExistMiddleware;
 use Slim\App;
 use Slim\Middleware\MethodOverrideMiddleware;
 use Slim\Views\TwigMiddleware;
