@@ -1,6 +1,6 @@
 function dashHomeStatIntervention() {
     let xmlhttp = new XMLHttpRequest();
-    let url = "/api/intervention/status";
+    let url = "/api/v1/stats/interventions";
     xmlhttp.open("GET",url,true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function(){
@@ -9,19 +9,19 @@ function dashHomeStatIntervention() {
             console.log(data);
             // Value for span HTML
             let countNotStart = document.getElementById('count_not_start');
-            countNotStart.innerHTML = data[0]['count'];
+            countNotStart.innerHTML = data['not_started'];
             let countWork = document.getElementById('count_work');
-            countWork.innerHTML = data[1]['count'];
+            countWork.innerHTML = data['in_workshop'];
             let countFinal = document.getElementById('count_final');
-            countFinal.innerHTML = data[2]['count'];
+            countFinal.innerHTML = data['final_test'];
             let countExit = document.getElementById('count_exit');
-            countExit.innerHTML = data[3]['count'];
+            countExit.innerHTML = data['exit_waiting'];
             let countTotal = document.getElementById('count_total');
             countTotal.innerHTML =
-                data[0]['count'] +
-                data[1]['count'] +
-                data[2]['count'] +
-                data[3]['count']
+                data['not_started'] +
+                data['in_workshop'] +
+                data['final_test'] +
+                data['exit_waiting']
             ;
             //
             const ctx = document.getElementById('myChart').getContext('2d');
@@ -35,7 +35,7 @@ function dashHomeStatIntervention() {
                     labels: [],
                     datasets: [{
                         label: 'Qty',
-                        data: [data[0]['count'], data[1]['count'], data[2]['count'], data[3]['count']],
+                        data: [data['not_started'], data['in_workshop'], data['final_test'], data['exit_waiting']],
                         backgroundColor: [
                             '#f73164',
                             '#48A3D7',

@@ -26,6 +26,11 @@ class PeripheralType extends Type
                 'label' => 'Marques',
                 'choices' => $this->getBrand()
             ])
+            ->add('localization_site', 'text', [
+                'placeholder' => 'Annexe de nantes dans le bureau de pascal',
+                'label' => 'Localisation/site',
+                'required' => false
+            ])
             ->add('name', 'text', [
                 'required' => true,
                 'label' => 'Dénomination',

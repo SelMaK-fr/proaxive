@@ -3,12 +3,12 @@
 {% block title %}Nouvelle intervention{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a href="#" class="selected">Informations générales</a></li>
+        <li><a href="#">Détails de l'intervention</a></li>
+    </ul>
     <div class="card">
         <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a href="#" class="selected"><i class="ri-computer-line"></i> Informations générales</a></li>
-                <li><a href="#">Détails de l'intervention</a></li>
-            </ul>
             <div class="p-4">
                 {{ form.renderStart | raw }}
                     <div class="grid-12">

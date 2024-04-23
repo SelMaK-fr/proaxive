@@ -58,7 +58,8 @@ class InterventionArchiveController extends AbstractController
 
         return $this->render($response, 'backoffice/intervention/read_archive.html.twig', [
             'i' => $i,
-            'currentMenu' => 'intervention'
+            'currentMenu' => 'intervention',
+            'intervention_id' => $intervention_id
         ]);
     }
 

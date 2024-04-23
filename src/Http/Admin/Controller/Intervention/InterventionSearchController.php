@@ -10,7 +10,6 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 class InterventionSearchController extends AbstractController
 {
 
-
     public function searchByFields(Request $request, Response $response, array $args): Response
     {
         if($request->getMethod() === 'GET') {

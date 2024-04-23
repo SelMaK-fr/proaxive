@@ -3,13 +3,13 @@
 {% block title %}{{ e.name }} de {{ e.customer_name }}{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a href="{{ url_for('equipment_read', {'id' : e.id}) }}"><i class="ri-computer-line"></i> Vue générale</a></li>
+        <li><a href="{{ url_for('equipment_update', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+        <li><a class="selected" href="{{ url_for('equipment_update_specs', {'id' : e.id}) }}"><i class="ri-cpu-line"></i> Configuration système</a></li>
+    </ul>
     <div class="card">
         <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a href="{{ url_for('equipment_read', {'id' : e.id}) }}"><i class="ri-computer-line"></i> Vue générale</a></li>
-                <li><a href="{{ url_for('equipment_update', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-                <li><a class="selected" href="{{ url_for('equipment_update_specs', {'id' : e.id}) }}"><i class="ri-cpu-line"></i> Configuration système</a></li>
-            </ul>
             <div class="p-4">
                 <div class="grid-12">
                     <div class="col-8_sm-12">
@@ -35,7 +35,7 @@
                                     {{ form.renderField('c_memory') | raw }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-light-purple">Enregistrer</button>
+                            <button type="submit" class="btn btn-light-four">Enregistrer</button>
                             {{ form.renderEnd(false) | raw }}
                     </div>
                     <div class="col-4_sm-12">
@@ -48,7 +48,7 @@
                                         Ce rapport contient la configuration matérielle de l'ordinateur que Proaxive récupère automatiquement.
                                     </p>
                                     {{ formBao.renderField('file') | raw }}
-                                    <button type="submit" class="btn btn-light-purple">Importer les données</button>
+                                    <button type="submit" class="btn btn-light-four">Importer les données</button>
                                 </div>
                             </div>
                         {{ formBao.renderEnd() | raw }}

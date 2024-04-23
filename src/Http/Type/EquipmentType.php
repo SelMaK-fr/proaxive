@@ -23,7 +23,7 @@ final class EquipmentType extends Type
                 'placeholder' => 'Sélectionnez un client',
                 'label' => 'Clients',
                 'choices' => $this->getCustomer(),
-                'required' => false
+                'required' => true
             ])
             ->add('types_equipments_id', 'choice', [
                 'placeholder' => 'Sélectionnez un type',
@@ -34,6 +34,11 @@ final class EquipmentType extends Type
                 'placeholder' => 'Sélectionnez une marque',
                 'label' => 'Marques',
                 'choices' => $this->getBrand()
+            ])
+            ->add('localization_site', 'text', [
+                'placeholder' => 'Annexe de nantes dans le bureau de pascal',
+                'label' => 'Localisation/site',
+                'required' => false
             ])
             ->add('name', 'text', [
                 'required' => true,
@@ -115,6 +120,10 @@ final class EquipmentType extends Type
                 'required' => false,
                 'label' => "Clé wifi",
                 'placeholder' => "Clé de connexion Wifi"
+            ])
+            ->add('is_outofservice', 'checkbox', [
+                'required' => false,
+                'label' => 'Hors-Service ?'
             ])
             ;
 

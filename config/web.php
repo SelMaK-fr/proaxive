@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Selmak\Proaxive2\Domain\Application\Middleware\CheckDateCodeInitMiddleware;
 use Selmak\Proaxive2\Domain\Company\Middleware\IfUpdateSocietyMiddleware;
+use Selmak\Proaxive2\Domain\Customer\Middleware\RedirectIfNotAuthMiddleware;
 use Selmak\Proaxive2\Domain\Equipment\Middleware\IfUpdatePeripheralMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDarftMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
@@ -55,6 +56,7 @@ use Selmak\Proaxive2\Http\Controller\IndexController;
 use Selmak\Proaxive2\Http\Controller\Intervention\InterventionReadController as FrontInterventionRead;
 use Selmak\Proaxive2\Http\Controller\Intervention\InterventionSearchController as FrontInterventionSearch;
 use Selmak\Proaxive2\Http\Controller\Portal\LoginController;
+use Selmak\Proaxive2\Http\Controller\Portal\LogoutController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalInterventionController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalParameterController;
@@ -211,5 +213,6 @@ return function (App $app) {
         $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
         $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
         $group->any('/parameters/security', [])->setName('portal_parameters_security');
-    });
+    })->add(RedirectIfNotAuthMiddleware::class);
+    $app->get('/wxy/customers/logout', LogoutController::class)->setName('portal_logout');
 };

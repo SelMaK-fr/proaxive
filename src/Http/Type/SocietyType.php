@@ -27,6 +27,15 @@ class SocietyType extends Type
                     new Length(['min' => 3])
                 ]
             ])
+            ->add('contact_fullname', 'text', [
+                'required' => false,
+                'error_message' => 'Please enter valid fullname',
+                'placeholder' => 'Votre interlocuteur principal',
+                'label' => "Contact principal",
+                'constraints' => [
+                    new Length(['min' => 3])
+                ]
+            ])
             ->add('type_status', 'choice', [
                 'placeholder' => 'Selectionnez un status',
                 'label' => 'Status',

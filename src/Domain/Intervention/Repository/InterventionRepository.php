@@ -94,7 +94,7 @@ class InterventionRepository extends BaseRepository
     public function allWithUser()
     {
         return $this->makeQueryDefault()
-            ->select('interventions.id i_id, u.fullname u_fullname')
+            ->select('interventions.id id, u.fullname u_fullname')
             ->leftJoin('users as u ON u.id = interventions.users_id')
             ;
     }

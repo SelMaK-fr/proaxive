@@ -8,4 +8,5 @@ class CompanyRespository extends BaseRepository
 {
 
     protected string $model = 'company';
+
 }

@@ -63,12 +63,12 @@ class FrontFunctionTwig extends AbstractExtension
                     }
                 }
                 if($v){
-                    $html = '<span class="d-block">'.$title.' <'.$tag.'>'.implode(' - ', $v).'</'.$tag.'></span>';
+                    $html = '<div><span class="fw-600 d-inline-block mr-1">'.$title.' :</span> <'.$tag.'>'.implode(' - ', $v).'</'.$tag.'></div>';
                 } else {
                     $html = '';
                 }
             } elseif(is_string($data)) {
-                $html = '<span class="d-block">'.$title.' <'.$tag.'>'.$data.'</'.$tag.'></span>';
+                $html = '<div><span class="fw-600 d-inline-block mr-1">'.$title.' :</span><'.$tag.'>'.$data.'</'.$tag.'></div>';
             } else {
                 $html = 'Data error';
             }

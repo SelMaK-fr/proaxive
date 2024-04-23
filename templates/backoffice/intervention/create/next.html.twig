@@ -3,12 +3,12 @@
 {% block title %}Nouvelle intervention{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a href="#">Informations générales</a></li>
+        <li><a href="#" class="selected">Détails de l'intervention</a></li>
+    </ul>
     <div class="card">
         <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a href="#"><i class="ri-computer-line"></i> Informations générales</a></li>
-                <li><a href="#" class="selected">Détails de l'intervention</a></li>
-            </ul>
             <div class="p-4">
                 {{ form.renderStart | raw }}
                     <div class="grid-12">
@@ -18,7 +18,7 @@
                                 <p class="m-0">Veuillez remplir les champs ci-dessous.</p>
                             </div>
                             {% if config.price_time != 0 %}
-                                <div class="card-inside inside-danger-border mb-4">
+                                <div class="card-inside inside-danger-border mb-4 bg-input">
                                     <div class="card-body p-3">
                                         <div class="grid-12 -noGutter">
                                             <div class="col-6_sm-12">
@@ -42,20 +42,39 @@
                                             </div>
                                             <div class="col-6_sm-12">
                                                 <div class="form-group ml-4">
-                                                    <label class="form-label" for="login_id">Temps consacré</label>
-                                                    <div>
-                                                        <label>
-                                                            <input type="radio" name="form_intervention_2time[total_time]" value="1" checked>
-                                                            1 Heure
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="form_intervention_2time[total_time]" value="2">
-                                                            2 Heures
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="form_intervention_2time[total_time]" value="3">
-                                                            3 Heures
-                                                        </label>
+                                                    <span class="d-block fw-600">Temps consacré</span>
+                                                    <em>Pensez à bien renseigner votre tarif horaire dans les paramètres.</em>
+                                                    <div class="mt-3">
+                                                        <div class="flex justify-content-space-between">
+                                                            <div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="1" checked>
+                                                                    <label for="">1 Heure</label>
+                                                                </div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="2" >
+                                                                    <label for="">2 Heures</label>
+                                                                </div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="3" >
+                                                                    <label for="">3 Heures</label>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="4" checked>
+                                                                    <label for="">4 Heure</label>
+                                                                </div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="5" >
+                                                                    <label for="">5 Heures</label>
+                                                                </div>
+                                                                <div class="form-group mb-3 form-check">
+                                                                    <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="0" >
+                                                                    <label for="">Désactiver</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

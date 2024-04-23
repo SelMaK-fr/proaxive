@@ -4,6 +4,7 @@ namespace Selmak\Proaxive2\Http\Type;
 
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\CollectionType;
 use Palmtree\Form\Type\TextType;
 
 class EquipmentUpdateType extends Type
@@ -16,7 +17,9 @@ class EquipmentUpdateType extends Type
             'method'          => 'POST',
             'html_validation' => false,
         ], $data))
-            ->add('equipment_specs', TextType::class, [])
+            ->add('equipment', CollectionType::class, [
+                'entry_type' => EquipmentType::class
+            ])
             ;
         return $builder->getForm();
     }

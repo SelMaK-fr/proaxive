@@ -159,8 +159,9 @@ Other Dark Colors
   --sk-color-one: var(--pink2);
   --sk-color-two: var(--blue-hard);
   --sk-color-link: #97A1B3;
-  --sk-color-four: #ffffff;
-  --bg-four: rgba(68, 126, 159, 0.5);
+  --sk-color-four: #48A3D7;
+  --bg-four: #48a3d733;
+  --sk-color-border-four: rgba(72, 163, 215, 0.3);
 }
 
 /* line 1, ../sass/base/_var.scss */
@@ -184,7 +185,6 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   font-family: var(--font-body-sans-serif);
-  font-weight: 400;
   font-size: 14px;
   padding: 0;
   margin: 0;
@@ -193,12 +193,12 @@ body {
   background-color: var(--sk-color-base-background);
 }
 
-/* line 17, ../sass/layout/_body.scss */
+/* line 16, ../sass/layout/_body.scss */
 body .layout-wrapper {
   min-height: 100vh;
 }
 
-/* line 20, ../sass/layout/_body.scss */
+/* line 19, ../sass/layout/_body.scss */
 .preloader {
   position: fixed;
   top: 0;
@@ -210,7 +210,7 @@ body .layout-wrapper {
   z-index: 9999;
 }
 
-/* line 30, ../sass/layout/_body.scss */
+/* line 29, ../sass/layout/_body.scss */
 .preloader .title--preloader {
   text-align: center;
   display: block;
@@ -219,13 +219,13 @@ body .layout-wrapper {
   font-size: 1.2em;
 }
 
-/* line 37, ../sass/layout/_body.scss */
+/* line 36, ../sass/layout/_body.scss */
 .preloader .title--preloader strong {
   color: white;
 }
 
 /** Loader **/
-/* line 41, ../sass/layout/_body.scss */
+/* line 40, ../sass/layout/_body.scss */
 .loader {
   width: 70px;
   height: 70px;
@@ -234,7 +234,7 @@ body .layout-wrapper {
   animation: rotate 1s linear infinite;
 }
 
-/* line 48, ../sass/layout/_body.scss */
+/* line 47, ../sass/layout/_body.scss */
 .loader::before, .loader::after {
   content: "";
   box-sizing: border-box;
@@ -245,7 +245,7 @@ body .layout-wrapper {
   animation: prixClipFix 2s linear infinite;
 }
 
-/* line 57, ../sass/layout/_body.scss */
+/* line 56, ../sass/layout/_body.scss */
 .loader::after {
   inset: 8px;
   transform: rotate3d(90, 90, 0, 180deg);
@@ -1046,14 +1046,15 @@ ul.right-navbar li.dropdown ul.dropdown-submenu li a.logout i {
 body.portal-body {
   background-color: var(--sk-color-base-foreground);
   height: 100vh;
+  font-size: 15px;
 }
 
-/* line 5, ../sass/layout/_portal.scss */
+/* line 6, ../sass/layout/_portal.scss */
 body.portal-body .login-container {
   width: 450px;
 }
 
-/* line 8, ../sass/layout/_portal.scss */
+/* line 9, ../sass/layout/_portal.scss */
 body.portal-body .customer-login {
   width: 550px;
   margin: 0 auto;
@@ -1061,43 +1062,231 @@ body.portal-body .customer-login {
   top: 40px;
 }
 
+/** Topbar **/
+/* line 16, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper {
+  border-bottom: 1px solid var(--sk-color-base-border);
+  position: relative;
+  background-color: var(--sk-color-base-foreground);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* line 25, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper .portal-topbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+}
+
+/* line 31, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper .portal-topbar-content .topbar__title {
+  display: flex;
+  align-items: center;
+}
+
+/* line 35, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper .portal-topbar-content .topbar__title a {
+  color: var(--sk-color-base-h);
+}
+
 @media only screen and (max-width: 587px) {
-  /* line 15, ../sass/layout/_portal.scss */
+  /* line 40, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content,
+  .portal-topbar-wrapper .portal-topbar-content {
+    display: block;
+  }
+
+  /* line 44, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content {
+    padding: 0;
+    position: relative;
+  }
+
+  /* line 48, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content .topbar__title {
+    background-color: var(--sk-color-two);
+    color: white;
+    padding: 10px;
+  }
+
+  /* line 53, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content .topbar__title a {
+    color: white;
+  }
+
+  /* line 56, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content ul.pm-navigation {
+    padding: 10px;
+  }
+
+  /* line 59, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content ul.pm-navigation li {
+    margin-left: 0;
+  }
+
+  /* line 62, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper .portal-topbar-content .user-btn-mobile button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+  }
+
+  /* line 68, ../sass/layout/_portal.scss */
+  .portal-topbar-wrapper.aside-deployed .portal-topbar-content .user-btn-mobile button {
+    color: var(--sk-color-two);
+  }
+}
+/* line 72, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper .portal-topbar-content button {
+  border: 0;
+  background-color: transparent;
+  color: var(--sk-color-two);
+  position: relative;
+  z-index: 10;
+}
+
+/* line 79, ../sass/layout/_portal.scss */
+.portal-topbar-wrapper .portal-topbar-content button i {
+  font-size: 26px;
+}
+
+/** Aside Tools User */
+/* line 83, ../sass/layout/_portal.scss */
+.aside-tools-user {
+  display: block;
+  width: 250px;
+  top: 0;
+  position: fixed;
+  background: white;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  transition: transform .4s ease-in-out;
+}
+
+/* line 94, ../sass/layout/_portal.scss */
+.aside-tools-user {
+  transform: translateX(100%);
+}
+
+/* line 97, ../sass/layout/_portal.scss */
+.aside-tools-user.deployed {
+  transform: translateX(0);
+}
+
+/* line 100, ../sass/layout/_portal.scss */
+.aside-header-tools-user {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--sk-color-base-background);
+}
+
+/* line 105, ../sass/layout/_portal.scss */
+.aside-header-tools-user .close-toolbar {
+  background-color: var(--sk-color-one);
+  color: white;
+  border: 0;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* line 113, ../sass/layout/_portal.scss */
+.aside-header-tools-user .atu__userId {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+/* line 118, ../sass/layout/_portal.scss */
+.aside-nav-tools-user {
+  margin-top: 20px;
+}
+
+/* line 121, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li {
+  border-bottom: 1px solid var(--sk-color-base-border);
+}
+
+/* line 124, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li a.nav-tools-user-link {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+/* line 129, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li a.nav-tools-user-link .nav-tools-user-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: var(--sk-color-two);
+  border-radius: 50px;
+  color: white;
+}
+
+/* line 139, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li a.nav-tools-user-link .nav-tools-user-title {
+  display: block;
+  margin-left: 10px;
+  color: var(--sk-color-base-text);
+}
+
+/* line 144, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li a.nav-tools-user-link.user-link-logout .nav-tools-user-icon {
+  background-color: var(--sk-color-one);
+}
+
+/* line 147, ../sass/layout/_portal.scss */
+.aside-nav-tools-user li a.nav-tools-user-link.user-link-logout .nav-tools-user-title {
+  color: var(--sk-color-one);
+}
+
+@media only screen and (max-width: 587px) {
+  /* line 151, ../sass/layout/_portal.scss */
   body.portal-body .customer-login {
     width: 100%;
     padding: 0 20px;
     top: 20px;
   }
 
-  /* line 20, ../sass/layout/_portal.scss */
+  /* line 156, ../sass/layout/_portal.scss */
   body.portal-body .login-container {
     width: 100%;
     margin: 0 20px;
   }
 }
-/* line 25, ../sass/layout/_portal.scss */
+/* line 161, ../sass/layout/_portal.scss */
 body.portal-body h1.title-login {
   font-size: 28px;
   font-weight: 600;
   margin: 0;
 }
 
-/* line 30, ../sass/layout/_portal.scss */
+/* line 166, ../sass/layout/_portal.scss */
 .portal-container {
   width: 1400px;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 15px;
 }
-@media (max-width: 680px) {
-  /* line 30, ../sass/layout/_portal.scss */
-  .portal-container {
+
+@media all and (max-width: 578px) {
+  /* line 173, ../sass/layout/_portal.scss */
+  .portal-body .container-fluid, .portal-container {
     width: 100%;
     max-width: 100%;
+    padding: 0 15px;
   }
 }
-
-/* line 41, ../sass/layout/_portal.scss */
+/* line 179, ../sass/layout/_portal.scss */
 .portal-tools {
   background-color: var(--sk-color-background-aside);
   display: block;
@@ -1109,18 +1298,30 @@ body.portal-body h1.title-login {
   width: 80px;
 }
 
-/* line 51, ../sass/layout/_portal.scss */
+@media all and (max-width: 578px) {
+  /* line 190, ../sass/layout/_portal.scss */
+  .portal-tools {
+    transform: translateY(-100%);
+  }
+}
+/* line 194, ../sass/layout/_portal.scss */
 .portal-main {
   margin-left: 80px;
 }
 
-/* line 54, ../sass/layout/_portal.scss */
+@media all and (max-width: 578px) {
+  /* line 198, ../sass/layout/_portal.scss */
+  .portal-main {
+    margin-left: 0;
+  }
+}
+/* line 202, ../sass/layout/_portal.scss */
 .portal-main .pm-navigation li {
   display: inline-block;
   margin-left: 1rem;
 }
 
-/* line 58, ../sass/layout/_portal.scss */
+/* line 206, ../sass/layout/_portal.scss */
 .portal-main .pm-navigation li a {
   display: block;
   margin-right: .5rem;
@@ -1128,25 +1329,25 @@ body.portal-body h1.title-login {
   font-weight: 500;
 }
 
-/* line 64, ../sass/layout/_portal.scss */
+/* line 212, ../sass/layout/_portal.scss */
 .portal-tools .pt-app-brand img {
   max-height: 38px;
 }
 
-/* line 67, ../sass/layout/_portal.scss */
+/* line 215, ../sass/layout/_portal.scss */
 .portal-tools .pt-app-brand .link-logo {
   position: relative;
   padding: 1rem 1.3rem 2rem;
   display: inline-block;
 }
 
-/* line 72, ../sass/layout/_portal.scss */
+/* line 220, ../sass/layout/_portal.scss */
 .portal-main .card .card-icon {
   border-radius: 50px;
   height: 72px;
 }
 
-/* line 76, ../sass/layout/_portal.scss */
+/* line 224, ../sass/layout/_portal.scss */
 .portal-tools .pt-app-elements .pt-tools-menu li.pt-menu-item a {
   color: white;
   padding: 0.75rem 0.5rem;
@@ -1162,21 +1363,21 @@ body.portal-body h1.title-login {
   line-height: 1.25rem;
 }
 
-/* line 90, ../sass/layout/_portal.scss */
+/* line 238, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group {
   position: relative;
   display: table;
   border-collapse: separate;
 }
 
-/* line 95, ../sass/layout/_portal.scss */
+/* line 243, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group .input-group-case.case-prefix {
   border-radius: .25rem 0 0 .25rem;
   -moz-border-radius: .25rem 0 0 .25rem;
   -webkit-border-radius: .25rem 0 0 .25rem;
 }
 
-/* line 100, ../sass/layout/_portal.scss */
+/* line 248, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group .input-group-case {
   line-height: 1;
   background-color: var(--bg-four);
@@ -1190,7 +1391,7 @@ body.portal-body .form-group .input-group .input-group-case {
   display: table-cell;
 }
 
-/* line 112, ../sass/layout/_portal.scss */
+/* line 260, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group.input-group-prefix .form-control {
   border-radius: 0 .25rem .25rem 0;
   -moz-border-radius: 0 .25rem 25rem 0;
@@ -1199,12 +1400,12 @@ body.portal-body .form-group .input-group.input-group-prefix .form-control {
   border-left: 0;
 }
 
-/* line 119, ../sass/layout/_portal.scss */
+/* line 267, ../sass/layout/_portal.scss */
 body.portal-body .form-control, .form-group .form-control, .form-group .form-select {
   background-color: var(--sk-input-form-background);
 }
 
-/* line 122, ../sass/layout/_portal.scss */
+/* line 270, ../sass/layout/_portal.scss */
 body.portal-body .form-control, .form-select, .form-search {
   font-family: 'Lexend', sans-serif;
   background-clip: padding-box;
@@ -1219,20 +1420,20 @@ body.portal-body .form-control, .form-select, .form-search {
   width: 100%;
 }
 
-/* line 135, ../sass/layout/_portal.scss */
+/* line 283, ../sass/layout/_portal.scss */
 .step-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* line 140, ../sass/layout/_portal.scss */
+/* line 288, ../sass/layout/_portal.scss */
 .stepProgress {
   position: relative;
   padding-left: 45px;
   list-style: none;
 }
-/* line 144, ../sass/layout/_portal.scss */
+/* line 292, ../sass/layout/_portal.scss */
 .stepProgress:before {
   display: inline-block;
   content: '';
@@ -1244,16 +1445,16 @@ body.portal-body .form-control, .form-select, .form-search {
   border-left: 2px solid var(--sk-color-base-border);
 }
 
-/* line 155, ../sass/layout/_portal.scss */
+/* line 303, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item {
   position: relative;
   counter-increment: list;
 }
-/* line 158, ../sass/layout/_portal.scss */
+/* line 306, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:not(:last-child) {
   padding-bottom: 50px;
 }
-/* line 161, ../sass/layout/_portal.scss */
+/* line 309, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:before {
   display: inline-block;
   content: '';
@@ -1262,7 +1463,7 @@ body.portal-body .form-control, .form-select, .form-search {
   height: 100%;
   width: 10px;
 }
-/* line 169, ../sass/layout/_portal.scss */
+/* line 317, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:after {
   content: '';
   display: flex;
@@ -1278,11 +1479,11 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 185, ../sass/layout/_portal.scss */
+/* line 333, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:before {
   border-left: 2px solid var(--sk-color-one);
 }
-/* line 188, ../sass/layout/_portal.scss */
+/* line 336, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:after {
   content: "✔";
   font-size: 18px;
@@ -1292,11 +1493,11 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-one);
 }
 
-/* line 198, ../sass/layout/_portal.scss */
+/* line 346, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.current:before {
   border-left: 2px solid var(--green);
 }
-/* line 201, ../sass/layout/_portal.scss */
+/* line 349, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.current:after {
   content: counter(list);
   padding-top: 1px;
@@ -1311,12 +1512,12 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 215, ../sass/layout/_portal.scss */
+/* line 363, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item strong {
   display: block;
 }
 
-/* line 218, ../sass/layout/_portal.scss */
+/* line 366, ../sass/layout/_portal.scss */
 .stepProgress:after {
   content: '';
   position: absolute;
@@ -1326,18 +1527,18 @@ body.portal-body .form-control, .form-select, .form-search {
   left: 0;
 }
 
-/* line 226, ../sass/layout/_portal.scss */
+/* line 374, ../sass/layout/_portal.scss */
 ul.tasks li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-/* line 230, ../sass/layout/_portal.scss */
+/* line 378, ../sass/layout/_portal.scss */
 ul.tasks li:last-child {
   margin-bottom: 0;
 }
 
-/* line 234, ../sass/layout/_portal.scss */
+/* line 382, ../sass/layout/_portal.scss */
 ul.tasks li span.t-icon {
   display: block;
   width: 25px;
@@ -1350,12 +1551,12 @@ ul.tasks li span.t-icon {
   color: var(--green);
 }
 
-/* line 245, ../sass/layout/_portal.scss */
+/* line 393, ../sass/layout/_portal.scss */
 .item-equipment {
   display: flex;
 }
 
-/* line 248, ../sass/layout/_portal.scss */
+/* line 396, ../sass/layout/_portal.scss */
 .item-equipment .item_name {
   display: block;
   font-weight: 500;
@@ -1365,13 +1566,13 @@ ul.tasks li span.t-icon {
   width: 30%;
 }
 
-/* line 256, ../sass/layout/_portal.scss */
+/* line 404, ../sass/layout/_portal.scss */
 .item-equipment:last-child .item_name,
 .item-equipment:last-child .item_value {
   border-bottom: 0;
 }
 
-/* line 260, ../sass/layout/_portal.scss */
+/* line 408, ../sass/layout/_portal.scss */
 .item-equipment .item_value {
   display: block;
   border-bottom: 1px solid var(--sk-color-base-border);
@@ -1380,13 +1581,13 @@ ul.tasks li span.t-icon {
 }
 
 @media (max-width: 840px) {
-  /* line 267, ../sass/layout/_portal.scss */
+  /* line 415, ../sass/layout/_portal.scss */
   .item-equipment {
     margin-bottom: 8px;
     flex-direction: column;
   }
 
-  /* line 271, ../sass/layout/_portal.scss */
+  /* line 419, ../sass/layout/_portal.scss */
   .item-equipment .item_name {
     margin-bottom: 3px;
     width: 100%;
@@ -1394,14 +1595,14 @@ ul.tasks li span.t-icon {
     padding: 0;
   }
 
-  /* line 277, ../sass/layout/_portal.scss */
+  /* line 425, ../sass/layout/_portal.scss */
   .item-equipment .item_value {
     width: 100%;
     border: none;
     padding: 0;
   }
 }
-/* line 283, ../sass/layout/_portal.scss */
+/* line 431, ../sass/layout/_portal.scss */
 .portal-body .aside-left {
   background-color: var(--sk-color-one);
   width: 200px;
@@ -1409,36 +1610,36 @@ ul.tasks li span.t-icon {
   position: fixed;
 }
 
-/* line 289, ../sass/layout/_portal.scss */
+/* line 437, ../sass/layout/_portal.scss */
 .portal-body .main {
   position: relative;
   margin-left: 0;
   height: 100vh;
 }
 
-/* line 295, ../sass/layout/_portal.scss */
+/* line 443, ../sass/layout/_portal.scss */
 .portal-body .consult {
   padding: 30px 0 10px 0;
 }
 
-/* line 298, ../sass/layout/_portal.scss */
+/* line 446, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:after {
   background-color: var(--pink);
   border-color: var(--pink);
 }
 
-/* line 302, ../sass/layout/_portal.scss */
+/* line 450, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:before {
   border-color: var(--pink);
 }
 
-/* line 305, ../sass/layout/_portal.scss */
+/* line 453, ../sass/layout/_portal.scss */
 .portal-body .header {
   border-bottom: 1px solid var(--sk-color-base-border);
   padding: 10px 0;
 }
 
-/* line 309, ../sass/layout/_portal.scss */
+/* line 457, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input {
   border: 2px solid var(--sk-color-base-border);
   line-height: 35px;
@@ -1448,7 +1649,7 @@ ul.tasks li span.t-icon {
   min-width: 250px;
 }
 
-/* line 317, ../sass/layout/_portal.scss */
+/* line 465, ../sass/layout/_portal.scss */
 .portal-body .header .search-i span.search-icon {
   position: absolute;
   left: 30px;
@@ -1456,23 +1657,23 @@ ul.tasks li span.t-icon {
   color: rgba(109, 153, 197, 0.4);
 }
 
-/* line 323, ../sass/layout/_portal.scss */
+/* line 471, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input::placeholder {
   color: rgba(109, 153, 197, 0.4);
 }
 
 @media (max-width: 680px) {
-  /* line 327, ../sass/layout/_portal.scss */
+  /* line 475, ../sass/layout/_portal.scss */
   .portal-body .aside-left {
     transform: translateX(-100%);
   }
 
-  /* line 330, ../sass/layout/_portal.scss */
+  /* line 478, ../sass/layout/_portal.scss */
   .portal-body .main {
     margin-left: 0;
   }
 }
-/* line 334, ../sass/layout/_portal.scss */
+/* line 482, ../sass/layout/_portal.scss */
 .search_card, .login_card {
   display: flex;
   justify-content: center;
@@ -1626,6 +1827,11 @@ footer {
   left: 0;
   position: relative;
   z-index: 5;
+}
+
+/* line 10, ../sass/layout/_footer.scss */
+footer a {
+  color: var(--sk-color-one);
 }
 
 /** Components **/
@@ -2204,12 +2410,14 @@ form span.input-error {
     cursor: pointer;
     margin-left: 4px;
   }
-  /* line 281, ../sass/components/_form.scss */
-  .form-check input[type='checkbox']:not(.form-check-input) {
+  /* line 282, ../sass/components/_form.scss */
+  .form-check input[type='checkbox']:not(.form-check-input),
+  .form-check input[type='radio']:not(.form-check-input) {
     border-radius: 7px;
   }
-  /* line 283, ../sass/components/_form.scss */
-  .form-check input[type='checkbox']:not(.form-check-input):after {
+  /* line 284, ../sass/components/_form.scss */
+  .form-check input[type='checkbox']:not(.form-check-input):after,
+  .form-check input[type='radio']:not(.form-check-input):after {
     width: 5px;
     height: 9px;
     border: 2px solid var(--active-inner);
@@ -2219,17 +2427,20 @@ form span.input-error {
     top: 4px;
     transform: rotate(var(--r, 20deg));
   }
-  /* line 293, ../sass/components/_form.scss */
-  .form-check input[type='checkbox']:not(.form-check-input):checked {
+  /* line 294, ../sass/components/_form.scss */
+  .form-check input[type='checkbox']:not(.form-check-input):checked,
+  .form-check input[type='radio']:not(.form-check-input):checked {
     --r: 43deg;
   }
-  /* line 297, ../sass/components/_form.scss */
-  .form-check input[type='checkbox'].form-check-input {
+  /* line 298, ../sass/components/_form.scss */
+  .form-check input[type='checkbox'].form-check-input,
+  .form-check input[type='radio'].form-check-input {
     width: 38px;
     border-radius: 11px;
   }
-  /* line 300, ../sass/components/_form.scss */
-  .form-check input[type='checkbox'].form-check-input:after {
+  /* line 301, ../sass/components/_form.scss */
+  .form-check input[type='checkbox'].form-check-input:after,
+  .form-check input[type='radio'].form-check-input:after {
     left: 2px;
     top: 2px;
     border-radius: 50%;
@@ -2238,20 +2449,22 @@ form span.input-error {
     background: var(--ab, var(--border));
     transform: translateX(var(--x, 0));
   }
-  /* line 309, ../sass/components/_form.scss */
-  .form-check input[type='checkbox'].form-check-input:checked {
+  /* line 310, ../sass/components/_form.scss */
+  .form-check input[type='checkbox'].form-check-input:checked,
+  .form-check input[type='radio'].form-check-input:checked {
     --ab: var(--active-inner);
     --x: 17px;
   }
-  /* line 315, ../sass/components/_form.scss */
-  .form-check input[type='checkbox'].form-check-input:disabled:not(:checked):after {
+  /* line 316, ../sass/components/_form.scss */
+  .form-check input[type='checkbox'].form-check-input:disabled:not(:checked):after,
+  .form-check input[type='radio'].form-check-input:disabled:not(:checked):after {
     opacity: .6;
   }
-  /* line 322, ../sass/components/_form.scss */
+  /* line 323, ../sass/components/_form.scss */
   .form-check input[type='radio'] {
     border-radius: 50%;
   }
-  /* line 324, ../sass/components/_form.scss */
+  /* line 325, ../sass/components/_form.scss */
   .form-check input[type='radio']:after {
     width: 19px;
     height: 19px;
@@ -2260,12 +2473,12 @@ form span.input-error {
     opacity: 0;
     transform: scale(var(--s, 0.7));
   }
-  /* line 332, ../sass/components/_form.scss */
+  /* line 333, ../sass/components/_form.scss */
   .form-check input[type='radio']:checked {
     --s: .5;
   }
 }
-/* line 339, ../sass/components/_form.scss */
+/* line 340, ../sass/components/_form.scss */
 #char_count {
   background-color: var(--sk-color-base-background);
   padding: 0.15rem 0.5rem;
@@ -2275,27 +2488,27 @@ form span.input-error {
   border-radius: 4px;
 }
 
-/* line 347, ../sass/components/_form.scss */
+/* line 348, ../sass/components/_form.scss */
 .form-group-flex {
   display: flex;
 }
 
-/* line 350, ../sass/components/_form.scss */
+/* line 351, ../sass/components/_form.scss */
 .form-group-flex .input-flex .form-control {
   border-radius: 50px 0 0 50px;
 }
 
-/* line 353, ../sass/components/_form.scss */
+/* line 354, ../sass/components/_form.scss */
 .form-group-flex .button-flex {
   border-radius: 0 50px 50px 0;
 }
 
-/* line 356, ../sass/components/_form.scss */
+/* line 357, ../sass/components/_form.scss */
 .input-inner-button {
   position: relative;
 }
 
-/* line 359, ../sass/components/_form.scss */
+/* line 360, ../sass/components/_form.scss */
 .input-inner-button button {
   position: absolute;
   top: 9px;
@@ -2306,17 +2519,17 @@ form span.input-error {
 }
 
 /** With Icon **/
-/* line 368, ../sass/components/_form.scss */
+/* line 369, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group {
   display: block;
 }
 
-/* line 371, ../sass/components/_form.scss */
+/* line 372, ../sass/components/_form.scss */
 body.portal-body .input-with-icon label {
   display: none;
 }
 
-/* line 374, ../sass/components/_form.scss */
+/* line 375, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group .input-group-case.case-prefix {
   background-color: transparent;
   color: inherit;
@@ -2328,7 +2541,7 @@ body.portal-body .input-with-icon .form-group .input-group .input-group-case.cas
   padding: 0;
 }
 
-/* line 384, ../sass/components/_form.scss */
+/* line 385, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .form-control {
   position: relative;
   border-radius: 50px;
@@ -2337,19 +2550,19 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /** Select2 JS **/
-/* line 391, ../sass/components/_form.scss */
+/* line 392, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 395, ../sass/components/_form.scss */
+/* line 396, ../sass/components/_form.scss */
 #body-wrapper .select2-dropdown {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 399, ../sass/components/_form.scss */
+/* line 400, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: var(--bg-purple);
   color: var(--purple-light);
@@ -2372,6 +2585,11 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 10, ../sass/components/_card.scss */
+.card-header {
+  padding: 20px;
+}
+
+/* line 13, ../sass/components/_card.scss */
 .card-header h2 {
   font-size: 20px;
   font-weight: 600;
@@ -2379,12 +2597,12 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 0;
 }
 
-/* line 16, ../sass/components/_card.scss */
+/* line 19, ../sass/components/_card.scss */
 .card .card-body {
   padding: 16px 24px;
 }
 
-/* line 19, ../sass/components/_card.scss */
+/* line 22, ../sass/components/_card.scss */
 .card .card-title {
   font-size: 1.15rem;
   font-weight: 500;
@@ -2392,13 +2610,13 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 0.5rem;
 }
 
-/* line 25, ../sass/components/_card.scss */
+/* line 28, ../sass/components/_card.scss */
 .card .card-footer {
   border-top: 1px solid var(--sk-color-base-border);
   padding: 1.25rem 1.875rem 1.25rem;
 }
 
-/* line 29, ../sass/components/_card.scss */
+/* line 32, ../sass/components/_card.scss */
 .card-footer-button .btn {
   border-top: 1px solid var(--sk-color-base-border);
   position: relative;
@@ -2410,95 +2628,95 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
   border-radius: 0 0 10px 10px;
 }
-/* line 39, ../sass/components/_card.scss */
+/* line 42, ../sass/components/_card.scss */
 .card-footer-button .btn:hover {
   background-color: var(--bg-four);
 }
 
-/* line 43, ../sass/components/_card.scss */
+/* line 46, ../sass/components/_card.scss */
 .card-footer-button .btn:last-child {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-/* line 47, ../sass/components/_card.scss */
+/* line 50, ../sass/components/_card.scss */
 .card-footer-button .btn:first-child {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-left: 0;
 }
 
-/* line 52, ../sass/components/_card.scss */
+/* line 55, ../sass/components/_card.scss */
 .card-tabs ul {
   margin: 0;
   padding: 0;
   display: block;
 }
 
-/* line 57, ../sass/components/_card.scss */
+/* line 60, ../sass/components/_card.scss */
 .card-tabs ul li {
   display: inline-block;
 }
 
-/* line 60, ../sass/components/_card.scss */
+/* line 63, ../sass/components/_card.scss */
 .card-tabs ul li a {
   display: block;
   padding: 1rem 2rem;
   font-weight: 500;
   color: var(--sk-color-base-text);
 }
-/* line 65, ../sass/components/_card.scss */
+/* line 68, ../sass/components/_card.scss */
 .card-tabs ul li a.selected {
   border-bottom: 2px solid var(--sk-color-one);
 }
 
-/* line 69, ../sass/components/_card.scss */
+/* line 72, ../sass/components/_card.scss */
 .card-inside {
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
 
-/* line 72, ../sass/components/_card.scss */
+/* line 75, ../sass/components/_card.scss */
 .card-inside-purple {
   background: rgba(115, 102, 255, 0.15);
   border-color: transparent;
   color: #9087e7;
 }
 
-/* line 77, ../sass/components/_card.scss */
+/* line 80, ../sass/components/_card.scss */
 .card-inside-default {
   background-color: var(--sk-color-base-background);
 }
 
-/* line 80, ../sass/components/_card.scss */
+/* line 83, ../sass/components/_card.scss */
 .card-inside-four {
   background-color: var(--bg-four);
   border-color: transparent;
   color: var(--sk-color-four);
 }
 
-/* line 85, ../sass/components/_card.scss */
+/* line 88, ../sass/components/_card.scss */
 .inside-danger-border {
   border: 1px dashed var(--pink);
 }
 
-/* line 88, ../sass/components/_card.scss */
+/* line 91, ../sass/components/_card.scss */
 .inside-four-border {
   border: 1px solid var(--sk-color-four);
 }
 
-/* line 91, ../sass/components/_card.scss */
+/* line 94, ../sass/components/_card.scss */
 .inside-four-border-dashed {
   border: 1px dashed var(--sk-color-four-border);
 }
 
-/* line 94, ../sass/components/_card.scss */
+/* line 97, ../sass/components/_card.scss */
 .inside-four-border-dashed-2px {
   border: 2px dashed var(--sk-color-four);
 }
 
-/* line 97, ../sass/components/_card.scss */
+/* line 100, ../sass/components/_card.scss */
 .inside-bg-purple {
   background-image: url(../../img/bg.jpg);
   color: white;
@@ -2506,31 +2724,31 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   background-repeat: no-repeat;
 }
 
-/* line 103, ../sass/components/_card.scss */
+/* line 106, ../sass/components/_card.scss */
 .inside-bg-light-four {
   background-color: var(--bg-four);
   color: white;
 }
 
-/* line 107, ../sass/components/_card.scss */
+/* line 110, ../sass/components/_card.scss */
 .inside-bg-tree {
   background-color: var(--sk-color-tree);
   color: white;
 }
 
-/* line 111, ../sass/components/_card.scss */
+/* line 114, ../sass/components/_card.scss */
 .bg-light-four {
   background-color: var(--bg-four-light);
   color: white;
 }
 
-/* line 115, ../sass/components/_card.scss */
+/* line 118, ../sass/components/_card.scss */
 .card-light-four {
   background-color: var(--bg-four);
   color: #918bd5;
 }
 
-/* line 119, ../sass/components/_card.scss */
+/* line 122, ../sass/components/_card.scss */
 .card-light-yellow {
   background-color: var(--yellow-light);
   color: var(--yellow);

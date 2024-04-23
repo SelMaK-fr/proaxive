@@ -34,10 +34,18 @@ class UserReadController extends AbstractController
         }
         $i = $this->getRepository(InterventionRepository::class)->allBy('users_id', $user_id, 6);
         $w = $this->getRepository(WorkshopRepository::class)->find('id', $u->company_id);
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Utilisateurs', $this->getUrlFor('dash_user'));
+        $bds->addCrumb($u->fullname, $this->getUrlFor('dash_customer'));
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/user/read.html.twig', [
             'u' => $u,
             'i' => $i,
             'w' => $w,
+            'breadcrumbs' => $bds,
             'currentMenu' => 'user'
         ]);
     }

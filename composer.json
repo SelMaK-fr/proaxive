@@ -51,6 +51,9 @@
         "endroid/qr-code": "^5.0",
         "symfony/mailer": "^7.0",
         "firebase/php-jwt": "^6.10",
-        "ext-http": "*"
+        "ext-http": "*",
+        "symfony/yaml": "^7.0",
+        "symfony/expression-language": "^7.0",
+        "symfony/dotenv": "^7.0"
     }
 }

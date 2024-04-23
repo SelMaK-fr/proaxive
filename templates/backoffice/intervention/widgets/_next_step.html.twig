@@ -13,7 +13,16 @@
                     <span id="sync-start"></span>
                 </form>
                 {% endif %}
+                {% if i.way_steps == 5 %}
+                    <form method="post" action="" id="add-date">
+                        <button type="button" data-target="exit_date" data-toggle="modal" class="btn btn-sk-one rd-10">Programmer une sortie <i class="fa-solid fa-circle-arrow-right"></i></button>
+                    </form>
+                {% endif %}
             </div>
         </div>
+        {% if i.way_steps == 5 %}
+            <div class="mt-2">Si vous le souhaitez, vous pouvez programmer une date de retait ou de livraison. Votre client recevra un courriel automatique.</div>
+            {{ include('backoffice/intervention/_modal/_add_exit_date.html.twig') }}
+        {% endif %}
     </div>
 </div>

@@ -43,12 +43,12 @@
                                         <span><i class="fs-32px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
                                     </div>
                                     <div>
-                                    <h4>{{ c.fullname }}</h4>
+                                    <h4 class="fs-16px">{{ c.fullname }}</h4>
                                     <p class="m-0">
-                                        {{ getData('Téléphone : ', c.phone) }}
-                                        {{ getData('Ville : ', [c.zipcode, c.city]) }}
-                                        {{ getData('Courriel : ', c.mail, 'strong') }}
-                                        {{ getData('Ajouté le : ', c.created_at | date('d/m/Y')) }}
+                                        {{ getData('Téléphone', c.phone) }}
+                                        {{ getData('Ville', [c.zipcode, c.city]) }}
+                                        {{ getData('Courriel', c.mail) }}
+                                        {{ getData('Ajouté le', c.created_at | date('d/m/Y')) }}
                                     </p>
                                     </div>
                                 </div>

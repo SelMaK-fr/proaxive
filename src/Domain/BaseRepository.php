@@ -175,11 +175,11 @@ class BaseRepository
 
     /**
      * @param array $data
-     * @param int $id
+     * @param int|null $id
      * @return bool|int|\PDOStatement
      * @throws Exception
      */
-    public function update(array $data, int $id): bool|int|\PDOStatement
+    public function update(array $data, ?int $id): bool|int|\PDOStatement
     {
         $query = $this->query->update($this->model, $data, $id);
         return $query->execute();
@@ -203,6 +203,42 @@ class BaseRepository
     {
         $query = $this->query->deleteFrom($this->model);
         return $query->execute();
+    }
+
+    /**
+     * Pagination for API
+     * @param int $page
+     * @param int $perPage
+     * @param array $params
+     * @param int $total
+     * @return array
+     */
+    public function getResultsWithPagination(
+        int $page,
+        int $perPage,
+        array $params,
+        int $total
+    ): array {
+        return [
+          'pagination' => [
+              'totalRows' => $total,
+              'totalPages' => ceil($total / $perPage),
+              'currentPage' => $page,
+              'perPage' => $perPage
+          ],
+          'data' => $this->getResultByPage($page, $perPage, $params),
+        ];
+    }
+
+    protected function getResultByPage(
+        int $page,
+        int $perPage,
+        ?array $params
+    ): array|bool
+    {
+        $offset = ($page - 1) * $perPage;
+        //$query .= " LIMIT {$perPage} OFFSET {$offset}";
+        return $this->query->from($this->model)->limit($perPage)->offset($offset)->fetchAll();
     }
 
     /**

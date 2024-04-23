@@ -1,0 +1,45 @@
+<div class="modal" id="exit_date">
+    <div class="modal-container" style="width: 200px;">
+        <form method="post" action="">
+            <div class="modal-header">
+                <h1>Programmer une date de sortie</h1>
+            </div>
+            <div class="modal-content">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+                Vous êtes sur le point de programmer une date de sortie pour l'intervention n° :
+                <p>
+                    <i class="ri-arrow-right-circle-line"></i> <strong>{{ i.ref_number }}</strong>
+                </p>
+                <p>
+                    Votre client recevra cette confirmation par courriel.
+                </p>
+                <span class="d-block mb-4">Veuillez confirmer une date :</span>
+                <div class="flex justify-content-space-between">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label" for="ref_number">Date de retrait</label>
+                            <input class="form-input" type="datetime-local" id="ref_number" name="form_delete_intervention[ref_number]">
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Lieu du retrait</h4>
+                        <div class="flex justify-content-space-between">
+                            <div class="form-group mb-3 mr-3 form-check">
+                                <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="1" checked="">
+                                <label for="">A domicile</label>
+                            </div>
+                            <div class="form-group mb-3 form-check">
+                                <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="1">
+                                <label for="">En boutique</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="submit" class="btn btn-light-four m-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Confirmer</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink m-0">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>

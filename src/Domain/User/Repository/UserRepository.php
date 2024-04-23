@@ -21,6 +21,13 @@ class UserRepository extends BaseRepository
         return $query->fetch();
     }
 
+    /**
+     * Permet de se connecter à l'API
+     * @param string $mail
+     * @param string $password
+     * @return mixed
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function apiLoginUser(string $mail, string $password)
     {
         $query = $this->makeQueryDefault()->where('mail = ?', $mail);

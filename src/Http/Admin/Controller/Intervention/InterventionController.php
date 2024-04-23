@@ -43,8 +43,7 @@ class InterventionController extends AbstractController
         $formSearch->handleRequest();
         if($formSearch->isSubmitted() && $formSearch->isValid()) {
             $data = $formSearch->getRequestData()['form_intervention_search'];
-            $result = $this->getRepository(InterventionRepository::class)->searchByFields($data);
-            $interventions = $result;
+            $interventions = $this->getRepository(InterventionRepository::class)->searchByFields($data);
         }
         // Breadcrumbs
         $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');

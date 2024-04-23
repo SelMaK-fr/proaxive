@@ -8,6 +8,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
+use Selmak\Proaxive2\Domain\User\User;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\UserType;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailService;
@@ -33,7 +34,8 @@ class UserActionController extends AbstractController
             $user = $this->getRepository(UserRepository::class)->find('id', $user_id, true);
             $form = $this->createForm(UserType::class, $user);
         } else {
-            $form = $this->createForm(UserType::class);
+            $u = new User();
+            $form = $this->createForm(UserType::class, $u);
         }
         $form->handleRequest();
         $data = $form->getRequestData()['form_user'];
@@ -64,9 +66,17 @@ class UserActionController extends AbstractController
                 }
             }
         }
+        // Breadcrumbs
+        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Utilisateurs', $this->getUrlFor('dash_user'));
+        $bds->addCrumb('Modification', false);
+        $bds->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/user/action.html.twig', [
             'form' => $form,
             'currentMenu' => 'user',
+            'breadcrumbs' => $bds,
             'u' => $user
         ]);
     }

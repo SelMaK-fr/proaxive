@@ -1,12 +1,12 @@
 {% extends 'backoffice/base.html.twig' %}
 
-{% block title %}Compte client - {{ customer.fullname }}{% endblock %}
+{% block title %}Compte client - {{ data.fullname }}{% endblock %}
 
 {% block body %}
     <ul id="tabs" class="nav-components">
-        <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
-        <li><a class="selected" href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-        <li><a href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
+        <li><a href="{{ url_for('customer_read', {'id' : data.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
+        <li><a class="selected" href="{{ url_for('customer_update', {'id' : data.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+        <li><a href="{{ url_for('customer_update_parameters', {'id' : data.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
     </ul>
     <div class="card">
         <div class="p-4">

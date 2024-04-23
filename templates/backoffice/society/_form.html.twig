@@ -5,17 +5,17 @@
             <h3 class="fs-18px fw-500">Informations client</h3>
             <p class="m-0">Ici, vous pouvez modifier les informations personnelles de votre client. <br>Une fois l'ID client enregistré, il ne pourra plus être modifié.</p>
         </div>
-        {% if customer %}
+        {% if data %}
             <div class="grid-2">
                 <div class="col">
-                    {% if customer.login_id is null or customer.login_id is empty %}
+                    {% if data.login_id is null or data.login_id is empty %}
                         {{ form.renderField('login_id') | raw }}
                     {% else %}
                         <div class="form-group">
                             <label class="form-label" for="login_id">Client ID</label>
                             <div class="input-icon input-danger icon-left br-8 p-relative">
                                 <span class="icon"><i class="ri-lock-fill"></i></span>
-                                <div class="form-input underlined pl-8 flex align-items-center"><span>{{ customer.login_id }}</span></div>
+                                <div class="form-input underlined pl-8 flex align-items-center"><span>{{ data.login_id }}</span></div>
                             </div>
                         </div>
                     {% endif %}
@@ -24,7 +24,7 @@
                     <div class="mg-b-1">
                         [Portail] <br>
                         <em>Permet au client de se connecter au portail</em><br>
-                        {% if customer.login_id is empty %}
+                        {% if data.login_id is empty %}
                             <button type="button" onclick="generateIdCustomer()" class="btn-sm btn-light-pink">Générer</button>
                         {% endif %}
                     </div>
@@ -38,6 +38,7 @@
             </div>
             <div class="col-9_sm-12">
                 {{ form.renderField('fullname') | raw }}
+                {{ form.renderField('contact_fullname') | raw }}
             </div>
         </div>
         <div class="grid">

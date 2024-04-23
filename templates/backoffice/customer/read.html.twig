@@ -88,6 +88,15 @@
                                                 <span class="text-muted">Téléphone mobile</span>
                                             </div>
                                         </div>
+                                        <div class="item mt-6 flex align-items-center">
+                                            <div class="mr-2">
+                                                <div class="item--icon br-8 text-center"><i class="fs-18px ri-user-2-line text-muted"></i></div>
+                                            </div>
+                                            <div>
+                                                <span class="d-block fw-500 text-pink">{{ getDataWithLink(customer.contact_fullname, url_for('customer_update', {'id' : customer.id}))}}</span>
+                                                <span class="text-muted">Votre contact principal</span>
+                                            </div>
+                                        </div>
                                         {% if customer.is_society is null %}
                                             <div class="item mt-6 flex align-items-center">
                                                 <div class="mr-2">
@@ -160,13 +169,13 @@
                 <div class="grid-2 mt-3">
                     {% for e in equipments %}
                         <div class="col-6_sm-12">
-                            <a href="{{ url_for('equipment_read', {id:e.id}) }}" title="Détails de l'équipement" class="card d-block color-inherit {% if e.is_outofservice == false %}all-border-pink{% endif %}">
+                            <a href="{{ url_for('equipment_read', {id:e.id}) }}" title="Détails de l'équipement" class="card d-block color-inherit {% if e.is_outofservice == 1 %}all-border-pink{% endif %}">
                                 <div class="card-body p-4">
                                     <div class="flex align-items-center">
                                         <div>
                                             <div class="mr-4">
-                                            <span class="text-{% if e.is_outofservice == false %}pink{% else %}green{% endif %}">
-                                                <i class="fs-32px ri-{% if e.is_outofservice == false %}forbid-2{% else %}thumb-up{% endif %}-fill"></i>
+                                            <span class="text-{% if e.is_outofservice == 1 %}pink{% else %}green{% endif %}">
+                                                <i class="fs-32px ri-{% if e.is_outofservice == 1 %}forbid-2{% else %}thumb-up{% endif %}-fill"></i>
                                             </span>
                                             </div>
                                         </div>
@@ -174,7 +183,7 @@
                                             <h4>{{ e.name }}</h4>
                                             <p class="m-0">
                                                 <span class="d-block">
-                                                    N°de série : <span class="text-{% if e.is_outofservice == false %}pink{% else %}green{% endif %}">{{ e.e_serial }}</span>
+                                                    N°de série : <span class="text-{% if e.is_outofservice == 1 %}pink{% else %}green{% endif %}">{{ e.e_serial }}</span>
                                                 </span>
                                                 <span class="d-block">
                                                     Type : {{ e.type_name }}

@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Controller;
 
-use App\Exception;
 use Envms\FluentPDO\Query;
 use Laminas\Diactoros\Response\JsonResponse;
 use Odan\Session\SessionInterface;
@@ -87,10 +86,9 @@ abstract class AbstractController
         try {
             return new $classname($this->app->getContainer()->get(Query::class));
         } catch (\Exception $e){
-            return new Exception('Repository empty');
+            return new \Exception(sprintf('Repository empty : %s', $e->getMessage()));
         }
     }
-
     /**
      * @param string $type
      * @param mixed|null $data
@@ -232,10 +230,10 @@ abstract class AbstractController
     protected function pdfResponse(string $attachmentFilename)
     {
         $response = new \Slim\Psr7\Response();
-        $response = $response->withHeader('Content-Type', mime_content_type($filename));
+        $response = $response->withHeader('Content-Type', mime_content_type($attachmentFilename));
         $response = $response->withHeader('Content-Transfer-Encoding', 'binary');
         $response = $response->withHeader('Accept-Ranges', 'bytes');
-        return $response->withHeader('Content-Length', filesize($filename));
+        return $response->withHeader('Content-Length', filesize($attachmentFilename));
     }
 
     protected function jsonResponse(Response $response, string $status, $message, int $code): Response

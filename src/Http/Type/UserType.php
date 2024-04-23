@@ -5,11 +5,12 @@ namespace Selmak\Proaxive2\Http\Type;
 use Palmtree\Form\Constraint\Length;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\ChoiceType;
 
 class UserType extends Type
 {
 
-    public function createFormBuilder(string|\stdClass|null|array $data = null): Form
+    public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('user', $data))
             ->add('fullname', 'text', [
@@ -35,11 +36,10 @@ class UserType extends Type
                 ],
                 'mapped' => false
             ])
-            ->add('company_id', 'choice', [
+            ->add('company_id', ChoiceType::class, [
                 'label' => 'Magasin/Atelier',
                 'placeholder' => 'Magasin/atelier rattaché',
-                'choices'     => $this->getCompany(),
-                'mapped' => false
+                'choices'     => $this->getCompany()
             ])
         ;
         return $builder->getForm();
@@ -50,7 +50,7 @@ class UserType extends Type
         $company = [];
         $req = $this->query->from('company')->select(null)->select('company.id, company.name')->fetchAll();
         foreach ($req as $c) {
-            $company[$c['id']] = $c['name'];
+            $company[(int)$c['id']] = $c['name'];
         }
         return $company;
     }

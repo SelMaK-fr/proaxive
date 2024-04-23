@@ -26,7 +26,7 @@ class EquipmentController extends AbstractController
     public function index(Request $request, Response $response): Response
     {
         $paginator = new Paginator('15', 'p', $request);
-        $paginator->set_total($this->getRepository(InterventionRepository::class)->count());
+        $paginator->set_total($this->getRepository(EquipmentRepository::class)->count());
         $e = $this->getRepository(EquipmentRepository::class)->allArrayForPaginator($paginator->get_limit());
         $dataPaginate = $paginator->page_links();
         // Breadcrumbs

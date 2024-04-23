@@ -3,11 +3,12 @@
 {% block title %}Nouvel équipement{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a class="selected" href="#"><i class="ri-computer-line"></i> Ordinateur/Smartphone</a></li>
+        <li><a href="{{ url_for('equipment_create_device') }}"><i class="ri-printer-line"></i> Périphérique</a></li>
+    </ul>
     <div class="card">
         <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a class="selected" href="{{ url_for('equipment_create') }}"><i class="ri-computer-line"></i> Informations générales</a></li>
-            </ul>
             <div class="p-4">
                 {{ include('backoffice/equipment/_form.html.twig', {'device': null}) }}
             </div>

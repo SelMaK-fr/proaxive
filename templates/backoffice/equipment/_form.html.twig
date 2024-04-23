@@ -21,6 +21,7 @@
                 {{ form.renderField('e_model') | raw }}
             </div>
             <div class="col">
+                {{ form.renderField('localization_site') | raw }}
                 {{ form.renderField('types_equipments_id') | raw }}
                 {{ form.renderField('brands_id') | raw }}
                 {% if device is null %}
@@ -43,6 +44,7 @@
             <h3 class="fs-18px fw-500">Options de l'équipement</h3>
             <p class="m-0">Ci-dessous, vous pouvez préciser les données utilisateurs ou informations réseau (suivant le type sélectionné). Les options ne sont pas obligatoire.</p>
         </div>
+        {{ form.renderField('is_outofservice') | raw }}
         {% if device is null %}
             <div class="accordion p-relative">
                 <span class="label badge-light-pink p-absolute r-4 t-1">Option</span>

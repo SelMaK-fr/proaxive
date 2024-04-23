@@ -15,21 +15,26 @@
         </div>
     </div>
     {% endif %}
+    <ul id="tabs" class="nav-components">
+        <li><a class="selected" href="{{ url_for('equipment_read', {'id' : e.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
+        {% if e.is_peripheral is null %}
+            <li><a href="{{ url_for('equipment_update', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+            <li><a href="{{ url_for('equipment_update_specs', {'id' : e.id}) }}"><i class="ri-cpu-line"></i> Configuration système</a></li>
+        {% else %}
+            <li><a href="{{ url_for('equipment_update_device', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+        {% endif %}
+    </ul>
     <div class="card">
         <div class="card-tabs">
-            <ul id="tabs" class="border-bottom">
-                <li><a class="selected" href="{{ url_for('equipment_read', {'id' : e.id}) }}"><i class="ri-information-fill"></i> Vue générale</a></li>
-                {% if e.is_peripheral is null %}
-                    <li><a href="{{ url_for('equipment_update', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-                    <li><a href="{{ url_for('equipment_update_specs', {'id' : e.id}) }}"><i class="ri-cpu-line"></i> Configuration système</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('equipment_update_device', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
-                {% endif %}
-            </ul>
             <div class="p-4">
                 <div class="grid-12">
                     <div class="col-4_sm-12">
                         <h3 class="mt-2 fw-500 fs-16px">Statistiques pour {{ e.name }}</h3>
+                        {% if e.localization_site is not null and e.localization_site is not empty %}
+                        <p>
+                            <strong class="text-one">Localisation sur site : </strong>{{ e.localization_site }}
+                        </p>
+                        {% endif %}
                         {% if e.is_outofservice is not null %}
                             <span class="label badge-light-pink">
                         <i class="ri-forbid-2-fill"></i> Cet équipement ne fonctionne plus

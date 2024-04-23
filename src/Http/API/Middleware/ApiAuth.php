@@ -24,8 +24,6 @@ final class ApiAuth extends BaseMiddleware
         $object = (array) $request->getParsedBody();
         $object['decoded'] = $decoded;
 
-        //$response = $handler->handle($request);
-        //$response->getBody()->write($request->withParsedBody($object));
         return $handler->handle($request->withParsedBody($object));
     }
 }

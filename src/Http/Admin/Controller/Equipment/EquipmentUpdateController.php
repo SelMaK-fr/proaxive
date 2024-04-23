@@ -38,6 +38,7 @@ class EquipmentUpdateController extends AbstractController
             $data = $form->getRequestData()['form_equipment'];
             // If end_guarantee is empty = null
             if(empty($data['end_guarantee'])){$data['end_guarantee'] = null;}
+            if(empty($data['is_outofservice'])){$data['is_outofservice'] = null;}
             $save = $this->getRepository(EquipmentRepository::class)->update($data, $equipment_id);
             if($save) {
                 $this->addFlash('panel-info', sprintf("L'équipement %s a bien été mis à jour.", $data['name']));
