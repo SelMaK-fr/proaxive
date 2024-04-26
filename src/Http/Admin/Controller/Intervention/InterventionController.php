@@ -9,8 +9,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\InterventionFastType;
-use Selmak\Proaxive2\Http\Type\InterventionSearchType;
+use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionFastType;
+use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionSearchType;
 use Selmak\Proaxive2\Infrastructure\Paginator\Paginator;
 
 class InterventionController extends AbstractController
@@ -27,17 +27,14 @@ class InterventionController extends AbstractController
      */
     public function index(Request $request, Response $response, array $args): Response
     {
-        $all = $request->getQueryParams()['v'];
-        if($all === "all"){
+        $filter = $request->getQueryParams()['filter'];
+        if(!empty($filter)){
+            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->where('state = ?', $filter)->orderBy('interventions.created_at DESC');
+        } else {
             $paginator = new Paginator('15', 'p', $request);
             $paginator->set_total($this->getRepository(InterventionRepository::class)->count());
             $interventions = $this->getRepository(InterventionRepository::class)->allArrayForPaginator($paginator->get_limit());
             $dataPaginate = $paginator->page_links();
-            $template = 'backoffice/intervention/index_all.html.twig';
-        } else {
-            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->where('state != "COMPLETED"')->orderBy('interventions.created_at DESC')->limit(9);
-            $template = 'backoffice/intervention/index.html.twig';
-            $dataPaginate = '';
         }
         $formSearch = $this->createForm(InterventionSearchType::class);
         $formSearch->handleRequest();
@@ -53,13 +50,14 @@ class InterventionController extends AbstractController
         // .Breadcrumbs
         $form = $this->createForm(InterventionFastType::class);
         $form->handleRequest();
-        return $this->render($response, $template, [
+        return $this->render($response, 'backoffice/intervention/index.html.twig', [
             'currentMenu' => 'intervention',
             'interventions' => $interventions,
             'form' => $form,
             'formSearch' => $formSearch,
             'dataPaginate' => $dataPaginate,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'filter' => $filter
         ]);
     }
 }

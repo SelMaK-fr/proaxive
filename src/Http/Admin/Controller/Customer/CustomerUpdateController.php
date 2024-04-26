@@ -13,9 +13,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\CustomerParametersType;
-use Selmak\Proaxive2\Http\Type\CustomerPasswordType;
-use Selmak\Proaxive2\Http\Type\CustomerType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerParametersType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerPasswordType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerType;
 use Slim\App;
 
 class CustomerUpdateController extends AbstractController

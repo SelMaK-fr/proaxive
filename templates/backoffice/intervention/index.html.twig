@@ -3,72 +3,79 @@
 {% block title %}Liste des interventions{% endblock %}
 
 {% block body %}
+    <ul id="tabs" class="nav-components">
+        <li><a {% if filter is empty %}class="selected"{% endif%} href="{{ url_for('dash_intervention') }}">Toutes</a></li>
+        <li><a {% if filter == 'draft' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'draft'}) }}">Brouillons</a></li>
+        <li><a {% if filter == 'pending' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'pending'}) }}">Non finalisées</a></li>
+    </ul>
     {% if interventions is not empty %}
-        <div class="filter-search">
-            <button type="button" data-target="search_intervention" data-toggle="modal" class="btn btn-sk-one"><i class="fa-solid fa-filter"></i></button>
-            <a href="{{ url_for('dash_intervention') }}/?v=all" class="btn btn-sk-one"><i class="fa-solid fa-table-cells"></i></a>
-            <div class="form-group form-icon form-icon-left mb-0 flex-root">
-                <div class="flex">
-                    <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
-                    <div class="flex-root">
-                        <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/interventions/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'intervention">
-                    </div>
-                </div>
-            </div>
-            <div class="sk-topbar-search-button">
-                <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-sk-tree"><i class="fa-solid fa-plus"></i> Nouvelle intervention</button>
-            </div>
-        </div>
-        <div class="results" id="htmlContent"></div>
-        <div class="mt-5" id="table-visible">
-            <div class="grid-12">
-                    {% for i in interventions %}
-                        <div class="col-6_sm-12">
-                            <div class="card card-shadow p-relative">
-                                <div class="card-body p-4">
-                                    <div class="pin pin-right">
-                                        {{ getDataPriority(i.a_priority, 'Priorité') }}
-                                    </div>
-                                    <h4 class="card-title">{{ i.name }}</h4>
-                                    <div class="listline-wrapper pt-2">
-                                        <div class="item">
-                                            <span><i class="fa-solid fa-id-card"></i></span>
-                                            {{ i.customer_name }}
-                                        </div>
-                                        <div class="item">
-                                            <span></span>
-                                            {{ getDataState(i.state) }}
-                                        </div>
-                                        <div class="item">
-                                            <span><i class="fa-solid fa-toolbox"></i></span>
-                                            {{ i.sort }}
-                                        </div>
-                                        <div class="item">
-                                            <span><i class="fa-solid fa-clock-rotate-left"></i></span>
-                                            {{ i.total_time }}H
-                                        </div>
-                                        <div class="item">
-                                            <span>{{ getData('<i class="fa-solid fa-computer"></i>', i.equipment_name) }}</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-muted">
-                                        {{ i.description | slice(0,130) }}
-                                    </p>
-                                </div>
-                                <div class="card-footer flex align-items-center justify-content-space-between flex-wrap">
-                                    <div>
-                                        <span>Emise le</span>
-                                        <span class="d-block fw-500 text-dark">{{ i.created_at | date('d/m/Y') }}</span>
-                                    </div>
-                                    <div class="mt-sm-0 mt-2">
-                                        <span class="d-inline-block mr-2"><span class="d-inline-block mr-1 text-one"><i class="fa-solid fa-user-tie"></i></span> {{ i.u_fullname }}</span>
-                                        <a href="{{ url_for('intervention_read', {'id': i.id}) }}" class="btn btn-sk-one m-0">Voir/Modifier</a>
-                                    </div>
+        <div class="card card-shadow mt-3">
+            <div class="p-4">
+                <div class="mb-3">
+                    <div class="filter-search">
+                        <button type="button" class="btn btn-sk-one"><i class="fa-solid fa-filter" data-target="search_intervention" data-toggle="modal" ></i></button>
+                        <div class="form-group form-icon form-icon-left mb-0 flex-root">
+                            <div class="flex">
+                                <div class="pl-3 pr-3 flex align-items-center"><i class="ri-search-2-line"></i></div>
+                                <div class="flex-root">
+                                    <input type="text" name="key" autocomplete="off" onkeyup="searchHttpRequest(this.value, '/admin/interventions/ajax/search')" class="form-input" id="txtHint" placeholder="Nom du client ou numéro de série de l'équipement">
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                        <div class="sk-topbar-search-button">
+                            <button type="button" data-target="add_intervention" data-toggle="modal" class="btn btn-sk-tree"><i class="fa-solid fa-plus"></i> Nouvelle intervention</button>
+                        </div>
+                    </div>
+                    <div class="results" id="htmlContent"></div>
                 </div>
+                <table id="table-visible" class="table-default table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Référence</th>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Client/Equipement</th>
+                        <th>Etat/Priorité</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in interventions %}
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>{{ i.ref_number }}</td>
+                            <td>
+                                {{ i.name }}
+                                <em class="d-block">{{ i.description | slice(0,35) }}</em>
+                            </td>
+                            <td>{{ i.sort }}</td>
+                            <td>
+                                <a class="color-inherit" href="{{ url_for('customer_read', {id: i.customers_id}) }}"><strong>{{ i.customer_name }}</strong></a>
+                                <em class="d-block">{{ i.equipment_name }}</em>
+                            </td>
+                            <td>{{ getDataState(i.state) }} {{ getDataPriority(i.a_priority, 'Priorité') }}</td>
+                            <td>
+                                {{ i.created_at | date('d/m/Y') }}
+                                {% if pull_date is not null %}
+                                    <br>
+                                    <em class="d-block">Retrait : {{ i.pull_date | date('d/m/Y') }}</em>
+                                {% endif %}
+                            </td>
+                            <td class="link-icon">
+                                {% if i.state == 'PENDING' %}
+                                    <a class="link-default" href="{{ url_for('intervention_create_regular_step3', {'id': i.customers_id}, {'inter': i.id}) }}" title="Finaliser la création"><i class="ri-settings-2-line"></i></a>
+                                {% else %}
+                                <a class="link-default" href="{{ url_for('intervention_read', {'id': i.id}) }}"><i class="ri-edit-2-line"></i></a>
+                                {% endif %}
+                                <a href="" class="text-pink"><i class="ri-delete-bin-fill"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {{ dataPaginate | raw }}
     {% else %}
@@ -83,6 +90,7 @@
             </div>
         </div>
     {% endif %}
+
     {{ include('backoffice/intervention/_modal/_add_fast.html.twig') }}
     {{ include('backoffice/intervention/_modal/_search.html.twig') }}
 {% endblock %}

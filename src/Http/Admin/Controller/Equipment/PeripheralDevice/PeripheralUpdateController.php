@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\PeripheralType;
+use Selmak\Proaxive2\Http\Type\Admin\PeripheralType;
 
 class PeripheralUpdateController extends AbstractController
 {

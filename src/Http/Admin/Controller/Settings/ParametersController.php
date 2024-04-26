@@ -7,7 +7,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\ParametersType;
+use Selmak\Proaxive2\Http\Type\Admin\ParametersType;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 
 class ParametersController extends AbstractController

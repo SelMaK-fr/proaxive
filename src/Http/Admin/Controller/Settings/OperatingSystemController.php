@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Domain\OperatingSystem\Repository\OperatingSystemRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\OperatingSystemType;
+use Selmak\Proaxive2\Http\Type\Admin\OperatingSystemType;
 use Slim\App;
 
 class OperatingSystemController extends AbstractController

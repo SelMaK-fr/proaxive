@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
 use Selmak\Proaxive2\Domain\User\User;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\UserType;
+use Selmak\Proaxive2\Http\Type\Admin\UserType;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailService;
 use Selmak\Proaxive2\Infrastructure\Security\RandomNumberService;
 
@@ -29,7 +29,6 @@ class UserActionController extends AbstractController
     public function action(Request $request, Response $response, array $args): Response
     {
         $user_id = (int)$args['id'];
-        $user = null;
         if($user_id){
             $user = $this->getRepository(UserRepository::class)->find('id', $user_id, true);
             $form = $this->createForm(UserType::class, $user);
@@ -54,11 +53,11 @@ class UserActionController extends AbstractController
                     $this->addFlash('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
                 } else {
                     $t = new RandomNumberService();
-                    $data['token'] = $t->token(30);
-                    $data['confirm_at'] = rand(7, 9999999);
+                    $u->setToken($t->token(30));
+                    $u->setConfirmAt(rand(7, 9999999));
                     $mail = new MailService($this->getParameters('mailer'));
-                    $mail->sendMail($data['mail'], $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
-                    $save = $this->getRepository(UserRepository::class)->add($data, true);
+                    $mail->sendMail($u->getMail(), $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
+                    $save = $this->getRepository(UserRepository::class)->add((array)$u, true);
                     if($save){
                         $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
                         return $this->redirectToRoute('dash_user');

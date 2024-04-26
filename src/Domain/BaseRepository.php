@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Domain;
 
+use DateTime;
+use DateTimeInterface;
 use Envms\FluentPDO\Exception;
 use Envms\FluentPDO\Literal;
 use Envms\FluentPDO\Queries\Select;
@@ -163,13 +165,23 @@ class BaseRepository
      * @return int|bool|string
      * @throws Exception
      */
-    public function add(array $values, ?bool $date = null): int|bool|string
+    public function add(mixed $values, ?bool $date = null): int|bool|string
     {
         if($date) {
             $values['created_at'] = new Literal('NOW()');
             $values['updated_at'] = new Literal('NOW()');
         }
+        if(!is_array($values)){
+            $values = get_object_vars($values);
+        }
         return $this->query->insertInto($this->model)->values($values)->execute();
+    }
+
+    public function createOject(mixed $values): bool|int|string
+    {
+        $values->setCreatedAt(new Literal('NOW()'));
+        $values->setUpdatedAt(new Literal('NOW()'));
+        return $this->query->insertInto($this->model)->values(get_object_vars($values))->execute();
     }
 
 

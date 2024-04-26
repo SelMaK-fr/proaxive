@@ -89,6 +89,8 @@ class FrontFunctionTwig extends AbstractExtension
             return '<span class="label-mid btn-light-info">VALIDÉE</span>';
         } elseif ($data == 'COMPLETED'){
             return '<span class="label-mid badge-light-green"><i class="ri-check-line"></i> COMPLÈTE</span>';
+        } elseif ($data == 'PENDING'){
+            return '<span class="label-mid badge-light-pink"><i class="ri-alarm-warning-line"></i> A FINALISER</span>';
         }
         return '<span class="label-mid badge-light-pink">NC</span>';
     }

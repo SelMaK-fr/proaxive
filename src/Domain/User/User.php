@@ -6,27 +6,28 @@ namespace Selmak\Proaxive2\Domain\User;
 
 class User
 {
-    private string $mail = '';
-    private ?string $pseudo = null;
-    private ?string $fullname = null;
-    private string $password = '';
-    private ?string $avatar = null;
-    private ?string $addressIp = null;
-    private ?string $token = null;
-    private ?\DateTime $resetAt = null;
-    private ?string $resetCode = null;
-    private array|string $roles = [];
-    private \DateTime $createdAt;
-    private \DateTime $updatedAt;
-    private ?string $authToken = null;
-    private int|string $companyId = '';
+    public string $mail = '';
+    public ?string $pseudo = null;
+    public ?string $fullname = null;
+    public string $password = '';
+    public ?string $avatar = null;
+    public ?string $address_ip = null;
+    public ?string $token = null;
+    public ?\DateTime $reset_at = null;
+    public ?string $reset_code = null;
+    public array|string $roles = [];
+    public \DateTime $created_at;
+    public \DateTime $updated_at;
+    public ?string $auth_token = null;
+    public int|string $company_id = '';
+    public ?int $confirm_at = null;
 
     public function getMail(): string
     {
         return $this->mail;
     }
 
-    public function setMail(string $mail): User
+    public function setMail(string $mail): self
     {
         $this->mail = $mail;
         return $this;
@@ -37,7 +38,7 @@ class User
         return $this->pseudo;
     }
 
-    public function setPseudo(?string $pseudo): User
+    public function setPseudo(?string $pseudo): self
     {
         $this->pseudo = $pseudo;
         return $this;
@@ -48,7 +49,7 @@ class User
         return $this->fullname;
     }
 
-    public function setFullname(?string $fullname): User
+    public function setFullname(?string $fullname): self
     {
         $this->fullname = $fullname;
         return $this;
@@ -59,7 +60,7 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): User
+    public function setPassword(string $password): self
     {
         $this->password = $password;
         return $this;
@@ -70,7 +71,7 @@ class User
         return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): User
+    public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
         return $this;
@@ -78,12 +79,12 @@ class User
 
     public function getAddressIp(): ?string
     {
-        return $this->addressIp;
+        return $this->address_ip;
     }
 
-    public function setAddressIp(?string $addressIp): User
+    public function setAddressIp(?string $addressIp): self
     {
-        $this->addressIp = $addressIp;
+        $this->address_ip = $addressIp;
         return $this;
     }
 
@@ -92,7 +93,7 @@ class User
         return $this->token;
     }
 
-    public function setToken(?string $token): User
+    public function setToken(?string $token): self
     {
         $this->token = $token;
         return $this;
@@ -100,23 +101,23 @@ class User
 
     public function getResetAt(): \DateTime
     {
-        return $this->resetAt;
+        return $this->reset_at;
     }
 
-    public function setResetAt(?\DateTime $resetAt): User
+    public function setResetAt(?\DateTime $resetAt): self
     {
-        $this->resetAt = $resetAt;
+        $this->reset_at = $resetAt;
         return $this;
     }
 
     public function getResetCode(): ?string
     {
-        return $this->resetCode;
+        return $this->reset_code;
     }
 
-    public function setResetCode(?string $resetCode): User
+    public function setResetCode(?string $resetCode): self
     {
-        $this->resetCode = $resetCode;
+        $this->reset_code = $resetCode;
         return $this;
     }
 
@@ -125,7 +126,7 @@ class User
         return $this->roles;
     }
 
-    public function setRoles(array|string $roles): User
+    public function setRoles(array|string $roles): self
     {
         $this->roles = $roles;
         return $this;
@@ -133,47 +134,59 @@ class User
 
     public function getCreatedAt(): \DateTime
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): User
+    public function setCreatedAt(\DateTime $createdAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $createdAt;
         return $this;
     }
 
     public function getUpdatedAt(): \DateTime
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): User
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updatedAt;
         return $this;
     }
 
     public function getAuthToken(): ?string
     {
-        return $this->authToken;
+        return $this->auth_token;
     }
 
-    public function setAuthToken(?string $authToken): User
+    public function setAuthToken(?string $authToken): self
     {
-        $this->authToken = $authToken;
+        $this->auth_token = $authToken;
         return $this;
     }
 
     public function getCompanyId(): int|string
     {
-        return $this->companyId;
+        return $this->company_id;
     }
 
-    public function setCompanyId(int|string $companyId): User
+    public function setCompanyId(int|string $companyId): self
     {
-        $this->companyId = $companyId;
+        $this->company_id = $companyId;
         return $this;
     }
+
+    public function getConfirmAt(): ?int
+    {
+        return $this->confirm_at;
+    }
+
+    public function setConfirmAt(?int $confirm_at): self
+    {
+        $this->confirm_at = $confirm_at;
+        return $this;
+    }
+
 
 
 }

@@ -9,8 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Admin\Controller\CrudController;
-use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\SocietyType;
+use Selmak\Proaxive2\Http\Type\Admin\SocietyType;
 
 class SocietyUpdateController extends CrudController
 {

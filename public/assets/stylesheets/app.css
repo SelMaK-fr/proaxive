@@ -127,7 +127,7 @@ Other Dark Colors
 [data-layout_mode=dark] {
   --sk-color-tree: #414b6e;
   --sk-color-base-foreground: #2a3650;
-  --sk-color-base-foreground-child: #2f3852;
+  --sk-color-base-foreground-child: #374462;
   --sk-color-base-background: #374462;
   --sk-input-form-background: #374462;
   --sk-input-form-border: #4b5678;
@@ -2043,14 +2043,17 @@ a.btn-bar.btn-inverse-one i, button.btn-bar.btn-inverse-one i {
 .form-group .invalid-feedback {
   color: var(--pink);
   margin-top: 10px;
+  background-color: var(--bg-pink);
+  padding: 5px;
+  border: 1px dashed currentColor;
 }
 
-/* line 8, ../sass/components/_form.scss */
+/* line 11, ../sass/components/_form.scss */
 .form-group .form-input::placeholder, .form-group .palmtree-form-control::placeholder {
   color: var(--text-muted);
 }
 
-/* line 11, ../sass/components/_form.scss */
+/* line 14, ../sass/components/_form.scss */
 .form-lg .form-control {
   position: relative;
   background-color: var(--sk-input-form-background);
@@ -2066,7 +2069,7 @@ a.btn-bar.btn-inverse-one i, button.btn-bar.btn-inverse-one i {
   border-radius: 6px 6px 6px 6px;
 }
 
-/* line 25, ../sass/components/_form.scss */
+/* line 28, ../sass/components/_form.scss */
 textarea.ajax-input {
   border: 0;
   background-color: transparent;
@@ -2074,26 +2077,26 @@ textarea.ajax-input {
   font-style: italic;
   color: var(--sk-color-base-text);
 }
-/* line 31, ../sass/components/_form.scss */
+/* line 34, ../sass/components/_form.scss */
 textarea.ajax-input::placeholder {
   font-style: italic;
   color: var(--sk-color-base-text);
 }
 
-/* line 36, ../sass/components/_form.scss */
+/* line 39, ../sass/components/_form.scss */
 .form-group {
   margin-bottom: 1rem;
 }
 
-/* line 39, ../sass/components/_form.scss */
+/* line 42, ../sass/components/_form.scss */
 .form-group .form-label {
   display: inline-block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--sk-color-base-text-hard);
+  color: var(--sk-color-base-h);
 }
 
-/* line 45, ../sass/components/_form.scss */
+/* line 48, ../sass/components/_form.scss */
 .form-group .form-input, .form-group .form-control, .form-group .palmtree-form-control, .form-select {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-input-form-border);
@@ -2107,20 +2110,20 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 55, ../sass/components/_form.scss */
+/* line 58, ../sass/components/_form.scss */
 .form-group .palmtree-form-control.form-control:focus {
   outline: none !important;
   border: 1px solid var(--sk-color-two);
   box-shadow: 0 0 10px var(--shadow-color);
 }
 
-/* line 60, ../sass/components/_form.scss */
+/* line 63, ../sass/components/_form.scss */
 .form-group select.palmtree-form-control.form-control,
 .form-group select.form-control {
   border-style: solid;
 }
 
-/* line 64, ../sass/components/_form.scss */
+/* line 67, ../sass/components/_form.scss */
 .form-group .form-textarea {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-input-form-border);
@@ -2133,18 +2136,18 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 73, ../sass/components/_form.scss */
+/* line 76, ../sass/components/_form.scss */
 .form-group textarea.palmtree-form-control {
   min-height: 120px;
   padding-top: 10px;
 }
 
-/* line 77, ../sass/components/_form.scss */
+/* line 80, ../sass/components/_form.scss */
 .form-group .input-icon.icon-left {
   left: 0;
 }
 
-/* line 80, ../sass/components/_form.scss */
+/* line 83, ../sass/components/_form.scss */
 .form-group .input-icon span.icon {
   display: block;
   position: absolute;
@@ -2154,36 +2157,36 @@ textarea.ajax-input::placeholder {
   border-radius: 8px 0px 0 8px;
 }
 
-/* line 88, ../sass/components/_form.scss */
+/* line 91, ../sass/components/_form.scss */
 .form-group .input-icon .form-input {
   padding-left: 55px;
 }
 
-/* line 91, ../sass/components/_form.scss */
+/* line 94, ../sass/components/_form.scss */
 .form-group .input-icon.input-danger span.icon {
   background: var(--sk-color-one);
   border-right: 1px solid var(--sk-color-one);
   color: var(--white);
 }
 
-/* line 96, ../sass/components/_form.scss */
+/* line 99, ../sass/components/_form.scss */
 .form-group .input-icon.input-danger input, .form-group .input-icon.input-danger div {
   border-color: var(--sk-color-one);
 }
 
-/* line 99, ../sass/components/_form.scss */
+/* line 102, ../sass/components/_form.scss */
 .form-group .input-icon.input-default span.icon {
   background: transparent;
   border-right: 1px solid var(--sk-color-base-border);
   color: var(--sk-color-base-text);
 }
 
-/* line 104, ../sass/components/_form.scss */
+/* line 107, ../sass/components/_form.scss */
 .form-group .input-icon.input-default input, .form-group .input-icon.input-default div {
   border-color: var(--sk-color-base-border);
 }
 
-/* line 107, ../sass/components/_form.scss */
+/* line 110, ../sass/components/_form.scss */
 .form-group.form-icon {
   background-color: var(--sk-color-base-background);
   color: var(--sk-color-base-text);
@@ -2192,19 +2195,19 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 112, ../sass/components/_form.scss */
+/* line 115, ../sass/components/_form.scss */
 .form-group.form-icon .form-input {
   background-color: transparent;
   padding: 0;
 }
 
-/* line 116, ../sass/components/_form.scss */
+/* line 119, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple {
   min-height: 250px;
   overflow-y: auto;
 }
 
-/* line 120, ../sass/components/_form.scss */
+/* line 123, ../sass/components/_form.scss */
 .form-group select[multiple]:focus + .focus {
   position: absolute;
   top: -1px;
@@ -2215,7 +2218,7 @@ textarea.ajax-input::placeholder {
   border-radius: inherit;
 }
 
-/* line 129, ../sass/components/_form.scss */
+/* line 132, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple option {
   height: 25px;
   line-height: 25px !important;
@@ -2224,13 +2227,13 @@ textarea.ajax-input::placeholder {
   padding: 5px;
 }
 
-/* line 136, ../sass/components/_form.scss */
+/* line 139, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple option:checked {
   background-color: var(--purple-light);
   color: white;
 }
 
-/* line 140, ../sass/components/_form.scss */
+/* line 143, ../sass/components/_form.scss */
 form span.input-error {
   display: block;
   margin-top: -0.7rem;
@@ -2238,26 +2241,26 @@ form span.input-error {
   color: var(--pink);
 }
 
-/* line 146, ../sass/components/_form.scss */
+/* line 149, ../sass/components/_form.scss */
 .inline-form {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* line 151, ../sass/components/_form.scss */
+/* line 154, ../sass/components/_form.scss */
 .inline-form .form-group {
   margin-bottom: 0;
   margin-right: 0.5rem;
   width: 100%;
 }
 
-/* line 156, ../sass/components/_form.scss */
+/* line 159, ../sass/components/_form.scss */
 .inline-form .form-group.switch-group {
   width: auto;
 }
 
-/* line 159, ../sass/components/_form.scss */
+/* line 162, ../sass/components/_form.scss */
 .upload-avatar {
   min-height: 120px;
   min-width: 120px;
@@ -2265,7 +2268,7 @@ form span.input-error {
   position: relative;
 }
 
-/* line 165, ../sass/components/_form.scss */
+/* line 168, ../sass/components/_form.scss */
 .upload-avatar input {
   background: unset;
   opacity: 0;
@@ -2279,7 +2282,7 @@ form span.input-error {
   cursor: pointer;
 }
 
-/* line 177, ../sass/components/_form.scss */
+/* line 180, ../sass/components/_form.scss */
 .upload-avatar div img {
   max-width: 100%;
   height: auto;
@@ -2288,32 +2291,32 @@ form span.input-error {
 }
 
 /* Choices JS Edit */
-/* line 184, ../sass/components/_form.scss */
+/* line 187, ../sass/components/_form.scss */
 .choices__inner {
   border-color: var(--sk-color-base-background);
   background-color: var(--sk-color-base-background);
 }
 
-/* line 188, ../sass/components/_form.scss */
+/* line 191, ../sass/components/_form.scss */
 .choices__list--dropdown, .choices__list[aria-expanded],
 .choices[data-type*=select-one] .choices__input {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 192, ../sass/components/_form.scss */
+/* line 195, ../sass/components/_form.scss */
 .is-open .choices__list--dropdown, .is-open .choices__list[aria-expanded],
 .is-focused .choices__inner, .is-open .choices__inner,
 .choices[data-type*=select-one] .choices__input {
   border-color: var(--sk-color-base-border);
 }
 
-/* line 197, ../sass/components/_form.scss */
+/* line 200, ../sass/components/_form.scss */
 .choices__list--dropdown .choices__item--selectable.is-highlighted, .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
   background-color: var(--sk-color-base-background);
 }
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
-  /* line 202, ../sass/components/_form.scss */
+  /* line 205, ../sass/components/_form.scss */
   .form-check input[type='checkbox'],
   .form-check input[type='radio'] {
     --active: var(--sk-color-one);
@@ -2337,7 +2340,7 @@ form span.input-error {
     background: var(--b, var(--background));
     transition: background .3s, border-color .3s, box-shadow .2s;
   }
-  /* line 224, ../sass/components/_form.scss */
+  /* line 227, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:after,
   .form-check input[type='radio']:after {
     content: '';
@@ -2348,7 +2351,7 @@ form span.input-error {
     position: absolute;
     transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
   }
-  /* line 233, ../sass/components/_form.scss */
+  /* line 236, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:checked,
   .form-check input[type='radio']:checked {
     --b: var(--active);
@@ -2357,50 +2360,50 @@ form span.input-error {
     --d-t: .6s;
     --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
   }
-  /* line 240, ../sass/components/_form.scss */
+  /* line 243, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled,
   .form-check input[type='radio']:disabled {
     --b: var(--disabled);
     cursor: not-allowed;
     opacity: .9;
   }
-  /* line 244, ../sass/components/_form.scss */
+  /* line 247, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled:checked,
   .form-check input[type='radio']:disabled:checked {
     --b: var(--disabled-inner);
     --bc: var(--border);
   }
-  /* line 248, ../sass/components/_form.scss */
+  /* line 251, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled + label,
   .form-check input[type='radio']:disabled + label {
     cursor: not-allowed;
   }
-  /* line 254, ../sass/components/_form.scss */
+  /* line 257, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:hover:not(:checked):not(:disabled),
   .form-check input[type='radio']:hover:not(:checked):not(:disabled) {
     --bc: var(--border-hover);
   }
-  /* line 259, ../sass/components/_form.scss */
+  /* line 262, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:focus,
   .form-check input[type='radio']:focus {
     box-shadow: 0 0 0 var(--focus);
   }
-  /* line 262, ../sass/components/_form.scss */
+  /* line 265, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input),
   .form-check input[type='radio']:not(.form-check-input) {
     width: 21px;
   }
-  /* line 264, ../sass/components/_form.scss */
+  /* line 267, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):after,
   .form-check input[type='radio']:not(.form-check-input):after {
     opacity: var(--o, 0);
   }
-  /* line 267, ../sass/components/_form.scss */
+  /* line 270, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):checked,
   .form-check input[type='radio']:not(.form-check-input):checked {
     --o: 1;
   }
-  /* line 271, ../sass/components/_form.scss */
+  /* line 274, ../sass/components/_form.scss */
   .form-check input[type='checkbox'] + label,
   .form-check input[type='radio'] + label {
     font-size: 14px;
@@ -2410,12 +2413,12 @@ form span.input-error {
     cursor: pointer;
     margin-left: 4px;
   }
-  /* line 282, ../sass/components/_form.scss */
+  /* line 285, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input),
   .form-check input[type='radio']:not(.form-check-input) {
     border-radius: 7px;
   }
-  /* line 284, ../sass/components/_form.scss */
+  /* line 287, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):after,
   .form-check input[type='radio']:not(.form-check-input):after {
     width: 5px;
@@ -2427,18 +2430,18 @@ form span.input-error {
     top: 4px;
     transform: rotate(var(--r, 20deg));
   }
-  /* line 294, ../sass/components/_form.scss */
+  /* line 297, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):checked,
   .form-check input[type='radio']:not(.form-check-input):checked {
     --r: 43deg;
   }
-  /* line 298, ../sass/components/_form.scss */
+  /* line 301, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input,
   .form-check input[type='radio'].form-check-input {
     width: 38px;
     border-radius: 11px;
   }
-  /* line 301, ../sass/components/_form.scss */
+  /* line 304, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:after,
   .form-check input[type='radio'].form-check-input:after {
     left: 2px;
@@ -2449,22 +2452,22 @@ form span.input-error {
     background: var(--ab, var(--border));
     transform: translateX(var(--x, 0));
   }
-  /* line 310, ../sass/components/_form.scss */
+  /* line 313, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:checked,
   .form-check input[type='radio'].form-check-input:checked {
     --ab: var(--active-inner);
     --x: 17px;
   }
-  /* line 316, ../sass/components/_form.scss */
+  /* line 319, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:disabled:not(:checked):after,
   .form-check input[type='radio'].form-check-input:disabled:not(:checked):after {
     opacity: .6;
   }
-  /* line 323, ../sass/components/_form.scss */
+  /* line 326, ../sass/components/_form.scss */
   .form-check input[type='radio'] {
     border-radius: 50%;
   }
-  /* line 325, ../sass/components/_form.scss */
+  /* line 328, ../sass/components/_form.scss */
   .form-check input[type='radio']:after {
     width: 19px;
     height: 19px;
@@ -2473,12 +2476,12 @@ form span.input-error {
     opacity: 0;
     transform: scale(var(--s, 0.7));
   }
-  /* line 333, ../sass/components/_form.scss */
+  /* line 336, ../sass/components/_form.scss */
   .form-check input[type='radio']:checked {
     --s: .5;
   }
 }
-/* line 340, ../sass/components/_form.scss */
+/* line 343, ../sass/components/_form.scss */
 #char_count {
   background-color: var(--sk-color-base-background);
   padding: 0.15rem 0.5rem;
@@ -2488,27 +2491,27 @@ form span.input-error {
   border-radius: 4px;
 }
 
-/* line 348, ../sass/components/_form.scss */
+/* line 351, ../sass/components/_form.scss */
 .form-group-flex {
   display: flex;
 }
 
-/* line 351, ../sass/components/_form.scss */
+/* line 354, ../sass/components/_form.scss */
 .form-group-flex .input-flex .form-control {
   border-radius: 50px 0 0 50px;
 }
 
-/* line 354, ../sass/components/_form.scss */
+/* line 357, ../sass/components/_form.scss */
 .form-group-flex .button-flex {
   border-radius: 0 50px 50px 0;
 }
 
-/* line 357, ../sass/components/_form.scss */
+/* line 360, ../sass/components/_form.scss */
 .input-inner-button {
   position: relative;
 }
 
-/* line 360, ../sass/components/_form.scss */
+/* line 363, ../sass/components/_form.scss */
 .input-inner-button button {
   position: absolute;
   top: 9px;
@@ -2519,17 +2522,17 @@ form span.input-error {
 }
 
 /** With Icon **/
-/* line 369, ../sass/components/_form.scss */
+/* line 372, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group {
   display: block;
 }
 
-/* line 372, ../sass/components/_form.scss */
+/* line 375, ../sass/components/_form.scss */
 body.portal-body .input-with-icon label {
   display: none;
 }
 
-/* line 375, ../sass/components/_form.scss */
+/* line 378, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group .input-group-case.case-prefix {
   background-color: transparent;
   color: inherit;
@@ -2541,7 +2544,7 @@ body.portal-body .input-with-icon .form-group .input-group .input-group-case.cas
   padding: 0;
 }
 
-/* line 385, ../sass/components/_form.scss */
+/* line 388, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .form-control {
   position: relative;
   border-radius: 50px;
@@ -2550,23 +2553,89 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /** Select2 JS **/
-/* line 392, ../sass/components/_form.scss */
+/* line 395, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 396, ../sass/components/_form.scss */
+/* line 399, ../sass/components/_form.scss */
 #body-wrapper .select2-dropdown {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 400, ../sass/components/_form.scss */
+/* line 403, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: var(--bg-purple);
   color: var(--purple-light);
   border-color: var(--bg-purple);
+}
+
+/* line 408, ../sass/components/_form.scss */
+.divGrid-4 div[id^="form_intervention_step"] {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* line 413, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* line 418, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] .form-check {
+  background-color: var(--sk-input-form-background);
+  border: 1px dashed var(--sk-color-base-border);
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  display: flex;
+}
+/* line 425, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] .form-check:hover {
+  border-color: var(--sk-color-one);
+}
+
+/* line 429, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] .form-check input[type='radio'] {
+  display: block;
+  opacity: 0;
+}
+
+/* line 433, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] .form-check label {
+  display: block;
+  flex: 1;
+}
+
+/* line 437, ../sass/components/_form.scss */
+div[id^="form_intervention_step"] input[type='radio']:checked + label {
+  background-color: var(--sk-color-one);
+  position: absolute;
+  padding: 15px;
+  margin: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  border-radius: 10px;
+}
+
+/* line 449, ../sass/components/_form.scss */
+.absolute-button {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px dashed var(--sk-color-base-border);
+  right: 0;
+  margin: 15px 0 0;
+  padding: 12px 0 0;
+  text-align: end;
 }
 
 /* line 1, ../sass/components/_card.scss */
@@ -2752,6 +2821,98 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 .card-light-yellow {
   background-color: var(--yellow-light);
   color: var(--yellow);
+}
+
+/** Nav **/
+/* line 128, ../sass/components/_card.scss */
+.nav-pill-tabs li {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+/* line 132, ../sass/components/_card.scss */
+.nav-pill-tabs li:before {
+  content: "";
+  position: absolute;
+  border: 1px dashed var(--sk-color-base-border);
+  top: 58px;
+  height: 50px;
+  left: 20px;
+}
+
+/* line 140, ../sass/components/_card.scss */
+.nav-pill-tabs li:last-child:before {
+  display: none;
+}
+
+/* line 143, ../sass/components/_card.scss */
+.nav-pill-tabs li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+/* line 149, ../sass/components/_card.scss */
+.nav-pill-tabs li a .nav-rounded {
+  min-width: 42px;
+  height: 42px;
+  border: 1px dashed var(--sk-color-base-border);
+  position: relative;
+  z-index: 2;
+  border-radius: 100%;
+  padding: 2px;
+  box-shadow: inset 0 9px 20px var(--shadow-color);
+}
+
+/* line 159, ../sass/components/_card.scss */
+.nav-pill-tabs li a h5 {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* line 163, ../sass/components/_card.scss */
+.nav-pill-tabs li a p {
+  margin: 0;
+  padding: 0;
+  color: var(--text-muted);
+}
+
+/* line 167, ../sass/components/_card.scss */
+.nav-pill-tabs li a.active .nav-rounded, .nav-pill-tabs li a:hover .nav-rounded {
+  border-color: var(--sk-color-one);
+}
+
+/* line 170, ../sass/components/_card.scss */
+.nav-pill-tabs li a:hover .nav-rounded {
+  border-style: solid;
+}
+
+/* line 173, ../sass/components/_card.scss */
+.nav-pill-tabs li a.active .nav-rounded .nav-icon {
+  background-color: var(--sk-color-one);
+  color: white;
+}
+
+/* line 177, ../sass/components/_card.scss */
+.nav-pill-tabs li a.active h5, .nav-pill-tabs li a:hover h5 {
+  color: var(--sk-color-one);
+}
+
+/* line 180, ../sass/components/_card.scss */
+.nav-pill-tabs li a .nav-rounded .nav-icon {
+  min-width: 100%;
+  height: 100%;
+  color: var(--sk-color-base-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+}
+
+/* line 189, ../sass/components/_card.scss */
+.nav-pill-tabs li a .nav-rounded .nav-icon i {
+  font-size: 20px;
 }
 
 /* line 1, ../sass/components/_label.scss */

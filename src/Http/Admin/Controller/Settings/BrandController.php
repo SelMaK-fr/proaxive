@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Brand\Repository\BrandRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\BrandType;
+use Selmak\Proaxive2\Http\Type\Admin\BrandType;
 use Selmak\Proaxive2\Infrastructure\Formater\TextFormatterService;
 
 class BrandController extends AbstractController

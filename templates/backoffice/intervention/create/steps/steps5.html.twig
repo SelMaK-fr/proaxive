@@ -1,0 +1,92 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Nouvelle intervention{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header border-bottom-dashed">
+            <h3>Nouvelle intervention</h3>
+        </div>
+        <div class="card-body">
+            <div class="grid-12">
+                <div class="col-3_sm-12 border-right-dashed">
+                    {{ include('backoffice/intervention/create/_navigation.html.twig', {currentMenu:'step5'}) }}
+                </div>
+                <div class="col-9_sm-12 p-relative">
+                    <div class="pl-4 pr-4 input-radio-block">
+                        {{ form.renderStart | raw }}
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('way_steps') | raw }}
+                                {{ form.renderField('way_type') | raw }}
+                                {{ form.renderField('a_priority') | raw }}
+                            </div>
+                            <div class="col-6_sm-12">
+                                {% if config.price_time != 0 %}
+                                    <div class="card-inside inside-danger-border mb-4 bg-input">
+                                        <div class="card-body p-3">
+                                            <div class="grid-12 -noGutter">
+                                                <div class="col-6_sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="login_id">Tarif horaire fixé à</label>
+                                                        <div class="input-icon input-danger icon-left br-8 p-relative">
+                                                            <span class="icon"><i class="ri-money-euro-circle-fill fs-17px"></i></span>
+                                                            <div class="form-input underlined pl-8 flex align-items-center"><span>{{ config.price_time }}</span></div>
+                                                            <input type="hidden" value="{{ config.price_time }}" name="form_intervention_2time[package_price]">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6_sm-12">
+                                                    <div class="form-group ml-4">
+                                                        <span class="d-block fw-600">Temps consacré</span>
+                                                        <em>Pensez à bien renseigner votre tarif horaire dans les paramètres.</em>
+                                                        <div class="mt-3">
+                                                            <div class="flex justify-content-space-between">
+                                                                <div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="1" checked>
+                                                                        <label for="">1 Heure</label>
+                                                                    </div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="2" >
+                                                                        <label for="">2 Heures</label>
+                                                                    </div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="3" >
+                                                                        <label for="">3 Heures</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="4" checked>
+                                                                        <label for="">4 Heure</label>
+                                                                    </div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="5" >
+                                                                        <label for="">5 Heures</label>
+                                                                    </div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="radio" id="" name="form_intervention_2time[total_time]" value="0" >
+                                                                        <label for="">Désactiver</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="absolute-button">
+                                    <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Terminer</button>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form.renderEnd | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

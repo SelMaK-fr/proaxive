@@ -9,8 +9,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\CustomerPortalAddressType;
-use Selmak\Proaxive2\Http\Type\CustomerPortalType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerPortalAddressType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerPortalType;
 
 class PortalParameterController extends AbstractController
 {

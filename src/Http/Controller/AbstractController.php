@@ -9,6 +9,7 @@ use Palmtree\Form\Form;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
 use Selmak\Proaxive2\Infrastructure\Statistics\Interface\StatisticsInterface;
 use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\App;
@@ -234,6 +235,11 @@ abstract class AbstractController
         $response = $response->withHeader('Content-Transfer-Encoding', 'binary');
         $response = $response->withHeader('Accept-Ranges', 'bytes');
         return $response->withHeader('Content-Length', filesize($attachmentFilename));
+    }
+
+    protected function setLogger(): LoggerInterface
+    {
+        return $this->app->getContainer()->get('logger');
     }
 
     protected function jsonResponse(Response $response, string $status, $message, int $code): Response

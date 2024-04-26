@@ -9,8 +9,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\CustomerType;
-use Selmak\Proaxive2\Http\Type\SocietyType;
+use Selmak\Proaxive2\Http\Type\Admin\SocietyType;
+use Selmak\Proaxive2\Http\Type\Customer\CustomerType;
 use Selmak\Proaxive2\Infrastructure\Security\RandomStringGeneratorFactory;
 
 class CustomerCreateController extends AbstractController

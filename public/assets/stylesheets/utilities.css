@@ -3435,7 +3435,7 @@ ul.nav-tabs-js li a:hover, ul.nav-tabs-js li a.selected {
 .listline-wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
+  gap: 10px;
 }
 
 /* line 332, ../sass/base/_utilities.scss */
@@ -3458,11 +3458,11 @@ ul.nav-tabs-js li a:hover, ul.nav-tabs-js li a.selected {
 
 @media only screen and (min-width: 575px) {
   /* line 345, ../sass/base/_utilities.scss */
-  .listline-wrapper .item:not(:last-child) {
-    border-right: 1px solid var(--sk-color-base-border);
+  .listline-wrapper .item {
     margin-right: 10px;
-    padding: 2px 0;
-    padding-right: 10px;
+    padding: 2px 6px;
+    background-color: var(--sk-color-base-background);
+    border-radius: 0.256rem;
   }
 }
 @media only screen and (max-width: 35.9375rem) {

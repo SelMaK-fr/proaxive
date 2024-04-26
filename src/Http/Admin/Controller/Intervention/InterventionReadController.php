@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\InterventionUpdateType;
-use Selmak\Proaxive2\Http\Type\TaskListType;
+use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionUpdateType;
+use Selmak\Proaxive2\Http\Type\Admin\TaskListType;
 
 class InterventionReadController extends AbstractController
 {

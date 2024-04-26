@@ -3,63 +3,41 @@
 {% block title %}Nouvelle intervention{% endblock %}
 
 {% block body %}
-    <ul id="tabs" class="nav-components">
-        <li><a href="#" class="selected">Informations générales</a></li>
-        <li><a href="#">Détails de l'intervention</a></li>
-    </ul>
     <div class="card">
-        <div class="card-tabs">
-            <div class="p-4">
-                {{ form.renderStart | raw }}
-                    <div class="grid-12">
-                        <div class="col-6_sm-12">
-                            <div class="mb-5">
-                                <h3 class="fs-18px fw-500">Création d'une nouvelle intervention</h3>
-                                <p class="m-0">Cette méthode de création est en deux étapes.</p>
+        <div class="card-header border-bottom-dashed">
+            <h3>Nouvelle intervention</h3>
+            <span>Veuillez renseigner les détails principaux de l'intervention</span>
+        </div>
+        <div class="card-body">
+            <div class="grid-12">
+                <div class="col-3_sm-12 border-right-dashed">
+                    {{ include('backoffice/intervention/create/_navigation.html.twig', {currentMenu:'step1'}) }}
+                </div>
+                <div class="col-9_sm-12">
+                    <div class="pl-4 pr-4">
+                        {{ form.renderStart | raw }}
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('name') | raw }}
+                                {{ form.renderField('sort') | raw }}
+                                {{ form.renderField('description') | raw }}
+                                {{ form.renderField('before_breakdown') | raw }}
+
                             </div>
-                            {{ form.renderField('name') | raw }}
-                            <div class="grid-12">
-                                <div class="col-6_sm-12">
-                                    {{ form.renderField('sort') | raw }}
-                                </div>
-                                <div class="col-6_sm-12">
-                                    {{ form.renderField('a_priority') | raw }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6_sm-12">
-                            <div class="mb-5">
-                                <div class="alert alert-warning">
-                                    <strong>Attention :</strong> les données ci-dessous ne pourront plus être modifiées.
-                                </div>
-                            </div>
-                            <div class="grid-12">
-                                <div class="col-6_sm-12">
-                                    {% if customer is not empty %}
-                                        <div class="form-group">
-                                            <label class="form-label" for="form_intervention-customers_id">Client sélectionné</label>
-                                            <select class="form-control all-border-four" name="form_intervention[customers_id]" id="form_intervention-customers_id">
-                                                <option value="{{ customer.id }}" selected>{{ customer.fullname }}</option>
-                                            </select>
-                                        </div>
-                                    {% else %}
-                                        {{ form.renderField('customers_id') | raw }}
-                                    {% endif %}
-                                </div>
-                                <div class="col-6_sm-12">
-                                    {% if auth.roles != "SUPER_ADMIN" %}
-                                        <input type="hidden" value="{{ auth.company_id }}" name="company_id">
-                                    {% else %}
-                                        {{ form.renderField('company_id') | raw }}
-                                    {% endif %}
-                                </div>
+                            <div class="col-6_sm-12">
+                                {% if auth.roles != "SUPER_ADMIN" %}
+                                    <input type="hidden" value="{{ auth.company_id }}" name="form_intervention[company_id]">
+                                {% else %}
+                                    {{ form.renderField('company_id') | raw }}
+                                {% endif %}
                             </div>
                         </div>
+                        <div class="absolute-button">
+                            <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Suivant</button>
+                        </div>
+                        {{ form.renderEnd(false) | raw }}
                     </div>
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Suivant</button>
-                    </div>
-                {{ form.renderEnd(false) | raw }}
+                </div>
             </div>
         </div>
     </div>

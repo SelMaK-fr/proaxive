@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\EquipmentSpecsType;
-use Selmak\Proaxive2\Http\Type\EquipmentType;
+use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentSpecsType;
+use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentType;
 
 class EquipmentCreateController extends AbstractController
 {
@@ -36,7 +36,7 @@ class EquipmentCreateController extends AbstractController
         }
         $form = $this->createForm(EquipmentType::class);
         $form->handleRequest();
-        if($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted()) {
             $data = $form->getRequestData()['form_equipment'];
             // If end_guarantee is empty = null
             if(empty($data['end_guarantee'])){$data['end_guarantee'] = null;}

@@ -25,7 +25,7 @@ class IfDarftMiddleware implements MiddlewareInterface
             ->where('interventions.id = ?', [$route->getArgument('id')])
             ->fetch()
         ;
-        if($i && $i['state'] === 'DRAFT'){
+        if($i && $i['state'] === 'DRAFT' || $i['state'] === 'PENDING'){
             $response = new ResponseFactory();
             return $response->createResponse()->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_validation', ['id' => $route->getArgument('id')]));
         }

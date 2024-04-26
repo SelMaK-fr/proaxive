@@ -5,6 +5,7 @@ use Selmak\Proaxive2\Domain\Application\Middleware\CheckDateCodeInitMiddleware;
 use Selmak\Proaxive2\Domain\Company\Middleware\IfUpdateSocietyMiddleware;
 use Selmak\Proaxive2\Domain\Customer\Middleware\RedirectIfNotAuthMiddleware;
 use Selmak\Proaxive2\Domain\Equipment\Middleware\IfUpdatePeripheralMiddleware;
+use Selmak\Proaxive2\Domain\Intervention\Middleware\CheckUrlCreateMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDarftMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfLinkExpirateMiddleware;
@@ -30,6 +31,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxControll
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionArchiveController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateController as CreateIntervention;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionUpdateController;
@@ -60,6 +62,7 @@ use Selmak\Proaxive2\Http\Controller\Portal\LogoutController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalInterventionController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalParameterController;
+use Selmak\Proaxive2\Security\Middleware\IfDataNullOrEmptyMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
 use Slim\App;
@@ -161,7 +164,11 @@ return function (App $app) {
        $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
        $group->post('/{id:[0-9]+}/ajax/next-step', [InterventionAjaxController::class, 'nextStep'])->setName('ajax_intervention_next_step');
        $group->get('/create', [InterventionCreateController::class, 'index'])->setName('intervention_create_index');
-       $group->any('/create-regular[:{id:[0-9]+}]', [InterventionCreateController::class, 'regular'])->setName('intervention_create_regular');
+       $group->any('/create-regular[:{id:[0-9]+}]', [CreateIntervention::class, 'create'])->setName('intervention_create_regular');
+       $group->any('/create-regular/client-and-tech', [CreateIntervention::class, 'createStep2'])->setName('intervention_create_regular_step2');
+       $group->any('/create-regular/client/{id:[0-9]+}/equipments[:{args}]', [CreateIntervention::class, 'createStep3'])->setName('intervention_create_regular_step3')->add(CheckUrlCreateMiddleware::class);
+       $group->any('/create-regular/client/{id:[0-9]+}/observations[:{args}]', [CreateIntervention::class, 'createStep4'])->setName('intervention_create_regular_step4')->add(CheckUrlCreateMiddleware::class);
+       $group->any('/create-regular/client/{id:[0-9]+}/setting[:{args}]', [CreateIntervention::class, 'createStep5'])->setName('intervention_create_regular_step5')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create-regular/c-{id:[0-9]+}', [InterventionCreateController::class, 'regular'])->setName('intervention_create_customer_regular');
        $group->any('/create-regular/complete', [InterventionCreateController::class, 'next'])->setName('intervention_create_customer_regular_complete');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
@@ -171,7 +178,7 @@ return function (App $app) {
        $group->any('/{id:[0-9]+}/archive', [InterventionArchiveController::class, 'index'])->setName('intervention_archive');
        $group->any('/{id:[0-9]+}/archive/read', [InterventionArchiveController::class, 'readArchive'])->setName('intervention_archive_read');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
-    })->add(RedirectIfNotAdminOrTechMiddleware::class);
+    })->add(RedirectIfNotAdminOrTechMiddleware::class)->add(IfDataNullOrEmptyMiddleware::class);
     /* Deposit */
     $app->group('/admin/deposit', function (RouteCollectorProxy $group) {
        $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');

@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\TaskType;
+use Selmak\Proaxive2\Http\Type\Admin\TaskType;
 use Slim\App;
 
 class TaskController extends AbstractController

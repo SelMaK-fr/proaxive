@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\EquipmentFastType;
-use Selmak\Proaxive2\Http\Type\InterventionValidationType;
+use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentFastType;
+use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionValidationType;
 
 class InterventionValidatedController extends AbstractController
 {

@@ -46,16 +46,6 @@ class InterventionCreateNextType extends Type
                     5 => 'Terminé',
                 ]
             ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'placeholder' => "Rédigez une courte description de la panne",
-                'required' => false
-            ])
-            ->add('before_breakdown', TextareaType::class, [
-                'label' => 'Avant panne',
-                'placeholder' => "Précisez ce qu'il c'est passé avant la panne",
-                'required' => false
-            ])
             ->add('observation', TextareaType::class, [
                 'label' => 'Observation',
                 'placeholder' => "Rédigez une observation",

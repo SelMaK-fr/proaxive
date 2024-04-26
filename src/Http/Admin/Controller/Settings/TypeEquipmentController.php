@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Selmak\Proaxive2\Domain\TypeEquipment\Repository\TypeEquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\TypeEquipmentType;
+use Selmak\Proaxive2\Http\Type\Admin\TypeEquipmentType;
 use Selmak\Proaxive2\Infrastructure\Formater\TextFormatterService;
 use Slim\App;
 

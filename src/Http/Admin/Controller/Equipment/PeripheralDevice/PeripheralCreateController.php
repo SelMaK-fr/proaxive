@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\PeripheralType;
+use Selmak\Proaxive2\Http\Type\Admin\PeripheralType;
 
 class PeripheralCreateController extends AbstractController
 {

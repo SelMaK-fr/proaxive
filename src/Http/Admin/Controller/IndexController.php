@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller;
 
 use Envms\FluentPDO\Exception;
-use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;

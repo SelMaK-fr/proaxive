@@ -1,0 +1,57 @@
+<ul class="nav-pill-tabs">
+    <li>
+        <a href="#" class="{% if currentMenu is defined and currentMenu == 'step1' %}active{% endif %}">
+            <div class="nav-rounded">
+                <div class="nav-icon"><i class="ri-list-settings-line"></i></div>
+            </div>
+            <div class="nav-tab-content">
+                <h5>Détails de l'intervention</h5>
+                <p>Nom d'intervention et détails</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="#" class="{% if currentMenu is defined and currentMenu == 'step2' %}active{% endif %}">
+            <div class="nav-rounded">
+                <div class="nav-icon"><i class="ri-user-2-line"></i></div>
+            </div>
+            <div class="nav-tab-content">
+                <h5>Client et technicien</h5>
+                <p>Choix du client et du technicien</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="#" class="{% if currentMenu is defined and currentMenu == 'step3' %}active{% endif %}">
+            <div class="nav-rounded">
+                <div class="nav-icon"><i class="ri-computer-line"></i></div>
+            </div>
+            <div class="nav-tab-content">
+                <h5>Equipement</h5>
+                <p>Choix de l'équipement client</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="#" class="{% if currentMenu is defined and currentMenu == 'step4' %}active{% endif %}">
+            <div class="nav-rounded">
+                <div class="nav-icon"><i class="ri-sticky-note-line"></i></div>
+            </div>
+            <div class="nav-tab-content">
+                <h5>Notes et observations</h5>
+                <p>Notes et détails supplémentaires</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="#" class="{% if currentMenu is defined and currentMenu == 'step5' %}active{% endif %}">
+            <div class="nav-rounded">
+                <div class="nav-icon"><i class="ri-time-line"></i></div>
+            </div>
+            <div class="nav-tab-content">
+                <h5>Temps/Statuts</h5>
+                <p>Tarif horaire et status</p>
+            </div>
+        </a>
+    </li>
+</ul>
