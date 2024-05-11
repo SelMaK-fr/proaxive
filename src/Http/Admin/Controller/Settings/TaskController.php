@@ -17,11 +17,6 @@ use Slim\App;
 class TaskController extends AbstractController
 {
 
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -42,7 +37,7 @@ class TaskController extends AbstractController
         $form->setAction($this->getUrlFor('settings_task_create'));
         $form->handleRequest();
         //
-        $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
+        $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb("Tâches", false);
@@ -64,8 +59,6 @@ class TaskController extends AbstractController
      * @param array $args
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function actionForm(Request $request, Response $response, array $args): Response
     {
@@ -105,9 +98,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response): Response
     {

@@ -14,6 +14,9 @@ use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentSpecsType;
 use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentType;
 use Selmak\Proaxive2\Infrastructure\Bao\BaoService;
 use Slim\Psr7\UploadedFile;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class EquipmentUpdateController extends AbstractController
 {
@@ -23,9 +26,12 @@ class EquipmentUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function update(Request $request, Response $response, array $args): Response
     {
@@ -46,7 +52,7 @@ class EquipmentUpdateController extends AbstractController
             }
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
@@ -90,7 +96,7 @@ class EquipmentUpdateController extends AbstractController
         $formBao->setAction($this->getUrlFor('equipment_update_specs_upload', ['id' => $equipment_id]));
         // .Upload BAO File
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));

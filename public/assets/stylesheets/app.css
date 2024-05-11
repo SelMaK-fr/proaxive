@@ -2573,21 +2573,21 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 408, ../sass/components/_form.scss */
-.divGrid-4 div[id^="form_intervention_step"] {
+.divGrid-4 div[id^="form_intervention"] {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
 /* line 413, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] {
+div[id^="form_intervention"] {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
 /* line 418, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] .form-check {
+div[id^="form_intervention"] .form-check {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-color-base-border);
   border-radius: 10px;
@@ -2596,24 +2596,24 @@ div[id^="form_intervention_step"] .form-check {
   display: flex;
 }
 /* line 425, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] .form-check:hover {
+div[id^="form_intervention"] .form-check:hover {
   border-color: var(--sk-color-one);
 }
 
 /* line 429, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] .form-check input[type='radio'] {
+div[id^="form_intervention"] .form-check input[type='radio'] {
   display: block;
   opacity: 0;
 }
 
 /* line 433, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] .form-check label {
+div[id^="form_intervention"] .form-check label {
   display: block;
   flex: 1;
 }
 
 /* line 437, ../sass/components/_form.scss */
-div[id^="form_intervention_step"] input[type='radio']:checked + label {
+div[id^="form_intervention"] input[type='radio']:checked + label {
   background-color: var(--sk-color-one);
   position: absolute;
   padding: 15px;

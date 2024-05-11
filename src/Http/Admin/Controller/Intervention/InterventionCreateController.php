@@ -9,6 +9,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Random\RandomException;
 use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
@@ -20,14 +21,12 @@ use Selmak\Proaxive2\Http\Type\InterventionCreateNextType;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailInterventionService;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionCreateController extends AbstractController
 {
-
-    public function __construct(private readonly StatefulValidator $validator, App $app, private readonly SessionInterface $session)
-    {
-        parent::__construct($app);
-    }
 
     /**
      * @param Request $request
@@ -36,12 +35,15 @@ class InterventionCreateController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response, array $args): Response
     {
         $form = $this->createForm(InterventionFastType::class);
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb('Création', false);
@@ -60,8 +62,11 @@ class InterventionCreateController extends AbstractController
      * @param array $args
      * @return Response
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws Exception
+     * @throws LoaderError
+     * @throws NotFoundExceptionInterface
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function regular(Request $request, Response $response, array $args): Response
     {
@@ -84,7 +89,7 @@ class InterventionCreateController extends AbstractController
             $data = $form->getRequestData()['form_intervention'];
             if($customer_id){$data_customer_id = $customer_id;}else{$data_customer_id = $data['customers_id'];}
             $findEquipment = $this->getRepository(EquipmentRepository::class)->countRowWhere((int)$data_customer_id, 'customers_id');
-            $numberFormatter = new SerialNumberFormatterService($this->app->getContainer()->get('parameters'));
+            $numberFormatter = new SerialNumberFormatterService($this->parameter);
             $arrayData = [
                 'name' => $data['name'],
                 'customers_id' => $data_customer_id,
@@ -100,7 +105,7 @@ class InterventionCreateController extends AbstractController
             return $this->redirectToRoute('intervention_create_customer_regular_complete');
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
@@ -116,69 +121,16 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
-
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
-     */
-    public function next(Request $request, Response $response, array $args): Response
-    {
-        $e = null;
-        $auth = $this->getSession('auth');
-        // if not valid session, stop treatment and return to Create
-        if(!$this->getSession('form_intervention_next')){
-            $this->addFlash('panel-error', "Aucune session n'est disponbile pour cette demande, veuillez reprendre le formulaire.");
-            return $this->redirectToRoute('intervention_create_index');
-        }
-        // Retrieve session
-        $dataSession = $this->getSession('form_intervention_next');
-        // Retrieve customer
-        $c = $this->getRepository(CustomerRepository::class)->find('id', (int)$dataSession['customers_id']);
-        // Check if ID equipment exist
-        if($dataSession['equipments_id']){
-            $e = $this->getRepository(EquipmentRepository::class)->find('id', $dataSession['equipments_id']);
-        }
-        // Create Form
-        $form = $this->createForm(InterventionCreateNextType::class, null, $dataSession);
-        $form->setAction($this->getUrlFor('intervention_create_save'));
-        $data = $form->getRequestData();
-        $form->handleRequest();
-        $this->session->set('intervention_2time', $data);
-
-        // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
-        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
-        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
-        $bds->addCrumb('Etape 2', false);
-        $bds->render();
-        // .Breadcrumbs
-
-        return $this->render($response, 'backoffice/intervention/create/next.html.twig', [
-            'currentMenu' => 'intervention',
-            'form' => $form,
-            'c' => $c,
-            'e' => $e,
-            'auth' => $auth,
-            'breadcrumbs' => $bds,
-            'session' => $dataSession
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws NotFoundExceptionInterface
-     * @throws \Random\RandomException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws RandomException
      */
     public function save(Request $request, Response $response, array $args): Response
     {

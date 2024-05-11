@@ -11,6 +11,9 @@ use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
 use Selmak\Proaxive2\Domain\Workshop\Repository\WorkshopRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class UserReadController extends AbstractController
 {
@@ -21,8 +24,9 @@ class UserReadController extends AbstractController
      * @param array $args
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function read(Request $request, Response $response, array $args): Response
     {
@@ -35,7 +39,7 @@ class UserReadController extends AbstractController
         $i = $this->getRepository(InterventionRepository::class)->allBy('users_id', $user_id, 6);
         $w = $this->getRepository(WorkshopRepository::class)->find('id', $u->company_id);
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Utilisateurs', $this->getUrlFor('dash_user'));
         $bds->addCrumb($u->fullname, $this->getUrlFor('dash_customer'));

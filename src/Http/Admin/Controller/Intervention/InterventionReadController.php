@@ -12,6 +12,9 @@ use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionUpdateType;
 use Selmak\Proaxive2\Http\Type\Admin\TaskListType;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionReadController extends AbstractController
 {
@@ -21,9 +24,12 @@ class InterventionReadController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function read(Request $request, Response $response, array $args): Response
     {
@@ -45,7 +51,7 @@ class InterventionReadController extends AbstractController
         $form->handleRequest();
 
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb($i['customer_name'], $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));

@@ -12,7 +12,7 @@ use Selmak\Proaxive2\Http\Type\Type;
 class ParametersType extends Type
 {
 
-    public function createFormBuilder(string|\stdClass|null|array $data = null): Form
+    public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('parameters', $data))
             ->add('expiration_link', NumberType::class, [

@@ -11,21 +11,20 @@ use Respect\Validation\Validator as v;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class LoginController extends AbstractController
 {
-
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {

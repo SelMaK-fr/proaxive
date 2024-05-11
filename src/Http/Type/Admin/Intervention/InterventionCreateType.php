@@ -64,9 +64,16 @@ class InterventionCreateType extends Type
     private function getCompany(): array
     {
         $companies = [];
-        $req = $this->query->from('company')->select(null)->select('company.id, company.name')->fetchAll();
+        $req = $this->query->from('company')
+            ->select(null)
+            ->select('company.id, company.name, COUNT(u.id) as countUsers')
+            ->leftJoin('users as u ON u.company_id = company.id')
+            ->groupBy('company.id, company.name')
+            ->fetchAll();
         foreach ($req as $c) {
-            $companies[$c['id']] = $c['name'];
+            if($c['countUsers'] > 0) {
+                $companies[$c['id']] = $c['name'] . ' (' . $c['countUsers'] . ' user(s))';
+            }
         }
         return $companies;
     }

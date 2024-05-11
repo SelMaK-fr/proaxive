@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Selmak\Proaxive2\Http\Admin\Controller;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class CrudController extends AbstractController
 {
@@ -26,8 +31,11 @@ class CrudController extends AbstractController
      * @param $request
      * @param mixed $breadcrumbs
      * @return Response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws LoaderError
+     * @throws NotFoundExceptionInterface
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function crudUpdate(string $type, mixed $data, int $id, $response, $request, mixed $breadcrumbs)
     {
@@ -47,13 +55,23 @@ class CrudController extends AbstractController
         ]);
     }
 
-    public function crudCreate(string $type, string $repository, $response, mixed $breadcrumbs)
+    /**
+     * @throws SyntaxError
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function crudCreate(string $type, $response, mixed $breadcrumbs, ?array $fields = [])
     {
-        $form = $this->createForm($type);
+        $entity = (new $this->entity);
+        $form = $this->createForm($type, $entity);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getRequestData()[$this->form_name];
-            $this->getRepository($repository)->add($data, true);
+            if(is_array($fields) && array_key_exists('users', $fields)) {
+                $entity->setUsersId($this->getUserId());
+            }
+            $this->getRepository($this->repository)->createOject($entity, true);
             $this->addFlash('panel-info', 'Opération réalisée avec succès.');
             return $this->redirectAfterSave();
         }

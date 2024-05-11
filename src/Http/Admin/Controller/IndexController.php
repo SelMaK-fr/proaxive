@@ -9,6 +9,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class IndexController extends AbstractController
 {
@@ -18,14 +21,16 @@ class IndexController extends AbstractController
      * @param Response $response
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
         $interventions = $this->getRepository(InterventionRepository::class)->all()->limit(10)->orderBy('created_at DESC');
+
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Proaxive Dashboard', false);
         $bds->addCrumb('Accueil', false);
         $bds->render();

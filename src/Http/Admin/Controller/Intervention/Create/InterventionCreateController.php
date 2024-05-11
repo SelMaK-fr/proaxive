@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create;
 
+use Creitive\Breadcrumbs\Breadcrumbs;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Random\RandomException;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Intervention;
@@ -20,6 +22,9 @@ use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateStep4Type;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateStep5Type;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateType;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionCreateController extends AbstractController
 {
@@ -27,8 +32,11 @@ class InterventionCreateController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function create(Request $request, Response $response): Response
     {
@@ -50,6 +58,14 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws SyntaxError
+     * @throws RandomException
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function createStep2(Request $request, Response $response): Response
     {
         $auth = $this->getSession('auth');
@@ -59,11 +75,12 @@ class InterventionCreateController extends AbstractController
         $form = $this->createForm(InterventionCreateStep2Type::class, $inter, $session);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
+
             if(!$session){
                 $this->addFlash('panel-error', 'La session a expirée !');
                 return $this->redirectToRoute('dash_intervention');
             }
-            $numberFormatter = new SerialNumberFormatterService($this->app->getContainer()->get('parameters'));
+            $numberFormatter = new SerialNumberFormatterService($this->parameter);
             // Generate data
             $inter->setCompanyId($session['company_id']);
             $inter->setName($session['name']);
@@ -93,9 +110,16 @@ class InterventionCreateController extends AbstractController
     }
 
     /**
-     * @throws NotFoundExceptionInterface
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws LoaderError
+     * @throws NotFoundExceptionInterface
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function createStep3(Request $request, Response $response, array $args): Response
     {
@@ -122,6 +146,14 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeError
+     * @throws Exception
+     * @throws LoaderError
+     */
     public function createStep4(Request $request, Response $response, array $args): Response
     {
         $id = (int)$args['id'];
@@ -142,6 +174,14 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws RuntimeError
+     * @throws Exception
+     * @throws LoaderError
+     */
     public function createStep5(Request $request, Response $response, array $args): Response
     {
         $i_id = (int)$request->getQueryParams()['inter'];
@@ -162,9 +202,9 @@ class InterventionCreateController extends AbstractController
         ]);
     }
 
-    private function breadcrumbs()
+    private function breadcrumbs(): Breadcrumbs
     {
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));

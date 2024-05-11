@@ -2,27 +2,40 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Controller;
 
+use Awurth\Validator\StatefulValidator;
+use Creitive\Breadcrumbs\Breadcrumbs;
 use Envms\FluentPDO\Query;
 use Laminas\Diactoros\Response\JsonResponse;
 use Odan\Session\SessionInterface;
 use Palmtree\Form\Form;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
-use Selmak\Proaxive2\Infrastructure\Statistics\Interface\StatisticsInterface;
+use Selmak\Proaxive2\Infrastructure\Parameter\Interface\ParameterInterface;
 use Selmak\Proaxive2\Settings\SettingsInterface;
-use Slim\App;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Views\Twig;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 abstract class AbstractController
 {
 
+    protected ContainerInterface $container;
+
     public function __construct(
-        protected readonly App $app,
-        //protected readonly StatefulValidator $validator
-        protected readonly ?StatisticsInterface $statistics = null
+        protected readonly SettingsInterface $settings,
+        protected readonly Twig $twig,
+        protected readonly Query $query,
+        protected readonly RouteParserInterface $routeParser,
+        protected readonly SessionInterface $session,
+        protected readonly LoggerInterface $logger,
+        protected readonly Breadcrumbs $breadcrumbs,
+        protected readonly ParameterInterface $parameter,
+        protected readonly StatefulValidator $validator
     ){
     }
 
@@ -30,23 +43,19 @@ abstract class AbstractController
      * @param string $key
      * @param string $value
      * @return array|bool|string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getParameter(string $key, string $value): array|bool|string
     {
-        return $this->app->getContainer()->get(SettingsInterface::class)->get($key)[$value];
+        return $this->settings->get($key)[$value];
     }
 
     /**
      * @param string $key
      * @return array|bool|string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getParameters(string $key): array|bool|string
     {
-        return $this->app->getContainer()->get(SettingsInterface::class)->get($key);
+        return $this->settings->get($key);
     }
 
     /**
@@ -54,38 +63,38 @@ abstract class AbstractController
      * @param string $template
      * @param array|null $data
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function render(Response $response, string $template, ?array $data = []): Response
     {
         $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $this->app->getContainer()->get(Twig::class)->render($response, $template, $data);
+        return $this->twig->render($response, $template, $data);
     }
 
     /**
      * @param string $template
      * @param array|null $data
-     * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    protected function view(string $template, ?array $data = []): mixed
+    protected function view(string $template, ?array $data = []): string
     {
-        return $this->app->getContainer()->get(Twig::class)->fetch($template, $data);
+        return $this->twig->fetch($template, $data);
     }
 
     /**
      * Return the table data's in the controller. $classname => your repository class in /app/Repository
      * @param string $classname
      * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getRepository(string $classname): mixed
     {
         try {
-            return new $classname($this->app->getContainer()->get(Query::class));
+            return new $classname($this->query);
         } catch (\Exception $e){
             return new \Exception(sprintf('Repository empty : %s', $e->getMessage()));
         }
@@ -100,14 +109,12 @@ abstract class AbstractController
      */
     protected function createForm(string $type, mixed $data = null, ?array $args = []): Form
     {
-        return (new $type($this->app->getContainer()->get(Query::class)))->createFormBuilder($data, $args);
+        return (new $type($this->query))->createFormBuilder($data, $args);
     }
 
     /**
      * @param string $route
      * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function generateUrl(string $route): string
     {
@@ -119,8 +126,6 @@ abstract class AbstractController
      * @param array|null $data
      * @param array|null $params
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function redirectToRoute(string $routeName, ?array $data = [], ?array $params = []): Response
     {
@@ -149,23 +154,23 @@ abstract class AbstractController
     }
 
     /**
-     * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return RouteParserInterface
      */
-    protected function getRouteParser(): mixed
+    protected function getRouteParser(): RouteParserInterface
     {
-        return $this->app->getContainer()->get(RouteParserInterface::class);
+        return $this->routeParser;
     }
 
     /**
      * Return route URL
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @param string $routeName
+     * @param array|null $data
+     * @param array|null $params
+     * @return string
      */
-    protected function getUrlFor(string $routeName, ?array $data = [], ?array $params = []): mixed
+    protected function getUrlFor(string $routeName, ?array $data = [], ?array $params = []): string
     {
-        return $this->app->getContainer()->get(RouteParserInterface::class)->urlFor($routeName, $data, $params);
+         return $this->routeParser->urlFor($routeName, $data, $params);
     }
 
     /**
@@ -185,47 +190,41 @@ abstract class AbstractController
      * @param string $key
      * @param string $message
      * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function addFlash(string $key, string $message): void
     {
-        $this->app->getContainer()->get(SessionInterface::class)->getFlash()->add($key, $message);
+        $this->session->getFlash()->add($key, $message);
     }
 
     protected function getSession(string $key)
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->get($key);
+        return $this->session->get($key);
     }
 
     protected function setSession(string $key, mixed $value)
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->set($key, $value);
+        return $this->session->set($key, $value);
     }
 
     protected function deleteSession(string $key)
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->delete($key);
+        return $this->session->delete($key);
     }
 
     /**
      * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getUserId(): mixed
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->get('auth')['id'];
+        return $this->session->get('auth')['id'];
     }
 
     /**
      * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getUserCompany(): mixed
     {
-        return $this->app->getContainer()->get(SessionInterface::class)->get('auth')['company_id'];
+        return $this->session->get('auth')['company_id'];
     }
 
     protected function pdfResponse(string $attachmentFilename)
@@ -239,10 +238,10 @@ abstract class AbstractController
 
     protected function setLogger(): LoggerInterface
     {
-        return $this->app->getContainer()->get('logger');
+        return $this->logger;
     }
 
-    protected function jsonResponse(Response $response, string $status, $message, int $code): Response
+    protected function jsonResponse(string $status, $message, int $code): Response
     {
         $result = [
             'code' => $code,

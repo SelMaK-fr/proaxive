@@ -14,18 +14,23 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\TypeEquipmentType;
 use Selmak\Proaxive2\Infrastructure\Formater\TextFormatterService;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TypeEquipmentController extends AbstractController
 {
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     /**
-     * @throws NotFoundExceptionInterface
+     * @param Request $request
+     * @param Response $response
+     * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
@@ -34,7 +39,7 @@ class TypeEquipmentController extends AbstractController
         $form->setAction($this->getUrlFor('settings_type_equipment_create'));
         $form->handleRequest();
         //
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Paramètres', false);
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
@@ -55,9 +60,7 @@ class TypeEquipmentController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function actionForm(Request $request, Response $response, array $args): Response
     {
@@ -101,9 +104,7 @@ class TypeEquipmentController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response): Response
     {

@@ -13,6 +13,9 @@ use Selmak\Proaxive2\Domain\Brand\Repository\BrandRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\BrandType;
 use Selmak\Proaxive2\Infrastructure\Formater\TextFormatterService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class BrandController extends AbstractController
 {
@@ -24,6 +27,9 @@ class BrandController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
@@ -32,7 +38,7 @@ class BrandController extends AbstractController
         $form->setAction($this->getUrlFor('settings_brand_create'));
         $form->handleRequest();
         //
-        $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
+        $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb('Marques', false);
@@ -64,7 +70,7 @@ class BrandController extends AbstractController
             }
             $uploadedFiles = $request->getUploadedFiles()['form_brand']; // For logo
             $uploadedFile = $uploadedFiles['logo_file'];
-            $path = $this->app->getContainer()->get('settings')['settings']['publicPath']. '/uploads/brands';
+            $path = $this->settings['settings']['publicPath']. '/uploads/brands';
             if($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 $manager = new ImageManager(new Driver());
                 if(!file_exists($path)) {
@@ -96,9 +102,7 @@ class BrandController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response): Response
     {

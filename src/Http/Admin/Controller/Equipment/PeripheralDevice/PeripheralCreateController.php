@@ -11,6 +11,9 @@ use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\PeripheralType;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PeripheralCreateController extends AbstractController
 {
@@ -20,9 +23,12 @@ class PeripheralCreateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function create(Request $request, Response $response, array $args): Response
     {
@@ -46,7 +52,7 @@ class PeripheralCreateController extends AbstractController
             return $this->redirectToRoute('dash_equipment');
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Équipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb('Périphérique', false);

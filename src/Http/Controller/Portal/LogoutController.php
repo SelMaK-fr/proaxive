@@ -12,10 +12,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class LogoutController extends AbstractController
 {
-    public function __construct(App $app, private readonly SessionInterface $session)
-    {
-        parent::__construct($app);
-    }
+
     public function __invoke(Request $request, Response $response): Response
     {
         if($this->session->get('customer')) {

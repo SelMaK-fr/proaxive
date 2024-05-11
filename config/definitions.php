@@ -19,6 +19,8 @@ use Selmak\Proaxive2\Http\Twig\BasePathExtension;
 use Selmak\Proaxive2\Http\Twig\FrontFunctionTwig;
 use Selmak\Proaxive2\Http\Twig\TwigCsrfExtension;
 use Selmak\Proaxive2\Http\Twig\TwigMessageExtension;
+use Selmak\Proaxive2\Infrastructure\Parameter\Interface\ParameterInterface;
+use Selmak\Proaxive2\Infrastructure\Parameter\ParameterService;
 use Selmak\Proaxive2\Infrastructure\Statistics\Interface\StatisticsInterface;
 use Selmak\Proaxive2\Infrastructure\Statistics\StatisticsService;
 use Selmak\Proaxive2\Settings\Settings;
@@ -39,6 +41,10 @@ return [
     'parameters' => function () {
         $readJson = file_get_contents(dirname(__DIR__) . '/config/parameters.json');
         return json_decode($readJson, false);
+    },
+
+    ParameterInterface::class => function () {
+        return new ParameterService(dirname(__DIR__) . '/config/parameters.json');
     },
     // Return Setting Proaxive application
     SettingsInterface::class => function (ContainerInterface $container) {

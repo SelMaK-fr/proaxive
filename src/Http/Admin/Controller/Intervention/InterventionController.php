@@ -12,6 +12,9 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionFastType;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionSearchType;
 use Selmak\Proaxive2\Infrastructure\Paginator\Paginator;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionController extends AbstractController
 {
@@ -21,9 +24,12 @@ class InterventionController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response, array $args): Response
     {
@@ -43,7 +49,7 @@ class InterventionController extends AbstractController
             $interventions = $this->getRepository(InterventionRepository::class)->searchByFields($data);
         }
         // Breadcrumbs
-        $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
+        $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Interventions', false);
         $breadcrumbs->render();

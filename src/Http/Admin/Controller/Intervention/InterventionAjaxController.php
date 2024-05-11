@@ -16,14 +16,12 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailInterventionService;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionAjaxController extends AbstractController
 {
-
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     /**
      * @param Request $request
@@ -53,7 +51,7 @@ class InterventionAjaxController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0){
-                $numberFormatter = new SerialNumberFormatterService($this->app->getContainer()->get('parameters'));
+                $numberFormatter = new SerialNumberFormatterService($this->parameter);
                 $arrayData = [
                     'ref_number' => $numberFormatter->generateSerialNumber(),
                     'name' => $data['name'],
@@ -81,7 +79,6 @@ class InterventionAjaxController extends AbstractController
                 unset($data['create_customer']);
                 $save = $this->getRepository(InterventionRepository::class)->add($arrayData, true);
                 if($save){
-                    $this->statistics->addOne('inter_not_started');
                     $this->addFlash('panel-info', sprintf("La nouvelle intervention - %s - a bien été créée", $arrayData['ref_number']));
                     return $this->redirectToRoute('dash_intervention');
                 }
@@ -100,8 +97,9 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function search(Request $request, Response $response, array $args): Response
     {
@@ -120,9 +118,7 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function start(Request $request, Response $response, array $args): Response
     {
@@ -141,9 +137,10 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function end(Request $request, Response $response, array $args): Response
     {
@@ -170,9 +167,7 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function updateEquipmentName(Request $request, Response $response, array $args): Response
     {
@@ -193,9 +188,10 @@ class InterventionAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function nextStep(Request $request, Response $response, array $args): Response
     {

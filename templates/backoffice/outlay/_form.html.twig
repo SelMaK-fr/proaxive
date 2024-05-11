@@ -1,0 +1,29 @@
+{{ form.renderStart | raw }}
+<div class="grid-12">
+    <div class="col-3_sm-12">
+        {{ form.renderField('customers_id') | raw }}
+    </div>
+    <div class="col-3_sm-12">
+        {{ form.renderField('amount') | raw }}
+    </div>
+    <div class="col-3_sm-12">
+        {{ form.renderField('reference_propal') | raw }}
+    </div>
+    <div class="col-3_sm-12">
+        {{ form.renderField('reference_intervention') | raw }}
+    </div>
+</div>
+<div class="grid-12">
+    <div class="col-9_sm-12">
+        {{ form.renderField('products') | raw }}
+    </div>
+    <div class="col-3_sm-12">
+        {{ form.renderField('seller') | raw }}
+        {{ form.renderField('payment_method') | raw }}
+        {{ form.renderField('status') | raw }}
+    </div>
+</div>
+<div class="text-right">
+    <button type="submit" class="btn btn-light-four">Enregister</button>
+</div>
+{{ form.renderEnd | raw }}

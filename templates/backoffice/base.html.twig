@@ -140,9 +140,9 @@
                 </div>
             </li>
             <li class="title-navigation"><span class="item-title d-block">Administration</span></li>
-            <li class="item-nav dropdown">
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'outlay' %}current{% endif %}">
                 <a href="#" title="Gestion des débours"><span class="icon"><i class="ri-service-line"></i></span> <span class="title">Débours<span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
-                <div class="submenu-dropdown">
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'outlay' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
                             <a href="#">
@@ -150,7 +150,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{{ url_for('outlay_create') }}">
                                 <span>Créer un débours</span>
                             </a>
                         </li>
@@ -177,6 +177,25 @@
                     </ul>
                 </div>
             </li>
+            {% if addonMenu is not null %}
+            <li class="title-navigation"><span class="item-title d-block">Modules</span></li>
+            {% endif %}
+            {% for addonNav in addonMenu %}
+                <li class="item-nav dropdown">
+                    <a href="#" title="Gestion du module {{ addonNav.label }}"><span class="icon"><i class="ri-apps-line"></i></span> <span class="title">{{ addonNav.label }} <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
+                    <div class="submenu-dropdown">
+                        <ul class="dropdown-navigation">
+                        {% for menuItem in addonNav.subItems %}
+                            <li>
+                                <a href="{{ menuItem.url }}">
+                                    <span>{{ menuItem.label }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
         </ul>
     </aside>
     <header class="sk-main-topbar">

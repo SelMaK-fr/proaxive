@@ -2,16 +2,16 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Infrastructure\Security;
 
-class SerialNumberFormatterService
+class SerialNumberFormatterService implements SerialNumberFormatterInterface
 {
-    private \stdClass $params;
+    private mixed $params;
 
-    public function __construct(\stdClass $settings)
+    public function __construct(mixed $settings)
     {
         $this->params = $settings;
     }
 
-    public function getPlaceholders(string $format)
+    public function getPlaceholders(string $format): array
     {
         $regex = "/{{([A-Z_]{1,})(?::)?([a-zA-Z0-9_]{1,6}|.{1})?}}/";
         preg_match_all($regex, $format, $placeholders);

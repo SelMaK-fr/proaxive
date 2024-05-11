@@ -1,0 +1,14 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des débours{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-5">
+                <h3 class="fs-18px fw-500">Modification du débours n°{{ data.reference }}</h3>
+            </div>
+            {{ include('backoffice/outlay/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

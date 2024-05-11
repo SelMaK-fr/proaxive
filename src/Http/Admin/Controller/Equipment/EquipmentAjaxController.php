@@ -12,21 +12,20 @@ use Respect\Validation\Validator as V;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class EquipmentAjaxController extends AbstractController
 {
-
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function search(Request $request, Response $response): Response
     {
@@ -45,8 +44,6 @@ class EquipmentAjaxController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws Exception
      */
     public function addFast(Request $request, Response $response): Response
@@ -74,7 +71,7 @@ class EquipmentAjaxController extends AbstractController
                     return $this->redirectToReferer($request);
                 }
             } else {
-                $this->addFlash('panel-error', sprintf("Des champs ne sont pas remplis"));
+                $this->addFlash('panel-error', "Des champs ne sont pas remplis");
                 return $this->redirectToReferer($request);
             }
         }
@@ -86,9 +83,7 @@ class EquipmentAjaxController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function updateNote(Request $request, Response $response, array $args): Response
     {

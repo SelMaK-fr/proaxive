@@ -11,6 +11,9 @@ use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Customer\CustomerPortalAddressType;
 use Selmak\Proaxive2\Http\Type\Customer\CustomerPortalType;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PortalParameterController extends AbstractController
 {
@@ -19,9 +22,12 @@ class PortalParameterController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
@@ -50,7 +56,10 @@ class PortalParameterController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws LoaderError
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function address(Request $request, Response $response): Response
     {

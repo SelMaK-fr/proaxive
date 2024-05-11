@@ -13,6 +13,9 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\UserType;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailService;
 use Selmak\Proaxive2\Infrastructure\Security\RandomNumberService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class UserActionController extends AbstractController
 {
@@ -22,9 +25,12 @@ class UserActionController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function action(Request $request, Response $response, array $args): Response
     {
@@ -66,7 +72,7 @@ class UserActionController extends AbstractController
             }
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Utilisateurs', $this->getUrlFor('dash_user'));
         $bds->addCrumb('Modification', false);

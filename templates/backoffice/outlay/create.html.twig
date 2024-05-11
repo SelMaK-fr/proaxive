@@ -1,0 +1,15 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des débours{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-5">
+                <h3 class="fs-18px fw-500">Création d'un nouveau débours</h3>
+                <span>Le débours sera automatiquement enregistré en votre nom.</span>
+            </div>
+            {{ include('backoffice/outlay/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

@@ -23,7 +23,7 @@
                                 <p class="m-0">
                                     {{ getData('Gérant', w.director) }}
                                     <span class="d-block">
-                                        Employé(e)s : <span class="label-mid badge-light-green text-uppercase">2</span>
+                                        Employé(e)s : <span class="label-mid badge-light-green text-uppercase">{{ w.countUsers }}</span>
                                     </span>
                                     {{ getData('Courriel', w.mail) }}
                                     {{ getData('Site internet', w.website) }}

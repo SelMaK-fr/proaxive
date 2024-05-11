@@ -16,11 +16,6 @@ use Slim\App;
 final class UserAccountController extends AbstractController
 {
 
-    public function __construct(App $app, private readonly SessionInterface $session, private readonly Query $query)
-    {
-        parent::__construct($app);
-    }
-
     public function getSignIn(Request $request, Response $response): Response
     {
         if($request->getMethod() === 'POST'){
@@ -30,8 +25,8 @@ final class UserAccountController extends AbstractController
                 $user = $this->getRepository(UserRepository::class);
                 $data = $user->findUserByMail($params['email']);
                 if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
-                    $this->session->get('auth');
-                    $this->session->set('auth', $data);
+                    $this->getSession('auth');
+                    $this->setSession('auth', $data);
                     // Create Cookie 7 days
                     $cookie = new CookieFactory();
                     $cookie->setCookie($data, $this->query);
@@ -70,8 +65,8 @@ final class UserAccountController extends AbstractController
 
     public function logout($request, $response)
     {
-        if($this->session->get('auth')) {
-            $this->session->delete('auth');
+        if($this->getSession('auth')) {
+            $this->deleteSession('auth');
             setcookie('proaxive2-auth', '', -1, '/');
         }
         return $response->withStatus(302)->withHeader('Location', $this->getUrlFor('auth_user_login'));

@@ -9,6 +9,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Workshop\Repository\WorkshopRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class WorkshopController extends AbstractController
 {
@@ -17,15 +20,15 @@ class WorkshopController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
-        $workshop = $this->getRepository(WorkshopRepository::class)->all();
+        $workshop = $this->getRepository(WorkshopRepository::class)->allWithUser();
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Magasins', false);
         $bds->render();

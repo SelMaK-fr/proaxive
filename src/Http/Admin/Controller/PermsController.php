@@ -6,6 +6,9 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PermsController extends AbstractController
 {
@@ -14,10 +17,11 @@ class PermsController extends AbstractController
      * @param $request
      * @param $response
      * @return ResponseInterface
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function not_perms($request, $response)
+    public function not_perms($request, $response): ResponseInterface
     {
         return $this->render($response, 'backoffice/perms/perms.html.twig');
     }
@@ -26,10 +30,11 @@ class PermsController extends AbstractController
      * @param $request
      * @param $response
      * @return ResponseInterface
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function not_perms_tech($request, $response)
+    public function not_perms_tech($request, $response): ResponseInterface
     {
         return $this->render($response, 'backoffice/perms/perms_tech.html.twig');
     }

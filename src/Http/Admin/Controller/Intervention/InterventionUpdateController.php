@@ -19,8 +19,6 @@ class InterventionUpdateController extends AbstractController
      * @param array $args
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function update(Request $request, Response $response, array $args): Response
     {

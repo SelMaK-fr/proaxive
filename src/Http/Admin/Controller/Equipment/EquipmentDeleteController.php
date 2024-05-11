@@ -37,9 +37,7 @@ class EquipmentDeleteController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function deleteSelected(Request $request, Response $response, array $args): Response
     {

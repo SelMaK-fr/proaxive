@@ -2,9 +2,6 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Customer;
 
-use App\Interface\CompletionInterface;
-use App\Service\CompletionService;
-use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -17,23 +14,24 @@ use Selmak\Proaxive2\Http\Type\Customer\CustomerParametersType;
 use Selmak\Proaxive2\Http\Type\Customer\CustomerPasswordType;
 use Selmak\Proaxive2\Http\Type\Customer\CustomerType;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class CustomerUpdateController extends AbstractController
 {
-
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     /**
      * @param Request $request
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function update(Request $request, Response $response, array $args): Response
     {
@@ -51,7 +49,7 @@ class CustomerUpdateController extends AbstractController
             }
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
         $bds->addCrumb($customer->fullname, false);
@@ -73,7 +71,10 @@ class CustomerUpdateController extends AbstractController
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws LoaderError
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function updateParameters(Request $request, Response $response, array $args): Response
     {
@@ -98,7 +99,7 @@ class CustomerUpdateController extends AbstractController
             }
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
         $bds->addCrumb($customer->fullname, $this->getUrlFor('customer_read', ['id' => $customer->id]));
@@ -120,9 +121,7 @@ class CustomerUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function updateType(Request $request, Response $response, array $args): Response
     {
@@ -150,9 +149,7 @@ class CustomerUpdateController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      */
     public function updatePortalPassword(Request $request, Response $response, array $args): Response
     {

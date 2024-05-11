@@ -1,0 +1,7 @@
+proaxive-app:
+  tracker_parameters:
+    # Your Settings
+  rental_comp:
+    # Your parameters here
+    licence: 'rentalcomp659852741_jtinformatique'
+    licence_life: false

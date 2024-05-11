@@ -11,6 +11,9 @@ use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Infrastructure\Paginator\Paginator;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class EquipmentController extends AbstractController
 {
@@ -20,8 +23,9 @@ class EquipmentController extends AbstractController
      * @param Response $response
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
@@ -30,7 +34,7 @@ class EquipmentController extends AbstractController
         $e = $this->getRepository(EquipmentRepository::class)->allArrayForPaginator($paginator->get_limit());
         $dataPaginate = $paginator->page_links();
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', false);
         $bds->render();

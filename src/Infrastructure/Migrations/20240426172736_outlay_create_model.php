@@ -24,6 +24,7 @@ final class OutlayCreateModel extends AbstractMigration
             ->addColumn('refund', 'date', ['null' => true])
             ->addColumn('payment_method', 'string', ['null' => true])
             ->addColumn('reference_propal', 'string', ['null' => true])
+            ->addColumn('reference_intervention', 'string', ['null' => true])
             ->addColumn('is_closed', 'boolean', ['null' => true])
             ->addColumn('seller', 'string', ['null' => true])
             ->addColumn('products', 'text', [

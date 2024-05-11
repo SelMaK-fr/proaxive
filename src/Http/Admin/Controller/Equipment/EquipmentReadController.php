@@ -11,6 +11,9 @@ use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class EquipmentReadController extends AbstractController
 {
@@ -21,8 +24,9 @@ class EquipmentReadController extends AbstractController
      * @param array $args
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function read(Request $request, Response $response, array $args): Response
     {
@@ -31,7 +35,7 @@ class EquipmentReadController extends AbstractController
         $c = $this->getRepository(CustomerRepository::class)->find('id', $e->customers_id);
         $i = $this->getRepository(InterventionRepository::class)->allBy('equipments_id', $e->id);
         //
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb($e->customer_name, $this->getUrlFor('customer_read', ['id' => $e->customers_id]));

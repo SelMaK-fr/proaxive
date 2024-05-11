@@ -6,13 +6,15 @@ use Dompdf\Dompdf;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Deposit\Repository\DepositRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class DepositToPdfController extends AbstractController
 {
@@ -22,8 +24,9 @@ class DepositToPdfController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function generatePdf(Request $request, Response $response, array $args): Response
     {
@@ -34,7 +37,7 @@ class DepositToPdfController extends AbstractController
             // confirmation save data notification
             $this->addFlash('panel-info', 'Le dépôt a été sauvegardé.');
             // Return settings array
-            $settings = $this->app->getContainer()->get('settings');
+            $settings = $this->settings;
             //DomPDF
             $dompdf = new Dompdf();
             $dompdf->loadHtml($this->view('/snappy/deposit_pdf.html.twig',

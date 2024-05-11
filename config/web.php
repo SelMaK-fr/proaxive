@@ -27,6 +27,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralUpdateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateArgsController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionArchiveController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
@@ -34,8 +35,11 @@ use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateContro
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateController as CreateIntervention;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionReadController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionValidatedController;
+use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\PermsController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\BrandController;
@@ -156,7 +160,7 @@ return function (App $app) {
     $app->group('/admin/interventions', function (RouteCollectorProxy $group){
        $group->get('', [InterventionController::class, 'index'])->setName('dash_intervention');
        $group->get('/[:{args}]', [InterventionController::class, 'index'])->setName('dash_intervention_all');
-       $group->get('/search[:{args}]', [\Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchController::class, 'searchByFields'])->setName('intervention_search_fields');
+       $group->get('/search[:{args}]', [InterventionSearchController::class, 'searchByFields'])->setName('intervention_search_fields');
        $group->get('/ajax/search/{key}', [InterventionAjaxController::class, 'search'])->setName('intervention_search');
        $group->post('/ajax/add/fast', [InterventionAjaxController::class, 'addFast'])->setName("intervention_create_fast");
        $group->post('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
@@ -169,8 +173,7 @@ return function (App $app) {
        $group->any('/create-regular/client/{id:[0-9]+}/equipments[:{args}]', [CreateIntervention::class, 'createStep3'])->setName('intervention_create_regular_step3')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create-regular/client/{id:[0-9]+}/observations[:{args}]', [CreateIntervention::class, 'createStep4'])->setName('intervention_create_regular_step4')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create-regular/client/{id:[0-9]+}/setting[:{args}]', [CreateIntervention::class, 'createStep5'])->setName('intervention_create_regular_step5')->add(CheckUrlCreateMiddleware::class);
-       $group->any('/create-regular/c-{id:[0-9]+}', [InterventionCreateController::class, 'regular'])->setName('intervention_create_customer_regular');
-       $group->any('/create-regular/complete', [InterventionCreateController::class, 'next'])->setName('intervention_create_customer_regular_complete');
+       $group->any('/create/c-{id:[0-9]+}', InterventionCreateArgsController::class)->setName('intervention_create_args');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
        $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
        $group->post('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
@@ -185,6 +188,12 @@ return function (App $app) {
        $group->any('/{reference}/sign', [DepositSignController::class, 'index'])->setName('deposit_sign');
        $group->get('/[:{args}]', [DepositReadController::class, 'read'])->setName('deposit_read');
        $group->get('/pdf/{reference}', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
+    /* Outlay */
+    $app->group('/admin/outlay', function (RouteCollectorProxy $group) {
+        //$group->post('', [DepositCreateController::class, 'create'])->setName('deposit_create');
+        $group->any('/create', OutlayCreateController::class)->setName('outlay_create');
+        $group->any('/{id:[0-9]+}/update', OutlayUpdateController::class)->setName('outlay_update');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Task */
     $app->group('/admin/tasks', function (RouteCollectorProxy $group) {

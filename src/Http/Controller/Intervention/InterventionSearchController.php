@@ -16,18 +16,11 @@ use Slim\App;
 class InterventionSearchController extends AbstractController
 {
 
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
-
     /**
      * @param Request $request
      * @param Response $response
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function search(Request $request, Response $response): Response
     {

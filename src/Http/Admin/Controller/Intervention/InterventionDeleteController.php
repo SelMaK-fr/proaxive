@@ -19,8 +19,6 @@ class InterventionDeleteController extends AbstractController
      * @param array $args
      * @return Response
      * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function delete(Request $request, Response $response, array $args): Response
     {

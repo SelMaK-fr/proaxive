@@ -8,5 +8,5 @@ use Selmak\Proaxive2\Domain\BaseRepository;
 
 class OutlayRepository extends BaseRepository
 {
-
+    protected string $model = 'outlay';
 }

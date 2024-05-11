@@ -13,19 +13,23 @@ use Selmak\Proaxive2\Domain\OperatingSystem\Repository\OperatingSystemRepository
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\OperatingSystemType;
 use Slim\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class OperatingSystemController extends AbstractController
 {
 
-    public function __construct(App $app, private readonly StatefulValidator $validator)
-    {
-        parent::__construct($app);
-    }
-
     /**
-     * @throws NotFoundExceptionInterface
+     * @param Request $request
+     * @param Response $response
+     * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index(Request $request, Response $response): Response
     {
@@ -34,7 +38,7 @@ class OperatingSystemController extends AbstractController
         $form->setAction($this->getUrlFor('settings_os_create'));
         $form->handleRequest();
         //
-        $breadcrumbs = $this->app->getContainer()->get('breadcrumbs');
+        $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Paramètres', false);
         $breadcrumbs->addCrumb("Systèmes d'exploitation", false);

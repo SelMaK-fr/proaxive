@@ -12,6 +12,9 @@ use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentFastType;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionValidationType;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class InterventionValidatedController extends AbstractController
 {
@@ -21,9 +24,12 @@ class InterventionValidatedController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function validated(Request $request, Response $response, array $args): Response
     {
@@ -54,7 +60,7 @@ class InterventionValidatedController extends AbstractController
             }
         }
         // Breadcrumbs
-        $bds = $this->app->getContainer()->get('breadcrumbs');
+        $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
         $bds->addCrumb('Validation', false);

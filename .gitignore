@@ -5,6 +5,7 @@
 /.env.exemple
 /var/logs/*.log
 /var/pdf/*.pdf
+/var/logs
 ###< Assets ###
 /public/assets/sass
 /public/assets/.sass-cache
@@ -13,6 +14,8 @@
 /proaxive-for-hosting.sh
 /proaxive-update.sh
 /push.sh
+###< Addon ###
+/src/Addon
 ###< Storage ###
 /storage/backups/*
 /storage/tmp/*

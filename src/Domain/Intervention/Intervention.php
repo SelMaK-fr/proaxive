@@ -9,17 +9,22 @@ use Envms\FluentPDO\Literal;
 class Intervention
 {
     /* @var string */
-    public string $name;
+    public string $name = '';
     /* @var string */
     public string $sort = 'Dépannage';
     /* @var string|null */
     public ?string $description = '';
     /* @var string|null */
     public ?string $before_breakdown = '';
+    public ?string $way_type = '';
+    public ?int $way_steps = 1;
+    public ?string $a_priority = '';
     /* @var int|string */
     public int|string $company_id = 0;
     /* @var int|string */
     public int|string $customers_id = 0;
+    /* @var int|string|null */
+    public int|string|null $equipments_id = null;
     /* @var int|string */
     public int|string $users_id = 0;
     /* @var string */
@@ -28,8 +33,18 @@ class Intervention
     public string $ref_for_link;
     /* @var string */
     public string $state = 'PENDING';
+    public string $customer_name = '';
+    public string $equipment_name = '';
+    public int $total_time = 1;
+
     public Literal $created_at;
     public Literal $updated_at;
+
+    public function __construct()
+    {
+        $this->created_at = new Literal('NOW()');
+        $this->updated_at = new Literal('NOW()');
+    }
 
 
     public function getName(): string
@@ -164,5 +179,81 @@ class Intervention
         return $this;
     }
 
+    public function getEquipmentsId(): int|string|null
+    {
+        return $this->equipments_id;
+    }
+
+    public function setEquipmentsId(int|string|null $equipments_id): ?Intervention
+    {
+        $this->equipments_id = $equipments_id;
+        return $this;
+    }
+
+    public function getWayType(): ?string
+    {
+        return $this->way_type;
+    }
+
+    public function setWayType(?string $way_type): Intervention
+    {
+        $this->way_type = $way_type;
+        return $this;
+    }
+
+    public function getWaySteps(): ?int
+    {
+        return $this->way_steps;
+    }
+
+    public function setWaySteps(?int $way_steps): Intervention
+    {
+        $this->way_steps = $way_steps;
+        return $this;
+    }
+
+    public function getAPriority(): ?string
+    {
+        return $this->a_priority;
+    }
+
+    public function setAPriority(?string $a_priority): Intervention
+    {
+        $this->a_priority = $a_priority;
+        return $this;
+    }
+
+    public function getCustomerName(): string
+    {
+        return $this->customer_name;
+    }
+
+    public function setCustomerName(string $customer_name): Intervention
+    {
+        $this->customer_name = $customer_name;
+        return $this;
+    }
+
+    public function getEquipmentName(): string
+    {
+        return $this->equipment_name;
+    }
+
+    public function setEquipmentName(string $equipment_name): Intervention
+    {
+        $this->equipment_name = $equipment_name;
+        return $this;
+    }
+
+    public function getTotalTime(): int
+    {
+        return $this->total_time;
+    }
+
+    public function setTotalTime(int $total_time): Intervention
+    {
+        $this->total_time = $total_time;
+        return $this;
+    }
 
 }

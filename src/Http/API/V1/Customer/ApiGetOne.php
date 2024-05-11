@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Selmak\Proaxive2\Http\API\V1\Customer;
 
+use Envms\FluentPDO\Exception;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -18,9 +19,7 @@ final class ApiGetOne extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws Exception
      */
     public function __invoke(Request $request, Response $response, array $args): Response
     {
