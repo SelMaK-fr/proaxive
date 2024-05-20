@@ -1,5 +1,6 @@
 # PROAXIVE 2.0
 ### version 2.0.3 [beta]
+#### Slim Framework v4.13.0
 
 [![Minimum PHP Version](https://img.shields.io/badge/PHP->=8.2-%23786fa6)](https://php.net/)
 [![Minimum MySQL Version](https://img.shields.io/badge/MySQL-5.x-%23f0932b)](https://www.mysql.com/fr/)
@@ -27,7 +28,7 @@ Proaxive est distribué sous les termes de la licence GNU General Public License
 
 ## Installation avec script (Linux)
 
-Rendez vous dans le dossier où sera installation Proaxive et téléchargez le script d'installation pour Linux
+Rendez vous dans le dossier où sera installé Proaxive et téléchargez le script d'installation pour Linux
 ```
 curl -O https://files.proaxive.fr/script/debian/proaxive-for-xxxx.sh
 ```

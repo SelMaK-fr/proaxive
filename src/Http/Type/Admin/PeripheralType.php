@@ -112,6 +112,10 @@ class PeripheralType extends Type
                 'label' => "Clé wifi",
                 'placeholder' => "Clé de connexion Wifi"
             ])
+            ->add('is_outofservice', 'checkbox', [
+                'required' => false,
+                'label' => 'Hors-Service ?'
+            ])
             ;
         return $builder->getForm();
     }

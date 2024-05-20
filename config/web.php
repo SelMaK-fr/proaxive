@@ -83,12 +83,6 @@ return function (App $app) {
         $group->any('reset/password/{token}', [UserResetController::class, 'newPassword'])->setName('auth_reset_password')->add(CheckDateCodeInitMiddleware::class);
         $group->any('logout', [UserAccountController::class, 'logout'])->setName('auth_user_logout');
     });
-
-    // API
-    $app->group('/api/', function (RouteCollectorProxy $group){
-        $group->get('intervention/status', [ApiInterventionController::class, 'interventionStatus'])->setName('api_interventions_status');
-    });
-
     $app->get('/search/i/', [FrontInterventionSearch::class, 'search'])->setName('app_search_intervention');
     $app->group('/i/', function (RouteCollectorProxy $group) {
         $group->get('{ref_for_link}', [FrontInterventionRead::class, 'read'])->setName('app_read_intervention')->add(IfLinkExpirateMiddleware::class);

@@ -1,12 +1,14 @@
 <?php
 declare(strict_types=1);
-namespace Selmak\Proaxive2\Http\Twig;
+namespace Selmak\Proaxive2\Infrastructure\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class FrontFunctionTwig extends AbstractExtension
 {
+
+
 
     public function getFunctions(): array
     {
@@ -20,6 +22,7 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataWaySteps', [$this, 'getDataWaySteps']),
             new TwigFunction('getDataWayStepsNext', [$this, 'getDataWayStepsNext']),
             new TwigFunction('getDataWayStepsStatus', [$this, 'getDataWayStepsStatus'], ['is_safe' => ['html']]),
+            new TwigFunction('getDataWithNotification', [$this, 'getDataWithNotification'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -50,6 +53,7 @@ class FrontFunctionTwig extends AbstractExtension
     /**
      * @param string $title
      * @param string|array|null $data
+     * @param string|null $tag
      * @return string
      */
     public function getData(string $title, string|array|null $data, ?string $tag = 'span'): string
@@ -75,6 +79,16 @@ class FrontFunctionTwig extends AbstractExtension
             return $html;
         }
         return '';
+    }
+
+    public function getDataWithNotification(mixed $data): string
+    {
+        if(empty($data)){
+            $var = '<div class="alert alert-light-info">Cette donnée n\'est pas renseignée</div>';
+        } else {
+            $var = $data;
+        }
+        return $var;
     }
 
     /**

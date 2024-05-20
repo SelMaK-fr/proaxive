@@ -7,6 +7,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Domain\EDocument\Repository\EDocumentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
@@ -50,6 +51,9 @@ class InterventionReadController extends AbstractController
         $form->setAction($this->getUrlFor('intervention_update', ['id' => $intervention_id]));
         $form->handleRequest();
 
+        // Find Documents
+        $documents = $this->getRepository(EDocumentRepository::class)->allBy('interventions_id', $intervention_id);
+
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -68,7 +72,8 @@ class InterventionReadController extends AbstractController
            'formTasks' => $formTasks,
            'breadcrumbs' => $bds,
            'form' => $form,
-           'currentMenu' => 'intervention'
+           'currentMenu' => 'intervention',
+            'documents' => $documents
         ]);
 
     }

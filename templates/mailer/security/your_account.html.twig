@@ -92,6 +92,10 @@
             background-color:#393382;
             color:white;
         }
+        .btn-pink{
+            background-color:#f73164;
+            color:white;
+        }
     </style>
 </head>
 <body>
@@ -102,7 +106,7 @@
             <table class="w100">
                 <tr>
                     <td class="align-center" style="padding-top:15px;">
-                        <img style="height: 150px;width:auto;" src="https://proaxive.fr/assets/logo-beta_300.png" alt="">
+                        <img style="height: 150px;width:auto;" src="{{ full_url_for('app_home') }}/img/logo_proaxive2.png" alt="">
                         <h2>Proaxive</h2>
                         <h4 class="ptpb-10px title">Votre compte utilisateur a été créé.</h4>
                     </td>
@@ -113,7 +117,7 @@
                     Bonjour <strong>{{ data.fullname }}</strong>,
                     <div class="pt-10px">
                         <span class="block" style="padding-bottom:15px">Afin de finaliser la configuration de votre compte utilisateur, veuillez cliquer sur le lien ci-dessous.</span>
-                        <a href="{{ full_url_for('auth_first_login') }}?token={{ data.token }}&code={{ data.confirm_at }}" class="btn btn-primary" style="margin-top:20px">Configurer mon compte</a>
+                        <a href="{{ full_url_for('auth_first_login') }}?token={{ token }}&code={{ code }}" class="btn btn-pink" style="margin-top:20px">Configurer mon compte</a>
                     </div>
                 </div>
             </div>

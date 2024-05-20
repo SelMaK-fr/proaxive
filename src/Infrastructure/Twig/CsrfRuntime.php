@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Selmak\Proaxive2\Http\Twig;
+namespace Selmak\Proaxive2\Infrastructure\Twig;
 
 use Exception;
 use Slim\Csrf\Guard;

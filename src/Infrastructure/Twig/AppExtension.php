@@ -1,6 +1,6 @@
 <?php
 
-namespace Selmak\Proaxive2\Http\Twig;
+namespace Selmak\Proaxive2\Infrastructure\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

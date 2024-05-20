@@ -17,7 +17,7 @@ class InterventionSearchType extends Type
             'html_validation' => false,
         ], $data))
             ->add('sort', ChoiceType::class, [
-                'label' => 'Type',
+                'label' => '',
                 'placeholder' => 'Choisissez un type',
                 'choices' => [
                     'Dépannage' => 'Dépannage',
@@ -32,7 +32,7 @@ class InterventionSearchType extends Type
 
             ])
             ->add('a_priority', ChoiceType::class, [
-                'label' => 'Priorité',
+                'label' => '',
                 'placeholder' => 'Sélectionnez un niveau',
                 'choices' => [
                     'LOW' => 'Basse',
@@ -44,19 +44,19 @@ class InterventionSearchType extends Type
                 'required' => false
             ])
             ->add('company_id', ChoiceType::class, [
-                'label' => 'Magasin',
+                'label' => '',
                 'placeholder' => 'Sélectionnez un magasin/atelier',
                 'choices' => self::getCompany(),
                 'required' => false
             ])
             ->add('way_type', ChoiceType::class, [
-                'label' => "Statut",
+                'label' => "",
                 'placeholder' => "Sélectionnez un statut",
                 'choices' => self::getStatus(),
                 'required' => false
             ])
             ->add('way_steps', ChoiceType::class, [
-                'label' => "Etat",
+                'label' => "",
                 'placeholder' => "Sélectionnez un état",
                 'choices' => [
                     1 => 'Matériel récupéré',
@@ -68,7 +68,7 @@ class InterventionSearchType extends Type
                 'required' => false
             ])
             ->add('users_id', ChoiceType::class, [
-                'label' => "Technicien",
+                'label' => "",
                 'placeholder' => "Sélectionnez un technicien",
                 'choices' => self::getUsers(),
                 'required' => false

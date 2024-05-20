@@ -59,10 +59,12 @@ class UserActionController extends AbstractController
                     $this->addFlash('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
                 } else {
                     $t = new RandomNumberService();
-                    $u->setToken($t->token(30));
-                    $u->setConfirmAt(rand(7, 9999999));
+                    $token = $t->token(30);
+                    $code = rand(7, 9999999);
+                    $u->setToken($token);
+                    $u->setConfirmAt($code);
                     $mail = new MailService($this->getParameters('mailer'));
-                    $mail->sendMail($u->getMail(), $this->view('mailer/security/your_account.html.twig', ['data' => $data]), 'Votre compte utilisateur Proaxive.');
+                    $mail->sendMail($u->getMail(), $this->view('mailer/security/your_account.html.twig', ['data' => $data, 'token' => $token, 'code' => $code]), 'Votre compte utilisateur Proaxive.');
                     $save = $this->getRepository(UserRepository::class)->add((array)$u, true);
                     if($save){
                         $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));

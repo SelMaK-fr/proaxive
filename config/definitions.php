@@ -14,15 +14,16 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Selmak\Proaxive2\Http\API\Service\ApiTokenInterface;
 use Selmak\Proaxive2\Http\API\Service\ApiTokenService;
-use Selmak\Proaxive2\Http\Twig\AppExtension;
-use Selmak\Proaxive2\Http\Twig\BasePathExtension;
-use Selmak\Proaxive2\Http\Twig\FrontFunctionTwig;
-use Selmak\Proaxive2\Http\Twig\TwigCsrfExtension;
-use Selmak\Proaxive2\Http\Twig\TwigMessageExtension;
 use Selmak\Proaxive2\Infrastructure\Parameter\Interface\ParameterInterface;
 use Selmak\Proaxive2\Infrastructure\Parameter\ParameterService;
 use Selmak\Proaxive2\Infrastructure\Statistics\Interface\StatisticsInterface;
 use Selmak\Proaxive2\Infrastructure\Statistics\StatisticsService;
+use Selmak\Proaxive2\Infrastructure\Twig\AppExtension;
+use Selmak\Proaxive2\Infrastructure\Twig\AssetExtension;
+use Selmak\Proaxive2\Infrastructure\Twig\BasePathExtension;
+use Selmak\Proaxive2\Infrastructure\Twig\FrontFunctionTwig;
+use Selmak\Proaxive2\Infrastructure\Twig\TwigCsrfExtension;
+use Selmak\Proaxive2\Infrastructure\Twig\TwigMessageExtension;
 use Selmak\Proaxive2\Settings\Settings;
 use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\App;
@@ -138,6 +139,7 @@ return [
         $twig->addExtension(new AppExtension());
         $twig->addExtension(new IntlExtension());
         $twig->addExtension(new FrontFunctionTwig());
+        $twig->addExtension(new AssetExtension($container->get(SettingsInterface::class)));
         return $twig;
     },
 

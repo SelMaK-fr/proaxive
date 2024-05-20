@@ -20,7 +20,7 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "slim/slim": "^4.12",
+        "slim/slim": "^4.13.0",
         "slim/twig-view": "^3.3",
         "slim/psr7": "^1.6",
         "nyholm/psr7": "^1.8",
@@ -40,7 +40,7 @@
         "digitalnature/php-ref": "^1.3",
         "slim/flash": "^0.4.0",
         "twig/intl-extra": "^v3.7.1",
-        "palmtree/form": "^4.4",
+        "palmtree/form": "^v4.5.1",
         "flynsarmy/slim-monolog": "^1.0",
         "slim/csrf": "^1.3",
         "ext-openssl": "*",

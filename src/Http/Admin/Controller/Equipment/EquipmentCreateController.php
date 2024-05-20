@@ -42,7 +42,7 @@ class EquipmentCreateController extends AbstractController
         }
         $form = $this->createForm(EquipmentType::class);
         $form->handleRequest();
-        if($form->isSubmitted()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_equipment'];
             // If end_guarantee is empty = null
             if(empty($data['end_guarantee'])){$data['end_guarantee'] = null;}
