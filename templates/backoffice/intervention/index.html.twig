@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+            <div class="results" id="htmlContent"></div>
         </div>
         <div class="card-filter-search mt-3">
             <div class="pt-2 pb-2 pl-3 pr-3 border-bottom-dashed">
@@ -38,10 +39,10 @@
     <div class="col-9_sm-12">
         <ul id="tabs" class="nav-components">
             <li><a {% if filter is empty %}class="selected"{% endif%} href="{{ url_for('dash_intervention') }}">Toutes</a></li>
-            <li><a {% if filter == 'draft' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'draft'}) }}">Brouillons</a></li>
-            <li><a {% if filter == 'pending' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'pending'}) }}">Non finalisées</a></li>
+            <li><a {% if filter == 'DRAFT' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'DRAFT'}) }}">Brouillons</a></li>
+            <li><a {% if filter == 'PENDING' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'PENDING'}) }}">Non finalisées</a></li>
+            <li><a {% if filter == 'COMPLETED' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'COMPLETED'}) }}">Complètes</a></li>
         </ul>
-        <div class="results" id="htmlContent"></div>
         {% for i in interventions %}
             <div class="item-list {% if i.a_priority == 'URGENT' or i.a_priority == 'ABSOLUTE' %}item-list-ribbon{% endif %}">
                 {% if i.a_priority == 'URGENT' or i.a_priority == 'ABSOLUTE' %}

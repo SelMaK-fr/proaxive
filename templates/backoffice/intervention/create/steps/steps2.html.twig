@@ -28,12 +28,8 @@
                                 {% else %}
                                     {{ form.renderField('customers_id') | raw }}
                                 {% endif %}
-                                <p class="mt-3">
-                                    <span class="d-block">Le compte client n'existe pas ?</span>
-                                    <button type="button" class="btn btn-sk-one mt-2">Créer un client</button>
-                                </p>
                             </div>
-                            <div class="col-6_sm-12">
+                            <div class="col-6_sm-12 choice_radio_custom">
                                 <div class="form-group mb-3">
                                     {% if auth.roles != "SUPER_ADMIN" %}
                                         <label class="form-label" for="form_intervention_step2-users_id">Technicien</label>

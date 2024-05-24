@@ -1,6 +1,6 @@
 function dashHomeStatIntervention() {
     let xmlhttp = new XMLHttpRequest();
-    let url = "/api/v1/stats/interventions";
+    let url = "/api/v1/interventions/stats";
     xmlhttp.open("GET",url,true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function(){

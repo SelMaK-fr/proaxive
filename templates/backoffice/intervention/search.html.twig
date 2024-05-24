@@ -1,0 +1,19 @@
+{% if interventions is not empty %}
+    <div class="p-4">
+        <h4 class="card-title">Résultat de la recherche</h4>
+        <ul>
+            {% for i in interventions %}
+                <li class="border-bottom-dashed pt-3 pb-3">
+                    <a class="color-inherit" href="{{ url_for('intervention_read', {'id': i.id}) }}">
+                        <h4>{{ i.name }}</h4>
+                        <span class="d-block">{{ i.customer_name }}</span>
+                        <span class="d-block">{{ i.equipment_name }}</span>
+                        <span class="d-block">{{ i.sort }} / {{ i.way_type }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="p-4">Il n'y a aucun résultat pour cette recherche</div>
+{% endif %}

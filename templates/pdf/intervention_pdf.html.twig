@@ -1,0 +1,267 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intervention n°{{ i.ref_number }}</title>
+    <style>
+        :root{
+            --primary: #01358D;
+            --secondary: #F9556D;
+        }
+        body{
+            font-size: 8pt;
+            width: auto!important;
+            margin: auto!important;
+        }
+        .v-top{vertical-align: top}
+        .primary{color:#01358D}
+        .secondary{color:#F9556D}
+        .blue-light{background-color:#edf5f8;}
+        .table-container{width: 100%;margin: 0 auto;}
+        .table-collapse{border-collapse: collapse;}
+        .w100{width: 100%;}
+        .grey{background-color:#4c4c4c;color:white;}
+        .text-center{text-align: center}
+        .text-right{text-align: right}
+        .text-left{text-align: left}
+        .uppercase{text-transform: uppercase}
+        .fs12{font-size:12pt;}
+        .fs13{font-size:13pt;}
+        .fs14{font-size:14pt;}
+        .fs15{font-size:15pt;}
+        .fw600{font-weight: bold}
+        .br-l{border-left:1px solid black;box-shadow: inset 0 0 0 -1px black;}
+        .br-r{border-right:1px solid black;box-shadow: inset 0 0 0 -1px black;}
+        .br-b{border-bottom:1px solid black;box-shadow: inset 0 0 0 -1px black;}
+        .br-t{border-top:1px solid black;box-shadow: inset 0 0 0 -1px black;}
+        .br-all{border:1px solid black;box-shadow: inset 0 0 0 -1px black;}
+        .p0{padding:0}
+        .p10px{padding: 10px;}
+        .block{display: block}
+        thead.primary tr th, thead tr th.primary{background-color:#01358D; color:white;text-transform: uppercase}
+        thead.secondary tr th, thead tr th.secondary{background-color:#F9556D; color:white;text-transform: uppercase}
+        table tr td{line-height: 1;}
+        table.table-nth tr:nth-child(2n+1), ul.tasks li:nth-child(2n+1){
+            background-color:#dbdbdb;
+        }
+        table.table-nth tr td{line-height: 1.4;padding:0 10px;vertical-align: middle}
+        ul.tasks{list-style: none;margin: 0;padding: 0}
+        ul.tasks li{line-height: 1.4;padding:0 10px;text-transform: uppercase}
+        table.table-diag td{
+            padding:6px;
+        }
+        table.table-diag td.diag_key{
+            width: 55%;
+            font-weight: 500;
+            border: 1px dashed black;
+            box-shadow: inset 0 0 0 -1px black;
+        }
+        table.table-diag td.diag_value{
+            border:1px dashed black;
+            box-shadow: inset 0 0 0 -1px black;
+        }
+        table.table-diag td.diag_value.bad{
+            border-color:#F9556D;
+            background-color:#F9556D;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+<div class="br-all">
+    <table class="table-container table-collapse">
+        <tr>
+            <td class="grey text-center"><span class="fs13 fw600">Services informatiques {{ i.cy_name }}</span></td>
+        </tr>
+    </table>
+    <table class="table-container table-collapse">
+        <tr>
+            <td class="p0 br-r">
+                <div class="p10px">
+                    <span class="block"><span class="fw600">{{ i.cy_name }}</span></span>
+                    <span class="uppercase">{{ i.cy_address }}, {{ i.cy_zipcode }} {{ i.cy_city }}</span>
+                </div>
+                <table class="table-collapse br-r br-t" style="width: 85%">
+                    <tr>
+                        <td class="br-r br-b text-center">Du Lundi au samedi</td>
+                        <td class="br-r br-b"></td>
+                    </tr>
+                    <tr>
+                        <td class="br-r text-center">10H-12H /14H-18H</td>
+                        <td class="br-r">Dépôt/Retrait sur RDV</td>
+                    </tr>
+                </table>
+                <table class="table-container table-collapse br-t">
+                    <tr class="blue-light">
+                        <td class="p10px">
+                            Tel: <span class="fw600">{{ i.cy_phone }}</span> <br>
+                            Mobile : <span class="fw600"></span>
+                        </td>
+                        <td class="br-l p10px">
+                            {{ i.cy_mail }} <br>
+                            {{ i.cy_website }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="">
+                <div class="logo">
+                    {{ i.cy_logo }}
+                </div>
+                <table class="table-container table-collapse br-t">
+                    <tr class="blue-light">
+                        <td class="p10px">
+                            Siret : {{ i.cy_siret }} <br>
+                            APRM : {{ i.cy_aprm }}
+                        </td>
+                        <td class="br-l p10px">
+                            RM : {{ i.cy_rm}} <br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="table-container table-collapse br-t">
+        <tr>
+            <td class="text-center fw600" style="padding:4px 0;">Bon d'intervention/réparation/assemblage PC</td>
+        </tr>
+    </table>
+    <table class="table-container table-collapse br-t table-nth">
+        <thead class="primary">
+        <tr>
+            <th>Intervention</th>
+            <th>{{ i.customer_name }}</th>
+        </tr>
+        </thead>
+        <tr>
+            <td class="br-r">Inter N° : {{ i.ref_number}} | Dépôt le : {{ i.d_deposit_date | date('d/m/Y') }}</td>
+            <td>Adresse : {{ i.c_address }}, {{ i.c_zipcode }} {{ i.c_city }}</td>
+        </tr>
+        <tr>
+            <td class="br-r">Démarrée le : {{ i.start_date | date('d/m/Y') }} | <span class="secondary">Terminée le</span> : {{ i.end_date | date('d/m/Y') }}</td>
+            <td>Courriel : {{ i.c_mail }}</td>
+        </tr>
+        <tr>
+            <td class="br-r">Suivi : </td>
+            <td>Téléphone : {{ i.c_phone }} / {{ i.c_mobile }}</td>
+        </tr>
+        <tr>
+            <td class="br-r">Technicien : {{ i.u_fullname }}</td>
+            <td></td>
+        </tr>
+        <!-- Equipment -->
+        <thead class="primary">
+        <tr>
+            <th colspan="2">description du materiel</th>
+        </tr>
+        </thead>
+        <tr>
+            <td class="br-r">Fabricant/Assembleur : {{ i.e_brand_name }}</td>
+            <td>Année d'assemblage : {{ i.e_year }}</td>
+        </tr>
+        <tr>
+            <td class="br-r">N°de série : {{ i.e_serial }}</td>
+            <td>N°de produit : {{ i.e_model }}</td>
+        </tr>
+        <tr>
+            <td class="br-r">Type : {{ i.e_type_name }}</td>
+            <td>OS : {{ i.e_os_name }}</td>
+        </tr>
+    </table>
+    <table class="table-container table-collapse">
+        <thead class="primary">
+        <tr>
+            <th>Tâches effectuées</th>
+            <th class="text-center">Description de la panne</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="br-r v-top p0" style="width: 41%">
+                <ul class="tasks">
+                    {% for t in tasks %}
+                        <li>{{ t.name }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td class="p0">
+                <p class="p10px uppercase">{{ i.description }}</p>
+                <table class="table-container table-collapse">
+                    <thead class="secondary">
+                    <tr>
+                        <th>Observation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="p10px uppercase">{{ i.observation }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table-container table-collapse">
+                    <thead class="primary">
+                    <tr>
+                        <th>Note à votre attention</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="p10px uppercase">{{ i.note_customer }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table-container table-collapse">
+        <thead>
+        <tr>
+            <th class="primary" style="width: 60%">Evaluations initiales</th>
+            <th class="secondary">signature entreprise</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="br-r p10px v-top">
+                <div style="margin-bottom: 10px">Diagnostic avant retrait du matériel</div>
+                <table class="table-collapse table-diag">
+                    <tr>
+                        <td class="diag_key">CPU</td>
+                        <td class="diag_value {% if i.diag_cpu != 'OK' %}bad{% endif %}">{{ i.diag_cpu }}</td>
+                    </tr>
+                    <tr>
+                        <td class="diag_key">GPU (graphique)</td>
+                        <td class="diag_value {% if i.diag_gpu != 'OK' %}bad{% endif %}">{{ i.diag_gpu }}</td>
+                    </tr>
+                    <tr>
+                        <td class="diag_key">Mémoire (RAM)</td>
+                        <td class="diag_value {% if i.diag_memory != 'OK' %}bad{% endif %}">{{ i.diag_memory }}</td>
+                    </tr>
+                    <tr>
+                        <td class="diag_key">Stockage (HDD/SSD)</td>
+                        <td class="diag_value {% if i.diag_storage != 'OK' %}bad{% endif %}">{{ i.diag_storage }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <p class="p10px">signature</p>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div style="margin-top: 15pt">
+    <table class="table-container table-collapse">
+        <tr>
+            <td class="text-right" style="width: 40%;padding-right: 15px">Scanner le QR Code</td>
+            <td class="text-center">
+                <img style="height: 85px;width: auto;" src="{{ qrcode }}" alt="">
+            </td>
+            <td class="text-left" style="width: 40%;padding-left:15px">pour visualiser en ligne</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

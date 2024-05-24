@@ -24,7 +24,7 @@ class InterventionUpdateController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         if($request->getMethod() === 'POST') {
-            $data = $request->getParsedBody()['form_intervention_update'];
+            $data = array_values($request->getParsedBody())[0];
             $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
             $this->addFlash('panel-success', sprintf("L'intervention - %s - a bien été mise à jour", $data['name']));
             return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);

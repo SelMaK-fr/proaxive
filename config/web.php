@@ -9,6 +9,8 @@ use Selmak\Proaxive2\Domain\Intervention\Middleware\CheckUrlCreateMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDarftMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfLinkExpirateMiddleware;
+use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingController;
+use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerCreateController;
@@ -36,6 +38,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreat
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionToPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionValidatedController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayCreateController;
@@ -47,6 +50,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Settings\OperatingSystemController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\ParametersController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TaskController as SettingTask;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TypeEquipmentController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\UpdateAppController;
 use Selmak\Proaxive2\Http\Admin\Controller\Society\SocietyUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Task\AddTaskToInterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Task\DeleteTaskOfInterventionController;
@@ -174,6 +178,7 @@ return function (App $app) {
        $group->any('/{id:[0-9]+}/validation', [InterventionValidatedController::class, 'validated'])->setName('intervention_validation');
        $group->any('/{id:[0-9]+}/archive', [InterventionArchiveController::class, 'index'])->setName('intervention_archive');
        $group->any('/{id:[0-9]+}/archive/read', [InterventionArchiveController::class, 'readArchive'])->setName('intervention_archive_read');
+       $group->get('/{id:[0-9]+}/pdf', InterventionToPdfController::class)->setName('intervention_open_pdf');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class)->add(IfDataNullOrEmptyMiddleware::class);
     /* Deposit */
@@ -194,6 +199,12 @@ return function (App $app) {
         $group->post('/add/i-{id:[0-9]+}', [AddTaskToInterventionController::class, 'addToIntervention'])->setName('task_add_intervention');
         $group->post('/delete/i-{id:[0-9]+}_t-{task:[0-9]+}', [DeleteTaskOfInterventionController::class, 'deleteOfI'])->setName('task_delete_intervention');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
+    /** E-Calendar */
+    $app->group('/admin/booking', function (RouteCollectorProxy $group) {
+        $group->get('', [BookingController::class, 'index'])->setName('dash_booking');
+        $group->any('/get/all', [BookingController::class, 'getAll'])->setName('booking_get_all');
+        $group->any('/c-i', [BookingCreateController::class, 'createForIntervention'])->setName('add_booking_for_intervention');
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Settings */
     $app->group('/admin/settings', function (RouteCollectorProxy $group) {
        $group->any('/preferences', [ParametersController::class, 'parameters'])->setName('settings_preference')->add(RedirectIfNotAdminMiddleware::class);
@@ -213,6 +224,7 @@ return function (App $app) {
        $group->post('/operating-system/create', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_create');
        $group->post('/operating-system/update[:{args}]', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_update');
        $group->delete('/operating_system/delete', [OperatingSystemController::class, 'delete'])->setName('settings_os_delete');
+       $group->any('/update', UpdateAppController::class)->setName('settings_update');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Portal */
     $app->any('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');

@@ -6,8 +6,8 @@
             <p class="m-0">Ici, vous pouvez modifier les informations personnelles de votre client. <br>Une fois l'ID client enregistré, il ne pourra plus être modifié.</p>
         </div>
         {% if customer %}
-            <div class="grid-2">
-                <div class="col">
+            <div class="grid-12">
+                <div class="col-6_sm-12">
                     {% if customer.login_id is null or customer.login_id is empty %}
                         {{ form.renderField('login_id') | raw }}
                     {% else %}
@@ -20,7 +20,7 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="col">
+                <div class="col-6_sm-12">
                     <div class="mg-b-1">
                         [Portail] <br>
                         <em>Permet au client de se connecter au portail</em><br>
@@ -41,39 +41,39 @@
                     {{ form.renderField('fullname') | raw }}
                 </div>
             </div>
-            <div class="grid">
-                <div class="col-6_col-sm-12">
+            <div class="grid-12">
+                <div class="col-6_sm-12">
                     {{ form.renderField('siret_number') | raw }}
                     {{ form.input('siret_number', 'N°Siret', 'Numéro de siret') | raw }}
                 </div>
-                <div class="col-6_col-sm-12">
+                <div class="col-6_sm-12">
                     {{ form.renderField('tva_number') | raw }}
                 </div>
             </div>
-            <div class="grid">
-                <div class="col-6_col-sm-12">
+            <div class="grid-12">
+                <div class="col-6_sm-12">
                     {{ form.renderField('naf_number') | raw }}
                 </div>
-                <div class="col-6_col-sm-12">
+                <div class="col-6_sm-12">
                     {{ form.renderField('website') | raw }}
                 </div>
             </div>
         {% else %}
-            <div class="grid-2">
-                <div class="col">
+            <div class="grid-12">
+                <div class="col-6_sm-12">
                     {{ form.renderField('fullname') | raw }}
                 </div>
-                <div class="col">
+                <div class="col-6_sm-12">
                     {{ form.renderField('profil_type') | raw }}
                 </div>
             </div>
         {% endif %}
-        <div class="grid">
-            <div class="col-6_col-sm-12">
+        <div class="grid-12">
+            <div class="col-6_sm-12">
                 {{ form.renderField('phone') | raw }}
                 {{ form.renderField('favorite_contact') | raw }}
             </div>
-            <div class="col-6_col-sm-12">
+            <div class="col-6_sm-12">
                 {{ form.renderField('mobile') | raw }}
             </div>
         </div>
@@ -82,12 +82,12 @@
                 <h3 class="fs-18px fw-500">Contact secondaire</h3>
                 <p class="m-0">Ici, vous pouvez ajouter/modifier un contact secondaire pour ce client.</p>
             </div>
-            <div class="grid-2 mt-5">
-                <div class="col">
+            <div class="grid-12 mt-5">
+                <div class="col-6_sm-12">
                     {{ form.renderField('contact_status') | raw }}
                     {{ form.renderField('contact_phone') | raw }}
                 </div>
-                <div class="col">
+                <div class="col-6_sm-12">
                     {{ form.renderField('contact_fullname') | raw }}
                     {{ form.renderField('contact_mail') | raw }}
                 </div>
@@ -100,7 +100,7 @@
             {{ form.renderField('address') | raw }}
             {{ form.renderField('addr_longitude') | raw }}
             {{ form.renderField('addr_latitude') | raw }}
-            <div class="grid">
+            <div class="grid-12">
                 <div class="col-4_sm-12">
                     {{ form.renderField('city') | raw }}
                 </div>

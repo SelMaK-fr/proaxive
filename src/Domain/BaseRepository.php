@@ -40,9 +40,15 @@ class BaseRepository
         }
     }
 
-    public function allArray(): array
+    public function allArray(bool $type = false): array
     {
-        return $this->makeQueryDefault()->fetchAll();
+        if($type){
+            // For array
+            return $this->makeQueryDefault()->fetchAll();
+        } else {
+            // For object
+            return $this->makeQueryObject()->fetchAll();
+        }
     }
 
     /**
@@ -195,6 +201,10 @@ class BaseRepository
      */
     public function update(array $data, ?int $id): bool|int|\PDOStatement
     {
+        // update date auto
+        if(key_exists('updated_at', $data)){
+            $data['updated_at'] = new Literal('NOW()');
+        }
         $query = $this->query->update($this->model, $data, $id);
         return $query->execute();
     }

@@ -20,8 +20,6 @@ class DepositReadController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError

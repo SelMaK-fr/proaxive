@@ -42,7 +42,7 @@ echo "=========================================="
 #----------------------------------------------------------#
 #                     Download reposit                     #
 #----------------------------------------------------------#
-#git clone https://github.com/SelMaK-fr/proaxive2.git .
+git clone https://github.com/yanndev-com/proaxive.git .
 #----------------------------------------------------------#
 #                   Install Dependances                    #
 #----------------------------------------------------------#
@@ -151,8 +151,8 @@ N'hésitez pas à venir chercher de l'aide sur le Discord officiel.
 Merci !
 
 --------
-SelMaK
-Proaxive.fr
+SelMaK (YannDev)
+https://www.proaxive.fr
 "
 echo
 unset DEBIAN_FRONTEND

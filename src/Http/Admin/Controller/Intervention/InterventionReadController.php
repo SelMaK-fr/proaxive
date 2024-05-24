@@ -11,6 +11,8 @@ use Selmak\Proaxive2\Domain\EDocument\Repository\EDocumentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Selmak\Proaxive2\Http\Type\Admin\Booking\BookingForInterventionType;
+use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionDiagType;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionUpdateType;
 use Selmak\Proaxive2\Http\Type\Admin\TaskListType;
 use Twig\Error\LoaderError;
@@ -51,6 +53,16 @@ class InterventionReadController extends AbstractController
         $form->setAction($this->getUrlFor('intervention_update', ['id' => $intervention_id]));
         $form->handleRequest();
 
+        // Form insert Booking
+        $formBooking = $this->createForm(BookingForInterventionType::class);
+        $formBooking->setAction($this->getUrlFor('add_booking_for_intervention'));
+        $formBooking->handleRequest();
+
+        // Form Diag
+        $formDiag = $this->createForm(InterventionDiagType::class, $i);
+        $formDiag->setAction($this->getUrlFor('intervention_update', ['id' => $intervention_id]));
+        $formDiag->handleRequest();
+
         // Find Documents
         $documents = $this->getRepository(EDocumentRepository::class)->allBy('interventions_id', $intervention_id);
 
@@ -72,6 +84,8 @@ class InterventionReadController extends AbstractController
            'formTasks' => $formTasks,
            'breadcrumbs' => $bds,
            'form' => $form,
+           'formBooking' => $formBooking,
+           'formDiag' => $formDiag,
            'currentMenu' => 'intervention',
             'documents' => $documents
         ]);

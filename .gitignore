@@ -15,7 +15,7 @@
 /proaxive-update.sh
 /push.sh
 ###< Addon ###
-/src/Addon
+/src/Addon/Inventory
 ###< Storage ###
 /storage/backups/*
 /storage/tmp/*

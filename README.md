@@ -61,7 +61,7 @@ Avant de commencer l'installation, il est impératif de créer une base de donn�
 
 Dans votre dossier Proaxive, récupérez le dépôt officiel :
 ```
-git clone https://github.com/SelMaK-fr/proaxive.git .
+git clone https://github.com/yanndev-com/proaxive.git .
 ```
 ### Installation des dépendances
 ```

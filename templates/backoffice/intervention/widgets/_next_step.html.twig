@@ -1,6 +1,16 @@
 <div class="card mb-3 all-border-pink">
     <div class="p-4">
         <span class="d-block fw-500 mb-3">Etat de l'intervention</span>
+        <div class="grid-12">
+            <div class="col-3_sm-12">
+                <strong class="d-block">Priorité</strong>
+                {{ getDataPriority(i.a_priority) }}
+            </div>
+            <div class="col-6_sm-12">
+                <strong class="d-block">Etat</strong>
+                {{ getDataState(i.state) }}
+            </div>
+        </div>
         <div class="flex justify-content-space-between">
             <div class="step-title flex-root">
                 <span class="current text-one fw-500 fs-16px text-uppercase">{{ getDataWaySteps(i.way_steps) }}</span>
@@ -9,19 +19,22 @@
             <div class="icon-step">
                 {% if i.way_steps <= 4 %}
                 <form method="post" action="" id="next-step">
+                    {% if i.way_steps == 3 and i.diag_cpu is null %}
+                        Veuillez remplir le diag avant de poursuivre
+                    {% endif %}
                     <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('ajax_intervention_next_step', {'id' : intervention_id}) }}', 'next-step'); return false;" class="btn btn-sk-one rd-10">{{ getDataWayStepsNext(i.way_steps) }} <i class="fa-solid fa-circle-arrow-right"></i></button>
                     <span id="sync-start"></span>
                 </form>
                 {% endif %}
-                {% if i.way_steps == 5 %}
+                {% if i.way_steps == 5 and i.pull_date is null %}
                     <form method="post" action="" id="add-date">
                         <button type="button" data-target="exit_date" data-toggle="modal" class="btn btn-sk-one rd-10">Programmer une sortie <i class="fa-solid fa-circle-arrow-right"></i></button>
                     </form>
                 {% endif %}
             </div>
         </div>
-        {% if i.way_steps == 5 %}
-            <div class="mt-2">Si vous le souhaitez, vous pouvez programmer une date de retait ou de livraison. Votre client recevra un courriel automatique.</div>
+        {% if i.way_steps == 5 and i.pull_date is null %}
+            <div class="mt-2">Si vous le souhaitez, vous pouvez programmer une date de retait ou de livraison.</div>
             {{ include('backoffice/intervention/_modal/_add_exit_date.html.twig') }}
         {% endif %}
     </div>

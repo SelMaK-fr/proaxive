@@ -49,6 +49,42 @@ strong {
   color: var(--text-muted) !important;
 }
 
+/** FullCalendar **/
+/* line 27, ../sass/base/_reset.scss */
+#calendar-holder {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* line 32, ../sass/base/_reset.scss */
+#calendar-holder [class*=grid-], #calendar-holder [class*=grid_], #calendar-holder [class~=grid] {
+  display: revert;
+  margin: initial;
+}
+
+/* line 36, ../sass/base/_reset.scss */
+#calendar-holder .fc-daygrid-day-top {
+  text-align: right;
+}
+
+/* line 39, ../sass/base/_reset.scss */
+#calendar-holder .fc-daygrid-event-harness a {
+  margin-right: 4px;
+  margin-left: 4px;
+  margin-top: 2px;
+  display: flex;
+}
+
+/* line 45, ../sass/base/_reset.scss */
+#calendar-holder .fc-timegrid-event {
+  margin-bottom: 1px;
+}
+
+/* line 48, ../sass/base/_reset.scss */
+#calendar-holder .fc-v-event {
+  display: block;
+}
+
 /**
 Fichier de couleurs Proaxive
 Créé le 16/08/2022 par @SelMaK
@@ -117,7 +153,7 @@ Other Dark Colors
   --gradient-purple-orange: linear-gradient(to left, #4f46bb, #e44b31);
   /** Background with opacity **/
   --bg-pink: rgba(247, 49, 100, 0.15);
-  --bg-four: rgba(1, 96, 140, 0.15);
+  --bg-four: rgba(1, 82, 140, 0.15);
   --bg-purple-light: rgba(115, 102, 255, 0.06);
   /** Shadow **/
   --shadow-color: rgba(175, 175, 175, 0.1);
@@ -2062,9 +2098,9 @@ a.btn-light-warning, .btn-light-warning, a.btn-light-yellow, .btn-light-yellow {
 
 /* line 104, ../sass/components/_button.scss */
 a.btn-light-info, .btn-light-info, .bg-light-info {
-  background: rgba(0, 172, 193, 0.2);
-  border-color: rgba(0, 172, 193, 0.2);
-  color: #00acc1;
+  background: rgba(0, 119, 193, 0.2);
+  border-color: rgba(0, 135, 193, 0.2);
+  color: #0094c1;
 }
 
 /* line 109, ../sass/components/_button.scss */
@@ -2673,14 +2709,14 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 416, ../sass/components/_form.scss */
-div[id^="form_intervention"] {
+.choice_radio_custom div[id^="form_intervention"] {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
 /* line 421, ../sass/components/_form.scss */
-div[id^="form_intervention"] .form-check {
+.choice_radio_custom div[id^="form_intervention"] .form-check {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-color-base-border);
   border-radius: 10px;
@@ -2689,24 +2725,24 @@ div[id^="form_intervention"] .form-check {
   display: flex;
 }
 /* line 428, ../sass/components/_form.scss */
-div[id^="form_intervention"] .form-check:hover {
+.choice_radio_custom div[id^="form_intervention"] .form-check:hover {
   border-color: var(--sk-color-one);
 }
 
 /* line 432, ../sass/components/_form.scss */
-div[id^="form_intervention"] .form-check input[type='radio'] {
+.choice_radio_custom div[id^="form_intervention"] .form-check input[type='radio'] {
   display: block;
   opacity: 0;
 }
 
 /* line 436, ../sass/components/_form.scss */
-div[id^="form_intervention"] .form-check label {
+.choice_radio_custom div[id^="form_intervention"] .form-check label {
   display: block;
   flex: 1;
 }
 
 /* line 440, ../sass/components/_form.scss */
-div[id^="form_intervention"] input[type='radio']:checked + label {
+.choice_radio_custom div[id^="form_intervention"] input[type='radio']:checked + label {
   background-color: var(--sk-color-one);
   position: absolute;
   padding: 15px;
@@ -2729,6 +2765,88 @@ div[id^="form_intervention"] input[type='radio']:checked + label {
   margin: 15px 0 0;
   padding: 12px 0 0;
   text-align: end;
+}
+
+/* line 463, ../sass/components/_form.scss */
+.choice_default div[id^="form_intervention"] {
+  display: flex;
+}
+
+/* line 466, ../sass/components/_form.scss */
+.choice_default .form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* line 471, ../sass/components/_form.scss */
+.choice_default .form-group .palmtree-form-control {
+  height: auto;
+  width: auto;
+}
+
+/* line 475, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline {
+  display: flex;
+  cursor: pointer;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.375em;
+  /* Accessible outline */
+  /* Remove comment to use */
+  /*
+    &:focus-within {
+        outline: .125em solid var(--primary);
+    }
+  */
+}
+/* line 489, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline input {
+  position: absolute;
+  left: -9999px;
+}
+/* line 492, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline input:checked + label {
+  background-color: var(--sk-color-one);
+  color: white;
+}
+/* line 495, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline input:checked + label:before {
+  box-shadow: inset 0 0 0 0.4375em white;
+}
+/* line 500, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.375em 0.75em 0.375em 0.375em;
+  border-radius: 99em;
+  transition: 0.25s ease;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+/* line 509, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline label:hover {
+  background-color: var(--sk-color-one);
+  color: white;
+}
+/* line 512, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline label:hover:before {
+  background-color: white;
+}
+/* line 516, ../sass/components/_form.scss */
+.choice_default.style1 .form-group .form-check-inline label:before {
+  display: flex;
+  flex-shrink: 0;
+  content: "";
+  background-color: transparent;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  margin-right: 0.375em;
+  transition: 0.25s ease;
+  box-shadow: inset 0 0 0 0.125em var(--sk-color-base-border);
 }
 
 /* line 1, ../sass/components/_card.scss */
@@ -3505,9 +3623,9 @@ div[id^="form_intervention"] input[type='radio']:checked + label {
 
 /* line 20, ../sass/components/_alert.scss */
 .alert-info {
-  background-color: #16c7f9;
+  background-color: #48a3d733;
   border-color: #16c7f9e6;
-  color: #fff;
+  color: #48A3D7;
 }
 
 /* line 25, ../sass/components/_alert.scss */
@@ -3541,7 +3659,7 @@ div[id^="form_intervention"] input[type='radio']:checked + label {
 
 /* line 46, ../sass/components/_alert.scss */
 .alert-light-info {
-  background: #c7eaff !important;
+  background: #48a3d733 !important;
   border-color: transparent !important;
   color: #48A3D7 !important;
 }
@@ -3588,7 +3706,7 @@ div[id^="form_intervention"] input[type='radio']:checked + label {
 }
 /* line 77, ../sass/components/_alert.scss */
 .alert-dashed.alert-info {
-  border-color: #00cfe8 !important;
+  border-color: #48A3D7 !important;
 }
 
 /* line 1, ../sass/components/_paginate.scss */

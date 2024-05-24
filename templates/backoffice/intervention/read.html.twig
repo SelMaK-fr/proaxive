@@ -8,12 +8,40 @@
 <div class="grid-12">
     <div class="col-3_sm-12">
         {{ include('backoffice/intervention/widgets/_next_step.html.twig') }}
-        <div class="card">
-            <div class="card-body p-4">
-                <span class="d-block fw-500 mb-3">Gestion des tâches</span>
-                <div class="mb-3">
-                    <em>Si une tâche n'existe pas, ajoutez-la ci-dessous.</em>
+        {% if i.way_steps >= 3 %}
+        <div class="accordion all-border-dashed">
+            <div class="accordion-title">
+                <div>
+                    <h3 class="fs-18px fw-500 mb-0">Diagnostic général</h3>
+                    <span>Veuillez remplir les éléments ci-dessous</span>
                 </div>
+                <button type="button"><i class="ri-add-circle-fill"></i></button>
+            </div>
+            <div class="accordion-content">
+                <div class="choice_default style1">
+                    {{ formDiag.renderStart | raw }}
+                    {{ formDiag.renderField('diag_cpu') | raw }}
+                    {{ formDiag.renderField('diag_gpu') | raw }}
+                    {{ formDiag.renderField('diag_memory') | raw }}
+                    {{ formDiag.renderField('diag_storage') | raw }}
+                    <div class="text-right">
+                        <button type="submit" class="btn-sm btn-sk-one"><i class="ri-check-line"></i> Enregistrer</button>
+                    </div>
+                    {{ formDiag.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- Tasks -->
+        <div class="accordion all-border-dashed">
+            <div class="accordion-title">
+                <div>
+                    <h3 class="fs-18px fw-500 mb-0">Gestion des tâches</h3>
+                    <span>Si une tâche n'existe pas, ajoutez-la ci-dessous.</span>
+                </div>
+                <button type="button"><i class="ri-add-circle-fill"></i></button>
+            </div>
+            <div class="accordion-content">
                 <form method="post" action="{{ url_for('settings_task_create') }}">
                     <div class="flex label-twin label-twin-left-btn mb-3">
                                 <span class="lt-text">
@@ -78,18 +106,43 @@
                 </form>
             {% endif %}
         </div>
+        {% if i.equipments_id is null %}
+            <div class="alert alert-warning">
+                L'équipement associé à cette intervention n'existe plus. Que voulez-vous faire ?
+                <div class="mt-2">
+                    <form method="post" action="{{ url_for('equipment_delete',{id:e.id}) }}" class="d-inline-block">
+                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                        <button type="submit" onclick="return confirm('Etes-vous sûr ?')" class="btn-mid btn-light-warning">Supprimer l'intervention</button>
+                    </form>
+                    <button type="button" class="btn-mid btn-light-warning">Archiver l'intervention</button>
+                </div>
+            </div>
+        {% else %}
+            {% if i.equipment_name != i.e_name %}
+                <div class="alert alert-info" id="alert-ajax">
+                    <strong>Information</strong> : le nom de l'équipement de cette intervention ne correspond pas avec l'association "Equipment". Cliquez ci-dessous afin de mettre à jour les données.
+                    <form method="post" action="#" id="update-equipment-name" class="mt-2">
+                        <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_u_equipment_name', {'id' : intervention_id, 'eid': i.e_id}) }}', 'update-equipment-name'); return false;" class="btn-sm btn-light-info submit-ajax">Mettre à jour maintenant</button>
+                        <span id="message"></span>
+                    </form>
+                </div>
+            {% endif %}
+        {% endif %}
         <div class="item-list">
             <div class="item-list__content">
                 <div class="flex">
                     <img src="{{ asset('img/1.jpg') }}" class="mr-3" alt="">
                     <div class="flex-root">
                         <div>
-                            <p class="m-0">{{ i.customer_name }} | {{ i.equipment_name }}</p>
+                            <h4 class="mb-0">{{ i.equipment_name }}</h4>
+                            <span>{{ i.e_type_name }}</span>
                         </div>
                     </div>
                     <div class="admin-btn-intervention">
                         {% if i.equipments_id is not null %}
+                            {% if i.is_closed == 0 %}
                             <button data-tippy-content="Modifier cette intervention" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-settings-2-line" data-target="update_intervention" data-toggle="modal"></i></button>
+                            {% endif %}
                             {% if i.with_deposit is not null or i.with_deposit is not empty %}
                                 {% if i.d_is_signed is null %}
                                     <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('deposit_sign', {reference:i.with_deposit}) }}" class="btn btn-sk-tree rounded-circle"><i class="fa-solid fa-pen-nib"></i></a>
@@ -104,7 +157,7 @@
                                 <button data-tippy-content="Créer le bon de dépôt" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-file-2-line" data-target="add_deposit" data-toggle="modal"></i></button>
                             {% endif %}
                         {% endif %}
-                        <button data-tippy-content="Convertir en PDF" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-file-pdf-line"></i></button>
+                        <a data-tippy-content="Convertir en PDF" class="btn btn-sk-tree rounded-circle" href="{{ url_for('intervention_open_pdf', {id:intervention_id}) }}" target="_blank"> <i class="ri-file-pdf-line"></i></a>
                         <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" class="btn btn-light-info rounded-circle"><i class="fa-solid fa-eye"></i></a>
                         <button data-tippy-content="Supprimer cette intervention" type="submit" class="btn btn-sk-one rounded-circle"><i class="fa-solid fa-trash-can" data-target="delete_intervention" data-toggle="modal"></i></button>
                     </div>
@@ -216,6 +269,7 @@
 
 {% block javascripts %}
     <script src="/assets/js/functions.interventions.js"></script>
+    <script src="{{ asset('assets/js/accordion.js') }}" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -242,4 +296,5 @@
             })
         </script>
     {% endif %}
+
 {% endblock %}

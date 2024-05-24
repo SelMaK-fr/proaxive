@@ -1,0 +1,44 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des évènements{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <div id='calendar-holder' data-events-url="{{ full_url_for('booking_get_all') }}"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let calendarEl = document.getElementById('calendar-holder');
+        let { eventsUrl } = calendarEl.dataset;
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'fr',
+            editable: true,
+            eventSources: [
+                {
+                    url: eventsUrl,
+                    extraParams: {
+                        filters: JSON.stringify([]) // pass your parameters to the subscriber
+                    },
+                    failure: () => {
+                        // alert("There was an error while fetching FullCalendar!");
+                    },
+                },
+            ],
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
+            }
+        });
+        calendar.render();
+    });
+
+</script>
+{% endblock %}

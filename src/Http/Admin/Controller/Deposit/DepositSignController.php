@@ -30,9 +30,7 @@ class DepositSignController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws NotFoundExceptionInterface
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -64,9 +62,9 @@ class DepositSignController extends AbstractController
                 $deposit = $this->getRepository(DepositRepository::class)->joinForId($d->id);
                 if($deposit){
                     // Return settings array
-                    $settings = $this->app->getContainer()->get('settings');
+                    $settings = $this->settings;
                     // Generate QRcode
-                    $url = $settings['app']['domainUrl'] .'/i/' .$deposit['ref_for_link'];
+                    $url = $settings->get('app')['domainUrl'] .'/i/' .$deposit['ref_for_link'];
                     $writer = new PngWriter();
                     $qrCode = QrCode::create($url)
                         ->setEncoding(new Encoding('UTF-8'))
@@ -77,13 +75,13 @@ class DepositSignController extends AbstractController
                     $qrcode = $result->getDataUri();
                     // Generate PDF and save in storage folder (storage/documents/deposits)
                     $dompdf = new Dompdf();
-                    $dompdf->loadHtml($this->view('/snappy/deposit_pdf.html.twig',
+                    $dompdf->loadHtml($this->view('/pdf/deposit_pdf.html.twig',
                         ['d' => $deposit, 'data' => $data, 'qrcode' => $qrcode
                         ]));
                     $dompdf->render();
                     // Save PDF
                     $output = $dompdf->output();
-                    file_put_contents($settings['storage']['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
+                    file_put_contents($settings->get('storage')['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
                     $this->addFlash('panel-info', 'Le bon de dépôt a bien été généré.');
                     // Deposit Ok (is_signed)
                     $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id']);
@@ -93,13 +91,12 @@ class DepositSignController extends AbstractController
                             $mail = new MailService($this->getParameters('mailer'));
                             $mail->sendMailWithAttachment(
                                 $deposit['c_mail'],
-                                $this->view('mailer/deposit/sendpdf.html.twig', ['data' => $deposit, 'setting' => $settings['app']]),
+                                $this->view('mailer/deposit/sendpdf.html.twig', ['data' => $deposit, 'setting' => $settings->get('app')]),
                                 'Votre bon de dépôt',
-                                $settings['storage']['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf'
+                                $settings->get('storage')['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf'
                             );
                         }
                     }
-
                     // Redirect
                     return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference']]);
                 }

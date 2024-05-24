@@ -227,13 +227,14 @@ abstract class AbstractController
         return $this->session->get('auth')['company_id'];
     }
 
-    protected function pdfResponse(string $attachmentFilename)
+    protected function pdfResponse(string $attachmentFilename): \Slim\Psr7\Response|\Slim\Psr7\Message
     {
         $response = new \Slim\Psr7\Response();
-        $response = $response->withHeader('Content-Type', mime_content_type($attachmentFilename));
+        $response = $response->withHeader('Content-Type', 'application/pdf');
         $response = $response->withHeader('Content-Transfer-Encoding', 'binary');
         $response = $response->withHeader('Accept-Ranges', 'bytes');
-        return $response->withHeader('Content-Length', filesize($attachmentFilename));
+        //$response = $response->withHeader('Content-Length', filesize($attachmentFilename));
+        return $response->withHeader('Content-Disposition',  'attachment; filename="' . $attachmentFilename . '"');
     }
 
     protected function setLogger(): LoggerInterface

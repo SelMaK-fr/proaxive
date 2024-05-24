@@ -68,6 +68,10 @@ final class InterventionsCreateModel extends AbstractMigration
             ->addColumn('package_price', 'string', ['null' => true])
             ->addColumn('total_time', 'integer', ['null' => true])
             ->addColumn('is_closed', 'boolean', ['null' => true])
+            ->addColumn('diag_cpu', 'string', ['null' => true])
+            ->addColumn('diag_gpu', 'string', ['null' => true])
+            ->addColumn('diag_memory', 'string', ['null' => true])
+            ->addColumn('diag_storage', 'string', ['null' => true])
             ->addColumn('customers_id', 'integer', ['null' => true])
             ->addForeignKey('customers_id', 'customers', 'id', [
                 'delete' => 'SET_NULL',

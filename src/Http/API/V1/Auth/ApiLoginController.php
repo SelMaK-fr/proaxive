@@ -33,6 +33,6 @@ class ApiLoginController extends AbstractController
         $message = [
             'Authorization' => 'Bearer ' . $t,
         ];
-        return $this->jsonResponse($response, 'success', $message, 200);
+        return $this->jsonResponse('success', $message, 200);
     }
 }

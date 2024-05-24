@@ -11,13 +11,20 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app){
+    // Auth
     $app->post('/api/v1/login', [ApiLoginController::class, 'postApiLogin'])->setName('api_login');
+    // Intervention
     $app->group('/api/v1/interventions/', function (RouteCollectorProxy $group){
         $group->get('status', [ApiInterventionController::class, 'interventionStatus'])->setName('api_interventions_status');
         $group->get('stats', ApiGetIntervention::class)->setName('api_stats_interventions');
     });
+    // Customer
     $app->group('/api/v1/customers/', function (RouteCollectorProxy $group) {
         $group->get('', ApiGetAll::class)->setName('api_customer_all');
         $group->get('{id:[0-9]+}', ApiGetOne::class)->setName('api_customer_show');
+    })->add(ApiAuth::class);
+    // Booking
+    $app->group('/api/v1/booking', function (RouteCollectorProxy $group) {
+        $group->get('', \Selmak\Proaxive2\Http\API\V1\Booking\ApiGetAll::class)->setName('api_booking_all');
     })->add(ApiAuth::class);
 };

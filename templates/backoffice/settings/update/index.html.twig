@@ -1,0 +1,27 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Mise à jour{% endblock %}
+
+{% block body %}
+<div class="grid-center">
+    <div class="col-8_sm-12">
+        <div class="card">
+            <div class="card-body">
+                <p>
+                    Les fichiers sont récupérés depuis le dépôt Github officiel.
+                </p>
+                <h3>Retour de la console</h3>
+                <div class="console all-border-dashed p-3">
+                    <h4 class="mb-2">{{ message }}</h4>
+                    {% for line in output %}
+                        {{ line }}<br>
+                    {% endfor %}
+                </div>
+                <form method="post" class="mt-4">
+                    <button type="submit" class="btn btn-sk-one">Vérifier les mises à jour</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
