@@ -131,7 +131,7 @@
         <div class="item-list">
             <div class="item-list__content">
                 <div class="flex">
-                    <img src="{{ asset('img/1.jpg') }}" class="mr-3" alt="">
+                    <img src="{{ asset('img/icons/pc1_45.png') }}" class="mr-3" alt="">
                     <div class="flex-root">
                         <div>
                             <h4 class="mb-0">{{ i.equipment_name }}</h4>
@@ -181,7 +181,8 @@
                 <div class="p-4">
                     <h3 class="mb-3">Document(s) lié(s)</h3>
                     <div class="doc-columns">
-                        <a href="#" class="card-add-file">
+                        <div class="card-add-file p-relative">
+                            <div class="div-btn" data-target="add_document" data-toggle="modal"></div>
                             <div>
                                 <div class="fs-22px">
                                     <i class="ri-add-circle-line"></i>
@@ -189,16 +190,20 @@
                                 <span class="fw-500">Ajouter un fichier</span>
                                 <span class="text-muted fs-12px">(PDF,docx, xlsx)</span>
                             </div>
-                        </a>
+                        </div>
                         {% for d in documents %}
-                        <div class="item-file">
-                            <i class="ri-file-pdf-line"></i>
+                        <div class="item-file p-relative">
+                            <div class="fs-44px">
+                                <i class="ri-file-pdf-line"></i>
+                            </div>
                             <div>
                                 <h6>{{ d.name }}</h6>
                                 <p class="text-muted">
-                                    {{ d.filename }} - {{ d.size }}Octet
-                                    <span class="f-right">{{ d.created_at | date('d/m/Y') }}</span>
+                                    <span class="fs-12px">{{ getConvertBytes(d.size, 2) }}</span>
                                 </p>
+                            </div>
+                            <div class="p-absolute" style="top: 10px;right:10px;">
+                                <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}"><i class="fa-solid fa-eye"></i></a>
                             </div>
                         </div>
                         {% endfor %}
@@ -265,6 +270,7 @@
         {{ include('backoffice/intervention/_modal/_delete.html.twig') }}
     </div>
 </div>
+    {{ include('backoffice/intervention/_modal/_add_document.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}

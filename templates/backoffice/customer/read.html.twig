@@ -2,11 +2,9 @@
 
 {% block title %}Compte client - {{ customer.fullname }}{% endblock %}
 
-{% set nbInterventions = interventions | length %}
-{% set nbEquipments = equipments | length %}
-
 {% block body %}
     <div class="profil-home" id="container-map">
+
         <div class="flex-root">
             <ul id="tabs" class="nav-components">
                 <li><a class="selected" href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
@@ -314,10 +312,10 @@
     <script type="text/javascript" src="/assets/js/charts-data/dash.customer.stats.js"></script>
     <script>
         dashCustomerStats([
-            {% if nbInterventions > 0 %}{{ nbInterventions }}{% else %}0{% endif %},
-            {% if nbEquipments > 0 %}{{ nbEquipments }}{% else %}0{% endif %},
-            {% if countOutlay > 0 %}{{ countOutlay }}{% else %}0{% endif %},
-            {% if countDocument > 0 %}{{ countDocument }}{% else %}0{% endif %}
+            {{ stats.nbInterventions }},
+            {{ stats.nbEquipments }},
+            {{ stats.nbDocuments }},
+            {{ stats.nbOutlay }}
         ])
     </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

@@ -9,7 +9,7 @@ use Selmak\Proaxive2\Http\Type\Type;
 
 class CustomerPasswordType extends Type
 {
-    public function createFormBuilder(string|\stdClass|null|array $data = null): Form
+    public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('customer_password', $data))
             ->add('passwd', 'repeated', [

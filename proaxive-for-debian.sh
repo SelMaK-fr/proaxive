@@ -34,7 +34,7 @@ fi
 #----------------------------------------------------------#
 #                     Launch installation                  #
 #----------------------------------------------------------#
-echo "======= INSTALLATION DE PROAXIVE 2 ======="
+echo "======= INSTALLATION DE PROAXIVE 2.0.1 ======="
 echo "Par SelMaK - Proaxive.fr"
 echo "=========================================="
 #----------------------------------------------------------#
@@ -42,7 +42,7 @@ echo "=========================================="
 #----------------------------------------------------------#
 echo "\033[1mTéléchargement du dépôt officiel\033[0m"
 echo "${txtblue}--- Veuillez patienter ---${txtreset}"
-git clone https://github.com/yanndev-com/proaxive.git .
+git clone https://github.com/SelMaK-fr/proaxive2.git .
 #----------------------------------------------------------#
 #            Check PHP APACHE and extension                #
 #----------------------------------------------------------#

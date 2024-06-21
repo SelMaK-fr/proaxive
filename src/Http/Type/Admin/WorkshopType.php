@@ -5,17 +5,21 @@ namespace Selmak\Proaxive2\Http\Type\Admin;
 use Palmtree\Form\Constraint\Number;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\FileType;
 use Selmak\Proaxive2\Http\Type\Type;
 
 class WorkshopType extends Type
 {
 
-    public function createFormBuilder(string|\stdClass|null|array $data = null): Form
+    public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('workshop', $data))
             ->add('name', 'text', [
                 'label' => "Nom de l'atelier",
                 'placeholder' => 'Dénomination commerciale'
+            ])
+            ->add('logo', FileType::class, [
+                'required' => false
             ])
             ->add('type', 'choice', [
                 'label' => "Statut juridique",

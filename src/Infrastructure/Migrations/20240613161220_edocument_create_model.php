@@ -24,13 +24,23 @@ final class EdocumentCreateModel extends AbstractMigration
             ->addColumn('filename', 'string')
             ->addColumn('size', 'string', ['null' => true])
             ->addColumn('extension', 'string', ['null' => true])
+            ->addColumn('description', 'text', [
+                'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG,
+                'null' => true
+            ])
             ->addColumn('is_online', 'boolean', ['null' => true])
             ->addColumn('interventions_id', 'integer', ['null' => true])
             ->addForeignKey('interventions_id', 'interventions', 'id', [
                 'delete' => 'SET_NULL',
                 'update' => 'NO_ACTION'
             ])
+            ->addColumn('customers_id', 'integer', ['null' => true])
+            ->addForeignKey('customers_id', 'customers', 'id', [
+                'delete' => 'SET_NULL',
+                'update' => 'NO_ACTION'
+            ])
             ->addColumn('created_at', 'datetime')
+            ->addColumn('updated_at', 'datetime')
             ->create();
     }
 }

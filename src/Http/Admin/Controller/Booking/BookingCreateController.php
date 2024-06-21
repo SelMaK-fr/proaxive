@@ -22,14 +22,20 @@ class BookingCreateController extends AbstractController
         if($request->getMethod() === 'POST'){
             $data = $request->getParsedBody()['form_booking'];
             $booking = new Booking();
-            $booking->setBeginAt($data['begin_at']);
-            $booking->setEndAt($data['begin_at']);
+            $booking->setStartDate($data['start_date']);
+            $booking->setStartTime($data['start_time']);
+            $addEnd = new \DateTime($data['start_time']);
+            // Add 30 minutes at begin_at
+            $addEnd->add(new \DateInterval('PT30M'));
+            $booking->setEndDate($data['start_date']);
+            $booking->setEndTime($addEnd->format('H:i'));
             $booking->setTitle('[Retrait] ' . $data['customer']);
             $booking->setSubtitle($data['subtitle']);
             $booking->setBackgroundColor('#e44b31');
             $booking->setDescription('Retrait équipement');
             $booking->setTextColor('white');
             $booking->setAllDay(0);
+
             $save = $this->getRepository(BookingRepository::class)->createOject($booking);
             // update field pull_date intervention
             $updateIntervention = $this->getRepository(InterventionRepository::class)->update([

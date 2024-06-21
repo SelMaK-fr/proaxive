@@ -51,7 +51,7 @@ class InterventionCreateType extends Type
             $builder
                 ->add('company_id', ChoiceType::class, [
                     'label' => 'Magasin',
-                    'placeholder' => 'Sélectionnez un magasin/atelier',
+                    'placeholder' => false,
                     'choices' => self::getCompany(),
                     'required' => true
                 ])

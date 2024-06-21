@@ -7,8 +7,10 @@ use Phinx\Util\Literal;
 
 class Booking
 {
-    public string $begin_at = '';
-    public string $end_at = '';
+    public string $start_date = '';
+    public string $end_date = '';
+    public string $start_time = '';
+    public string $end_time = '';
     public string $title = 'New Booking';
     public string $subtitle = '';
     public string|null $description = null;
@@ -21,28 +23,49 @@ class Booking
     public function __construct()
     {
         $this->created_at = new \Envms\FluentPDO\Literal('NOW');
-        $this->updated_at = new \Envms\FluentPDO\Literal('NOW');
     }
 
-    public function getBeginAt(): string
+    public function getStartDate(): string
     {
-        return $this->begin_at;
+        return $this->start_date;
     }
 
-    public function setBeginAt(string $begin_at): Booking
+    public function setStartDate(string $start_date): Booking
     {
-        $this->begin_at = $begin_at;
+        $this->start_date = $start_date;
         return $this;
     }
 
-    public function getEndAt(): string
+    public function getEndDate(): string
     {
-        return $this->end_at;
+        return $this->end_date;
     }
 
-    public function setEndAt(string $end_at): Booking
+    public function setEndDate(string $end_date): Booking
     {
-        $this->end_at = $end_at;
+        $this->end_date = $end_date;
+        return $this;
+    }
+
+    public function getStartTime(): string
+    {
+        return $this->start_time;
+    }
+
+    public function setStartTime(string $start_time): Booking
+    {
+        $this->start_time = $start_time;
+        return $this;
+    }
+
+    public function getEndTime(): string
+    {
+        return $this->end_time;
+    }
+
+    public function setEndTime(string $end_time): Booking
+    {
+        $this->end_time = $end_time;
         return $this;
     }
 

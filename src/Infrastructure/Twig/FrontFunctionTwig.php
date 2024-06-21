@@ -23,6 +23,7 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataWayStepsNext', [$this, 'getDataWayStepsNext']),
             new TwigFunction('getDataWayStepsStatus', [$this, 'getDataWayStepsStatus'], ['is_safe' => ['html']]),
             new TwigFunction('getDataWithNotification', [$this, 'getDataWithNotification'], ['is_safe' => ['html']]),
+            new TwigFunction('getConvertBytes', [$this, 'getConvertBytes'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -212,5 +213,30 @@ class FrontFunctionTwig extends AbstractExtension
             $v = '<span class="label-mid badge-light-green text-uppercase"><i class="ri-check-line"></i> Terminé</span>';
         }
         return $v;
+    }
+
+    /**
+     * @param $octet
+     * @param $round
+     * @return array|string|string[]
+     */
+    public function getConvertBytes($octet, $round)
+    {
+        $unite_spec = array('o','Ko','Mo','Go','To');
+        $count=0;
+        $c = count($unite_spec);
+        while($octet>=1024 && $count<$c-1)
+        {
+            $count++;
+            $octet/=1024;
+        }
+        if($round>=0)
+        {
+            $arr = pow(10,$round);
+            $number = round($octet*$arr)/$arr;
+        } else {
+            $number = $octet;
+        }
+        return(str_replace(".",",",$number.' '.$unite_spec[$count]));
     }
 }

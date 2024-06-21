@@ -7,13 +7,19 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Booking\Repository\BookingRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Selmak\Proaxive2\Infrastructure\Calendar\Calendar;
+use Selmak\Proaxive2\Infrastructure\Calendar\Events;
+use Selmak\Proaxive2\Infrastructure\Calendar\Month;
 
 class BookingController extends AbstractController
 {
-    public function index(Request $request, Response $response): Response
+
+    public function fullcalendar(Request $request, Response $response): Response
     {
+
         return $this->render($response, 'backoffice/booking/index.html.twig', [
-            'currentMenu' => 'calendar'
+            'currentMenu' => 'calendar',
+            'calendar_url' => $this->settings->get('app')['calendar_url']
         ]);
     }
 
@@ -24,10 +30,11 @@ class BookingController extends AbstractController
         foreach ($booking as $e){
             $events[] = [
                 'id' => $e->id,
-                'start' => $e->begin_at,
-                'end' => $e->end_at,
+                'start' => $e->start_date . 'T' . $e->start_time,
+                'end' => $e->end_date . 'T' . $e->end_time,
                 'title' => $e->title,
-                'description' => $e->description,
+                'description' => $e->subtitle,
+                'allDay' => $e->allDay,
                 'color' => $e->backgroundColor,
                 'textColor' => $e->textColor,
                 'url' => $this->getUrlFor('dash_home')

@@ -282,4 +282,12 @@ class BaseRepository
     {
         return $this->query->from($this->model)->asObject();
     }
+
+    /**
+     * @return Query
+     */
+    protected function getQuery(): Query
+    {
+        return $this->query;
+    }
 }

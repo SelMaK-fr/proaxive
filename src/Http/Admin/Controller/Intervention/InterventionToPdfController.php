@@ -23,6 +23,11 @@ class InterventionToPdfController extends AbstractController
         $tasks = $this->getRepository(TaskAssocRepository::class)->findByIntervention($id);
         $settings = $this->settings;
         $url = $settings->get('app')['domainUrl'] .'/i/' .$intervention->ref_for_link;
+        // Image (logo and signature)
+        $path = $settings->get('settings')['rootPath'] . '/public';
+        $logoImg = $path . '/uploads/logo/' . $intervention['cy_logo'];
+        $signatureImg = $path . '/uploads/sign/' . $intervention['cy_signature'];
+
         $writer = new PngWriter();
         $qrCode = QrCode::create($url)
             ->setEncoding(new Encoding('UTF-8'))
@@ -34,9 +39,10 @@ class InterventionToPdfController extends AbstractController
         $option = new Options();
         $option->set('defaultFont', 'DejaVu Sans');
         $dompdf = new Dompdf($option);
+        $dompdf->getOptions()->setChroot($path);
         $dompdf->setPaper('A4');
         $dompdf->loadHtml($this->view('/pdf/intervention_pdf.html.twig',
-            ['i' => $intervention, 'qrcode' => $qrcode, 'tasks' => $tasks]));
+            ['i' => $intervention, 'qrcode' => $qrcode, 'tasks' => $tasks, 'logoImg' => $logoImg, 'signatureImg' => $signatureImg]));
         $dompdf->render();
         // Save PDF
         $dompdf->stream('Inter_' . $intervention['ref_number'].'.pdf', ["Attachment" => false]);

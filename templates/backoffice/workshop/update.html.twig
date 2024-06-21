@@ -1,0 +1,59 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion d'un magasin/atelier{% endblock %}
+
+{% block body %}
+    <div class="grid-12">
+        <div class="col-9_sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Données de votre magasin</h2>
+                    <span>Modifier les informations d'un magasin/atelier</span>
+                </div>
+                <div class="card-body p-0">
+                    {{ include('/backoffice/workshop/action.html.twig', {create:false}) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-3_sm-12">
+            <!-- Logo -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Logo</h2>
+                    <span>Ajouter un logo pour cette entreprise</span>
+                </div>
+                <div class="card-body">
+                    {% if workshop.logo %}
+                        <img style="width: 150px;height: auto" src="{{ asset('uploads/logo/' ~ workshop.logo) }}" alt="">
+                    {% endif %}
+                    {{ uploadLogo.renderStart | raw }}
+                    {{ uploadLogo.renderField('logo') | raw }}
+                    {{ uploadLogo.renderField('updated_at') | raw }}
+                        <button type="submit" class="btn btn-light-green">Téléverser</button>
+                    {{ uploadLogo.renderEnd(false) | raw }}
+                </div>
+            </div>
+            <!-- Signature -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2>Signature</h2>
+                    <span>Ajouter une signature pour cette entreprise</span>
+                </div>
+                <div class="card-body">
+                    {% if workshop.signature %}
+                        <img style="width: 150px;height: auto" src="{{ asset('uploads/sign/' ~ workshop.signature) }}" alt="">
+                    {% endif %}
+                    {{ uploadSignature.renderStart | raw }}
+                    {{ uploadSignature.renderField('signature') | raw }}
+                    {{ uploadSignature.renderField('updated_at') | raw }}
+                    <button type="submit" class="btn btn-light-green">Téléverser</button>
+                    {{ uploadSignature.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/tabs-js.js"></script>
+{% endblock %}

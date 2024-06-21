@@ -23,6 +23,9 @@ final class EquipmentUpdateModel extends AbstractMigration
                 'null' => true,
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM,
             ])
+            ->addColumn('picture', 'string', [
+                'null' => true
+            ])
             ->update();
         ;
     }

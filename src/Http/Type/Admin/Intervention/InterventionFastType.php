@@ -51,7 +51,7 @@ class InterventionFastType extends Type
             ])
             ->add('company_id', ChoiceType::class, [
                 'label' => 'Magasin',
-                'placeholder' => 'Sélectionnez un magasin/atelier',
+                'placeholder' => false,
                 'choices' => self::getCompany()
             ])
             ;

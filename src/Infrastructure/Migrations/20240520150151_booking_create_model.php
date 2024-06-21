@@ -19,8 +19,10 @@ final class BookingCreateModel extends AbstractMigration
     public function change(): void
     {
         $this->table('booking')
-            ->addColumn('begin_at', 'datetime')
-            ->addColumn('end_at', 'datetime', ['null' => true])
+            ->addColumn('start_date', 'date')
+            ->addColumn('end_date', 'date', ['null' => true])
+            ->addColumn('start_time', 'time')
+            ->addColumn('end_time', 'time', ['null' => true])
             ->addColumn('title', 'string')
             ->addColumn('subtitle', 'string', ['null' => true])
             ->addColumn('description', 'text', [
@@ -32,6 +34,7 @@ final class BookingCreateModel extends AbstractMigration
             ->addColumn('allDay', 'boolean', ['null' => true])
             ->addColumn('component', 'string', ['null' => true])
             ->addColumn('created_at', 'datetime')
+            ->addColumn('updated_at', 'datetime')
             ->create();
     }
 }

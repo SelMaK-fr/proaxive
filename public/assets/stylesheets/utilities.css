@@ -3647,3 +3647,13 @@ text {
   fill: var(--sk-color-base-text);
   font-weight: bold;
 }
+
+/* line 480, ../sass/base/_utilities.scss */
+.div-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}

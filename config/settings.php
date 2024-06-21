@@ -14,9 +14,10 @@ $settings = [
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',
-        'domainUrl' => env('DOMAIN_PATH', 'localhost:8080'),
+        'domainUrl' => env('DOMAIN_PATH', 'http://localhost:8080'),
         'locale' => 'fr',
         'timezone' => 'UTC',
+        'calendar_url' => '/admin/booking/get/all', // Return API Proaxive or other API
     ],
     'settings' => [
         'rootPath' => dirname(__DIR__),

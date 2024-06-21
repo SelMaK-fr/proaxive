@@ -34,8 +34,16 @@ class DepositReadController extends AbstractController
             if($d->reference != $deposit OR $d->intervention_number != $intervention){
                 return $this->redirectToRoute('intervention_read', ['id' => $d->interventions_id]);
             }
+            // Breadcrumbs
+            $breadcrumbs = $this->breadcrumbs;
+            $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+            $breadcrumbs->addCrumb('Dépôt', false);
+            $breadcrumbs->addCrumb($deposit, false);
+            $breadcrumbs->render();
+            // .Breadcrumbs
             return $this->render($response, 'backoffice/deposit/read.html.twig', [
                 'd' => $d,
+                'breadcrumbs' => $breadcrumbs,
                 'currentMenu' => 'intervention'
             ]);
         }

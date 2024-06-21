@@ -21,6 +21,8 @@ use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSignController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositToPdfController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentCreateController;
@@ -57,8 +59,11 @@ use Selmak\Proaxive2\Http\Admin\Controller\Task\DeleteTaskOfInterventionControll
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserActionController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserReadController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateLogoController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateSignatureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopActionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopUpdateController;
 use Selmak\Proaxive2\Http\API\V1\ApiInterventionController;
 use Selmak\Proaxive2\Http\Controller\Account\UserAccountController;
 use Selmak\Proaxive2\Http\Controller\Account\UserResetController;
@@ -86,6 +91,7 @@ return function (App $app) {
         $group->any('reset/code/{token}-{id:[0-9]+}', [UserResetController::class, 'validCodeReset'])->setName('auth_reset_valid_code')->add(CheckDateCodeInitMiddleware::class);
         $group->any('reset/password/{token}', [UserResetController::class, 'newPassword'])->setName('auth_reset_password')->add(CheckDateCodeInitMiddleware::class);
         $group->any('logout', [UserAccountController::class, 'logout'])->setName('auth_user_logout');
+        $group->any('2fa', [UserAccountController::class, 'signTotp'])->setName('auth_user_2fa');
     });
     $app->get('/search/i/', [FrontInterventionSearch::class, 'search'])->setName('app_search_intervention');
     $app->group('/i/', function (RouteCollectorProxy $group) {
@@ -101,6 +107,7 @@ return function (App $app) {
     // Account Admin/Tech/Manager
     $app->group('/admin/settings/account', function (RouteCollectorProxy $group) {
         $group->any('', [AccountController::class, 'index'])->setName('dash_account');
+        $group->post('/2fa', [AccountController::class, 'on2fa'])->setName('dash_account_on_2fa');
     });
     /* Customer */
     $app->group('/admin/customers', function (RouteCollectorProxy $group) {
@@ -125,7 +132,9 @@ return function (App $app) {
     $app->group('/admin/workshop', function (RouteCollectorProxy $group){
         $group->any('', [WorkshopController::class, 'index'])->setName('dash_workshop');
         $group->any('/create', [WorkshopActionController::class, 'action'])->setName('workshop_create');
-        $group->any('/{id:[0-9]+}/update', [WorkshopActionController::class, 'action'])->setName('workshop_update');
+        $group->any('/{id:[0-9]+}/update', WorkshopUpdateController::class)->setName('workshop_update');
+        $group->post('/{id:[0-9]+}/ajax/logo', WorkshopUpdateLogoController::class)->setName('workshop_update_logo');
+        $group->post('/{id:[0-9]+}/ajax/signature', WorkshopUpdateSignatureController::class)->setName('workshop_update_signature');
     });
     /* User (worker) */
     $app->group('/admin/users', function (RouteCollectorProxy $group)
@@ -194,6 +203,12 @@ return function (App $app) {
         $group->any('/create', OutlayCreateController::class)->setName('outlay_create');
         $group->any('/{id:[0-9]+}/update', OutlayUpdateController::class)->setName('outlay_update');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
+    /* Document */
+    $app->group('/admin/documents', function (RouteCollectorProxy $group) {
+        //$group->post('', [DepositCreateController::class, 'create'])->setName('deposit_create');
+        $group->any('/create[:{args}]', DocumentCreateController::class)->setName('document_create');
+        $group->get('/read/{id:[0-9]+}', DocumentReadController::class)->setName('document_read');
+    })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Task */
     $app->group('/admin/tasks', function (RouteCollectorProxy $group) {
         $group->post('/add/i-{id:[0-9]+}', [AddTaskToInterventionController::class, 'addToIntervention'])->setName('task_add_intervention');
@@ -201,7 +216,7 @@ return function (App $app) {
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** E-Calendar */
     $app->group('/admin/booking', function (RouteCollectorProxy $group) {
-        $group->get('', [BookingController::class, 'index'])->setName('dash_booking');
+        $group->get('', [BookingController::class, 'fullcalendar'])->setName('dash_booking');
         $group->any('/get/all', [BookingController::class, 'getAll'])->setName('booking_get_all');
         $group->any('/c-i', [BookingCreateController::class, 'createForIntervention'])->setName('add_booking_for_intervention');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);

@@ -2,13 +2,22 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Settings\Account;
 
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Envms\FluentPDO\Exception;
+use Laminas\Diactoros\Response\RedirectResponse;
+use PragmaRX\Google2FA\Google2FA;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Account\Repository\AccountRepository;
+use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Selmak\Proaxive2\Http\Type\AccountPasswordType;
+use Selmak\Proaxive2\Http\Type\AccountTotpType;
 use Selmak\Proaxive2\Http\Type\AccountType;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -44,6 +53,45 @@ class AccountController extends AbstractController
                 return $this->redirectToRoute('dash_account');
             }
         }
+
+        # Change Password (Form)
+        $formPassword = $this->createForm(AccountPasswordType::class);
+        $formPassword->handleRequest();
+
+        if($formPassword->isSubmitted() && $formPassword->isValid()) {
+            $data = $form->getRequestData()['form_account_password'];
+            $save = $this->getRepository(AccountRepository::class)->update($data, $id);
+            if($save){
+                $this->addFlash('panel-info', "Votre mot de passe a bien été mis à jour.");
+                return $this->redirectToRoute('dash_account');
+            }
+        }
+        $google2fa = new Google2FA();
+        // TOTP 2FA (Form)
+        $formToTp = $this->createForm(AccountTotpType::class);
+        $formToTp->handleRequest();
+
+        if($formToTp->isSubmitted() && $formToTp->isValid()) {
+            $data = $formToTp->getRequestData()['form_account_totp'];
+            if($google2fa->verifyKey($a->key_totp, $data['code'])){
+                $this->addFlash('panel-info', '2FA activé avec succès.');
+            } else {
+                $this->addFlash('panel-error', 'Le code ne correspond pas !');
+            }
+        }
+        // Auth 2FA
+        $qrCodeUrl = $google2fa->getQRCodeUrl(
+            $a->fullname,
+            $a->mail,
+            $a->key_totp
+        );
+        $writer = new Writer(
+            new ImageRenderer(
+                new RendererStyle(300),
+                new ImagickImageBackEnd()
+            )
+        );
+        $google2fa_url = base64_encode($writer->writeString($qrCodeUrl));
         //
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -55,8 +103,25 @@ class AccountController extends AbstractController
            'currentMenu' => 'settings',
            'user' => $a,
            'form' => $form,
+           'formPassword' => $formPassword,
+           'formToTp' => $formToTp,
            'breadcrumbs' => $bds,
+           'qrCodeUrl' => $google2fa_url,
            'setting_current' => 'account'
         ]);
     }
+
+    public function on2fa(Request $request, Response $response): Response
+    {
+        if ($request->getMethod() === 'POST'){
+            $google2fa = new Google2FA();
+            $secretKey = $google2fa->generateSecretKey();
+            $this->getRepository(UserRepository::class)->update([
+                'key_totp' => $secretKey
+            ], $this->getUserId());
+        }
+        return new RedirectResponse($this->generateUrl('dash_account'));
+    }
+
+
 }

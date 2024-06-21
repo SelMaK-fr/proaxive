@@ -29,28 +29,15 @@ class WorkshopActionController extends AbstractController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function action(Request $request, Response $response, array $args): Response
+    public function __invoke(Request $request, Response $response, array $args): Response
     {
-        $workshop_id = (int)$args['id'];
-        if($workshop_id) {
-            $workshop = $this->getRepository(WorkshopRepository::class)->find('id', $workshop_id);
-            $form = $this->createForm(WorkshopType::class, $workshop);
-        } else {
-            $form = $this->createForm(WorkshopType::class);
-        }
+        $form = $this->createForm(WorkshopType::class);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_workshop'];
-            if($workshop_id) {
-                $saveUpdate = $this->getRepository(WorkshopRepository::class)->update($data, $workshop_id);
-                if($saveUpdate) {
-                    $this->addFlash('panel-info', sprintf('Mise à jour pour - %s - effectuée', $data['name']));
-                }
-            } else {
-                $save = $this->getRepository(WorkshopRepository::class)->add($data, true);
-                if($save) {
-                    $this->addFlash('panel-info', sprintf("Le nouveau magasin/atelier - %s - a bien été créé", $data['name']));
-                }
+            $save = $this->getRepository(WorkshopRepository::class)->add($data, true);
+            if($save) {
+                $this->addFlash('panel-info', sprintf("Le nouveau magasin/atelier - %s - a bien été créé", $data['name']));
             }
         }
         // Breadcrumbs
@@ -60,7 +47,7 @@ class WorkshopActionController extends AbstractController
         $bds->addCrumb('Actions', false);
         $bds->render();
         // .Breadcrumbs
-        return $this->render($response, 'backoffice/workshop/action.html.twig', [
+        return $this->render($response, 'backoffice/workshop/create.html.twig', [
             'form' => $form,
             'breadcrumbs' => $bds,
             'currentMenu' => 'workshop'

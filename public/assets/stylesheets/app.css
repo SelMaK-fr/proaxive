@@ -918,13 +918,13 @@ body .layout-wrapper {
   .documentation-wrapper .doc-columns {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
   }
 }
-/* line 39, ../sass/layout/_pages.scss */
+/* line 40, ../sass/layout/_pages.scss */
 .documentation-wrapper .card-add-file {
   display: flex;
   align-items: center;
-  margin-right: 15px;
 }
 
 /* line 44, ../sass/layout/_pages.scss */
@@ -949,16 +949,15 @@ body .layout-wrapper {
 
 /* line 58, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file i {
-  font-size: 44px;
   color: var(--pink);
 }
 
-/* line 62, ../sass/layout/_pages.scss */
+/* line 61, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file h6 {
   font-size: 16px;
 }
 
-/* line 65, ../sass/layout/_pages.scss */
+/* line 64, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file h6, .documentation-wrapper .item-file p {
   margin: 0;
 }
@@ -1164,6 +1163,206 @@ ul.right-navbar li.dropdown ul.dropdown-submenu li a.logout {
 /* line 35, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu li a.logout i {
   color: var(--sk-color-one);
+}
+
+/* line 1, ../sass/layout/_calendar.scss */
+.booking__table {
+  width: 100%;
+  height: calc(100vh - 94px);
+  border-collapse: collapse;
+}
+
+/* line 6, ../sass/layout/_calendar.scss */
+.booking__table.booking_week {
+  width: 100%;
+  height: calc(100vh - 94px);
+  border-collapse: collapse;
+}
+
+/* line 12, ../sass/layout/_calendar.scss */
+.booking__table.booking_week thead tr th {
+  border: 1px solid var(--sk-color-base-border);
+  font-weight: normal;
+}
+
+/* line 16, ../sass/layout/_calendar.scss */
+.booking__table td {
+  padding: 10px;
+  border: 1px solid var(--sk-color-base-border);
+  vertical-align: top;
+  width: 14.29%;
+  height: 20%;
+}
+
+/* line 23, ../sass/layout/_calendar.scss */
+.booking__table .booking__table--5weeks td {
+  height: 16.66%;
+}
+
+/* line 26, ../sass/layout/_calendar.scss */
+.booking__table .calendar__weekday {
+  font-weight: 600;
+  color: var(--sk-color-one);
+  font-size: 1.2em;
+}
+
+/* line 31, ../sass/layout/_calendar.scss */
+.booking__table .calendar__day {
+  font-size: 1.2em;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  background-color: var(--sk-color-base-background);
+  text-align: center;
+  line-height: 30px;
+  border-radius: 50px;
+  color: var(--sk-color-base-text);
+  margin-bottom: 10px;
+}
+
+/* line 44, ../sass/layout/_calendar.scss */
+.booking__table .calendar__othermonth .calendar__day {
+  color: var(--sk-color-base-text);
+  opacity: 0.3;
+  background-color: transparent;
+}
+
+/* line 49, ../sass/layout/_calendar.scss */
+.booking__table .calendar__event {
+  display: flex;
+  align-items: center;
+}
+
+/* line 53, ../sass/layout/_calendar.scss */
+.booking__table .calendar__event p {
+  margin: 0;
+}
+
+/* line 56, ../sass/layout/_calendar.scss */
+.booking__table .calendar__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50px;
+  margin-right: 10px;
+}
+
+/* line 63, ../sass/layout/_calendar.scss */
+.booking__table a.calendar__event {
+  color: inherit;
+  padding: 2px 5px;
+}
+/* line 66, ../sass/layout/_calendar.scss */
+.booking__table a.calendar__event:hover {
+  background-color: var(--sk-color-base-background);
+  border-radius: 4px;
+}
+
+/* line 71, ../sass/layout/_calendar.scss */
+.calendar_button {
+  position: fixed;
+  bottom: 80px;
+  right: 80px;
+  z-index: 100;
+  background-color: var(--pink2);
+  color: white;
+  border: 0;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+  font-size: 22px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* line 86, ../sass/layout/_calendar.scss */
+.calendar__hour {
+  position: relative;
+  height: 60px;
+  /* Height for one hour */
+  border-bottom: 1px solid #eee;
+}
+/* line 90, ../sass/layout/_calendar.scss */
+.calendar__hour.current {
+  background-color: black;
+}
+
+/* line 94, ../sass/layout/_calendar.scss */
+.calendar__event_time {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* line 104, ../sass/layout/_calendar.scss */
+.calendar__today {
+  background-color: var(--yellow-light);
+}
+
+/* line 107, ../sass/layout/_calendar.scss */
+.calendar__all_day {
+  background-color: var(--sk-color-base-frontground);
+  border: 1px solid #ddd;
+  padding: 5px;
+  vertical-align: top;
+  position: relative;
+}
+
+/* line 114, ../sass/layout/_calendar.scss */
+.calendar__all_day .calendar__event_time {
+  border-radius: 0;
+}
+
+/* line 117, ../sass/layout/_calendar.scss */
+.calendar__all_day_event {
+  background-color: #d3d3d3;
+  border: 1px solid #999;
+  padding: 5px;
+}
+
+/* line 122, ../sass/layout/_calendar.scss */
+.event {
+  /*height: 100%;*/
+  box-sizing: border-box;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* line 128, ../sass/layout/_calendar.scss */
+.calendar__td {
+  position: relative;
+}
+
+/* line 131, ../sass/layout/_calendar.scss */
+.fc a {
+  color: inherit;
+}
+
+/* line 134, ../sass/layout/_calendar.scss */
+.fc .fc-button-primary {
+  background-color: var(--sk-color-one);
+  border-color: var(--sk-color-one);
+}
+/* line 137, ../sass/layout/_calendar.scss */
+.fc .fc-button-primary:hover {
+  background-color: var(--sk-color-tree);
+  border-color: var(--sk-color-tree);
+}
+
+/* line 142, ../sass/layout/_calendar.scss */
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: var(--sk-color-tree);
+  border-color: var(--sk-color-tree);
+}
+
+/* line 146, ../sass/layout/_calendar.scss */
+.fc-theme-standard td, .fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+  border-color: var(--sk-color-base-border);
 }
 
 /* line 1, ../sass/layout/_portal.scss */
@@ -2005,9 +2204,10 @@ button, button.btn {
   border-radius: .375rem;
   border: 1px solid transparent;
   text-decoration: none;
+  transition: all .4s ease-in-out;
 }
 
-/* line 41, ../sass/components/_button.scss */
+/* line 42, ../sass/components/_button.scss */
 .btn-mid-rounded {
   display: inline-block;
   width: 30px;
@@ -2016,7 +2216,7 @@ button, button.btn {
   border-radius: 50px;
 }
 
-/* line 48, ../sass/components/_button.scss */
+/* line 49, ../sass/components/_button.scss */
 .btn-gradient-purple {
   background: linear-gradient(26deg, #5e50ee 0%, #a26cf8 100%);
   color: white;
@@ -2024,128 +2224,140 @@ button, button.btn {
   border-color: transparent;
 }
 
-/* line 54, ../sass/components/_button.scss */
+/* line 55, ../sass/components/_button.scss */
 a.btn-light-purple, .btn-light-purple {
   background-color: var(--bg-purple);
   color: var(--purple-light);
 }
 
-/* line 58, ../sass/components/_button.scss */
+/* line 59, ../sass/components/_button.scss */
 a.btn-light-pink, .btn-light-pink {
   background-color: var(--bg-pink);
   color: var(--pink);
 }
 
-/* line 62, ../sass/components/_button.scss */
+/* line 63, ../sass/components/_button.scss */
 a.btn-light-green, .btn-light-green {
   background-color: var(--green-light);
   color: var(--green);
 }
 
-/* line 66, ../sass/components/_button.scss */
+/* line 67, ../sass/components/_button.scss */
 a.btn-light-four, .btn-light-four {
   background-color: var(--bg-four);
   color: var(--sk-color-four);
 }
-
 /* line 70, ../sass/components/_button.scss */
+a.btn-light-four:hover, .btn-light-four:hover {
+  background-color: transparent;
+  border-color: var(--sk-color-four);
+  color: var(--sk-color-four);
+}
+
+/* line 76, ../sass/components/_button.scss */
 a.btn-purple, .btn-purple {
   background-color: var(--purple);
   color: #ffffff;
 }
 
-/* line 74, ../sass/components/_button.scss */
+/* line 80, ../sass/components/_button.scss */
 a.btn-default, .btn-default {
   background-color: var(--default);
   border-color: var(--default);
   color: var(--sk-color-base-text-hard);
 }
 
-/* line 79, ../sass/components/_button.scss */
+/* line 85, ../sass/components/_button.scss */
 a.btn-light-primary, .btn-light-primary {
   background: rgba(115, 102, 255, 0.15);
   border-color: transparent;
   color: #9087e7;
 }
 
-/* line 84, ../sass/components/_button.scss */
+/* line 90, ../sass/components/_button.scss */
 a.btn-light-secondary, .btn-light-secondary {
   background: rgba(108, 117, 125, 0.2);
   border-color: #d6d8db;
   color: #6c757d;
 }
 
-/* line 89, ../sass/components/_button.scss */
+/* line 95, ../sass/components/_button.scss */
 a.btn-light-tertiary, .btn-light-tertiary {
   background: var(--tertiary-light);
   border-color: transparent;
   color: var(--tertiary-color);
 }
 
-/* line 94, ../sass/components/_button.scss */
+/* line 100, ../sass/components/_button.scss */
 a.btn-light-danger, .btn-light-danger {
   background: rgba(231, 76, 60, 0.2);
   border-color: #f8cdc8;
   color: #e74c3c;
 }
 
-/* line 99, ../sass/components/_button.scss */
+/* line 105, ../sass/components/_button.scss */
 a.btn-light-warning, .btn-light-warning, a.btn-light-yellow, .btn-light-yellow {
   background: rgba(241, 196, 15, 0.2);
   border-color: #fbeebc;
   color: #f1c40f;
 }
 
-/* line 104, ../sass/components/_button.scss */
+/* line 110, ../sass/components/_button.scss */
 a.btn-light-info, .btn-light-info, .bg-light-info {
   background: rgba(0, 119, 193, 0.2);
   border-color: rgba(0, 135, 193, 0.2);
   color: #0094c1;
 }
 
-/* line 109, ../sass/components/_button.scss */
+/* line 115, ../sass/components/_button.scss */
 a.btn-light-color, .btn-light-color {
   background-color: var(--light-color);
   color: var(--pe-content-txt-color);
   border-color: transparent;
 }
 
-/* line 114, ../sass/components/_button.scss */
+/* line 120, ../sass/components/_button.scss */
 a.btn-nothing, .btn-nothing {
   background-color: transparent;
   color: var(--sk-color-base-text);
   border-color: transparent;
 }
 
-/* line 119, ../sass/components/_button.scss */
+/* line 125, ../sass/components/_button.scss */
 a.btn-sk-one, .btn-sk-one {
   background-color: var(--sk-color-one);
   color: white;
   border-color: transparent;
 }
+/* line 129, ../sass/components/_button.scss */
+a.btn-sk-one:hover, .btn-sk-one:hover {
+  background-color: transparent;
+  border-color: var(--sk-color-one);
+  color: var(--sk-color-one);
+}
 
-/* line 124, ../sass/components/_button.scss */
+/* line 135, ../sass/components/_button.scss */
 a.btn-sk-two, .btn-sk-two {
   background-color: var(--sk-color-two);
   color: white;
   border-color: transparent;
 }
 
-/* line 129, ../sass/components/_button.scss */
+/* line 140, ../sass/components/_button.scss */
 a.btn-sk-tree, .btn-sk-tree {
   background-color: var(--sk-color-tree);
   color: white;
   border-color: transparent;
 }
 
-/* line 134, ../sass/components/_button.scss */
+/* line 145, ../sass/components/_button.scss */
 button.btn-inverse-one, a.btn-inverse-one {
   background-color: transparent;
   border: 1px solid var(--sk-color-one);
   color: var(--sk-color-one);
 }
 
-/* line 139, ../sass/components/_button.scss */
+/* line 150, ../sass/components/_button.scss */
 a.btn-bar, button.btn-bar {
   border-radius: 50px;
   display: inline-block;
@@ -2153,7 +2365,7 @@ a.btn-bar, button.btn-bar {
   cursor: pointer;
 }
 
-/* line 145, ../sass/components/_button.scss */
+/* line 156, ../sass/components/_button.scss */
 a.btn-bar.btn-inverse-one i, button.btn-bar.btn-inverse-one i {
   color: var(--sk-color-one);
 }

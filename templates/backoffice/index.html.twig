@@ -85,7 +85,6 @@
                                         <th>Date</th>
                                         <th>Statut</th>
                                         <th>Etat</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,7 +95,6 @@
                                         <td>{{ i.created_at | date('d.M.Y') }}</td>
                                         <td>{{ getDataState(i.state) }}</td>
                                         <td>{{ getDataWayStepsStatus(i.way_steps) }}</td>
-                                        <td></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

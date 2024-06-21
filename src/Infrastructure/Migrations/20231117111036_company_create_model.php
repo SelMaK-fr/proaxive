@@ -48,6 +48,7 @@ final class CompanyCreateModel extends AbstractMigration
             ->addColumn('instagram', 'string', ['null' => true])
             ->addColumn('linkedin', 'string', ['null' => true])
             ->addColumn('logo', 'string', ['null' => true])
+            ->addColumn('signature', 'string', ['null' => true])
             ->addColumn('isdefault', 'integer', ['null' => true])
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')

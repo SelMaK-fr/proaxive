@@ -8,6 +8,7 @@
         <div class="card">
             <div class="card-body p-4">
                 <div class="mb-3">
+                    <a href="{{ url_for('intervention_read', {id:d.interventions_id}) }}" class="btn btn-light-info">Retour à l'intervention</a>
                     <button type="button" class="btn btn-light-green">Envoyer par courriel</button>
                 </div>
                 <object data="{{ url_for('deposit_read_pdf', {reference:d.reference}) }}" type="application/pdf" height="100%" style="width: 100%;height: 700px"></object>

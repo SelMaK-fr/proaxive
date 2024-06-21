@@ -5,13 +5,15 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <div id='calendar-holder' data-events-url="{{ full_url_for('booking_get_all') }}"></div>
+            <div id='calendar-holder' data-events-url="{{ calendar_url }}"></div>
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let calendarEl = document.getElementById('calendar-holder');
@@ -19,6 +21,11 @@
         let calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'fr',
             editable: true,
+            eventDidMount: function(info) {
+                let tooltip = tippy(info.el, {
+                    content: info.event.extendedProps.description,
+                })
+            },
             eventSources: [
                 {
                     url: eventsUrl,

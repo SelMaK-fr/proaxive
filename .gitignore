@@ -6,10 +6,12 @@
 /var/logs/*.log
 /var/pdf/*.pdf
 /var/logs
+/cron-database.php
 ###< Assets ###
 /public/assets/sass
 /public/assets/.sass-cache
 /public/assets/config.rb
+/public/uploads
 /proaxive-for-debian.sh
 /proaxive-for-hosting.sh
 /proaxive-update.sh

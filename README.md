@@ -96,6 +96,6 @@ Mot de passe : **admin**
 ## Fichier de configuration
 Le fichier de configuration de l'application se trouve dans 
 ```
-packages/proaxive.yaml
+config/settings.php
 ```
 Il n'est pas conseiller de le modifier, les paramètres pricnipaux ont été reporté dans le fichier .env

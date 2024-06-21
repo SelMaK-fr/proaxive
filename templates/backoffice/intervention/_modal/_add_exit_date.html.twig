@@ -16,14 +16,12 @@
                     Votre client recevra cette confirmation par courriel.
                 </p>
                 <span class="d-block mb-4">Veuillez confirmer une date :</span>
-                <div class="flex justify-content-space-between">
-                    <div>
-                        {{ formBooking.renderField('begin_at') | raw }}
-                    </div>
-                    <div>
-                        {{ formBooking.renderField('subtitle') | raw }}
-                    </div>
+                <div class="flex justify-content-space-between" style="gap:10px;">
+                    {{ formBooking.renderField('start_date') | raw }}
+                    {{ formBooking.renderField('start_time') | raw }}
+                    {{ formBooking.renderField('end_time') | raw }}
                 </div>
+                {{ formBooking.renderField('subtitle') | raw }}
             </div>
             <div class="modal-footer text-right">
                 <button type="submit" class="btn btn-light-four m-0"><i class="fa fa-check-circle" aria-hidden="true"></i> Confirmer</button>

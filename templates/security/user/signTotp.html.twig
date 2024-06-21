@@ -1,0 +1,50 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Proaxive Connexion{% endblock %}
+
+{% block body %}
+    <div class="body-background mh-fullvh">
+        <div class="container">
+            <div class="flex justify-content-center">
+                <div class="login-container">
+                    <div class="text-center mt-6">
+                        <img style="height: 100px;width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2.png" alt="">
+                    </div>
+                    <div class="card card-shadow mt-3">
+                        <div class="card-body text-center p-8">
+                            <h1 class="title-login">Panel Proaxive</h1>
+                            <span>Double authentification</span>
+                            <p>
+                                Veuillez entrer le code généré par votre application mobile
+                            </p>
+                            <div class="login-form-horizontal input-with-icon mt-4">
+                                <form method="post" action="">
+                                    <div class="form-group mb-3">
+                                        <label for="form_auth_totp-code" class="form-label">Code 2FA</label>
+                                        <div class="input-group input-group-prefix">
+                                            <span class="input-group-case case-prefix"><i class="ri-lock-fill fs-18px"></i></span>
+                                            <input type="text" id="form_auth_totp-code" name="form_auth_totp[code]" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn-sk-one btn-lg rd-10">Se connecter</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="text-center border-top-dashed pt-3 mt-3">
+                                <p class="pt-3">
+                                    Votre accès est confidentiel, ne le communiquez jamais à autruis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-relative t-4 text-center">
+                        2021, 2024. Propulsé par <strong>Proaxive</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

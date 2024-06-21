@@ -18,12 +18,18 @@ class ApiGetAll extends AbstractController
         foreach ($booking as $e){
             $events[] = [
                 'id' => $e->id,
-                'start' => $e->begin_at,
-                'end' => $e->end_at,
+                'start' => $e->start_date . 'T' . $e->start_time,
+                'end' => $e->end_date . 'T' . $e->end_time,
                 'title' => $e->title,
                 'description' => $e->description,
-                'backgroundColor' => $e->backgroundColor,
-                'textColor' => $e->textColor
+                'allDay' => $e->allDay,
+                'color' => $e->backgroundColor,
+                'textColor' => $e->textColor,
+                'url' => $this->getUrlFor('dash_home'),
+                'cal_timer' => [
+                    'start_time' => $e->start_time,
+                    'end_time' => $e->end_time,
+                ]
             ];
         }
         return new JsonResponse($events, 200, []);

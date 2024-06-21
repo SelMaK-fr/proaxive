@@ -1,124 +1,114 @@
-{% extends 'backoffice/base.html.twig' %}
+<div class="mb-3">
+    <ul id="tabs" class="nav-tabs-js">
+        <li><a href="#generals">Informations générales</a></li>
+        <li><a href="#legalinfos">Administratif <i class="fa-solid fa-circle-exclamation"></i></a></li>
+        <li><a href="#address">Adresse postale</a></li>
+        <li><a href="#network">Web et réseaux sociaux</a></li>
+    </ul>
+</div>
+<div class="tabs-content p-4">
+    {{ form.renderStart | raw }}
+    <div class="tabContent" id="generals">
+        <div class="grid-12">
 
-{% block title %}Gestion d'un magasin/atelier{% endblock %}
+            <div class="col-4_sm-12">
+                {% if create %}
+                <div class="mb-2 fw-600">Gestion du logo de votre entreprise</div>
+                <p>Charger un fichier PNG ou JPG/JPEG</p>
+                {{ form.renderField('logo') | raw }}
+                {% else %}
+                <div class="mb-2 fw-600">Informations générales</div>
+                <p>Les informations générales de votre entreprise</p>
+                {% endif %}
+            </div>
 
-{% block body %}
-    <div class="grid-12">
-        <div class="col-10_sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Données de votre magasin</h2>
-                    <span>Modifier les informations d'un magasin/atelier</span>
-                </div>
-                <div class="card-body p-0">
-                    <div class="mb-3">
-                        <ul id="tabs" class="nav-tabs-js">
-                            <li><a href="#generals">Informations générales</a></li>
-                            <li><a href="#legalinfos">Administratif <i class="fa-solid fa-circle-exclamation"></i></a></li>
-                            <li><a href="#address">Adresse postale</a></li>
-                            <li><a href="#network">Web et réseaux sociaux</a></li>
-                        </ul>
+            <div class="col-8_sm-12">
+                <div class="grid-2">
+                    <div class="col">
+                        {{ form.renderField('name') | raw }}
+                        {{ form.renderField('type') | raw }}
+                        {{ form.renderField('phone') | raw }}
                     </div>
-                    <div class="tabs-content p-4">
-                        {{ form.renderStart | raw }}
-                        <div class="tabContent" id="generals">
-                            <div class="grid-12">
-                                <div class="col-4_sm-12">
-                                    <div class="mb-2 fw-600">Gestion du logo de votre entreprise</div>
-                                    <p>Charger un fichier PNG ou JPG/JPEG</p>
-                                </div>
-                                <div class="col-8_sm-12">
-                                        <div class="grid-2">
-                                            <div class="col">
-                                                {{ form.renderField('name') | raw }}
-                                                {{ form.renderField('type') | raw }}
-                                                {{ form.renderField('phone') | raw }}
-                                            </div>
-                                            <div class="col">
-                                                {{ form.renderField('about') | raw }}
-                                                {{ form.renderField('mail') | raw }}
-                                                {{ form.renderField('mobile') | raw }}
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tabContent" id="legalinfos">
-                            <div class="grid-12">
-                                <div class="col-4_sm-12">
-                                    <div class="mb-2 fw-600">Administratif</div>
-                                    Les données administrative de votre entreprise
-                                </div>
-                                <div class="col-8_sm-12">
-                                        <div class="grid-2">
-                                            <div class="col">
-                                                {{ form.renderField('director') | raw }}
-                                                {{ form.renderField('siret') | raw }}
-                                                {{ form.renderField('rcs') | raw }}
-                                                {{ form.renderField('tva') | raw }}
-                                            </div>
-                                            <div class="col">
-                                                {{ form.renderField('ape') | raw }}
-                                                {{ form.renderField('rm') | raw }}
-                                                {{ form.renderField('rc_pro') | raw }}
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tabContent" id="address">
-                            <div class="grid-12">
-                                <div class="col-4_sm-12">
-                                    <div class="mb-2 fw-600">Adresse postale</div>
-                                    Les informations de localisation de votre entreprise
-                                </div>
-                                <div class="col-8_sm-12">
-                                        {{ form.renderField('address') | raw }}
-                                        <div class="grid">
-                                            <div class="col-4_sm-12">
-                                                {{ form.renderField('city') | raw }}
-                                            </div>
-                                            <div class="col-4_sm-12">
-                                                {{ form.renderField('zipcode') | raw }}
-                                            </div>
-                                            <div class="col-4_col-sm-12">
-                                                {{ form.renderField('department') | raw }}
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tabContent" id="network">
-                            <div class="grid-12">
-                                <div class="col-4_sm-12">
-                                    <div class="mb-2 fw-600">Web et réseaux sociaux</div>
-                                    Liens vers votre site internet et vos réseaux sociaux. Il sont visibles dans la partie suivi de Proaxive
-                                </div>
-                                <div class="col-8_sm-12">
-                                        <div class="grid-2">
-                                            <div class="col">
-                                                {{ form.renderField('website') | raw }}
-                                                {{ form.renderField('instagram') | raw }}
-                                            </div>
-                                            <div class="col">
-                                                {{ form.renderField('linkedin') | raw }}
-                                                {{ form.renderField('twitter') | raw }}
-                                                {{ form.renderField('facebook') | raw }}
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-light-four">Enregistrer</button>
-                        </div>
-                        {{ form.renderEnd(false) | raw }}
+                    <div class="col">
+                        {{ form.renderField('about') | raw }}
+                        {{ form.renderField('mail') | raw }}
+                        {{ form.renderField('mobile') | raw }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+    <div class="tabContent" id="legalinfos">
+        <div class="grid-12">
+            <div class="col-4_sm-12">
+                <div class="mb-2 fw-600">Administratif</div>
+                Les données administrative de votre entreprise
+            </div>
+            <div class="col-8_sm-12">
+                <div class="grid-2">
+                    <div class="col">
+                        {{ form.renderField('director') | raw }}
+                        {{ form.renderField('siret') | raw }}
+                        {{ form.renderField('rcs') | raw }}
+                        {{ form.renderField('tva') | raw }}
+                    </div>
+                    <div class="col">
+                        {{ form.renderField('ape') | raw }}
+                        {{ form.renderField('rm') | raw }}
+                        {{ form.renderField('rc_pro') | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tabContent" id="address">
+        <div class="grid-12">
+            <div class="col-4_sm-12">
+                <div class="mb-2 fw-600">Adresse postale</div>
+                Les informations de localisation de votre entreprise
+            </div>
+            <div class="col-8_sm-12">
+                {{ form.renderField('address') | raw }}
+                <div class="grid">
+                    <div class="col-4_sm-12">
+                        {{ form.renderField('city') | raw }}
+                    </div>
+                    <div class="col-4_sm-12">
+                        {{ form.renderField('zipcode') | raw }}
+                    </div>
+                    <div class="col-4_col-sm-12">
+                        {{ form.renderField('department') | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tabContent" id="network">
+        <div class="grid-12">
+            <div class="col-4_sm-12">
+                <div class="mb-2 fw-600">Web et réseaux sociaux</div>
+                Liens vers votre site internet et vos réseaux sociaux. Il sont visibles dans la partie suivi de Proaxive
+            </div>
+            <div class="col-8_sm-12">
+                <div class="grid-2">
+                    <div class="col">
+                        {{ form.renderField('website') | raw }}
+                        {{ form.renderField('instagram') | raw }}
+                    </div>
+                    <div class="col">
+                        {{ form.renderField('linkedin') | raw }}
+                        {{ form.renderField('twitter') | raw }}
+                        {{ form.renderField('facebook') | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-right">
+        <button type="submit" class="btn btn-light-four">Enregistrer</button>
+    </div>
+    {{ form.renderEnd(false) | raw }}
+</div>
 
 {% block javascripts %}
     <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/tabs-js.js"></script>

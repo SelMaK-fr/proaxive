@@ -20,6 +20,24 @@ class CustomerRepository extends BaseRepository
         return $this->makeQueryDefault()->where('mail = ? or login_id = ?', [$login,$login])->fetch();
     }
 
+    public function statsChartsProfil(int $id)
+    {
+        return $this->getQuery()
+            ->from('customers')
+            ->leftJoin('interventions ON interventions.customers_id = customers.id')
+            ->leftJoin('equipments ON equipments.customers_id = customers.id')
+            ->leftJoin('edocuments ON edocuments.customers_id = customers.id')
+            ->leftJoin('outlay ON outlay.customers_id = customers.id')
+            ->select(null)
+            ->select('customers.id')
+            ->select('COUNT(DISTINCT interventions.id) AS nbInterventions')
+            ->select('COUNT(DISTINCT equipments.id) AS nbEquipments')
+            ->select('COUNT(DISTINCT edocuments.id) AS nbDocuments')
+            ->select('COUNT(DISTINCT outlay.id) AS nbOutlay')
+            ->where('customers.id = ?', [$id])
+            ->fetch();
+    }
+
     /**
      * For API
      * @param int $page

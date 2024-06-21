@@ -9,7 +9,7 @@ use Palmtree\Form\FormBuilder;
 class AccountPasswordType extends Type
 {
 
-    public function createFormBuilder(string|\stdClass|null|array $data = null): Form
+    public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('account_password', $data))
             ->add('password', 'repeated', [

@@ -104,8 +104,10 @@
                 </table>
             </td>
             <td class="">
-                <div class="logo">
-                    {{ i.cy_logo }}
+                <div class="logo text-center">
+                    {% if i.cy_logo  %}
+                        <img style="width: auto;height: 90px" src="{{ logoImg }}" alt="">
+                    {% endif %}
                 </div>
                 <table class="table-container table-collapse br-t">
                     <tr class="blue-light">
@@ -245,8 +247,11 @@
                 </table>
             </td>
             <td>
-                <p class="p10px">signature</p>
-
+                <p class="p10px">
+                    {% if i.cy_signature  %}
+                        <img style="width: 250px;height: auto" src="{{ signatureImg }}" alt="">
+                    {% endif %}
+                </p>
             </td>
         </tr>
         </tbody>
