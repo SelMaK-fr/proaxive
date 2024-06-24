@@ -14,10 +14,6 @@
 /public/uploads/avatars/*
 /public/uploads/logo/*
 /public/uploads/sign/*
-/proaxive-for-debian.sh
-/proaxive-for-hosting.sh
-/proaxive-update.sh
-/push.sh
 ###< Addon ###
 /src/Addon/Inventory
 ###< Storage ###
