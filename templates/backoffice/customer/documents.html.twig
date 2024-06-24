@@ -1,0 +1,51 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Compte client - {{ customer.fullname }}{% endblock %}
+
+{% block body %}
+    <div class="profil-home" id="container-map">
+        <ul id="tabs" class="nav-components">
+            <li><a href="{{ url_for('customer_read', {'id' : customer.id}) }}"><i class="ri-information-fill"></i> Compte</a></li>
+            <li><a class="selected" href="{{ url_for('customer_documents', {'id' : customer.id}) }}"><i class="ri-file-2-fill"></i> Documents</a></li>
+            <li><a href="{{ url_for('customer_update', {'id' : customer.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
+            <li><a href="{{ url_for('customer_update_parameters', {'id' : customer.id}) }}"><i class="ri-settings-line"></i> Paramètres</a></li>
+        </ul>
+        <div class="card documentation-wrapper">
+            <div class="p-4">
+                <div class="mb-5">
+                    <h3 class="fs-18px fw-500 m-0">Documents de {{ customer.fullname }}</h3>
+                    <p class="m-0">Ici, vous pouvez visualiser ou ajouter un nouveau fichier pour ce client.</p>
+                </div>
+                <div class="doc-columns">
+                    <div class="card-add-file p-relative">
+                        <div class="div-btn" data-target="add_document" data-toggle="modal"></div>
+                        <div>
+                            <div class="fs-22px">
+                                <i class="ri-add-circle-line"></i>
+                            </div>
+                            <span class="fw-500">Ajouter un fichier</span>
+                            <span class="text-muted fs-12px">(PDF,docx, xlsx)</span>
+                        </div>
+                    </div>
+                    {% for d in documents %}
+                        <div class="item-file p-relative">
+                            <div class="fs-44px">
+                                <i class="ri-file-pdf-line"></i>
+                            </div>
+                            <div>
+                                <h6>{{ d.name }}</h6>
+                                {{ getData('Intervention', d.i_ref_number) }}
+                                <p class="text-muted">
+                                    <span class="fs-12px">{{ getConvertBytes(d.size, 2) }}</span>
+                                </p>
+                            </div>
+                            <div class="p-absolute" style="top: 10px;right:10px;">
+                                <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}"><i class="fa-solid fa-eye"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

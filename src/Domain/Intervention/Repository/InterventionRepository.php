@@ -102,8 +102,9 @@ class InterventionRepository extends BaseRepository
     public function findWithCustomer($id)
     {
         return $this->makeQueryDefault()
-            ->select('interventions.*, c.fullname c_fullname, c.mail')
+            ->select('interventions.*, c.fullname c_fullname, c.mail, cy.logo cy_logo, cy.name cy_name, cy_type cy_type')
             ->leftJoin('customers as c ON c.id = interventions.customers_id')
+            ->leftJoin('company as cy ON cy.id = interventions.company_id')
             ->where('interventions.id = ?', [$id])
             ->fetch()
             ;

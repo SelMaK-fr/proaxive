@@ -3,12 +3,9 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Customer;
 
 use Envms\FluentPDO\Exception;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
-use Selmak\Proaxive2\Domain\EDocument\Repository\EDocumentRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
@@ -34,7 +31,8 @@ class CustomerReadController extends AbstractController
         $customer_id = (int)$arg['id'];
         $customer = $this->getRepository(CustomerRepository::class)->find('id', $customer_id);
         $stats = $this->getRepository(CustomerRepository::class)->statsChartsProfil($customer_id);
-
+        $equipments = $this->getRepository(EquipmentRepository::class)->allBy('customers_id', $customer_id);
+        $interventions = $this->getRepository(InterventionRepository::class)->allBy('customers_id', $customer_id);
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -46,6 +44,8 @@ class CustomerReadController extends AbstractController
             'customer' => $customer,
             'breadcrumbs' => $bds,
             'stats' => $stats,
+            'interventions' => $interventions,
+            'equipments' => $equipments,
             'currentMenu' => 'customer'
         ]);
     }

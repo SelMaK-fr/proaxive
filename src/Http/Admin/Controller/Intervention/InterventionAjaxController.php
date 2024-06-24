@@ -128,6 +128,12 @@ class InterventionAjaxController extends AbstractController
                'start_date' => date('Y-m-d h:i:s'),
                 'way_steps' => 2
             ], $intervention_id);
+            // If the client at a mail address, send mail
+            $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
+            if($i['mail']){
+                $mail = new MailInterventionService($this->getParameters('mailer'));
+                $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/start.html.twig', ['data' => $i]));
+            }
         }
         return $response;
     }

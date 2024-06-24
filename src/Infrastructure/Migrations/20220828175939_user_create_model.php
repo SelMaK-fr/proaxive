@@ -20,7 +20,8 @@ final class UserCreateModel extends AbstractMigration
     {
         $this->table('users')
             ->addColumn('pseudo', 'string')
-            ->addColumn('mail', 'string', ['unique' => true])
+            ->addColumn('mail', 'string')
+            ->addIndex(['mail'], ['unique' => true])
             ->addColumn('fullname', 'string', ['null' => true])
             ->addColumn('password','text', [
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG,

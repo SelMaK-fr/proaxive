@@ -28,6 +28,7 @@ class InterventionCreateArgsController extends AbstractController
         $equipment = $this->getRepository(EquipmentRepository::class)->find('id', $e);
 
         if($form->isSubmitted() && $form->isValid()) {
+
             $numberFormatter = new SerialNumberFormatterService($this->parameter);
             $intervention->setCompanyId($this->getSession('auth')['company_id']);
             $intervention->setCustomersId($args['id']);
@@ -37,7 +38,6 @@ class InterventionCreateArgsController extends AbstractController
             $intervention->setState('VALIDATED');
             $intervention->setCustomerName($customer->fullname);
             $intervention->setEquipmentName($equipment->name);
-
             $this->getRepository(InterventionRepository::class)->createOject($intervention);
             $this->addFlash('panel-success', sprintf("Intervention N°%s créée avec succès.", $intervention->getRefNumber()));
             $this->setLogger()->info(sprintf("[Add Intervention] Création de l'intervention N°%s.", $intervention->getRefNumber()));

@@ -17,7 +17,7 @@ class Intervention
     /* @var string|null */
     public ?string $before_breakdown = '';
     public ?string $way_type = '';
-    public ?int $way_steps = 1;
+    public int|string|null $way_steps = null;
     public ?string $a_priority = '';
     /* @var int|string */
     public int|string $company_id = 0;

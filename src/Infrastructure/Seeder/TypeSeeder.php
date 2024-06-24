@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Selmak\Proaxive2\Infrastructure\Seeder;
-
 use Phinx\Seed\AbstractSeed;
 
 class TypeSeeder extends AbstractSeed

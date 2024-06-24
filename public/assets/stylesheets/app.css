@@ -15,7 +15,7 @@
 /* line 5, ../sass/base/_reset.scss */
 a {
   text-decoration: none;
-  color: var(--purple);
+  color: var(--pink);
 }
 
 /* line 9, ../sass/base/_reset.scss */
@@ -3090,13 +3090,24 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 19, ../sass/components/_card.scss */
+.card .card-header h5 {
+  margin-bottom: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 10px;
+  line-height: 1.1;
+  position: relative;
+}
+
+/* line 28, ../sass/components/_card.scss */
 .card .card-body {
   padding: 16px 24px;
 }
 
-/* line 22, ../sass/components/_card.scss */
+/* line 31, ../sass/components/_card.scss */
 .card-welcome .card-body {
-  background-image: url("../../../img/bg.53e4b8b5965b7354.png");
+  /*background-image:url('../../../img/bg.53e4b8b5965b7354.png');*/
   background-repeat: no-repeat;
   background-position: center right;
   display: block;
@@ -3105,7 +3116,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   position: relative;
 }
 
-/* line 31, ../sass/components/_card.scss */
+/* line 40, ../sass/components/_card.scss */
 .card .card-title {
   font-size: 1.15rem;
   font-weight: 500;
@@ -3113,13 +3124,13 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 0.5rem;
 }
 
-/* line 37, ../sass/components/_card.scss */
+/* line 46, ../sass/components/_card.scss */
 .card .card-footer {
   border-top: 1px solid var(--sk-color-base-border);
   padding: 1.25rem 1.875rem 1.25rem;
 }
 
-/* line 41, ../sass/components/_card.scss */
+/* line 50, ../sass/components/_card.scss */
 .card-footer-button .btn {
   border-top: 1px solid var(--sk-color-base-border);
   position: relative;
@@ -3131,82 +3142,82 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
   border-radius: 0 0 10px 10px;
 }
-/* line 51, ../sass/components/_card.scss */
+/* line 60, ../sass/components/_card.scss */
 .card-footer-button .btn:hover {
   background-color: var(--bg-four);
 }
 
-/* line 55, ../sass/components/_card.scss */
+/* line 64, ../sass/components/_card.scss */
 .card-footer-button .btn:last-child {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-/* line 59, ../sass/components/_card.scss */
+/* line 68, ../sass/components/_card.scss */
 .card-footer-button .btn:first-child {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-left: 0;
 }
 
-/* line 64, ../sass/components/_card.scss */
+/* line 73, ../sass/components/_card.scss */
 .card-tabs ul {
   margin: 0;
   padding: 0;
   display: block;
 }
 
-/* line 69, ../sass/components/_card.scss */
+/* line 78, ../sass/components/_card.scss */
 .card-tabs ul li {
   display: inline-block;
 }
 
-/* line 72, ../sass/components/_card.scss */
+/* line 81, ../sass/components/_card.scss */
 .card-tabs ul li a {
   display: block;
   padding: 1rem 2rem;
   font-weight: 500;
   color: var(--sk-color-base-text);
 }
-/* line 77, ../sass/components/_card.scss */
+/* line 86, ../sass/components/_card.scss */
 .card-tabs ul li a.selected {
   border-bottom: 2px solid var(--sk-color-one);
 }
 
-/* line 81, ../sass/components/_card.scss */
+/* line 90, ../sass/components/_card.scss */
 .card-inside {
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
 
-/* line 84, ../sass/components/_card.scss */
+/* line 93, ../sass/components/_card.scss */
 .card-inside-purple {
   background: rgba(115, 102, 255, 0.15);
   border-color: transparent;
   color: #9087e7;
 }
 
-/* line 89, ../sass/components/_card.scss */
+/* line 98, ../sass/components/_card.scss */
 .card-inside-default {
   background-color: var(--sk-color-base-background);
 }
 
-/* line 92, ../sass/components/_card.scss */
+/* line 101, ../sass/components/_card.scss */
 .card-inside-four {
   background-color: var(--bg-four);
   border-color: transparent;
   color: var(--sk-color-four);
 }
 
-/* line 97, ../sass/components/_card.scss */
+/* line 106, ../sass/components/_card.scss */
 .card-filter-search {
   border: 1px dashed var(--sk-color-base-border);
   background-color: var(--sk-color-base-foreground);
   border-radius: 8px;
 }
 
-/* line 102, ../sass/components/_card.scss */
+/* line 111, ../sass/components/_card.scss */
 .card-filter-search .search-flex-dashed {
   display: flex;
   border: 1px dashed var(--sk-color-base-border);
@@ -3215,7 +3226,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-radius: 6px;
 }
 
-/* line 109, ../sass/components/_card.scss */
+/* line 118, ../sass/components/_card.scss */
 .card-filter-search .search-flex-dashed .form-input {
   width: 100%;
   border: 0;
@@ -3223,27 +3234,27 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   background-color: transparent;
 }
 
-/* line 115, ../sass/components/_card.scss */
+/* line 124, ../sass/components/_card.scss */
 .inside-danger-border {
   border: 1px dashed var(--pink);
 }
 
-/* line 118, ../sass/components/_card.scss */
+/* line 127, ../sass/components/_card.scss */
 .inside-four-border {
   border: 1px solid var(--sk-color-four);
 }
 
-/* line 121, ../sass/components/_card.scss */
+/* line 130, ../sass/components/_card.scss */
 .inside-four-border-dashed {
   border: 1px dashed var(--sk-color-four-border);
 }
 
-/* line 124, ../sass/components/_card.scss */
+/* line 133, ../sass/components/_card.scss */
 .inside-four-border-dashed-2px {
   border: 2px dashed var(--sk-color-four);
 }
 
-/* line 127, ../sass/components/_card.scss */
+/* line 136, ../sass/components/_card.scss */
 .inside-bg-purple {
   background-image: url(../../img/bg.jpg);
   color: white;
@@ -3251,44 +3262,44 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   background-repeat: no-repeat;
 }
 
-/* line 133, ../sass/components/_card.scss */
+/* line 142, ../sass/components/_card.scss */
 .inside-bg-light-four {
   background-color: var(--bg-four);
   color: white;
 }
 
-/* line 137, ../sass/components/_card.scss */
+/* line 146, ../sass/components/_card.scss */
 .inside-bg-tree {
   background-color: var(--sk-color-tree);
   color: white;
 }
 
-/* line 141, ../sass/components/_card.scss */
+/* line 150, ../sass/components/_card.scss */
 .bg-light-four {
   background-color: var(--bg-four-light);
   color: white;
 }
 
-/* line 145, ../sass/components/_card.scss */
+/* line 154, ../sass/components/_card.scss */
 .card-light-four {
   background-color: var(--bg-four);
   color: #918bd5;
 }
 
-/* line 149, ../sass/components/_card.scss */
+/* line 158, ../sass/components/_card.scss */
 .card-light-yellow {
   background-color: var(--yellow-light);
   color: var(--yellow);
 }
 
 /** Nav **/
-/* line 155, ../sass/components/_card.scss */
+/* line 164, ../sass/components/_card.scss */
 .nav-pill-tabs li {
   position: relative;
   padding-bottom: 50px;
 }
 
-/* line 159, ../sass/components/_card.scss */
+/* line 168, ../sass/components/_card.scss */
 .nav-pill-tabs li:before {
   content: "";
   position: absolute;
@@ -3298,12 +3309,12 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   left: 20px;
 }
 
-/* line 167, ../sass/components/_card.scss */
+/* line 176, ../sass/components/_card.scss */
 .nav-pill-tabs li:last-child:before {
   display: none;
 }
 
-/* line 170, ../sass/components/_card.scss */
+/* line 179, ../sass/components/_card.scss */
 .nav-pill-tabs li a {
   display: flex;
   align-items: center;
@@ -3311,7 +3322,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   padding: 8px 0;
 }
 
-/* line 176, ../sass/components/_card.scss */
+/* line 185, ../sass/components/_card.scss */
 .nav-pill-tabs li a .nav-rounded {
   min-width: 42px;
   height: 42px;
@@ -3323,41 +3334,41 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   box-shadow: inset 0 9px 20px var(--shadow-color);
 }
 
-/* line 186, ../sass/components/_card.scss */
+/* line 195, ../sass/components/_card.scss */
 .nav-pill-tabs li a h5 {
   font-size: 16px;
   margin: 0;
 }
 
-/* line 190, ../sass/components/_card.scss */
+/* line 199, ../sass/components/_card.scss */
 .nav-pill-tabs li a p {
   margin: 0;
   padding: 0;
   color: var(--text-muted);
 }
 
-/* line 194, ../sass/components/_card.scss */
+/* line 203, ../sass/components/_card.scss */
 .nav-pill-tabs li a.active .nav-rounded, .nav-pill-tabs li a:hover .nav-rounded {
   border-color: var(--sk-color-one);
 }
 
-/* line 197, ../sass/components/_card.scss */
+/* line 206, ../sass/components/_card.scss */
 .nav-pill-tabs li a:hover .nav-rounded {
   border-style: solid;
 }
 
-/* line 200, ../sass/components/_card.scss */
+/* line 209, ../sass/components/_card.scss */
 .nav-pill-tabs li a.active .nav-rounded .nav-icon {
   background-color: var(--sk-color-one);
   color: white;
 }
 
-/* line 204, ../sass/components/_card.scss */
+/* line 213, ../sass/components/_card.scss */
 .nav-pill-tabs li a.active h5, .nav-pill-tabs li a:hover h5 {
   color: var(--sk-color-one);
 }
 
-/* line 207, ../sass/components/_card.scss */
+/* line 216, ../sass/components/_card.scss */
 .nav-pill-tabs li a .nav-rounded .nav-icon {
   min-width: 100%;
   height: 100%;
@@ -3368,9 +3379,19 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-radius: 100%;
 }
 
-/* line 216, ../sass/components/_card.scss */
+/* line 225, ../sass/components/_card.scss */
 .nav-pill-tabs li a .nav-rounded .nav-icon i {
   font-size: 20px;
+}
+
+/* line 228, ../sass/components/_card.scss */
+.card-table table.table-default td {
+  padding: .82rem 2rem;
+}
+
+/* line 231, ../sass/components/_card.scss */
+.card-table table.table-default tr th {
+  padding: .52rem 2rem;
 }
 
 /* line 1, ../sass/components/_label.scss */

@@ -21,6 +21,7 @@ use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateStep3Type;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateStep4Type;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateStep5Type;
 use Selmak\Proaxive2\Http\Type\Admin\Intervention\InterventionCreateType;
+use Selmak\Proaxive2\Infrastructure\Mailing\MailInterventionService;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace Selmak\Proaxive2\Http\Type\Admin;
+namespace Selmak\Proaxive2\Http\Type\Admin\Workshop;
 
 use Palmtree\Form\Constraint\Number;
+use Palmtree\Form\Constraint\File as FileConstraint;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
 use Palmtree\Form\Type\FileType;
@@ -17,11 +18,19 @@ class WorkshopType extends Type
             ->add('name', 'text', [
                 'label' => "Nom de l'atelier",
                 'placeholder' => 'Dénomination commerciale'
-            ])
-            ->add('logo', FileType::class, [
+            ]);
+        if($data->id === null){
+            $builder->add('logo', FileType::class, [
+                'label' => 'Choisissez un fichier',
+                'constraints' => [
+                    new FileConstraint\Extension([
+                        'extensions' => ['jpg', 'gif', 'png'],
+                    ]),
+                ],
                 'required' => false
-            ])
-            ->add('type', 'choice', [
+            ]);
+        }
+        $builder->add('type', 'choice', [
                 'label' => "Statut juridique",
                 'placeholder' => 'Choisissez un type',
                 'choices' => [

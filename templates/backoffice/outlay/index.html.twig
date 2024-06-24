@@ -1,0 +1,77 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des débours{% endblock %}
+
+{% block body %}
+    {% if outlay is not empty %}
+        <div class="card card-table">
+            <div class="card-header">
+                <div class="grid-12 -noGutter">
+                    <div class="col-6_sm-12">
+                        <h5>Gestion des débours</h5>
+                        <span class="d-block">Liste des débours (achat pour le client)</span>
+                    </div>
+                    <div class="col-6_sm-12 text-right">
+                        <a href="/admin/add-outlay" class="btn btn-light-four">Créer un nouveau débours</a>
+                    </div>
+                </div>
+            </div>
+            <table class="table-default table-striped mt-3" id="table-visible">
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Client</th>
+                    <th>Montant</th>
+                    <th>Signature</th>
+                    <th>Vendeur</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Remboursement</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for o in outlay %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('outlay_update', {id:o.id}) }}">{{ o.reference }}</a>
+                        </td>
+                        <td>{{ o.c_fullname }}</td>
+                        <td><strong>{{ o.amount | number_format(2, '.', ',') }} €</strong></td>
+                        <td>
+                            {% if o.code_sign is not null %}
+                                <span class="label badge-light-green">Signé</span>
+                            {% else %}
+                                <span class="label badge-light-yellow">A signer</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ o.seller }}</td>
+                        <td>{{ o.created_at | date('d/m/Y') }}</td>
+                        <td>{{ o.status }}</td>
+                        <td>
+                            {% if o.refund is null %}
+                                <span class="label badge-light-yellow">En attente</span>
+                                {% else %}
+                                    <span class="label badge-light-green" title="Le {{ o.refund | date('d/m/Y') }}">Payé</span>
+                            {% endif %}
+                        </td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ dataPaginate | raw }}
+    {% else %}
+        <div class="text-center">
+        <span class="text-one">
+            <i class="fs-80px ri-server-line"></i>
+        </span>
+            <h3>Aucun débours</h3>
+            Ajoutez des débours et retrouvez-les ici
+            <div class="mt-3">
+                <a title="Ajouter un ordinateur/smartphone" href="{{ url_for('outlay_create') }}" class="btn btn-light-four m-0"><i class="fs-18px ri-add-fill"></i></a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

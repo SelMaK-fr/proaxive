@@ -92,7 +92,7 @@
             <table class="w100">
                 <tr>
                     <td class="align-center" style="padding-top:15px;">
-                        <img style="height: 150px;width:auto;" src="https://proaxive.fr/assets/logo-beta_300.png" alt="">
+                        <img style="height: 150px;width:auto;" src="https://{{ settings.app.domainUrl }}{{ asset('uploads/logo/' ~ data.cy_logo) }}" alt="">
                         <h3 class="ptpb-10px title">Intervention terminée.</h3>
                     </td>
                 </tr>
@@ -112,11 +112,11 @@
                         </div>
                         <div class="pt-20px">
                             Vous pouvez également suivre l'avancement de la réparation en vous randant sur la page de
-                            <a href="https://{{ settings.app.domainUrl }}/i/{{ data.ref_for_link }}" class="purple">Suivi d'une intervention</a> ou via votre espace client.
+                            <a href="https://{{ settings.app.domainUrl }}/i/{{ data.ref_for_link }}" class="pink">Suivi d'une intervention</a> ou via votre espace client.
                         </div>
                         <div class="pt-20px">
                             En vous remerciant,<br>
-                            L'équipe {{ get_env('BUSINESS_NAME') }}
+                            {{ data.cy_type }} {{ data.cy_name }}
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
             <div style="padding:20px;">
                 <p class="align-center">
                     Ce courriel est automatique, merci de ne pas y répondre. <br>
-                    <a href="https://{{ settings.app.domainUrl }}/wxy/customers/login" class="purple">Votre espace client</a>
+                    <a href="https://{{ settings.app.domainUrl }}/wxy/customers/login" class="pink">Votre espace client</a>
                 </p>
             </div>
         </td>

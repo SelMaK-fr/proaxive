@@ -15,6 +15,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerDeleteController;
+use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerDocumentController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositCreateController;
@@ -43,6 +44,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchContro
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionToPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionValidatedController;
+use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\PermsController;
@@ -61,7 +63,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\User\UserController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateLogoController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateSignatureController;
-use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopActionController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopUpdateController;
 use Selmak\Proaxive2\Http\API\V1\ApiInterventionController;
@@ -121,6 +123,7 @@ return function (App $app) {
         $group->any('/{id:[0-9]+}/update/parameters', [CustomerUpdateController::class, 'updateParameters'])->setName('customer_update_parameters');
         $group->post('/{id:[0-9]+}/update/parameters/password', [CustomerUpdateController::class, 'updatePortalPassword'])->setName('customer_update_parameters_password');
         $group->delete('/{id:[0-9]+}/delete', [CustomerDeleteController::class, 'delete'])->setName('customer_delete');
+        $group->get('/{id:[0-9]+}/documents', CustomerDocumentController::class)->setName('customer_documents');
         // Update type Customer
         $group->post('/{id:[0-9]+}/update/parameters/type', [CustomerUpdateController::class, 'updateType'])->setName('customer_update_parameters_type');
     });
@@ -131,7 +134,7 @@ return function (App $app) {
     /* Workshop */
     $app->group('/admin/workshop', function (RouteCollectorProxy $group){
         $group->any('', [WorkshopController::class, 'index'])->setName('dash_workshop');
-        $group->any('/create', [WorkshopActionController::class, 'action'])->setName('workshop_create');
+        $group->any('/create', WorkshopCreateController::class)->setName('workshop_create');
         $group->any('/{id:[0-9]+}/update', WorkshopUpdateController::class)->setName('workshop_update');
         $group->post('/{id:[0-9]+}/ajax/logo', WorkshopUpdateLogoController::class)->setName('workshop_update_logo');
         $group->post('/{id:[0-9]+}/ajax/signature', WorkshopUpdateSignatureController::class)->setName('workshop_update_signature');
@@ -200,6 +203,7 @@ return function (App $app) {
     /* Outlay */
     $app->group('/admin/outlay', function (RouteCollectorProxy $group) {
         //$group->post('', [DepositCreateController::class, 'create'])->setName('deposit_create');
+        $group->get('', OutlayController::class)->setName('dash_outlay');
         $group->any('/create', OutlayCreateController::class)->setName('outlay_create');
         $group->any('/{id:[0-9]+}/update', OutlayUpdateController::class)->setName('outlay_update');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);

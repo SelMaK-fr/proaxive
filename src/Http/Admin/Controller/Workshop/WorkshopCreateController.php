@@ -9,12 +9,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Workshop\Repository\WorkshopRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Selmak\Proaxive2\Http\Type\Admin\WorkshopType;
+use Selmak\Proaxive2\Http\Type\Admin\Workshop\WorkshopType;
+use Sirius\Upload\Handler;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class WorkshopActionController extends AbstractController
+class WorkshopCreateController extends AbstractController
 {
 
     /**
@@ -35,9 +36,24 @@ class WorkshopActionController extends AbstractController
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_workshop'];
-            $save = $this->getRepository(WorkshopRepository::class)->add($data, true);
-            if($save) {
-                $this->addFlash('panel-info', sprintf("Le nouveau magasin/atelier - %s - a bien été créé", $data['name']));
+            $files = $request->getUploadedFiles()['form_workshop'];
+            $path = $this->settings->get('settings')['publicPath'];
+            $uploadHandler = new Handler($path . 'uploads/logo');
+            $upload = $uploadHandler->process($files);
+            if($upload->isValid()) {
+                try {
+                    // Return filename in the data array
+                    $data['logo'] = $upload->name;
+                    $this->getRepository(WorkshopRepository::class)->add($data, true);
+                    $this->addFlash('panel-info', 'Entreprise créé avec succès.');
+                    $upload->confirm();
+                    return $this->redirectToRoute('dash_workshop');
+                } catch (\Exception $e) {
+                    $upload->clear();
+                    throw $e;
+                }
+            } else {
+                $this->addFlash('panel-error', sprintf('Erreur lors du téléversement : %', $upload->getMessages()));
             }
         }
         // Breadcrumbs

@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Selmak\Proaxive2\Infrastructure\Seeder;
-
 use Phinx\Seed\AbstractSeed;
 
 class UserSeeder extends AbstractSeed
@@ -20,7 +18,7 @@ class UserSeeder extends AbstractSeed
     {
         $user = [
             'pseudo' => 'admin',
-            'mail' => 'admin@admin.local',
+            'mail' => 'admin@admin.tld',
             'fullname' => 'John Doe',
             'password' => password_hash('admin', PASSWORD_DEFAULT),
             'roles' => 'SUPER_ADMIN',
