@@ -1,5 +1,5 @@
 # PROAXIVE 2.0
-### version 2.0.3 [beta]
+### version 2.0.x [beta]
 #### Slim Framework v4.13.0
 
 [![Minimum PHP Version](https://img.shields.io/badge/PHP->=8.2-%23786fa6)](https://php.net/)
@@ -14,7 +14,7 @@ Elle permet de gérer les interventions informatique en ligne. L'application web
 ### Site web et support
 
 **Site officiel :** https://proaxive.fr  
-**Documentations :** https://proaxive.fr/docs/app/v-2-2-0  
+**Documentations :** (WIP) https://proaxive.fr/docs/app/v-2-2-0  
 **Discord :** https://discord.gg/R9XeNMw5D4
 
 #### Requis
@@ -61,7 +61,7 @@ Avant de commencer l'installation, il est impératif de créer une base de donn�
 
 Dans votre dossier Proaxive, récupérez le dépôt officiel :
 ```
-git clone https://github.com/yanndev-com/proaxive.git .
+git clone https://github.com/SelMaK-fr/proaxive.git .
 ```
 ### Installation des dépendances
 ```
@@ -88,7 +88,7 @@ ou
 vendor/bin/phinx migrate
 vendor/bin/phinx seed:run
 ```
-Rendez-vous sur https://mondomaine.fr/login-dash  
+Rendez-vous sur https://mondomaine.fr/auth/login 
 
 Le compte administrateur par défaut est :  
 Utilisateur : **admin@proaxive.app**  
@@ -98,4 +98,4 @@ Le fichier de configuration de l'application se trouve dans
 ```
 config/settings.php
 ```
-Il n'est pas conseiller de le modifier, les paramètres pricnipaux ont été reporté dans le fichier .env
+Il n'est pas conseiller de le modifier, les paramètres principaux ont été reportés dans le fichier .env

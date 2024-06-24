@@ -18,7 +18,7 @@ class UserSeeder extends AbstractSeed
     {
         $user = [
             'pseudo' => 'admin',
-            'mail' => 'admin@admin.tld',
+            'mail' => 'admin@proaxive.app',
             'fullname' => 'John Doe',
             'password' => password_hash('admin', PASSWORD_DEFAULT),
             'roles' => 'SUPER_ADMIN',
