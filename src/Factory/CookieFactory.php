@@ -8,7 +8,7 @@ class CookieFactory
     public function setCookie($data, $db): void
     {
         $expected = $data['id'] . '==' . sha1($data['id'] . 'proaxive');
-        $db->update('users' ,['auth_token' => $expected], $data['id'])->execute();
+        $db->update('users' ,['auth_token' => $expected], (int)$data['id'])->execute();
         setcookie("proaxive2-auth", $expected, strtotime("+7 days"), '/', '', true, true);
     }
 
