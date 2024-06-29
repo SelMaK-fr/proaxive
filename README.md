@@ -78,7 +78,7 @@ Rendez-vous sur https://mondomaine.fr/auth/login
 
 Le compte administrateur par défaut est :  
 Utilisateur : **admin@proaxive.app**  
-Mot de passe : **admin**
+Mot de passe : **admin/admin**
 ## Fichier de configuration
 Le fichier de configuration de l'application se trouve dans 
 ```

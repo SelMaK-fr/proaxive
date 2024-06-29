@@ -20,7 +20,7 @@ class UserSeeder extends AbstractSeed
             'pseudo' => 'admin',
             'mail' => 'admin@proaxive.app',
             'fullname' => 'John Doe',
-            'password' => password_hash('admin', PASSWORD_DEFAULT),
+            'password' => password_hash('admin/admin', PASSWORD_DEFAULT),
             'roles' => 'SUPER_ADMIN',
             'company_id' => 1,
             'created_at' => '2024-03-25 04:21:52',
