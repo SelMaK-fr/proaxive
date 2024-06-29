@@ -216,7 +216,7 @@ abstract class AbstractController
      */
     protected function getUserId(): int
     {
-        return $this->session->get('auth')['id'];
+        return (int)$this->session->get('auth')['id'];
     }
 
     protected function getUsername(): string
@@ -229,7 +229,7 @@ abstract class AbstractController
      */
     protected function getUserCompany(): int
     {
-        return $this->session->get('auth')['company_id'];
+        return (int)$this->session->get('auth')['company_id'];
     }
 
     protected function pdfResponse(string $attachmentFilename): \Slim\Psr7\Response|\Slim\Psr7\Message
