@@ -7,6 +7,7 @@
 /var/pdf/*.pdf
 /var/logs
 /cron-database.php
+/config/parameters.json
 ###< Assets ###
 /public/assets/sass
 /public/assets/.sass-cache
