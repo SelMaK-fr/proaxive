@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Customer;
 
-use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -11,14 +10,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use Slim\App;
 
 class CustomerAjaxController extends AbstractController
 {
-    public function __construct(private readonly StatefulValidator $validator, App $app)
-    {
-        parent::__construct($app);
-    }
 
     public function search(Request $request, Response $response): Response
     {

@@ -113,3 +113,25 @@
 </div>
 <button type="submit" class="btn btn-light-four">Enregistrer</button>
 {{ form.renderEnd(false) | raw }}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function(event) {
+                    let inputValue = event.target.value;
+                    inputValue = inputValue.replace(/\D/g, '');
+                    let formattedNumber = '';
+                    for (let i = 0; i < inputValue.length; i++) {
+                        if (i > 0 && i % 2 === 0) {
+                            formattedNumber += ' ';
+                        }
+                        formattedNumber += inputValue[i];
+                    }
+                    formattedNumber = formattedNumber.substring(0, 14);
+                    event.target.value = formattedNumber;
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -73,22 +73,13 @@ class InterventionArgsType extends Type
                 'placeholder' => "Précisez ce qu'il c'est passé avant la panne",
                 'required' => false
             ]);
-        if ($args['roles'] === "SUPER_ADMIN") {
+        if($args['e'] == 0) {
             $builder
-                ->add('company_id', ChoiceType::class, [
-                    'label' => 'Magasin',
-                    'placeholder' => 'Sélectionnez un magasin/atelier',
-                    'choices' => self::getCompany(),
-                    'required' => true
-                ])
-                ->add('users_id', 'choice', [
-                    'placeholder' => 'Sélectionnez un technicien',
-                    'label' => 'Techniciens',
-                    'choices' => self::getUsers((int)$args['company_id']),
-                    'expanded' => true,
-                    'inline' => false,
-                ])
-            ;
+            ->add('equipments_id', ChoiceType::class, [
+                'label' => 'Equipements',
+                'placeholder' => false,
+                'choices' => self::getEquipments((int)$args['customers_id'])
+            ]);
         }
         return $builder->getForm();
     }
@@ -133,5 +124,19 @@ class InterventionArgsType extends Type
             return $status;
         }
         return $status;
+    }
+
+    private function getEquipments(int $data): array
+    {
+        $equipments = [];
+        $req = $this->query->from('equipments')->select(null)->select('equipments.id, equipments.name, equipments.brand_name')->where('customers_id = ?', $data)->fetchAll();
+        if($req){
+            foreach ($req as $e) {
+                $label = $e['name'] . ' (' . $e['brand_name'] . ')';
+                $equipments[$e['id']] = $label;
+            }
+            return $equipments;
+        }
+        return $equipments;
     }
 }

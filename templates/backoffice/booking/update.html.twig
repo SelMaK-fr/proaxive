@@ -1,0 +1,60 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Modifier un évènement{% endblock %}
+
+{% block body %}
+    <div class="grid-center">
+        <div class="col-8_sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="">
+                        <h3 class="fs-18px fw-500">Evènement publié le {{ data.created_at | date('d/m/Y') }}</h3>
+                        <p class="m-0">Modification de l'évènement</p>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    {{ form.renderStart | raw }}
+                        {{ form.renderField('title') | raw }}
+                        {{ form.renderField('subtitle') | raw }}
+                    <div class="flex justify-content-space-between">
+                        <div class="add_event_colors">
+                            <div class="grid-12">
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('backgroundColor') | raw }}
+                                </div>
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('textColor') | raw }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add_event_date">
+                            <h4>Date de début</h4>
+                            <div class="grid-12">
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('start_date') | raw }}
+                                </div>
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('start_time') | raw }}
+                                </div>
+                            </div>
+                            <h4>Date de fin</h4>
+                            <div class="grid-12">
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('end_date') | raw }}
+                                </div>
+                                <div class="col-6_sm-12">
+                                    {{ form.renderField('end_time') | raw }}
+                                </div>
+                            </div>
+                            {{ form.renderField('allDay') | raw }}
+                        </div>
+                    </div>
+                    {{ form.renderField('description') | raw }}
+                    <button type="submit" class="btn btn-light-four">Valider</button>
+                    {{ form.renderEnd(false) | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

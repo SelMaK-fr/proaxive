@@ -7,6 +7,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Twig\Error\LoaderError;
@@ -27,8 +28,7 @@ class IndexController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $interventions = $this->getRepository(InterventionRepository::class)->all()->limit(10)->orderBy('created_at DESC');
-
+        $interventions = $this->getRepository(InterventionRepository::class)->all(false,6)->orderBy('created_at DESC');
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Proaxive Dashboard', false);

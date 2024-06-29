@@ -5,8 +5,11 @@
  */
 function searchHttpRequest(str, url){
     if (str.length == 0){ //exit function if nothing has been typed in the textbox
+        let tableVisible = document.getElementById('table-visible');
         document.getElementById("htmlContent").innerHTML=""; //clear previous results
-        document.getElementById('table-visible').style.display = "";
+        if(tableVisible){
+            tableVisible.style.display = "";
+        }
         return;
     }
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -17,7 +20,10 @@ function searchHttpRequest(str, url){
     xmlhttp.onreadystatechange=function(){
         if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
             document.getElementById("htmlContent").innerHTML=xmlhttp.responseText;
-            document.getElementById('table-visible').style.display = "none";
+            let tableVisible = document.getElementById('table-visible');
+            if(tableVisible){
+                tableVisible.style.display = "none";
+            }
         }
     }
     xmlhttp.open("GET",url + "/" + str,true);

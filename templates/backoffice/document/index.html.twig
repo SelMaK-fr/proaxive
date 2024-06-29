@@ -1,0 +1,79 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des documents{% endblock %}
+
+{% block body %}
+    {% if documents is not empty %}
+        <div class="card card-table">
+            <div class="card-header">
+                <div class="grid-12 -noGutter">
+                    <div class="col-6_sm-12">
+                        <h5>Gestion des documents</h5>
+                        <span class="d-block">Liste des documents</span>
+                    </div>
+                    <div class="col-6_sm-12 text-right">
+                        <a href="{{ url_for('document_create') }}" class="btn btn-light-four">Importer un nouveau document</a>
+                    </div>
+                </div>
+            </div>
+            <table class="table-default table-striped mt-3" id="table-visible">
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nom</th>
+                    <th>Fichier</th>
+                    <th>Taille</th>
+                    <th>Extension</th>
+                    <th>Etat</th>
+                    <th>Intervention</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for d in documents %}
+                    <tr>
+                        <td>
+                            <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}">{{ d.reference }}</a>
+                        </td>
+                        <td>{{ d.name }}</td>
+                        <td>
+                            <strong class="d-block">{{ d.filename }}</strong>
+                            <em>/storage/documents/{{ d.c_id }}/</em>
+                        </td>
+                        <td>{{ getConvertBytes(d.size, 2) }}</td>
+                        <td>{{ d.extension }}</td>
+                        <td>{{ d.is_online }}</td>
+                        <td>
+                            {% if d.i_ref_number is not null or d.i_ref_number is not empty %}
+                            {{ d.i_ref_number }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </td>
+                        <td>{{ d.c_fullname }}</td>
+                        <td>{{ d.created_at | date('d/m/Y') }}</td>
+                        <td>
+                            <button type="submit" class="btn-sm btn-light-pink m-0"><i class="fa-solid fa-trash" data-target="delete_document-{{ d.id }}" data-toggle="modal"></i></button>
+                            {{ include('backoffice/_modal/_delete_confirm.html.twig', {name:'document-' ~ d.id, url:url_for('document_delete', {id:d.id}), field_data:d.name}) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ dataPaginate | raw }}
+    {% else %}
+        <div class="text-center">
+        <span class="text-one">
+            <i class="fs-80px ri-server-line"></i>
+        </span>
+            <h3>Aucun documents</h3>
+            Importez des documents et retrouvez-les ici
+            <div class="mt-3">
+                <a title="Importer un fichier" href="{{ url_for('document_create') }}" class="btn btn-light-four m-0"><i class="fs-18px ri-add-fill"></i></a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

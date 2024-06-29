@@ -130,7 +130,8 @@ class InterventionAjaxController extends AbstractController
             ], $intervention_id);
             // If the client at a mail address, send mail
             $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
-            if($i['mail']){
+            $parameters = $this->parameter->getParams();
+            if($i['mail'] && $parameters['mail_auto'] == 1){
                 $mail = new MailInterventionService($this->getParameters('mailer'));
                 $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/start.html.twig', ['data' => $i]));
             }
@@ -160,7 +161,8 @@ class InterventionAjaxController extends AbstractController
             ], $intervention_id);
             // If the client at a mail address, send mail
             $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
-            if($i['mail']){
+            $parameters = $this->parameter->getParams();
+            if($i['mail'] && $parameters['mail_auto'] == 1){
                 $mail = new MailInterventionService($this->getParameters('mailer'));
                 $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/end.html.twig', ['data' => $i]));
             }
@@ -216,7 +218,8 @@ class InterventionAjaxController extends AbstractController
                 ];
                 // If the client at a mail address, send mail
                 $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);
-                if($i['mail']){
+                $parameters = $this->parameter->getParams();
+                if($i['mail'] && $parameters['mail_auto'] == 1){
                     $mail = new MailInterventionService($this->getParameters('mailer'));
                     $mail->sendMailStart($i['mail'], $this->view('mailer/intervention/end.html.twig', ['data' => $i]));
                 }

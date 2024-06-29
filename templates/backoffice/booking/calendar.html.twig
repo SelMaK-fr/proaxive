@@ -1,0 +1,53 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Calendrier des évènements{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body p-relative">
+            <div id='calendar-holder' data-events-url="{{ calendar_url }}"></div>
+            <button class="calendar_button"><i class="fa-solid fa-plus" data-target="add_event" data-toggle="modal"></i></button>
+        </div>
+    </div>
+    {{ include('backoffice/booking/modal/_add_event.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let calendarEl = document.getElementById('calendar-holder');
+            let { eventsUrl } = calendarEl.dataset;
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'fr',
+                editable: true,
+                eventDidMount: function(info) {
+                    let tooltip = tippy(info.el, {
+                        content: info.event.extendedProps.description,
+                    })
+                },
+                eventSources: [
+                    {
+                        url: eventsUrl,
+                        extraParams: {
+                            filters: JSON.stringify([]) // pass your parameters to the subscriber
+                        },
+                        failure: () => {
+                            // alert("There was an error while fetching FullCalendar!");
+                        },
+                    },
+                ],
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
+                }
+            });
+            calendar.render();
+        });
+
+    </script>
+{% endblock %}

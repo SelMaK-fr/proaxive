@@ -71,7 +71,7 @@ class OperatingSystemController extends AbstractController
             if($validator->count() === 0) {
                 $data['os_full'] = $data['os_name'].' - '.$data['os_architecture'].' ('. $data['os_release'] .')';
                 if($id != 0) {
-                    $this->getRepository(OperatingSystemRepository::class)->update($data, $id);
+                    $this->getRepository(OperatingSystemRepository::class)->update($data, $id, false);
                     $this->addFlash('panel-info', "Action effectuée avec succès.");
                 } else {
                     $this->getRepository(OperatingSystemRepository::class)->add($data);

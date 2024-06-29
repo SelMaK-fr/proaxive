@@ -8,21 +8,21 @@
     <meta content="Proaxive by SelMaK" name="author">
     {% block stylesheets %}{% endblock %}
     <!-- START::GridLex Local -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/frameworks/gridlex/gridlex.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/frameworks/gridlex/gridlex.min.css') }}">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- START::REMIXICON -->
-    <link href="{{ get_env('PATH_PUBLIC') }}/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <link href="{{ asset('assets/fonts/remixIcon/remixicon.css') }}" rel="stylesheet">
     <!-- SimpleBar-->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css"
     />
     <!-- START::CSS App -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/app.css">
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/utilities.css">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/utilities.css') }}">
     <!-- START::Print -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/print.css') }}" type="text/css" media="print">
     <noscript>
         <style>
             /**
@@ -41,7 +41,7 @@
         <div class="aside-logo text-center">
             <div class="flex align-items-center justify-content-space-between">
                 <div class="flex align-items-center">
-                    <a href="/admin"><img class="v-middle mr-2" style="height: 40px; width: auto" src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2_white.png" alt=""></a>
+                    <a href="/admin"><img class="v-middle mr-2" style="height: 40px; width: auto" src="{{ asset('img/logos/logo_proaxive2_white.png') }}" alt=""></a>
                     <span class="fs-24px fw-600 app-title">Proaxive</span>
                 </div>
                 <div class="d-desktop">
@@ -157,11 +157,39 @@
                     </ul>
                 </div>
             </li>
-            <li class="item-nav">
-                <a href="#" title="Gestion des documents"><span class="icon"><i class="ri-briefcase-line"></i></span> <span class="title">E-Document</span></a>
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'document' %}current{% endif %}">
+                <a href="#" title="Gestion des documents"><span class="icon"><i class="ri-briefcase-line"></i></span> <span class="title">E-Document <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
+                <div class="submenu-dropdown">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_documents') }}">
+                                <span>Liste des documents</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('document_create') }}">
+                                <span>Importer un document</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li class="item-nav">
-                <a href="{{ url_for('dash_booking') }}" title="Gestion des documents"><span class="icon"><i class="ri-calendar-2-line"></i></span> <span class="title">E-Calendar</span></a>
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'booking' %}current{% endif %}">
+                <a href="#" title="Gestion des événements"><span class="icon"><i class="ri-calendar-2-line"></i></span> <span class="title">E-Calendar<span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'booking' %}open{% endif %}">
+                    <ul class="dropdown-navigation">
+                        <li>
+                            <a href="{{ url_for('dash_booking') }}">
+                                <span>Calendrier</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('booking_all') }}">
+                                <span>Liste des évènements</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="item-nav dropdown">
                 <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne (WIP) <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
@@ -268,7 +296,7 @@
             <div class="container-fluid">
                 <div class="flex justify-content-space-between">
                     <div>
-                        2024 - <a href="https://proaxive.fr" target="_blank" rel="noreferrer nofollow">Proaxive</a> v2.0.3 (alpha 105.24)
+                        2024 - <a href="https://proaxive.fr" target="_blank" rel="noreferrer nofollow">Proaxive</a> v2.0.4 (beta)
                     </div>
                     <div class="text-right">
                         Fabriqué à la main et avec <span class="text-pink"><i class="fa-solid fa-heart"></i></span>
@@ -292,10 +320,10 @@
     </div>
 </div>
 {% block javascripts %}{% endblock %}
-<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/setting.theme.js"></script>
-<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/p2.app.js"></script>
-<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/theme-toggle.js"></script>
-<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/aside.nav.js"></script>
+<script src="{{ asset('assets/js/setting.theme.js') }}"></script>
+<script src="{{ asset('assets/js/p2.app.js') }}"></script>
+<script src="{{ asset('assets/js/theme-toggle.js') }}"></script>
+<script src="{{ asset('assets/js/aside.nav.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
 {{ include('backoffice/_session_flash.html.twig') }}
 </body>

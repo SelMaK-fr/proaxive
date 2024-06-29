@@ -1,0 +1,19 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des documents{% endblock %}
+
+{% block body %}
+    <div class="grid-center">
+        <div class="col-9_sm-12">
+            <div class="card">
+                <div class="card-header"><h2>Importer un document</h2></div>
+                <div class="card-body p-4">
+                    <div class="alert alert-light-info">
+                        Note : si votre document est associé à une intervention, effectuez la création depuis cette dernière.
+                    </div>
+                    {{ include('backoffice/document/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

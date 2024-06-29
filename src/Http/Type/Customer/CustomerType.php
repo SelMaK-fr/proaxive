@@ -20,10 +20,30 @@ class CustomerType extends Type
                 'required' => false,
                 'label' => 'Adresse courriel'
             ])
-            ->add('fullname', 'text', [
+            ->add('civility', 'choice', [
+                'label' => 'Civilité',
+                'placeholder' => false,
+                'choices'     => [
+                    'M.' => 'M.',
+                    'Mlle' => 'Mlle',
+                    'Mme' => 'Mme'
+                ],
+                'required' => false
+            ])
+            ->add('lastname', 'text', [
                 'required' => true,
-                'error_message' => 'Please enter valid fullname',
-                'label' => 'Nom complet',
+                'error_message' => 'Please enter valid lastname',
+                'label' => 'Nom',
+                'placeholder' => 'Nom',
+                'constraints' => [
+                    new Length(['min' => 3])
+                ]
+            ])
+            ->add('firstname', 'text', [
+                'required' => true,
+                'error_message' => 'Please enter valid firstname',
+                'label' => 'Prénom',
+                'placeholder' => 'Prénom',
                 'constraints' => [
                     new Length(['min' => 3])
                 ]

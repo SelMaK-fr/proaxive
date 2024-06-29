@@ -14,12 +14,52 @@ use Selmak\Proaxive2\Infrastructure\Calendar\Month;
 class BookingController extends AbstractController
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function fullcalendar(Request $request, Response $response): Response
     {
 
-        return $this->render($response, 'backoffice/booking/index.html.twig', [
+        // Breadcrumbs
+        $bds = $this->breadcrumbs;
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Evènements', false);
+        $bds->addCrumb('Calendrier', false);
+        $bds->render();
+        // .Breadcrumbs
+        return $this->render($response, 'backoffice/booking/calendar.html.twig', [
             'currentMenu' => 'calendar',
+            'breadcrumbs' => $bds,
             'calendar_url' => $this->settings->get('app')['calendar_url']
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws \Envms\FluentPDO\Exception
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function all(Request $request, Response $response): Response
+    {
+        $events = $this->getRepository(BookingRepository::class)->all();
+        // Breadcrumbs
+        $bds = $this->breadcrumbs;
+        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $bds->addCrumb('Evènements', false);
+        $bds->render();
+        // .Breadcrumbs
+        return $this->render($response, 'backoffice/booking/index.html.twig', [
+            'events' => $events,
+            'breadcrumbs' => $bds,
         ]);
     }
 

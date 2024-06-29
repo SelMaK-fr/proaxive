@@ -40,6 +40,8 @@ class CustomerCreateController extends AbstractController
             $data['activated'] = 1;
             $generateClientId = new RandomStringGeneratorFactory();
             $data['login_id'] = 'C-' . $generateClientId->generate(9);
+            $data['fullname'] = $data['firstname'] . ' ' . $data['lastname'];
+
             $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
             if($checkIfExist == 1){
                 $this->addFlash('panel-error', "Un compte client existe déjà avec cette adresse courriel.");

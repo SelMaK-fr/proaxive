@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Http\Admin\Controller\Booking;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Respect\Validation\Validator as V;
 use Selmak\Proaxive2\Domain\Booking\Booking;
 use Selmak\Proaxive2\Domain\Booking\Repository\BookingRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
@@ -45,5 +46,62 @@ class BookingCreateController extends AbstractController
                 return $this->redirectToRoute('dash_booking');
             }
         }
+        return $response;
+    }
+
+    public function create(Request $request, Response $response): Response
+    {
+        if($request->getMethod() === 'POST'){
+            $data = $request->getParsedBody()['form_event'];
+            $isAllDay = $data['allDay'] ? 1 : 0;
+            $validator = $this->validator->validate($data, [
+                'title' => [
+                    'rules' => v::notBlank(),
+                    'messages' => [
+                        'notBlank' => "Veuillez ajouter un titre !"
+                    ]
+                ],
+                'start_date' => [
+                    'rules' => v::notBlank(),
+                    'messages' => [
+                        'notBlank' => "Veuillez ajouter une date de début !"
+                    ]
+                ],
+                'start_time' => [
+                    'rules' => v::notBlank(),
+                    'messages' => [
+                        'notBlank' => "Veuillez ajouter une heure de début !"
+                    ]
+                ],
+            ]);
+            if($validator->count() === 0) {
+                $booking = new Booking();
+                $booking->setStartDate($data['start_date']);
+                $booking->setStartTime($data['start_time']);
+                if($isAllDay === 0){
+                    $booking->setEndDate($data['end_date']);
+                    $booking->setEndTime($data['end_time']);
+                } else {
+                    $booking->setEndDate($data['start_date']);
+                    $booking->setEndTime($data['start_time']);
+                }
+                $booking->setTitle($data['title']);
+                $booking->setSubtitle($data['subtitle']);
+                $booking->setBackgroundColor($data['backgroundColor']);
+                $booking->setDescription($data['description']);
+                $booking->setTextColor($data['textColor']);
+                $booking->setAllDay($isAllDay);
+                $booking->setComponent('Evènement');
+
+                $save = $this->getRepository(BookingRepository::class)->createOject($booking);
+                if($save){
+                    $this->addFlash('panel-info', "L'évènement a bien été ajouté.");
+                    return $this->redirectToRoute('dash_booking');
+                }
+            }
+            $this->addFlash('panel-error', "Le formulaire n'est pas rempli correctement !");
+            return $this->redirectToReferer($request);
+        }
+        return $response;
     }
 }

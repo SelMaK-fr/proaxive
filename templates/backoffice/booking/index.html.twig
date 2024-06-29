@@ -1,51 +1,80 @@
 {% extends 'backoffice/base.html.twig' %}
 
-{% block title %}Gestion des évènements{% endblock %}
+{% block title %}Liste des évènements{% endblock %}
 
 {% block body %}
-    <div class="card">
-        <div class="card-body">
-            <div id='calendar-holder' data-events-url="{{ calendar_url }}"></div>
+    {% if events is not empty %}
+        <div class="card card-table">
+            <div class="card-header">
+                <div class="grid-12 -noGutter">
+                    <div class="col-6_sm-12">
+                        <h5>Gestion des évènement</h5>
+                        <span class="d-block">Liste des évènement</span>
+                    </div>
+                    <div class="col-6_sm-12 text-right">
+                        <button type="button" class="btn btn-light-four" data-target="add_event" data-toggle="modal">Créer un évènement</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table-default table-striped mt-3" id="table-visible">
+                <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>All Day</th>
+                    <th>Composant</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for e in events %}
+                    <tr>
+                        <td>{{ e.title }}</td>
+                        <td>{{ e.description }}</td>
+                        <td>
+                            <strong class="d-block">{{ e.start_date | date('d/m/Y') }}</strong>
+                            <em>à {{ e.start_time }}</em>
+                        </td>
+                        <td>
+                            {% if e.allDay %}
+                                ---
+                            {% else %}
+                                <strong class="d-block">{{ e.end_date | date('d/m/Y') }}</strong>
+                                <em>à {{ e.end_time }}</em>
+                            {% endif%}
+                        </td>
+                        <td>{{ getDataBool(e.allDay) }}</td>
+                        <td>{{ e.component }}</td>
+                        <td>{{ e.created_at | date('d/m/Y') }}</td>
+                        <td>
+                            <a href="{{ url_for('booking_update', {id:e.id}) }}" class="btn-sm btn-light-info d-inline-block"><i class="fa-solid fa-pen"></i></a>
+                            <button type="submit" class="btn-sm btn-light-pink m-0"><i class="fa-solid fa-trash" data-target="delete_event-{{ e.id }}" data-toggle="modal"></i></button>
+                            {{ include('backoffice/_modal/_delete_confirm.html.twig', {name:'event-' ~ e.id, url:url_for('booking_delete', {id:e.id}), field_data:e.title}) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
+        {{ dataPaginate | raw }}
+    {% else %}
+        <div class="text-center">
+        <span class="text-one">
+            <i class="fs-80px ri-server-line"></i>
+        </span>
+            <h3>Aucun événement à afficher</h3>
+            Créez des événements et retrouvez-les ici
+            <div class="mt-3">
+                <button type="button" class="btn btn-light-four"><i class="fs-18px ri-add-fill" data-target="add_event" data-toggle="modal"></i></button>
+            </div>
+        </div>
+    {% endif %}
+    {{ include('backoffice/booking/modal/_add_event.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let calendarEl = document.getElementById('calendar-holder');
-        let { eventsUrl } = calendarEl.dataset;
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            locale: 'fr',
-            editable: true,
-            eventDidMount: function(info) {
-                let tooltip = tippy(info.el, {
-                    content: info.event.extendedProps.description,
-                })
-            },
-            eventSources: [
-                {
-                    url: eventsUrl,
-                    extraParams: {
-                        filters: JSON.stringify([]) // pass your parameters to the subscriber
-                    },
-                    failure: () => {
-                        // alert("There was an error while fetching FullCalendar!");
-                    },
-                },
-            ],
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
-            }
-        });
-        calendar.render();
-    });
 
-</script>
 {% endblock %}

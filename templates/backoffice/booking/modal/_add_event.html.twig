@@ -1,0 +1,73 @@
+<div class="modal" id="add_event">
+    <div class="modal-container" style="width: 100px;">
+        <div class="modal-header">
+            <h1>Créer un évènement</h1>
+        </div>
+        <form action="{{ url_for('booking_create') }}" method="post" id="form_event">
+            <div class="modal-content">
+                <div class="mb-4">
+
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="form_event[title]" placeholder="Titre de l'évènement" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="form_event[subtitle]" placeholder="Sous-titre de l'évènement" required>
+                </div>
+                <div class="grid-12">
+                    <div class="col-6_sm-12">
+                        <div class="form-group">
+                            <label for="form_event-backgroundColor">Couleur de fond</label>
+                            <input class="form-control" type="color" id="form_event-backgroundColor" name="form_event[backgroundColor]" required>
+                        </div>
+                    </div>
+                    <div class="col-6_sm-12">
+                        <div class="form-group">
+                            <label for="form_event-textColor">Couleur du texte</label>
+                            <input class="form-control" type="color" id="form_event-textColor" name="form_event[textColor]" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="add--event-time">
+                    <div class="form-group">
+                        <h4>Début</h4>
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                <input class="form-control" type="date" placeholder="Date de début" name="form_event[start_date]" value="{{ 'now' | date('D/M/Y') }}" required>
+                            </div>
+                            <div class="col-6_sm-12">
+                                <input class="form-control" type="time" placeholder="Heure de début" name="form_event[start_time]" value="{{ 'now' | date('H:i') }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h4>Fin</h4>
+                        <div class="grid-12">
+                            <div class="col-6_sm-12">
+                                <input class="form-control" name="form_event[end_date]" type="date" placeholder="Date de début" value="{{ 'now' | date('D/M/Y') }}">
+                            </div>
+                            <div class="col-6_sm-12">
+                                <input class="form-control" name="form_event[end_time]" type="time" placeholder="Heure de début" value="{{ 'now' | date('H:i') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 form-check">
+                        <input class="palmtree-form-control" type="checkbox" id="form_event-allDay" name="form_event[allDay]">
+                        <label for="form_event-allDay">Toute la journée</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="form_event[description]" id="" cols="30" rows="10" placeholder="Description de l'évènement"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="submit" class="btn btn-light-four">Créer</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block javascripts %}
+
+{% endblock %}

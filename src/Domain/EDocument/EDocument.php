@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Domain\EDocument;
 
 use Envms\FluentPDO\Literal;
 use Selmak\Proaxive2\Domain\Intervention\Intervention;
+use Slim\Psr7\UploadedFile;
 
 class EDocument
 {
@@ -16,7 +17,7 @@ class EDocument
     public ?string $description = null;
     public int $is_online = 0;
     public ?int $interventions_id = null;
-    public int $customers_id;
+    public ?int $customers_id = null;
     public Literal $created_at;
     public Literal $updated_at;
 

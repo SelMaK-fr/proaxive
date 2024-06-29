@@ -11,6 +11,8 @@ use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfLinkExpirateMiddleware;
 use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingController;
 use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingDeleteController;
+use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerCreateController;
@@ -22,7 +24,10 @@ use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSignController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositToPdfController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentAddController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentController;
@@ -173,7 +178,7 @@ return function (App $app) {
        $group->get('/search[:{args}]', [InterventionSearchController::class, 'searchByFields'])->setName('intervention_search_fields');
        $group->get('/ajax/search/{key}', [InterventionAjaxController::class, 'search'])->setName('intervention_search');
        $group->post('/ajax/add/fast', [InterventionAjaxController::class, 'addFast'])->setName("intervention_create_fast");
-       $group->post('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
+       $group->any('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
        $group->post('/{id:[0-9]+}/ajax/end', [InterventionAjaxController::class, 'end'])->setName("intervention_ajax_end");
        $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
        $group->post('/{id:[0-9]+}/ajax/next-step', [InterventionAjaxController::class, 'nextStep'])->setName('ajax_intervention_next_step');
@@ -209,9 +214,11 @@ return function (App $app) {
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Document */
     $app->group('/admin/documents', function (RouteCollectorProxy $group) {
-        //$group->post('', [DepositCreateController::class, 'create'])->setName('deposit_create');
-        $group->any('/create[:{args}]', DocumentCreateController::class)->setName('document_create');
+        $group->get('', DocumentController::class)->setName('dash_documents');
+        $group->any('/create', DocumentCreateController::class)->setName('document_create');
+        $group->any('/add[:{args}]', DocumentAddController::class)->setName('document_add');
         $group->get('/read/{id:[0-9]+}', DocumentReadController::class)->setName('document_read');
+        $group->delete('/{id:[0-9]+}/delete', DocumentDeleteController::class)->setName('document_delete');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Task */
     $app->group('/admin/tasks', function (RouteCollectorProxy $group) {
@@ -222,7 +229,11 @@ return function (App $app) {
     $app->group('/admin/booking', function (RouteCollectorProxy $group) {
         $group->get('', [BookingController::class, 'fullcalendar'])->setName('dash_booking');
         $group->any('/get/all', [BookingController::class, 'getAll'])->setName('booking_get_all');
+        $group->get('/all', [BookingController::class, 'all'])->setName('booking_all');
         $group->any('/c-i', [BookingCreateController::class, 'createForIntervention'])->setName('add_booking_for_intervention');
+        $group->post('/create', [BookingCreateController::class, 'create'])->setName('booking_create');
+        $group->any('/{id:[0-9]+}/update', BookingUpdateController::class)->setName('booking_update');
+        $group->delete('/delete/{id:[0-9]+}', BookingDeleteController::class)->setName('booking_delete');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Settings */
     $app->group('/admin/settings', function (RouteCollectorProxy $group) {

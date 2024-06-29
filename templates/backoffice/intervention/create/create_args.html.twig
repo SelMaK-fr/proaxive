@@ -5,10 +5,14 @@
 {% block body %}
     <div class="card">
         <div class="card-header border-bottom-dashed">
-            <h3>Nouvelle intervention</h3>
+            <h3>Nouvelle intervention (avec client et équipement)</h3>
             <span>Veuillez renseigner les détails principaux de l'intervention</span>
         </div>
         <div class="card-body">
+           <div class="alert alert-light-info">
+               Vous allez ajouter une intervention en tant que <span class="text-green fw-600">{{ auth.fullname }}</span>
+           </div>
+            {{ form.renderStart | raw }}
             <div class="grid-12">
                 <div class="col-3_sm-12 border-right-dashed">
                 <div class="card-inside all-border p-3">
@@ -32,17 +36,20 @@
                             <span><i class="fs-32px ri-computer-line"></i></span>
                         </div>
                         <div>
-                            <h4 class="fs-16px">{{ e.name }}</h4>
+                            {% if e != 0 %}
+                            <h4 class="fs-16px">{{ equipment.name }}</h4>
                             <p class="m-0">
 
                             </p>
+                            {% else %}
+                                {{ form.renderField('equipments_id') | raw }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 </div>
                 <div class="col-9_sm-12">
                     <div class="pl-4 pr-4">
-                        {{ form.renderStart | raw }}
                         <div class="grid-12">
                             <div class="col-6_sm-12">
                                 {{ form.renderField('name') | raw }}
@@ -61,15 +68,8 @@
                             </div>
                             <div class="col-6_sm-12">
                                 <div class="form-group mb-3">
-                                    {% if auth.roles != "SUPER_ADMIN" %}
-                                        <label class="form-label" for="form_intervention_args-users_id">Technicien</label>
-                                        <div><span class="text-green fw-500">Vous</span> ({{ auth.fullname }})</div>
-                                        <input type="hidden" value="{{ auth.company_id }}" name="form_intervention_args[company_id]">
-                                        {{ form.renderField('users_id') | raw }}
-                                    {% else %}
-                                        {{ form.renderField('company_id') | raw }}
-                                        {{ form.renderField('users_id') | raw }}
-                                    {% endif %}
+                                    <label class="form-label" for="form_intervention_args-users_id">Technicien</label>
+                                    <div><span class="text-green fw-500">Vous</span> ({{ auth.fullname }})</div>
                                 </div>
                                 <div class="form-group ml-4">
                                     <span class="d-block fw-600">Temps consacré</span>
@@ -112,10 +112,11 @@
                         <div class="absolute-button">
                             <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Créer</button>
                         </div>
-                        {{ form.renderEnd(false) | raw }}
+
                     </div>
                 </div>
             </div>
+            {{ form.renderEnd(false) | raw }}
         </div>
     </div>
 {% endblock %}

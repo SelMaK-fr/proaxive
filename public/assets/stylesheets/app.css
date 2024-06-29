@@ -3496,6 +3496,26 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-right: 1px solid var(--sk-color-base-border);
 }
 
+/* line 67, ../sass/components/_label.scss */
+.label-flex {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* line 72, ../sass/components/_label.scss */
+.label-flex .lf--first {
+  display: block;
+  margin-right: 6px;
+  padding: 0.25em 0.5em;
+  background-color: var(--sk-color-base-foreground);
+  border-left: 1px solid var(--sk-color-base-border);
+  border-bottom: 1px solid var(--sk-color-base-border);
+  border-top: 1px solid var(--sk-color-base-border);
+  border-radius: 4px 0 0 4px;
+  color: var(--sk-color-base-text);
+}
+
 /* line 1, ../sass/components/_badge.scss */
 .badge-spacing, .badge {
   padding: 6px 12px;

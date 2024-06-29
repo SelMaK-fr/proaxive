@@ -15,7 +15,7 @@ final class EquipmentType extends Type
         $builder = (new FormBuilder([
             'key'             => 'equipment',
             'method'          => 'POST',
-            'html_validation' => false,
+            'html_validation' => true,
         ], $data))
             ->add('operating_systems_id', 'choice', [
                 'placeholder' => 'Sélectionnez un OS',
@@ -29,7 +29,7 @@ final class EquipmentType extends Type
                 'placeholder' => 'Sélectionnez un client',
                 'label' => 'Clients',
                 'choices' => $this->getCustomer(),
-                'required' => true
+                'required' => false
             ])
             ->add('types_equipments_id', 'choice', [
                 'placeholder' => 'Sélectionnez un type',

@@ -9,12 +9,12 @@
 Proaxive est une application web dédiée aux techniciens informatique.
 Elle permet de gérer les interventions informatique en ligne. L'application web Proaxive a pour but de simplifier le suivi en atelier. Vos clients peuvent suivre ce qu'il se passe sur leur PC en temps réel.
 
-![ScreenShot](https://proaxive.fr/assets/MiniLapTop_proaxive.png)
+![ScreenShot](https://files.proaxive.fr/img/2_0/logo_proaxive2.png)
 
 ### Site web et support
 
 **Site officiel :** https://proaxive.fr  
-**Documentations :** (WIP) https://proaxive.fr/docs/app/v-2-2-0  
+**Documentations :** (WIP) https://proaxive.fr/docs/app/v-2-2-x   
 **Discord :** https://discord.gg/R9XeNMw5D4
 
 #### Requis
@@ -26,46 +26,32 @@ Elle permet de gérer les interventions informatique en ligne. L'application web
 
 Proaxive est distribué sous les termes de la licence GNU General Public License v3+ ou supérieure.
 
-## Installation avec script (Linux)
-
-Rendez vous dans le dossier où sera installé Proaxive et téléchargez le script d'installation pour Linux
-```
-curl -O https://files.proaxive.fr/script/debian/proaxive-for-xxxx.sh
-```
-Ou
-```
-wget https://files.proaxive.fr/script/debian/proaxive-for-xxxx.sh
-```
-Rendre le script exécutable
-```
-chmod +x proaxive-for-xxxx.sh
-```
-Lancez l'installation de Proaxive
-```
-./proaxive-for-xxxx.sh
-```
-Le script va vous posez plusieurs questions :
-```
-Veuillez entrer le nom de domaine de votre installation Proaxive :  
-mydomain.fr
-```
-```
-Voulez-vous configurer l'envoi de courriel maintenant ?  
-```
-*Réponse* : répondre "non" n'est pas une mauvaise réponse car vous pourez configurer tout ça après l'installation (il faudra impérativement le faire).  
-Le script procédera ensuite à la création des tables et des données par défaut.  
-
 ## Installation avec le dépôt Git
 
 Avant de commencer l'installation, il est impératif de créer une base de données dédiée à Proaxive. 
 
-Dans votre dossier Proaxive, récupérez le dépôt officiel :
+Dans votre dossier (totalement vide) Proaxive, récupérez le dépôt officiel :
 ```
 git clone https://github.com/SelMaK-fr/proaxive.git .
 ```
 ### Installation des dépendances
 ```
-composer install --ignore-platform-reqs
+make first-install
+```
+ou
+```
+composer install --ignore-platform-reqs --no-dev
+```
+### Fichier de configuration .env
+Renommez le fichier .env.exemple en .env
+```
+mv .env.exemple .env
+```
+### Fichier HTACCESS
+Renommez le .htaccess.lock en .htaccess.  
+Vous pouvez tout aussi bien créer un virtualhost pointant vers le dossier "public" de Proaxive. Pensez également à configurer HTTPS dans votre virtualhost.
+```
+mv .htaccess.lock .htaccess
 ```
 ### Modification du fichier .env
 ```
@@ -99,3 +85,17 @@ Le fichier de configuration de l'application se trouve dans
 config/settings.php
 ```
 Il n'est pas conseiller de le modifier, les paramètres principaux ont été reportés dans le fichier .env
+## Mise à jour vers nouvelle version
+Pour mettre à jour votre version, lancez simplement la commande suivante
+```
+make update
+```
+NOTE : cette commande mettra à jour les fichiers sources de Proaxive (récupérés depuis le dépôt) et lancera une migration (si mise à jour de la base de données).   
+Je fais au mieux pour ne pas impacter la base de données lors des mises à jour afin de ne pas pertuber vos données.   
+Il est donc **très important** d'effectuer une **sauvegarde de votre base de données** avant toute mise à jour de Proaxive.   
+### Dépendances
+Si notifié dans le changelog, vous devrez peut être mettre à jour les dépendances. Pour ce faire, lancez la commande
+```
+make update-dep
+```
+NOTE : à lancer uniquement si spécifié dans le changelog.

@@ -39,6 +39,8 @@ class ParametersController extends AbstractController
             $data['api_address'] = $data['api_address'] ?? 0;
             $data['php_error'] = $data['php_error'] ?? 0;
             $data['full_error'] = $data['full_error'] ?? 0;
+            $data['mail_auto'] = $data['mail_auto'] ?? 0;
+            $this->addFlash('panel-info', "Paramètres mis à jour avec succès.");
             $this->parameter->save($data);
             return $this->redirectToReferer($request);
         }

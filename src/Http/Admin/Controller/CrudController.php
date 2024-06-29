@@ -82,6 +82,24 @@ class CrudController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $repository
+     * @param $response
+     * @param $request
+     * @param array $args
+     * @return Response
+     */
+    public function crudDelete(string $repository, $response, $request, array $args)
+    {
+        $id = (int)$args['id'];
+        if($request->getMethod() === 'DELETE') {
+            $this->getRepository($repository)->delete($id);
+            $this->addFlash('panel-info', 'Elément supprimé avec succès.');
+            return $this->redirectAfterSave();
+        }
+        return $response;
+    }
+
     protected function redirectAfterSave(): Response
     {
         return $this->redirectToRoute($this->routeName);

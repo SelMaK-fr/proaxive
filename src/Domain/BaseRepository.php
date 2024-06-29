@@ -29,14 +29,24 @@ class BaseRepository
      * false by default
      * @throws Exception
      */
-    public function all(bool $type = false): Select
+    public function all(bool $type = false, ?int $limit = null): Select
     {
         if($type){
             // For array
-            return $this->makeQueryDefault();
+            if($limit != null){
+                $make = $this->makeQueryDefault()->limit($limit);
+            } else {
+                $make = $this->makeQueryDefault();
+            }
+            return $make;
         } else {
             // For object
-            return $this->makeQueryObject();
+            if($limit != null){
+                $make = $this->makeQueryObject()->limit($limit);
+            } else {
+                $make = $this->makeQueryObject();
+            }
+            return $make;
         }
     }
 
@@ -55,7 +65,7 @@ class BaseRepository
      * Return all record for a key in an object
      * @throws Exception
      */
-    public function allBy(string $key, int $value, int $limit = 16, bool $type = false): Select
+    public function allBy(string $key, int|string $value, int $limit = 16, bool $type = false): Select
     {
         if($type){
             // For array
@@ -195,14 +205,15 @@ class BaseRepository
 
     /**
      * @param array $data
-     * @param int|null $id
+     * @param int $id
      * @return bool|int|\PDOStatement
      * @throws Exception
      */
-    public function update(array $data, ?int $id): bool|int|\PDOStatement
+    public function update(array $data, int $id, bool $date = true): bool|int|\PDOStatement
     {
+
         // update date auto
-        if(key_exists('updated_at', $data)){
+        if($date){
             $data['updated_at'] = new Literal('NOW()');
         }
         $query = $this->query->update($this->model, $data, $id);

@@ -60,11 +60,14 @@
             </div>
         {% else %}
             <div class="grid-12">
-                <div class="col-6_sm-12">
-                    {{ form.renderField('fullname') | raw }}
+                <div class="col-4_sm-12">
+                    {{ form.renderField('civility') | raw }}
                 </div>
-                <div class="col-6_sm-12">
-                    {{ form.renderField('profil_type') | raw }}
+                <div class="col-4_sm-12">
+                    {{ form.renderField('lastname') | raw }}
+                </div>
+                <div class="col-4_sm-12">
+                    {{ form.renderField('firstname') | raw }}
                 </div>
             </div>
         {% endif %}
@@ -75,6 +78,9 @@
             </div>
             <div class="col-6_sm-12">
                 {{ form.renderField('mobile') | raw }}
+                {% if customer.is_society is null  %}
+                    {{ form.renderField('profil_type') | raw }}
+                {% endif %}
             </div>
         </div>
         {% if customer.is_society is null %}
@@ -102,10 +108,10 @@
             {{ form.renderField('addr_latitude') | raw }}
             <div class="grid-12">
                 <div class="col-4_sm-12">
-                    {{ form.renderField('city') | raw }}
+                    {{ form.renderField('zipcode') | raw }}
                 </div>
                 <div class="col-4_sm-12">
-                    {{ form.renderField('zipcode') | raw }}
+                    {{ form.renderField('city') | raw }}
                 </div>
                 <div class="col-4_col-sm-12">
                     {{ form.renderField('department') | raw }}
@@ -145,3 +151,25 @@
 </div>
 <button type="submit" class="btn btn-light-four">Enregistrer</button>
 {{ form.renderEnd(false) | raw }}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function(event) {
+                    let inputValue = event.target.value;
+                    inputValue = inputValue.replace(/\D/g, '');
+                    let formattedNumber = '';
+                    for (let i = 0; i < inputValue.length; i++) {
+                        if (i > 0 && i % 2 === 0) {
+                            formattedNumber += ' ';
+                        }
+                        formattedNumber += inputValue[i];
+                    }
+                    formattedNumber = formattedNumber.substring(0, 14);
+                    event.target.value = formattedNumber;
+                });
+            });
+        });
+    </script>
+{% endblock %}

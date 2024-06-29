@@ -7,17 +7,17 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- START::GridLex Local -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/frameworks/gridlex/gridlex.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/frameworks/gridlex/gridlex.min.css') }}">
     <!-- START::REMIXICON -->
-    <link href="{{ get_env('PATH_PUBLIC') }}/assets/fonts/remixIcon/remixicon.css" rel="stylesheet">
+    <link href="{{ asset('assets/fonts/remixIcon/remixicon.css') }}" rel="stylesheet">
     <!-- SimpleBar
     <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
      -->
     <!-- START::CSS App -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/app.css">
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/utilities.css">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/utilities.css') }}">
     <!-- START::Print -->
-    <link rel="stylesheet" href="{{ get_env('PATH_PUBLIC') }}/assets/stylesheets/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="{{ asset('assets/stylesheets/print.css') }}" type="text/css" media="print">
     {% block stylesheets %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -26,7 +26,7 @@
 <div class="portal-tools p-absolute">
     <div class="pt-app-brand">
         <a href="#" class="link-logo">
-            <img src="{{ get_env('PATH_PUBLIC') }}/img/logos/logo_proaxive2_white.png" class="img-logo light-logo" alt="Proaxive">
+            <img src="{{ asset('img/logos/logo_proaxive2_white.png') }}" class="img-logo light-logo" alt="Proaxive">
         </a>
     </div>
     <div class="pt-app-elements">
@@ -99,7 +99,7 @@
     </div>
     <!-- start: content -->
 </div>
-<script src="{{ get_env('PATH_PUBLIC') }}/assets/js/portal.js" defer></script>
+<script src="{{ asset('assets/js/portal.js') }}" defer></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

@@ -24,6 +24,7 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataWayStepsStatus', [$this, 'getDataWayStepsStatus'], ['is_safe' => ['html']]),
             new TwigFunction('getDataWithNotification', [$this, 'getDataWithNotification'], ['is_safe' => ['html']]),
             new TwigFunction('getConvertBytes', [$this, 'getConvertBytes'], ['is_safe' => ['html']]),
+            new TwigFunction('getDataBool', [$this, 'getDataBool'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -88,6 +89,21 @@ class FrontFunctionTwig extends AbstractExtension
             $var = '<div class="alert alert-light-info">Cette donnée n\'est pas renseignée</div>';
         } else {
             $var = $data;
+        }
+        return $var;
+    }
+
+    /**
+     * Retourn ON ou OFF si 0 ou 1
+     * @param mixed $data
+     * @return string
+     */
+    public function getDataBool(mixed $data): string
+    {
+        if($data){
+            $var = '<span class="label alert-light-pink">OFF</span>';
+        } else {
+            $var = '<span class="label alert-light-green">ON</span>';
         }
         return $var;
     }

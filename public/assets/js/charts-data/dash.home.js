@@ -17,12 +17,8 @@ function dashHomeStatIntervention() {
             let countExit = document.getElementById('count_exit');
             countExit.innerHTML = data['exit_waiting'];
             let countTotal = document.getElementById('count_total');
-            countTotal.innerHTML =
-                data['not_started'] +
-                data['in_workshop'] +
-                data['final_test'] +
-                data['exit_waiting']
-            ;
+            let calc = parseInt(data['not_started']) + parseInt(data['in_workshop']) + parseInt(data['final_test']) + parseInt(data['exit_waiting']);
+            countTotal.innerHTML = calc;
             //
             const ctx = document.getElementById('myChart').getContext('2d');
             let darker = document.documentElement.getAttribute('data-layout-mode');

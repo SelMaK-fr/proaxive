@@ -36,7 +36,7 @@ class InterventionValidatedController extends AbstractController
         $intervention_id = (int)$args['id'];
         $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
         // Search if equipment return 0 if none
-        $e = $this->getRepository(EquipmentRepository::class)->countRowWhere($i->customers_id, 'customers_id');
+        $e = $this->getRepository(EquipmentRepository::class)->countRowWhere((int)$i->customers_id, 'customers_id');
 
         // Add fast Equipment FORM
         $formEquipment = $this->createForm(EquipmentFastType::class);

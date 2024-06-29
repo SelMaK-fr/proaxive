@@ -84,7 +84,7 @@ class TypeEquipmentController extends AbstractController
                 $data['is_peripheral'] = $data['is_peripheral'] ?? null;
                 $checkIfExist = $this->getRepository(TypeEquipmentRepository::class)->ifExist('name', $data['name']);
                 if($id != 0) {
-                    $this->getRepository(TypeEquipmentRepository::class)->update($data, $id);
+                    $this->getRepository(TypeEquipmentRepository::class)->update($data, $id, false);
                 } else {
                     if($checkIfExist != 1){
                         $this->getRepository(TypeEquipmentRepository::class)->add($data);

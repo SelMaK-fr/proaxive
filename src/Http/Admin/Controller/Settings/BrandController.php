@@ -84,7 +84,7 @@ class BrandController extends AbstractController
             $data['slug'] = $textFormatter->cleanText($data['name']);
             $checkIfExist = $this->getRepository(BrandRepository::class)->ifExist('name', $data['name']);
             if($id != 0) {
-                $this->getRepository(BrandRepository::class)->update($data, $id);
+                $this->getRepository(BrandRepository::class)->update($data, $id, false);
             } else {
                 if($checkIfExist != 1) {
                     $this->getRepository(BrandRepository::class)->add($data);

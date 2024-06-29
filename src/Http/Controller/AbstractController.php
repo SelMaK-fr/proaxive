@@ -212,17 +212,22 @@ abstract class AbstractController
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    protected function getUserId(): mixed
+    protected function getUserId(): int
     {
         return $this->session->get('auth')['id'];
     }
 
+    protected function getUsername(): string
+    {
+        return $this->session->get('auth')['fullname'];
+    }
+
     /**
-     * @return mixed
+     * @return int
      */
-    protected function getUserCompany(): mixed
+    protected function getUserCompany(): int
     {
         return $this->session->get('auth')['company_id'];
     }

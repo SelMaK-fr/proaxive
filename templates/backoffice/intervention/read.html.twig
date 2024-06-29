@@ -143,13 +143,14 @@
                             {% if i.is_closed == 0 %}
                             <button data-tippy-content="Modifier cette intervention" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-settings-2-line" data-target="update_intervention" data-toggle="modal"></i></button>
                             {% endif %}
-                            {% if i.with_deposit is not null or i.with_deposit is not empty %}
+                            {% if i.deposit_reference is not null or i.deposit_reference is not empty %}
+
                                 {% if i.d_is_signed is null %}
-                                    <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('deposit_sign', {reference:i.with_deposit}) }}" class="btn btn-sk-tree rounded-circle"><i class="fa-solid fa-pen-nib"></i></a>
+                                    <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('deposit_sign', {reference:i.deposit_reference}) }}" class="btn btn-sk-tree rounded-circle"><i class="fa-solid fa-pen-nib"></i></a>
                                 {% else %}
                                     <form action="{{ url_for('deposit_read') }}" method="get">
                                         <input type="hidden" name="intervention_reference" value="{{ i.ref_number }}">
-                                        <input type="hidden" name="deposit_reference" value="{{ i.with_deposit }}">
+                                        <input type="hidden" name="deposit_reference" value="{{ i.deposit_reference }}">
                                         <button data-tippy-content="Voir le bon de dépôt" type="submit" class="btn btn-sk-tree rounded-circle" title="Afficher le bon"><i class="fa-solid fa-eye"></i></button>
                                     </form>
                                 {% endif %}

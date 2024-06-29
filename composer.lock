@@ -121,7 +121,7 @@
         },
         {
             "name": "cakephp/core",
-            "version": "4.5.5",
+            "version": "4.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/core.git",
@@ -181,7 +181,7 @@
         },
         {
             "name": "cakephp/database",
-            "version": "4.5.5",
+            "version": "4.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/database.git",
@@ -237,7 +237,7 @@
         },
         {
             "name": "cakephp/datasource",
-            "version": "4.5.5",
+            "version": "4.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/datasource.git",
@@ -295,16 +295,16 @@
         },
         {
             "name": "cakephp/utility",
-            "version": "4.5.5",
+            "version": "4.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "24bd34c596cd88a69a7d5a338296ffe3c4fd393a"
+                "reference": "708929115e5b400e1b5b76d8120ca2e51e2de199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/24bd34c596cd88a69a7d5a338296ffe3c4fd393a",
-                "reference": "24bd34c596cd88a69a7d5a338296ffe3c4fd393a",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/708929115e5b400e1b5b76d8120ca2e51e2de199",
+                "reference": "708929115e5b400e1b5b76d8120ca2e51e2de199",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/utility"
             },
-            "time": "2024-02-27T16:19:58+00:00"
+            "time": "2024-06-23T00:11:14+00:00"
         },
         {
             "name": "creitive/breadcrumbs",

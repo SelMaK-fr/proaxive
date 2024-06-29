@@ -27,6 +27,10 @@ class ParametersType extends Type
                 'label' => '',
                 'required' => false
             ])
+            ->add('mail_auto', CheckboxType::class, [
+                'label' => '',
+                'required' => false
+            ])
             ->add('api_nominatim', CheckboxType::class, [
                 'label' => '',
                 'required' => false

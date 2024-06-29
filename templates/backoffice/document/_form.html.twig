@@ -1,0 +1,8 @@
+{{ form.renderStart | raw }}
+    {{ form.renderField('customer_id') | raw }}
+    {{ form.renderField('name') | raw }}
+    {{ form.renderField('description') | raw }}
+    {{ form.renderField('is_online') | raw }}
+    {{ form.renderField('file') | raw }}
+    <button type="submit" class="btn btn-light-four">Envoyer</button>
+{{ form.renderEnd(false) | raw }}

@@ -72,7 +72,7 @@ class InterventionRepository extends BaseRepository
             ->leftJoin('users as u ON u.id = interventions.users_id')
             ->leftJoin('customers as c ON c.id = interventions.customers_id')
             ->leftJoin('company as cy ON cy.id = interventions.company_id')
-            ->leftJoin('deposit as d ON d.reference = interventions.with_deposit')
+            ->leftJoin('deposit as d ON d.reference = interventions.deposit_reference')
             ->where('interventions.id = ?', [$id])
             ->fetch()
             ;
@@ -102,7 +102,7 @@ class InterventionRepository extends BaseRepository
     public function findWithCustomer($id)
     {
         return $this->makeQueryDefault()
-            ->select('interventions.*, c.fullname c_fullname, c.mail, cy.logo cy_logo, cy.name cy_name, cy_type cy_type')
+            ->select('interventions.*, c.fullname c_fullname, c.mail, cy.logo cy_logo, cy.name cy_name, cy.type cy_type')
             ->leftJoin('customers as c ON c.id = interventions.customers_id')
             ->leftJoin('company as cy ON cy.id = interventions.company_id')
             ->where('interventions.id = ?', [$id])

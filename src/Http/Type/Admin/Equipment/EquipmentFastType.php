@@ -13,14 +13,14 @@ class EquipmentFastType extends Type
     {
         $builder = (new FormBuilder('equipment', $data))
             ->add('types_equipments_id', 'choice', [
-                'placeholder' => 'Sélectionnez un type',
+                'placeholder' => false,
                 'label' => 'Types',
-                'choices' => $this->getType()
+                'choices' => self::getType()
             ])
             ->add('brands_id', 'choice', [
-                'placeholder' => 'Sélectionnez une marque',
+                'placeholder' => false,
                 'label' => 'Marques',
-                'choices' => $this->getBrand()
+                'choices' => self::getBrand()
             ])
             ->add('name', 'text', [
                 'required' => true,

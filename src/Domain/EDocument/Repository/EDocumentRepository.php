@@ -20,4 +20,14 @@ class EDocumentRepository extends BaseRepository
             ;
     }
 
+    public function allWithCustomerAndIntervention()
+    {
+        return $this->makeQueryDefault()
+            ->select('edocuments.*, c.id c_id, c.fullname c_fullname, i.name i_name, i.ref_number i_ref_number')
+            ->leftJoin('customers as c ON c.id = edocuments.customers_id')
+            ->leftJoin('interventions as i ON i.id = edocuments.interventions_id')
+            ->fetchAll()
+            ;
+    }
+
 }

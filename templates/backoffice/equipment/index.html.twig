@@ -44,7 +44,11 @@
                         </td>
                         <td>
                             <span class="label badge-{% if e.is_outofservice is not null %}light-pink{% else %}light-green{% endif %}">
+                                {% if e.is_outofservice is not null %}
+                                 HS
+                                {% else %}
                                  OK
+                                {% endif%}
                             </span>
                         </td>
                         <td><a class="{% if e.is_outofservice is defined and e.is_outofservice is not null %}pink{% else %}text-dark{% endif %} p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">{{ e.name }}</a></td>

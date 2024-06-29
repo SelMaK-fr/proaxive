@@ -9,6 +9,7 @@ use Palmtree\Form\Type\CheckboxType;
 use Palmtree\Form\Type\TextareaType;
 use Palmtree\Form\Type\TextType;
 use Selmak\Proaxive2\Http\Type\Admin\DateType;
+use Selmak\Proaxive2\Http\Type\TimeType;
 use Selmak\Proaxive2\Http\Type\Type;
 
 class BookingType extends Type
@@ -16,11 +17,18 @@ class BookingType extends Type
     public function createFormBuilder(mixed $data = null): Form
     {
         $builder = (new FormBuilder('booking', $data))
-            ->add('begin_at', DateType::class, [
-                'label' => "Nom"
+            ->add('start_date', DateType::class, [
+                'label' => ""
             ])
-            ->add('end_at', DateType::class, [
-                'label' => "Lien externe",
+            ->add('start_time', TimeType::class, [
+                'label' => ""
+            ])
+            ->add('end_date', DateType::class, [
+                'label' => "",
+                'required' => false
+            ])
+            ->add('end_time', TimeType::class, [
+                'label' => "",
                 'required' => false
             ])
             ->add('title', TextType::class, [

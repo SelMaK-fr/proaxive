@@ -44,13 +44,14 @@ class EquipmentCreateController extends AbstractController
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getRequestData()['form_equipment'];
+
             // If end_guarantee is empty = null
             if(empty($data['end_guarantee'])){$data['end_guarantee'] = null;}
             if($customer_id){$data_customer_id = $customer_id;$data['customers_id'] = $customer_id;}else{$data_customer_id = $data['customers_id'];}
             $cName = $this->getRepository(CustomerRepository::class)->find('id', $data_customer_id);
             $data['customer_name'] = $cName->fullname;
             $this->getRepository(EquipmentRepository::class)->add($data, true);
-            $this->addFlash('panel-info', sprintf("Le nouvel équipement <b> %s </b> a bien été créé.", $data['name']));
+            $this->addFlash('panel-info', sprintf("Le nouvel équipement %s a bien été créé.", $data['name']));
             return $this->redirectToRoute('dash_equipment');
         }
         // Breadcrumbs

@@ -42,8 +42,8 @@ class DepositCreateController extends AbstractController
             if($save){
                 // Update field with_deposit for the new deposit
                 $this->getRepository(InterventionRepository::class)->update([
-                    'with_deposit' => $data['reference']
-                ], $i['id']);
+                    'deposit_reference' => $data['reference']
+                ], (int)$i['id']);
                 // confirmation save data notification
                 $this->addFlash('panel-info', 'Le dépôt a été sauvegardé.');
                 return $this->redirectToReferer($request);
