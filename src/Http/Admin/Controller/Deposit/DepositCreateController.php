@@ -36,9 +36,9 @@ class DepositCreateController extends AbstractController
             $deposit->setCustomerName($i['customer_name']);
             $deposit->setEquipmentName($i['equipment_name']);
             $deposit->setInterventionNumber($i['ref_number']);
-            $deposit->setInterventionsId($i['id']);
-            $deposit->setCustomersId($i['customers_id']);
-            $deposit->setEquipmentsId($i['equipments_id']);
+            $deposit->setInterventionsId((int)$i['id']);
+            $deposit->setCustomersId((int)$i['customers_id']);
+            $deposit->setEquipmentsId((int)$i['equipments_id']);
             $deposit->setCompanyId($this->getUser()->getCompanyId());
             $deposit->setEquipmentState((int)$form['equipment_state']);
             $deposit->setEquipmentAccessories($form['equipment_accessories']);
