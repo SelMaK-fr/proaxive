@@ -106,7 +106,7 @@ Other Dark Colors
 :root {
   --font-body-sans-serif: Outfit,sans-serif;
   --sk-color-one: var(--pink2);
-  --sk-color-two: var(--blue-hard);
+  --sk-color-two: #2A3650;
   --sk-color-tree: #323c58;
   --sk-color-four: #01608C;
   --sk-color-link: #97A1B3;
@@ -143,6 +143,7 @@ Other Dark Colors
   --yellow: #ffce56;
   --green-light: rgba(75, 192, 192, 0.2);
   --green: #4bc0c0;
+  --green-300: #04B660;
   --blue: #31daf7;
   --blue-hard: #01358D;
   --white: #ffffff;
@@ -159,7 +160,7 @@ Other Dark Colors
   --shadow-color: rgba(175, 175, 175, 0.1);
 }
 
-/* line 76, ../sass/base/_root.scss */
+/* line 77, ../sass/base/_root.scss */
 [data-layout_mode=dark] {
   --sk-color-tree: #414b6e;
   --sk-color-base-foreground: #2a3650;
@@ -895,13 +896,14 @@ body .layout-wrapper {
   height: 35px;
   border-radius: 50px;
   text-align: center;
-  display: block;
-  align-items: center;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media all and (max-width: 578px) {
-  /* line 21, ../sass/layout/_pages.scss */
+  /* line 22, ../sass/layout/_pages.scss */
   .admin-btn-intervention {
     position: fixed;
     bottom: 0;
@@ -914,20 +916,21 @@ body .layout-wrapper {
   }
 }
 @media all and (min-width: 1200px) {
-  /* line 34, ../sass/layout/_pages.scss */
+  /* line 35, ../sass/layout/_pages.scss */
   .documentation-wrapper .doc-columns {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
   }
 }
-/* line 40, ../sass/layout/_pages.scss */
+/* line 41, ../sass/layout/_pages.scss */
 .documentation-wrapper .card-add-file {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-/* line 44, ../sass/layout/_pages.scss */
+/* line 46, ../sass/layout/_pages.scss */
 .documentation-wrapper .card-add-file, .documentation-wrapper .item-file {
   border: 1px dashed var(--sk-color-base-border);
   border-radius: 6px;
@@ -936,28 +939,28 @@ body .layout-wrapper {
   color: inherit;
 }
 
-/* line 51, ../sass/layout/_pages.scss */
+/* line 53, ../sass/layout/_pages.scss */
 .documentation-wrapper .card-add-file span {
   font-weight: 500;
 }
 
-/* line 54, ../sass/layout/_pages.scss */
+/* line 56, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file {
   border-style: solid;
   text-align: left;
 }
 
-/* line 58, ../sass/layout/_pages.scss */
+/* line 60, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file i {
   color: var(--pink);
 }
 
-/* line 61, ../sass/layout/_pages.scss */
+/* line 63, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file h6 {
   font-size: 16px;
 }
 
-/* line 64, ../sass/layout/_pages.scss */
+/* line 66, ../sass/layout/_pages.scss */
 .documentation-wrapper .item-file h6, .documentation-wrapper .item-file p {
   margin: 0;
 }
@@ -1118,9 +1121,10 @@ body .layout-wrapper {
 /* line 1, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown {
   position: relative;
+  cursor: pointer;
 }
 
-/* line 4, ../sass/layout/_navigation_global.scss */
+/* line 5, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu {
   position: absolute;
   background: var(--sk-color-base-foreground);
@@ -1134,19 +1138,19 @@ ul.right-navbar li.dropdown ul.dropdown-submenu {
   padding: 0 10px;
 }
 
-/* line 17, ../sass/layout/_navigation_global.scss */
+/* line 18, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu.collapsed-deployed {
   display: block;
 }
 
-/* line 20, ../sass/layout/_navigation_global.scss */
+/* line 21, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu li {
   display: block;
   margin-right: 0;
   padding: 10px;
 }
 
-/* line 25, ../sass/layout/_navigation_global.scss */
+/* line 26, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu li a {
   display: block;
   font-size: 12px;
@@ -1155,12 +1159,12 @@ ul.right-navbar li.dropdown ul.dropdown-submenu li a {
   font-weight: 500;
 }
 
-/* line 32, ../sass/layout/_navigation_global.scss */
+/* line 33, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu li a.logout {
   color: var(--sk-color-one);
 }
 
-/* line 35, ../sass/layout/_navigation_global.scss */
+/* line 36, ../sass/layout/_navigation_global.scss */
 ul.right-navbar li.dropdown ul.dropdown-submenu li a.logout i {
   color: var(--sk-color-one);
 }
@@ -1668,9 +1672,28 @@ body.portal-body h1.title-login {
 .portal-main .card .card-icon {
   border-radius: 50px;
   height: 72px;
+  border: 1px dashed var(--pink);
+  color: var(--pink);
+  transition: all 0.2s ease-in-out;
 }
 
-/* line 224, ../sass/layout/_portal.scss */
+/* line 227, ../sass/layout/_portal.scss */
+.portal-main .card.card-link a {
+  border: 1px solid transparent;
+  border-radius: 15px;
+  transition: all 0.2s ease-in-out;
+}
+/* line 231, ../sass/layout/_portal.scss */
+.portal-main .card.card-link a:hover {
+  border-color: var(--sk-color-base-text-hard);
+}
+/* line 233, ../sass/layout/_portal.scss */
+.portal-main .card.card-link a:hover .card-icon {
+  border: 1px dashed var(--sk-color-base-text-hard);
+  color: var(--sk-color-base-text-hard);
+}
+
+/* line 239, ../sass/layout/_portal.scss */
 .portal-tools .pt-app-elements .pt-tools-menu li.pt-menu-item a {
   color: white;
   padding: 0.75rem 0.5rem;
@@ -1686,21 +1709,21 @@ body.portal-body h1.title-login {
   line-height: 1.25rem;
 }
 
-/* line 238, ../sass/layout/_portal.scss */
+/* line 253, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group {
   position: relative;
   display: table;
   border-collapse: separate;
 }
 
-/* line 243, ../sass/layout/_portal.scss */
+/* line 258, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group .input-group-case.case-prefix {
   border-radius: .25rem 0 0 .25rem;
   -moz-border-radius: .25rem 0 0 .25rem;
   -webkit-border-radius: .25rem 0 0 .25rem;
 }
 
-/* line 248, ../sass/layout/_portal.scss */
+/* line 263, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group .input-group-case {
   line-height: 1;
   background-color: var(--bg-four);
@@ -1714,7 +1737,7 @@ body.portal-body .form-group .input-group .input-group-case {
   display: table-cell;
 }
 
-/* line 260, ../sass/layout/_portal.scss */
+/* line 275, ../sass/layout/_portal.scss */
 body.portal-body .form-group .input-group.input-group-prefix .form-control {
   border-radius: 0 .25rem .25rem 0;
   -moz-border-radius: 0 .25rem 25rem 0;
@@ -1723,12 +1746,12 @@ body.portal-body .form-group .input-group.input-group-prefix .form-control {
   border-left: 0;
 }
 
-/* line 267, ../sass/layout/_portal.scss */
+/* line 282, ../sass/layout/_portal.scss */
 body.portal-body .form-control, .form-group .form-control, .form-group .form-select {
   background-color: var(--sk-input-form-background);
 }
 
-/* line 270, ../sass/layout/_portal.scss */
+/* line 285, ../sass/layout/_portal.scss */
 body.portal-body .form-control, .form-select, .form-search {
   font-family: 'Lexend', sans-serif;
   background-clip: padding-box;
@@ -1743,20 +1766,20 @@ body.portal-body .form-control, .form-select, .form-search {
   width: 100%;
 }
 
-/* line 283, ../sass/layout/_portal.scss */
+/* line 298, ../sass/layout/_portal.scss */
 .step-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* line 288, ../sass/layout/_portal.scss */
+/* line 303, ../sass/layout/_portal.scss */
 .stepProgress {
   position: relative;
   padding-left: 45px;
   list-style: none;
 }
-/* line 292, ../sass/layout/_portal.scss */
+/* line 307, ../sass/layout/_portal.scss */
 .stepProgress:before {
   display: inline-block;
   content: '';
@@ -1768,16 +1791,16 @@ body.portal-body .form-control, .form-select, .form-search {
   border-left: 2px solid var(--sk-color-base-border);
 }
 
-/* line 303, ../sass/layout/_portal.scss */
+/* line 318, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item {
   position: relative;
   counter-increment: list;
 }
-/* line 306, ../sass/layout/_portal.scss */
+/* line 321, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:not(:last-child) {
   padding-bottom: 50px;
 }
-/* line 309, ../sass/layout/_portal.scss */
+/* line 324, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:before {
   display: inline-block;
   content: '';
@@ -1786,7 +1809,7 @@ body.portal-body .form-control, .form-select, .form-search {
   height: 100%;
   width: 10px;
 }
-/* line 317, ../sass/layout/_portal.scss */
+/* line 332, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:after {
   content: '';
   display: flex;
@@ -1802,11 +1825,11 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 333, ../sass/layout/_portal.scss */
+/* line 348, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:before {
   border-left: 2px solid var(--sk-color-one);
 }
-/* line 336, ../sass/layout/_portal.scss */
+/* line 351, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:after {
   content: "✔";
   font-size: 18px;
@@ -1816,11 +1839,11 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-one);
 }
 
-/* line 346, ../sass/layout/_portal.scss */
+/* line 361, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.current:before {
   border-left: 2px solid var(--green);
 }
-/* line 349, ../sass/layout/_portal.scss */
+/* line 364, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.current:after {
   content: counter(list);
   padding-top: 1px;
@@ -1835,12 +1858,12 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 363, ../sass/layout/_portal.scss */
+/* line 378, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item strong {
   display: block;
 }
 
-/* line 366, ../sass/layout/_portal.scss */
+/* line 381, ../sass/layout/_portal.scss */
 .stepProgress:after {
   content: '';
   position: absolute;
@@ -1850,18 +1873,18 @@ body.portal-body .form-control, .form-select, .form-search {
   left: 0;
 }
 
-/* line 374, ../sass/layout/_portal.scss */
+/* line 389, ../sass/layout/_portal.scss */
 ul.tasks li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-/* line 378, ../sass/layout/_portal.scss */
+/* line 393, ../sass/layout/_portal.scss */
 ul.tasks li:last-child {
   margin-bottom: 0;
 }
 
-/* line 382, ../sass/layout/_portal.scss */
+/* line 397, ../sass/layout/_portal.scss */
 ul.tasks li span.t-icon {
   display: block;
   width: 25px;
@@ -1874,12 +1897,12 @@ ul.tasks li span.t-icon {
   color: var(--green);
 }
 
-/* line 393, ../sass/layout/_portal.scss */
+/* line 408, ../sass/layout/_portal.scss */
 .item-equipment {
   display: flex;
 }
 
-/* line 396, ../sass/layout/_portal.scss */
+/* line 411, ../sass/layout/_portal.scss */
 .item-equipment .item_name {
   display: block;
   font-weight: 500;
@@ -1889,13 +1912,13 @@ ul.tasks li span.t-icon {
   width: 30%;
 }
 
-/* line 404, ../sass/layout/_portal.scss */
+/* line 419, ../sass/layout/_portal.scss */
 .item-equipment:last-child .item_name,
 .item-equipment:last-child .item_value {
   border-bottom: 0;
 }
 
-/* line 408, ../sass/layout/_portal.scss */
+/* line 423, ../sass/layout/_portal.scss */
 .item-equipment .item_value {
   display: block;
   border-bottom: 1px solid var(--sk-color-base-border);
@@ -1904,13 +1927,13 @@ ul.tasks li span.t-icon {
 }
 
 @media (max-width: 840px) {
-  /* line 415, ../sass/layout/_portal.scss */
+  /* line 430, ../sass/layout/_portal.scss */
   .item-equipment {
     margin-bottom: 8px;
     flex-direction: column;
   }
 
-  /* line 419, ../sass/layout/_portal.scss */
+  /* line 434, ../sass/layout/_portal.scss */
   .item-equipment .item_name {
     margin-bottom: 3px;
     width: 100%;
@@ -1918,14 +1941,14 @@ ul.tasks li span.t-icon {
     padding: 0;
   }
 
-  /* line 425, ../sass/layout/_portal.scss */
+  /* line 440, ../sass/layout/_portal.scss */
   .item-equipment .item_value {
     width: 100%;
     border: none;
     padding: 0;
   }
 }
-/* line 431, ../sass/layout/_portal.scss */
+/* line 446, ../sass/layout/_portal.scss */
 .portal-body .aside-left {
   background-color: var(--sk-color-one);
   width: 200px;
@@ -1933,36 +1956,36 @@ ul.tasks li span.t-icon {
   position: fixed;
 }
 
-/* line 437, ../sass/layout/_portal.scss */
+/* line 452, ../sass/layout/_portal.scss */
 .portal-body .main {
   position: relative;
   margin-left: 0;
   height: 100vh;
 }
 
-/* line 443, ../sass/layout/_portal.scss */
+/* line 458, ../sass/layout/_portal.scss */
 .portal-body .consult {
   padding: 30px 0 10px 0;
 }
 
-/* line 446, ../sass/layout/_portal.scss */
+/* line 461, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:after {
   background-color: var(--pink);
   border-color: var(--pink);
 }
 
-/* line 450, ../sass/layout/_portal.scss */
+/* line 465, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:before {
   border-color: var(--pink);
 }
 
-/* line 453, ../sass/layout/_portal.scss */
+/* line 468, ../sass/layout/_portal.scss */
 .portal-body .header {
   border-bottom: 1px solid var(--sk-color-base-border);
   padding: 10px 0;
 }
 
-/* line 457, ../sass/layout/_portal.scss */
+/* line 472, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input {
   border: 2px solid var(--sk-color-base-border);
   line-height: 35px;
@@ -1972,7 +1995,7 @@ ul.tasks li span.t-icon {
   min-width: 250px;
 }
 
-/* line 465, ../sass/layout/_portal.scss */
+/* line 480, ../sass/layout/_portal.scss */
 .portal-body .header .search-i span.search-icon {
   position: absolute;
   left: 30px;
@@ -1980,23 +2003,23 @@ ul.tasks li span.t-icon {
   color: rgba(109, 153, 197, 0.4);
 }
 
-/* line 471, ../sass/layout/_portal.scss */
+/* line 486, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input::placeholder {
   color: rgba(109, 153, 197, 0.4);
 }
 
 @media (max-width: 680px) {
-  /* line 475, ../sass/layout/_portal.scss */
+  /* line 490, ../sass/layout/_portal.scss */
   .portal-body .aside-left {
     transform: translateX(-100%);
   }
 
-  /* line 478, ../sass/layout/_portal.scss */
+  /* line 493, ../sass/layout/_portal.scss */
   .portal-body .main {
     margin-left: 0;
   }
 }
-/* line 482, ../sass/layout/_portal.scss */
+/* line 497, ../sass/layout/_portal.scss */
 .search_card, .login_card {
   display: flex;
   justify-content: center;
@@ -2356,8 +2379,12 @@ button.btn-inverse-one, a.btn-inverse-one {
   border: 1px solid var(--sk-color-one);
   color: var(--sk-color-one);
 }
+/* line 149, ../sass/components/_button.scss */
+button.btn-inverse-one.btn-inverse-one-bg, a.btn-inverse-one.btn-inverse-one-bg {
+  background-color: var(--sk-color-base-foreground);
+}
 
-/* line 150, ../sass/components/_button.scss */
+/* line 153, ../sass/components/_button.scss */
 a.btn-bar, button.btn-bar {
   border-radius: 50px;
   display: inline-block;
@@ -2365,7 +2392,7 @@ a.btn-bar, button.btn-bar {
   cursor: pointer;
 }
 
-/* line 156, ../sass/components/_button.scss */
+/* line 159, ../sass/components/_button.scss */
 a.btn-bar.btn-inverse-one i, button.btn-bar.btn-inverse-one i {
   color: var(--sk-color-one);
 }
@@ -2933,27 +2960,28 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border: 1px dashed var(--sk-color-base-border);
   border-radius: 10px;
   padding: 10px;
+  min-height: 120px;
   position: relative;
   display: flex;
 }
-/* line 428, ../sass/components/_form.scss */
+/* line 429, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check:hover {
   border-color: var(--sk-color-one);
 }
 
-/* line 432, ../sass/components/_form.scss */
+/* line 433, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check input[type='radio'] {
   display: block;
   opacity: 0;
 }
 
-/* line 436, ../sass/components/_form.scss */
+/* line 437, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check label {
   display: block;
   flex: 1;
 }
 
-/* line 440, ../sass/components/_form.scss */
+/* line 441, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] input[type='radio']:checked + label {
   background-color: var(--sk-color-one);
   position: absolute;
@@ -2967,7 +2995,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-radius: 10px;
 }
 
-/* line 452, ../sass/components/_form.scss */
+/* line 453, ../sass/components/_form.scss */
 .absolute-button {
   position: absolute;
   bottom: 0;
@@ -2979,25 +3007,25 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   text-align: end;
 }
 
-/* line 463, ../sass/components/_form.scss */
+/* line 464, ../sass/components/_form.scss */
 .choice_default div[id^="form_intervention"] {
   display: flex;
 }
 
-/* line 466, ../sass/components/_form.scss */
+/* line 467, ../sass/components/_form.scss */
 .choice_default .form-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* line 471, ../sass/components/_form.scss */
+/* line 472, ../sass/components/_form.scss */
 .choice_default .form-group .palmtree-form-control {
   height: auto;
   width: auto;
 }
 
-/* line 475, ../sass/components/_form.scss */
+/* line 476, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline {
   display: flex;
   cursor: pointer;
@@ -3013,21 +3041,21 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
     }
   */
 }
-/* line 489, ../sass/components/_form.scss */
+/* line 490, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input {
   position: absolute;
   left: -9999px;
 }
-/* line 492, ../sass/components/_form.scss */
+/* line 493, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input:checked + label {
   background-color: var(--sk-color-one);
   color: white;
 }
-/* line 495, ../sass/components/_form.scss */
+/* line 496, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input:checked + label:before {
   box-shadow: inset 0 0 0 0.4375em white;
 }
-/* line 500, ../sass/components/_form.scss */
+/* line 501, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label {
   cursor: pointer;
   display: flex;
@@ -3038,16 +3066,16 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   text-transform: uppercase;
   font-size: 12px;
 }
-/* line 509, ../sass/components/_form.scss */
+/* line 510, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:hover {
   background-color: var(--sk-color-one);
   color: white;
 }
-/* line 512, ../sass/components/_form.scss */
+/* line 513, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:hover:before {
   background-color: white;
 }
-/* line 516, ../sass/components/_form.scss */
+/* line 517, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:before {
   display: flex;
   flex-shrink: 0;
@@ -3516,6 +3544,40 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   color: var(--sk-color-base-text);
 }
 
+/* line 83, ../sass/components/_label.scss */
+.label-alert {
+  background-color: transparent;
+  border: 1px dashed transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  border-radius: 50px;
+  text-align: center;
+  animation-duration: .8s;
+  animation-name: blinking;
+  animation-iteration-count: infinite;
+  transition: none;
+}
+
+/* line 98, ../sass/components/_label.scss */
+.label-alert.l-alert-warning {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 /* line 1, ../sass/components/_badge.scss */
 .badge-spacing, .badge {
   padding: 6px 12px;
@@ -3963,13 +4025,13 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 1, ../sass/components/_paginate.scss */
-.paginate ul {
+.paginate ul, ul.pagination {
   text-align: left;
   margin-top: 1.5em;
 }
 
 /* line 5, ../sass/components/_paginate.scss */
-.paginate ul li a {
+.paginate ul li a, ul.pagination li a, ul.pagination li.active span {
   display: inline-block;
   background-color: var(--sk-color-base-foreground);
   color: var(--text-muted);
@@ -3982,18 +4044,18 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /* line 16, ../sass/components/_paginate.scss */
-.paginate ul li.active a {
+.paginate ul li.active a, ul.pagination li.active span {
   background-color: var(--sk-color-one);
   color: white;
 }
 
 /* line 20, ../sass/components/_paginate.scss */
-.paginate ul li {
+.paginate ul li, ul.pagination li {
   display: inline-block;
 }
 
 /* line 25, ../sass/components/_paginate.scss */
-.paginate ul li:last-child a {
+.paginate ul li:last-child a, ul.pagination li:last-child a {
   margin-right: 0;
 }
 
@@ -4393,6 +4455,32 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-radius: 3px;
 }
 
+/* line 20, ../sass/components/_widget.scss */
+.widgets-home {
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  gap: 10px;
+}
+
+/* line 25, ../sass/components/_widget.scss */
+.widgets-home .widget--item {
+  border: 1px dashed var(--pink);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  transition: all .2s ease-in-out;
+}
+/* line 31, ../sass/components/_widget.scss */
+.widgets-home .widget--item:hover {
+  border-style: solid;
+  background-color: var(--sk-color-base-background);
+}
+
+/* line 36, ../sass/components/_widget.scss */
+.widgets-home .widget--item .widget--icon [class*=ri-] {
+  font-size: 38px;
+}
+
 /* line 1, ../sass/components/_listing.scss */
 .item-list {
   background-color: var(--sk-color-base-foreground);
@@ -4400,20 +4488,30 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   margin-bottom: 1rem;
   box-shadow: 0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05);
   border-radius: 17px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+/* line 9, ../sass/components/_listing.scss */
+.item-list:hover {
+  border-color: var(--pink);
+}
+/* line 12, ../sass/components/_listing.scss */
+.item-list > a {
+  color: inherit;
 }
 
-/* line 8, ../sass/components/_listing.scss */
+/* line 16, ../sass/components/_listing.scss */
 .item-list-ribbon {
   padding-left: 40px;
   position: relative;
 }
 
-/* line 12, ../sass/components/_listing.scss */
+/* line 20, ../sass/components/_listing.scss */
 .item-list-ribbon .item-list__content {
   padding-left: 16px;
 }
 
-/* line 15, ../sass/components/_listing.scss */
+/* line 23, ../sass/components/_listing.scss */
 .item-list h6, .item-list h6 a {
   color: var(--pink);
   font-size: 14px;

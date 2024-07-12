@@ -22,13 +22,16 @@ class BookingForInterventionType extends Type
     {
         $builder = (new FormBuilder('booking', $data))
             ->add('start_date', DateType::class, [
-                'label' => "Date de retrait"
+                'label' => "Date de retrait",
+                'data' => date('Y-m-d')
             ])
             ->add('start_time', TimeType::class, [
-                'label' => "Heure de retrait"
+                'label' => "Heure de retrait",
+                'data' => date('H:i')
             ])
             ->add('end_time', TimeType::class, [
-                'label' => "Fin de retrait"
+                'label' => "Fin de retrait",
+                'data' => date('H:i')
             ])
             ->add('subtitle', ChoiceType::class, [
                 'label' => "Lieu du retrait",

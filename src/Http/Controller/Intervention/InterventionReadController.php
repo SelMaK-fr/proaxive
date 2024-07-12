@@ -30,7 +30,7 @@ class InterventionReadController extends AbstractController
     public function read(Request $request, Response $response, array $args): Response
     {
         $ref_for_link = $args['ref_for_link'];
-        $i = $this->getRepository(InterventionRepository::class)->findByString('ref_for_link', $ref_for_link);
+        $i = $this->getRepository(InterventionRepository::class)->findByReferenceLink($ref_for_link);
         $t = $this->getRepository(TaskAssocRepository::class)->findByIntervention((int)$i->id);
         return $this->render($response, 'frontoffice/intervention/read.html.twig', [
             'i' => $i,

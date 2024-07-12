@@ -25,6 +25,8 @@ class FrontFunctionTwig extends AbstractExtension
             new TwigFunction('getDataWithNotification', [$this, 'getDataWithNotification'], ['is_safe' => ['html']]),
             new TwigFunction('getConvertBytes', [$this, 'getConvertBytes'], ['is_safe' => ['html']]),
             new TwigFunction('getDataBool', [$this, 'getDataBool'], ['is_safe' => ['html']]),
+            new TwigFunction('getStringData', [$this, 'getStringData'], ['is_safe' => ['html']]),
+            new TwigFunction('getStatus', [$this, 'getStatus'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -83,6 +85,14 @@ class FrontFunctionTwig extends AbstractExtension
         return '';
     }
 
+    public function getStringData(string|array|null $data): string
+    {
+        if($data){
+            return $data;
+        }
+        return '---';
+    }
+
     public function getDataWithNotification(mixed $data): string
     {
         if(empty($data)){
@@ -118,6 +128,8 @@ class FrontFunctionTwig extends AbstractExtension
             return '<span class="label-mid badge-light-yellow">BROUILLON</span>';
         } elseif($data == 'VALIDATED'){
             return '<span class="label-mid btn-light-info">VALIDÉE</span>';
+        } elseif ($data == 'PROGRESS'){
+            return '<span class="label-mid btn-light-info">EN TRAITEMENT</span>';
         } elseif ($data == 'COMPLETED'){
             return '<span class="label-mid badge-light-green"><i class="ri-check-line"></i> COMPLÈTE</span>';
         } elseif ($data == 'PENDING'){
@@ -128,12 +140,15 @@ class FrontFunctionTwig extends AbstractExtension
 
     /**
      * @param string $name
-     * @param string $color
+     * @param string|null $color
      * @return string
      */
-    public function getDataStatus(string $name, string $color): string
+    public function getDataStatus(?string $name, ?string $color, ?string $colorTxt): string
     {
-        return '<span class="label-mid" style="background-color:#'.$color.';color:#ffffff;">'.$name.'</span>';
+        $color = $color ?: '#dbdbdb';
+        $colorTxt = $colorTxt ?: '#000';
+        $name = $name ?: 'n/a';
+        return '<span class="label-mid fs-12px" style="background-color:'.$color.';color:'.$colorTxt.';">'.$name.'</span>';
     }
 
     /**
@@ -170,6 +185,8 @@ class FrontFunctionTwig extends AbstractExtension
             $html = '<span class="label btn-light-pink">'.$text.' Élevée</span>';
         } elseif ($data == 'ABSOLUTE') {
             $html = '<span class="label btn-light-pink">'.$text.' Absolue</span>';
+        } elseif (!$data){
+            $html = '---';
         }
         return $html;
     }
@@ -188,9 +205,11 @@ class FrontFunctionTwig extends AbstractExtension
         } elseif($data == 3){
             $v = 'Tests finaux';
         } elseif ($data == 4){
-            $v = 'En cours de sortie';
+            $v = 'En attente de récupération / livraison';
         } elseif ($data == 5){
-            $v = 'Terminé';
+            $v = 'Matériel récupéré / livré';
+        } elseif (!$data){
+            $v = '---';
         }
         return $v;
     }
@@ -207,9 +226,11 @@ class FrontFunctionTwig extends AbstractExtension
         } elseif($data == 2){
             $v = 'Tests finaux';
         } elseif($data == 3){
-            $v = 'En cours de sortie';
+            $v = 'En attente de récupération / livraison';
         } elseif ($data == 4){
-            $v = 'Terminé';
+            $v = 'Matériel récupéré / livré';
+        } elseif (!$data){
+            $v = '---';
         }
         return $v;
     }
@@ -224,9 +245,11 @@ class FrontFunctionTwig extends AbstractExtension
         } elseif($data == 3){
             $v = '<span class="label-mid btn-light-info text-uppercase"><i class="ri-list-check-2"></i> Tests finaux</span>';
         } elseif ($data == 4){
-            $v = '<span class="label-mid btn-light-warning text-uppercase"><i class="ri-door-open-line"></i> En cours de sortie</span>';
+            $v = '<span class="label-mid btn-light-warning text-uppercase"><i class="ri-door-open-line"></i> En attente de récupération</span>';
         } elseif ($data == 5){
-            $v = '<span class="label-mid badge-light-green text-uppercase"><i class="ri-check-line"></i> Terminé</span>';
+            $v = '<span class="label-mid badge-light-green text-uppercase"><i class="ri-check-line"></i> Matériel récupéré / livré</span>';
+        } elseif (!$data){
+            $v = '---';
         }
         return $v;
     }

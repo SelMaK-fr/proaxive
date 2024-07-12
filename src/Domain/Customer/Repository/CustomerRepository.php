@@ -29,7 +29,24 @@ class CustomerRepository extends BaseRepository
             ->leftJoin('edocuments ON edocuments.customers_id = customers.id')
             ->leftJoin('outlay ON outlay.customers_id = customers.id')
             ->select(null)
-            ->select('customers.id')
+            ->select('COUNT(DISTINCT interventions.id) AS nbInterventions')
+            ->select('COUNT(DISTINCT equipments.id) AS nbEquipments')
+            ->select('COUNT(DISTINCT edocuments.id) AS nbDocuments')
+            ->select('COUNT(DISTINCT outlay.id) AS nbOutlay')
+            ->where('customers.id = ?', [$id])
+            ->fetch();
+    }
+
+    public function getCustomerStats(int $id)
+    {
+        return $this->getQuery()
+            ->from('customers')
+            ->leftJoin('interventions ON interventions.customers_id = customers.id')
+            ->leftJoin('equipments ON equipments.customers_id = customers.id')
+            ->leftJoin('edocuments ON edocuments.customers_id = customers.id')
+            ->leftJoin('outlay ON outlay.customers_id = customers.id')
+            ->select(null)
+            ->select('customers.id customer_id, customers.fullname customer_fullname')
             ->select('COUNT(DISTINCT interventions.id) AS nbInterventions')
             ->select('COUNT(DISTINCT equipments.id) AS nbEquipments')
             ->select('COUNT(DISTINCT edocuments.id) AS nbDocuments')

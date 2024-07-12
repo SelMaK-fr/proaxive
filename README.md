@@ -47,6 +47,11 @@ Renommez le fichier .env.exemple en .env
 ```
 mv .env.exemple .env
 ```
+### Fichier de paramètres JSON
+Renommez le fichier config/parameters.exemple.json en config/parameters.json
+```
+mv config/parameters.exemple.json config/parameters.json
+```
 ### Fichier HTACCESS
 Renommez le .htaccess.lock en .htaccess.  
 Vous pouvez tout aussi bien créer un virtualhost pointant vers le dossier "public" de Proaxive. Pensez également à configurer HTTPS dans votre virtualhost.
@@ -63,6 +68,10 @@ DB_HOST=localhostOu127.0.0.1
 DB_NAME=nomDevotreBaseDeDonnées
 DB_USER=utilisateurDeVotreBaseDedonnées
 DB_PASSWORD=motDePasseDeVotreBaseDeDonnées
+```
+Profitez en également pour renseigner votre nom de domaine.
+```
+APP_DOMAIN='https://www.yourdomain.fr'
 ```
 ### Lancer la migration et le seeding
 ```

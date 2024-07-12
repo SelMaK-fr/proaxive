@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bon de Dépôt</title>
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 10pt;
+            margin: 0;
+            padding: 0;
+        }
+        .table-container, .table-wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .table-wrapper .td--content{
+            width: 50%;
+            vertical-align: top;
+        }
+        .table-collapse {
+            border-collapse: collapse;
+        }
+        .table-components, .table-customer {
+            border-collapse: collapse;
+            font-size: 10pt;
+            border: 1px solid #323c58;
+        }
+        .table-components tr td, .table-components tr th, .table-customer tr td {
+            border: 1px solid #323c58;
+            text-align: center;
+            padding: 4px 6px;
+        }
+        .table-customer tr td {
+            text-align: left;
+        }
+        .bg02 {
+            background-color: rgba(115, 102, 255, 0.08);
+        }
+        /* #393382 PURPLE*/
+        .color01 {
+            color: #F9556D;
+        }
+        .title {
+            color: #F9556D;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        .title-document {
+            color: #F9556D;
+            font-size: 17pt;
+            font-weight: bold;
+        }
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .p15px {
+            padding: 15px;
+        }
+        .w30p {
+            width: 30%;
+        }
+        .with-lh tr td {
+            margin-bottom: 2px;
+            padding: 0 4px;
+        }
+        .space {
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed #F9556D;
+            margin: 10px 0; /* Ajustez les espaces autour des pointillés */
+        }
+        .text-left {
+            text-align: left;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .footer {
+            color: #F9556D;
+            font-size: 8pt;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .block {
+            display: block;
+        }
+        .signature-box {
+            border: 1px solid #F9556D;
+            padding: 10px;
+            margin: 10px 0;
+            height: 50px;
+        }
+        .padding-bottom {
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<table class="table-wrapper">
+    <tr>
+        <td style="border-right:2px dashed gray;padding-right: 30px;" class="td--content">
+            <!-- En-tête du document pour le client -->
+            <table class="table-container table-collapse">
+                <tbody>
+                <tr>
+                    <td class="">
+                        <img style="height: 50px; width: auto;" src="{{ qrcode }}" alt="QR Code">
+                    </td>
+                    <td><span class="title-document">Bon de Dépôt</span></td>
+                    <td class="w30p" style="font-size: 9pt">
+                        <div class="bg02 p15px">
+                            N°{{ d.reference }}<br>
+                            Date : {{ d.deposit_date | date('d/m/Y') }}<br>
+                            Intervention n°{{ d.i_reference }}<br>
+                            {% if d.package_price is not empty or d.package_price is not null %}
+                                Tarif horaire : <span class="color01 bold">{{ d.package_price }}€</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- Lien de Suivi -->
+            <div class="text-center" style="margin-top: 10px;">
+                <strong>Suivi d'intervention:</strong> <a href="https://{{ settings.app.domainUrl }}/i/{{ d.ref_for_link }}" target="_blank">https://{{ settings.app.domainUrl }}/i/{{ d.ref_for_link }}</a>
+            </div>
+            <!-- Informations client -->
+            {% if d.c_login_id is not null and d.c_login_id is not empty %}
+            <div class="mb-2">
+                <span>Votre ID CLient : <strong>{{ d.c_login_id }}</strong></span>
+            </div>
+            {% endif %}
+            <div class="title" style="margin-top: 20px;">Informations client</div>
+            <table class="table-container table-customer">
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="block bold">Nom</span>{{ d.customer_name }}
+                    </td>
+                    <td colspan="2">
+                        <span class="block bold">Adresse</span>{{ d.c_address }}, {{ d.c_zipcode }} {{ d.c_city }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="block bold">Département</span>{{ d.c_department }}
+                    </td>
+                    <td>
+                        <span class="block bold">Téléphone</span>{{ d.c_phone }} {% if d.c_mobile is not empty %}OU {{ d.c_mobile }}{% endif %}
+                    </td>
+                    <td>
+                        <span class="block bold">Courriel</span>{{ d.c_mail }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- Informations dépôt -->
+            <div class="title" style="margin-top: 15px;">Dépôt de matériel</div>
+            <table class="table-container table-components">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Dénomination</th>
+                    <th>N°série</th>
+                    <th>Accessoires</th>
+                    <th>État</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ d.e_type_name }}</td>
+                    <td>{{ d.equipment_name }}</td>
+                    <td>{{ d.e_serial }}</td>
+                    <td>{{ d.equipment_accessories }}</td>
+                    <td>
+                        {% if d.equipment_state == 0 %}
+                            OK
+                        {% else %}
+                            DMG
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="space"></div>
+            <div class="text-left padding-bottom" style="font-size: 7pt;">
+                Pour votre information : Ce document peut vous être demandé pour faire récupérer votre matériel par une tierce personne.<br>
+                En cas de non-reprise du matériel dans un délai de 30 jours après la fin des réparations, des frais de garde de 5 € par jour seront appliqués. Si le matériel n'est pas récupéré dans un délai supplémentaire de 3 mois après l'envoi d'une mise en demeure, le matériel pourra être considéré comme abandonné et deviendra la propriété de {{ d.cy_name }}.
+            </div>
+            <div class="footer">
+                <p>
+                    {{ d.cy_name }} | {{ d.cy_address }}, {{ d.cy_zipcode }} {{ d.cy_city }} | {{ d.cy_phone }} | {{ d.cy_mail }} | Société au capital de {{ d.cy_capital }} € | SIRET {{ d.cy_siret }} - RCS {{ d.cy_rcs }} | TVA intracommunautaire : {{ d.cy_vat }}
+                </p>
+            </div>
+        </td>
+        <td class="td--content" style="padding-left: 30px;">
+            <!-- En-tête du document pour l'atelier -->
+            <table class="table-container table-collapse">
+                <tbody>
+                <tr>
+                    <td class="text-center"><span class="title-document">Intervention n°{{ d.i_reference }}</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="title">Dépôt</div>
+            <table class="table-container table-customer">
+                <tbody>
+                <tr>
+                    <td><strong>Client :</strong> {{ d.customer_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Matériel :</strong> {{ d.e_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>N° de Série :</strong> {{ d.e_serial }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Accessoires :</strong> {{ d.equipment_accessories }}</td>
+                </tr>
+                <tr>
+                    <td><strong>État :</strong> {% if d.equipment_state == 0 %}OK{% else %}DMG{% endif %}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date de Dépôt :</strong> {{ d.deposit_date | date('d/m/Y') }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="space"></div>
+            <div class="text-left" style="font-size: 7pt">
+                Merci de lire ce document avant toute signature.<br>
+                Je soussigné(e) {{ d.customer_name }}, propriétaire de l'équipement ci-dessus, suis en accord avec {{ d.cy_name }} concernant l'état du matériel récupéré par l'entreprise {{ d.cy_name }}.
+            </div>
+            <div class="text-center" style="margin-top: 20px">
+                Date : {{ d.deposit_date | date('d/m/Y') }}<br>
+                Signature du Client :
+                <div class="signature-box">
+                    {% if numeric %}
+                        <img src="{{ data.code_sign }}" alt="Signature Client" style="height: 90px;width: auto" class="img-responsive">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="title" style="margin-top: 10px">Pour l’atelier</div>
+            <table class="table-container table-collapse" style="border: none">
+                <tbody>
+                <tr>
+                    <td>
+                        <strong>Atelier :</strong> Merci de laisser ce bon sur le matériel récupéré.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

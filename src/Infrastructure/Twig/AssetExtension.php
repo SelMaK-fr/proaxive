@@ -15,6 +15,7 @@ class AssetExtension extends AbstractExtension
     {
         return [
             new TwigFunction('asset', $this->getAssetUrl(...)),
+            new TwigFunction('assetExist', $this->getFileExist(...)),
         ];
     }
 
@@ -24,6 +25,28 @@ class AssetExtension extends AbstractExtension
             return $path;
         }
         return $this->settings->get('app')['urlPath'] . $path;
+    }
+
+    /**
+     * Permet de vérifier si le fichier est présent sur le serveur.
+     * Renvoi une image default si null
+     * Cette méthode retourne toujours une chaîne de caractère
+     * @param string $path
+     * @param string $filename
+     * @return string
+     */
+    public function getFileExist(string $path, ?string $filename, ?string $fileNotFound = '226-notFound.png'): string
+    {
+        if(!empty($filename)){
+            $routePath = $this->settings->get('settings')['rootPath'] . '/public';
+            $toCheck = $path . '/' . $filename;
+            if(!file_exists($routePath . $toCheck))
+            {
+                return '/img/' . $fileNotFound;
+            }
+            return $toCheck;
+        }
+        return '/img/' . $fileNotFound;
     }
 
     protected function isAbsoluteUrl(string $url): bool

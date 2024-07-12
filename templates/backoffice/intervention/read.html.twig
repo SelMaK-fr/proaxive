@@ -92,10 +92,7 @@
             </div>
             {% if i.start_date is not null %}
                 {% if i.way_steps <= 4 %}
-                    <form method="post" action="" id="end-intervention">
-                        <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_end', {'id' : intervention_id}) }}', 'end-intervention'); return false;" class="btn btn-sk-one rd-10 submit-ajax">Terminer maintenant !</button>
-                        <span id="sync-end"></span>
-                    </form>
+                    <span>Intervention démarrée le <span class="text-green">{{ i.start_date | date('d/m/Y') }}</span></span>
                  {% else %}
                     <span>Terminée le <span class="text-pink">{{ i.end_date | date('d/m/Y') }}</span></span>
                  {% endif%}
@@ -131,7 +128,7 @@
         <div class="item-list">
             <div class="item-list__content">
                 <div class="flex">
-                    <img src="{{ asset('img/icons/pc1_45.png') }}" class="mr-3" alt="">
+                    <img src="{{ asset('img/icons/computer.png') }}" style="width: 45px;height: 45px" class="mr-3" alt="">
                     <div class="flex-root">
                         <div>
                             <h4 class="mb-0">{{ i.equipment_name }}</h4>
@@ -143,8 +140,8 @@
                             {% if i.is_closed == 0 %}
                             <button data-tippy-content="Modifier cette intervention" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-settings-2-line" data-target="update_intervention" data-toggle="modal"></i></button>
                             {% endif %}
-                            {% if i.deposit_reference is not null or i.deposit_reference is not empty %}
-
+                            {% if i.deposit_reference is not null and i.deposit_reference is not empty %}
+                                <a data-tippy-content="Afficher le bon de dépôt" target="_blank" href="{{ url_for('deposit_read_pdf', {reference:i.deposit_reference}) }}" class="btn btn-sk-tree rounded-circle"><i class="ri-eye-fill"></i></a>
                                 {% if i.d_is_signed is null %}
                                     <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('deposit_sign', {reference:i.deposit_reference}) }}" class="btn btn-sk-tree rounded-circle"><i class="fa-solid fa-pen-nib"></i></a>
                                 {% else %}
@@ -159,7 +156,7 @@
                             {% endif %}
                         {% endif %}
                         <a data-tippy-content="Convertir en PDF" class="btn btn-sk-tree rounded-circle" href="{{ url_for('intervention_open_pdf', {id:intervention_id}) }}" target="_blank"> <i class="ri-file-pdf-line"></i></a>
-                        <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" class="btn btn-light-info rounded-circle"><i class="fa-solid fa-eye"></i></a>
+                        <a data-tippy-content="Consulter le suivi en ligne" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" class="btn btn-light-info rounded-circle"><i class="fa-solid fa-eye"></i></a>
                         <button data-tippy-content="Supprimer cette intervention" type="submit" class="btn btn-sk-one rounded-circle"><i class="fa-solid fa-trash-can" data-target="delete_intervention" data-toggle="modal"></i></button>
                     </div>
                 </div>
@@ -303,5 +300,9 @@
             })
         </script>
     {% endif %}
-
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+        tippy('[data-tippy-content]');
+    </script>
 {% endblock %}

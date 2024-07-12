@@ -42,6 +42,7 @@ class InterventionCreateController extends AbstractController
     public function index(Request $request, Response $response, array $args): Response
     {
         $form = $this->createForm(InterventionFastType::class);
+        $pendingInterventions = $this->getRepository(InterventionRepository::class)->allBy('state', 'PENDING', 8, true);
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -51,73 +52,9 @@ class InterventionCreateController extends AbstractController
         // .Breadcrumbs
         return $this->render($response, 'backoffice/intervention/index_create.html.twig', [
             'currentMenu' => 'intervention',
+            'pendingInterventions' => $pendingInterventions,
             'breadcrumbs' => $bds,
             'form' => $form
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws LoaderError
-     * @throws NotFoundExceptionInterface
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function regular(Request $request, Response $response, array $args): Response
-    {
-        $customer = '';
-        $equipment_id = null;
-        $customer_id = (int)$args['id'];
-        $equipment = (int)$request->getQueryParams()['e'];
-        $auth = $this->getSession('auth');
-        if($equipment != null) {
-            $e = $this->getRepository(EquipmentRepository::class)->find('id', $equipment);
-            $customer_id = $e->customers_id;
-            $equipment_id = $e->id;
-        }
-        if($customer_id) {
-            $customer = $this->getRepository(CustomerRepository::class)->find('id', $customer_id);
-        }
-        $form = $this->createForm(InterventionCreateType::class);
-        $form->handleRequest();
-        if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getRequestData()['form_intervention'];
-            if($customer_id){$data_customer_id = $customer_id;}else{$data_customer_id = $data['customers_id'];}
-            $findEquipment = $this->getRepository(EquipmentRepository::class)->countRowWhere((int)$data_customer_id, 'customers_id');
-            $numberFormatter = new SerialNumberFormatterService($this->parameter);
-            $arrayData = [
-                'name' => $data['name'],
-                'customers_id' => $data_customer_id,
-                'a_priority' => $data['a_priority'],
-                'equipments_id' => $equipment_id,
-                'sort' => $data['sort'],
-                'company_id' => $auth['company_id'],
-                'nb_equipments' => $findEquipment,
-                'ref_number' => $numberFormatter->generateSerialNumber()
-            ];
-            // Save array in the session
-            $this->session->set('form_intervention_next', $arrayData);
-            return $this->redirectToRoute('intervention_create_customer_regular_complete');
-        }
-        // Breadcrumbs
-        $bds = $this->breadcrumbs;
-        $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
-        $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
-        $bds->addCrumb('Complète', false);
-        $bds->render();
-        // .Breadcrumbs
-        return $this->render($response, 'backoffice/intervention/create/start.html.twig', [
-            'currentMenu' => 'intervention',
-            'form' => $form,
-            'auth' => $auth,
-            'breadcrumbs' => $bds,
-            'customer' => $customer,
         ]);
     }
 

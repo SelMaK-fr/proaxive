@@ -34,19 +34,14 @@ class InterventionController extends AbstractController
     public function index(Request $request, Response $response, array $args): Response
     {
         $filter = $request->getQueryParams()['filter'];
-        if(!empty($filter)){
-            $interventions = $this->getRepository(InterventionRepository::class)->allWithUser()->where('state = ?', $filter)->orderBy('interventions.created_at DESC');
-        } else {
-            $paginator = new Paginator('15', 'p', $request);
-            $paginator->set_total($this->getRepository(InterventionRepository::class)->count());
-            $interventions = $this->getRepository(InterventionRepository::class)->allArrayForPaginator($paginator->get_limit());
-            $dataPaginate = $paginator->page_links();
-        }
+        $page = $request->getQueryParams()['p'];
+        $interventions_hot = $this->getRepository(InterventionRepository::class)->fullDataIfHot();
+        $interventions = $this->getRepository(InterventionRepository::class)->findWithPaginate(12, (int)$page ?: 1, $filter);
         $formSearch = $this->createForm(InterventionSearchType::class);
         $formSearch->handleRequest();
         if($formSearch->isSubmitted() && $formSearch->isValid()) {
             $data = $formSearch->getRequestData()['form_intervention_search'];
-            $interventions = $this->getRepository(InterventionRepository::class)->searchByFields($data);
+            $interventions = $this->getRepository(InterventionRepository::class)->searchByFieldsWithPaginate(12, (int)$page ?: 1, $data);
         }
         // Breadcrumbs
         $breadcrumbs = $this->breadcrumbs;
@@ -59,9 +54,9 @@ class InterventionController extends AbstractController
         return $this->render($response, 'backoffice/intervention/index.html.twig', [
             'currentMenu' => 'intervention',
             'interventions' => $interventions,
+            'i_hot' => $interventions_hot,
             'form' => $form,
             'formSearch' => $formSearch,
-            'dataPaginate' => $dataPaginate,
             'breadcrumbs' => $breadcrumbs,
             'filter' => $filter
         ]);

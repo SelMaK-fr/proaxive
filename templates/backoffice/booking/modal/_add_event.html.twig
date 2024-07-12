@@ -33,7 +33,7 @@
                         <h4>Début</h4>
                         <div class="grid-12">
                             <div class="col-6_sm-12">
-                                <input class="form-control" type="date" placeholder="Date de début" name="form_event[start_date]" value="{{ 'now' | date('D/M/Y') }}" required>
+                                <input class="form-control" type="date" placeholder="Date de début" name="form_event[start_date]" value="{{ 'now' | date('Y-m-d') }}" required>
                             </div>
                             <div class="col-6_sm-12">
                                 <input class="form-control" type="time" placeholder="Heure de début" name="form_event[start_time]" value="{{ 'now' | date('H:i') }}" required>
@@ -44,7 +44,7 @@
                         <h4>Fin</h4>
                         <div class="grid-12">
                             <div class="col-6_sm-12">
-                                <input class="form-control" name="form_event[end_date]" type="date" placeholder="Date de début" value="{{ 'now' | date('D/M/Y') }}">
+                                <input class="form-control" name="form_event[end_date]" type="date" placeholder="Date de début" value="{{ 'now' | date('Y-m-d') }}">
                             </div>
                             <div class="col-6_sm-12">
                                 <input class="form-control" name="form_event[end_time]" type="time" placeholder="Heure de début" value="{{ 'now' | date('H:i') }}">

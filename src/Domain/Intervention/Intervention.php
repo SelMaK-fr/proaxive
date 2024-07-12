@@ -5,47 +5,53 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Domain\Intervention;
 
 use Envms\FluentPDO\Literal;
+use Selmak\Proaxive2\Domain\BaseDTO;
 
-class Intervention
+class Intervention extends BaseDTO
 {
+    private ?int $id = null;
     /* @var string */
-    public string $name = '';
+    private string $name;
     /* @var string */
-    public string $sort = 'Dépannage';
+    private string $sort = 'Dépannage';
     /* @var string|null */
-    public ?string $description = '';
+    private ?string $description;
     /* @var string|null */
-    public ?string $before_breakdown = '';
-    public ?string $way_type = '';
-    public int|string|null $way_steps = null;
-    public ?string $a_priority = '';
+    private ?string $before_breakdown;
+    private ?string $way_type = null;
+    private int $way_steps = 1;
+    private ?string $a_priority = 'AVERAGE';
     /* @var int|string */
-    public int|string $company_id = 0;
-    /* @var int|string */
-    public int|string $customers_id = 0;
-    /* @var int|string|null */
-    public int|string|null $equipments_id = null;
-    /* @var int|string */
-    public int|string $users_id = 0;
+    private int|string $company_id;
+    /* @var int */
+    private int $customers_id;
+    /* @var int|null */
+    private ?int $equipments_id = null;
+    /* @var int */
+    private int $users_id;
     /* @var string */
-    public string $ref_number;
+    private string $ref_number;
     /* @var string */
-    public string $ref_for_link;
+    private string $ref_for_link;
     /* @var string */
-    public string $state = 'PENDING';
-    public string $customer_name = '';
-    public string $equipment_name = '';
-    public int $total_time = 1;
+    private string $state = 'PROGRESS';
+    private string $customer_name;
+    private ?string $equipment_name = null;
+    private int $status_id = 1;
+    private ?int $total_time = null;
+    private Literal $created_at;
+    private Literal $updated_at;
 
-    public Literal $created_at;
-    public Literal $updated_at;
-
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->created_at = new Literal('NOW()');
-        $this->updated_at = new Literal('NOW()');
+        return $this->id;
     }
 
+    public function setId(?int $id): Intervention
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function getName(): string
     {
@@ -179,12 +185,12 @@ class Intervention
         return $this;
     }
 
-    public function getEquipmentsId(): int|string|null
+    public function getEquipmentsId(): int|null
     {
         return $this->equipments_id;
     }
 
-    public function setEquipmentsId(int|string|null $equipments_id): ?Intervention
+    public function setEquipmentsId(int|null $equipments_id): ?Intervention
     {
         $this->equipments_id = $equipments_id;
         return $this;
@@ -234,12 +240,12 @@ class Intervention
         return $this;
     }
 
-    public function getEquipmentName(): string
+    public function getEquipmentName(): ?string
     {
         return $this->equipment_name;
     }
 
-    public function setEquipmentName(string $equipment_name): Intervention
+    public function setEquipmentName(?string $equipment_name): Intervention
     {
         $this->equipment_name = $equipment_name;
         return $this;
@@ -253,6 +259,17 @@ class Intervention
     public function setTotalTime(int $total_time): Intervention
     {
         $this->total_time = $total_time;
+        return $this;
+    }
+
+    public function getStatusId(): int
+    {
+        return $this->status_id;
+    }
+
+    public function setStatusId(int $status_id): Intervention
+    {
+        $this->status_id = $status_id;
         return $this;
     }
 

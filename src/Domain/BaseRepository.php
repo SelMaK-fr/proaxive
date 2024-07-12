@@ -8,6 +8,8 @@ use Envms\FluentPDO\Exception;
 use Envms\FluentPDO\Literal;
 use Envms\FluentPDO\Queries\Select;
 use Envms\FluentPDO\Query;
+use Pagerfanta\Pagerfanta;
+use Selmak\Proaxive2\Infrastructure\Paginator\PagerfantaQuery;
 
 class BaseRepository
 {
@@ -119,6 +121,23 @@ class BaseRepository
         }
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param bool $type
+     * @return Select
+     * @throws Exception
+     */
+    public function findBy(string $key, mixed $value, bool $type = false)
+    {
+        if($type) {
+            $statement = $this->makeQueryDefault()->where("$key = ?", [$value]);
+        } else {
+            $statement = $this->makeQueryObject()->where("$key = ?", [$value]);
+        }
+        return $statement;
+    }
+
     public function extract($key, $value, ?array $params = []): array
     {
         if($params && array_key_exists('byField', $params)
@@ -150,10 +169,9 @@ class BaseRepository
      * @return int
      * @throws Exception
      */
-    public function count()
+    public function count(): int
     {
-        $query = $this->makeQueryDefault()->count();
-        return $query;
+        return $this->makeQueryDefault()->count();
     }
 
     /**
@@ -167,6 +185,22 @@ class BaseRepository
     }
 
     /**
+     * @param int $perPage
+     * @return Pagerfanta
+     * @throws Exception
+     */
+    public function findPaginated(int $perPage, int $currentPage): Pagerfanta
+    {
+        $req = new PagerfantaQuery(
+            $this->makeQueryDefault()
+        );
+        return (new Pagerfanta($req))
+            ->setMaxPerPage((int)$perPage)
+            ->setCurrentPage((int)$currentPage)
+            ;
+    }
+
+    /**
      * @throws Exception
      */
     public function ifExist(string $key, string $value)
@@ -175,7 +209,7 @@ class BaseRepository
     }
 
     /**
-     * Value [] + Automatic Date (created_at, updated_at) true ou false
+     * Value [] or object + Automatic Date (created_at, updated_at) true ou false
      * @param array $values
      * @param bool|null $date
      * @return int|bool|string
@@ -183,12 +217,17 @@ class BaseRepository
      */
     public function add(mixed $values, ?bool $date = null): int|bool|string
     {
-        if($date) {
-            $values['created_at'] = new Literal('NOW()');
-            $values['updated_at'] = new Literal('NOW()');
-        }
         if(!is_array($values)){
-            $values = get_object_vars($values);
+            if($date) {
+                $values->setCreatedAt(new Literal('NOW()'));
+                $values->setUpdatedAt(new Literal('NOW()'));
+            }
+            $values = $values->__toArray();
+        } else {
+            if($date) {
+                $values['created_at'] = new Literal('NOW()');
+                $values['updated_at'] = new Literal('NOW()');
+            }
         }
         return $this->query->insertInto($this->model)->values($values)->execute();
     }
@@ -206,17 +245,42 @@ class BaseRepository
     /**
      * @param array $data
      * @param int $id
+     * @param bool $date
      * @return bool|int|\PDOStatement
      * @throws Exception
      */
-    public function update(array $data, int $id, bool $date = true): bool|int|\PDOStatement
+    public function update(mixed $data, int $id, bool $date = true): bool|int|\PDOStatement
     {
+        if(!is_array($data)){
+            if($date) {
+                $data->setUpdatedAt(new Literal('NOW()'));
+            }
+            $data = $data->__toArray();
+        } else {
+            if($date){
+                $data['updated_at'] = new Literal('NOW()');
+            }
+        }
+        $query = $this->query->update($this->model, $data, $id);
+        return $query->execute();
+    }
 
+    /**
+     * Permet de mettre à jour en spécifiant un where customisé
+     * @param array $data
+     * @param string $whereKey
+     * @param string|int $whereValue
+     * @param bool $date
+     * @return bool|int|\PDOStatement
+     * @throws Exception
+     */
+    public function updateBy(array $data, string $whereKey, string|int $whereValue, bool $date = true): bool|int|\PDOStatement
+    {
         // update date auto
         if($date){
             $data['updated_at'] = new Literal('NOW()');
         }
-        $query = $this->query->update($this->model, $data, $id);
+        $query = $this->query->update($this->model)->set($data)->where($whereKey, $whereValue);
         return $query->execute();
     }
 
@@ -300,5 +364,15 @@ class BaseRepository
     protected function getQuery(): Query
     {
         return $this->query;
+    }
+
+    private function objectToArray(object $object): array
+    {
+        $result = [];
+        foreach ($object as $key => $value)
+        {
+            $result[$key] = (is_array($value) || is_object($value)) ? objectToArray($value) : $value;
+        }
+        return $result;
     }
 }

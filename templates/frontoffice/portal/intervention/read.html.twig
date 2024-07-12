@@ -17,11 +17,11 @@
                         <li class="stepProgress-item {% if i.way_steps == 3 %}current{% elseif i.way_steps >= 3 %}is-done{% endif %}"><strong>Tests finaux</strong>
                             Le technicien réalise différents tests sur votre matériel avant sa sortie.
                         </li>
-                        <li class="stepProgress-item {% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}is-done{% endif %}"><strong>En cours de sortie</strong>
-                            Votre matériel sera bientôt disponible pour retrait.
+                        <li class="stepProgress-item {% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}is-done{% endif %}"><strong>En attente de récupération / livraison</strong>
+                            L'intervention est terminée, votre matériel est en attante de retrait.
                         </li>
-                        <li class="stepProgress-item {% if i.way_steps == 5 %}is-done{% endif %}"><strong>Terminé</strong>
-                            La réparation de votre matériel est terminée et prêt pour retrait.
+                        <li class="stepProgress-item {% if i.way_steps == 5 %}is-done{% endif %}"><strong>Matériel récupéré / livré</strong>
+                            Votre matériel vous a été restitué.
                         </li>
                     </ul>
                 </div>
@@ -48,8 +48,8 @@
                                 <span>{{ i.start_date | format_date('none', 'd MMM Y à h:m', null, 'gregorian', 'fr') }}</span>
                             </div>
                             <div class="col-3_sm-12">
-                                <strong class="d-block">État</strong>
-                                <span>{{ i.way_type }}</span>
+                                <strong class="d-block">Statut</strong>
+                                <span>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</span>
                             </div>
                             <div class="col-3_sm-12">
                                 <strong class="d-block">Votre technicien</strong>

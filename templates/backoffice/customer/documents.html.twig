@@ -48,4 +48,5 @@
             </div>
         </div>
     </div>
+    {{ include('backoffice/document/_modal/_add_document.html.twig', {url:url_for('document_add') ~ '?c=' ~ customer.id}) }}
 {% endblock %}

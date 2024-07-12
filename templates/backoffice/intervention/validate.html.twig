@@ -9,10 +9,10 @@
             <div class="card">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-space-between mb-3">
-                        <div class="alert alert-info">Intervention en mode <strong>brouillon</strong> <br>Veuillez remplir et confirmer les informations demandées afin de valider cette intervention</div>
+                        <div class="alert alert-info">Intervention en mode <strong>non-validée</strong> <br>Veuillez remplir et confirmer les informations demandées afin de valider cette intervention</div>
                         <form action="">
                             <input type="hidden" name="id" value="{{ i.id }}">
-                            <button data-target="delete_intervention" data-toggle="modal" type="button" class="btn btn-light-pink">Supprimer ce brouillon</button>
+                            <button data-target="delete_intervention" data-toggle="modal" type="button" class="btn btn-light-pink">Supprimer cet enregistrement</button>
                         </form>
                     </div>
                     {{ form.renderStart | raw }}
@@ -39,7 +39,21 @@
                             </div>
                             <div class="col-4_sm-12">
                                 {{ form.renderField('a_priority') | raw }}
-                                {{ form.renderField('way_steps') | raw }}
+                                <h4>Technicien</h4>
+                                <div class="flex align-items-center">
+                                    <div class="avatar-pics">
+                                        {% if user.avatar is not null and user.avatar is not empty %}
+                                            <img class="rounded-circle" style="width: 50px;height: auto" src="/uploads/avatars/{{ user.id }}/{{ user.avatar }}" alt="">
+                                        {% else %}
+                                            <img class="rounded-circle" style="width: 50px;height: auto" src="{{ asset('img/no-avatar-350x350.jpg') }}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <div class="ml-2">
+
+                                        <strong class="d-block">{{ u.fullname }} ({{ u.mail }})</strong>
+                                        <em class="fs-12px">{{ u.roles }}</em>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="grid-12">

@@ -2,6 +2,7 @@
 
 namespace Selmak\Proaxive2\Http\API\V1\Auth;
 
+use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -21,18 +22,20 @@ class ApiLoginController extends AbstractController
             throw new \Exception('The field "password" is required.', 400);
         }
         $user = $this->getRepository(UserRepository::class)->apiLoginUser($data->mail, $data->password);
-        $token = [
+        $date   = new DateTimeImmutable();
+        $expire_at     = $date->modify('+6 minutes')->getTimestamp();
+        $payload = [
             'sub' => $user['id'],
-            'iss' => env('APP_DOMAIN'),
             'mail' => $user['mail'],
             'name' => $user['fullname'],
-            'iat' => time(),
-            'exp' => time() + (7*24*60*60),
+            'iat' => $date->getTimestamp(),
+            'iss' => env('APP_DOMAIN'),
+            'nbf'  => $date->getTimestamp(),
+            'exp' => $expire_at,
         ];
-        $t = JWT::encode($token, env('SECRET_KEY'), 'HS256');
-        $message = [
-            'Authorization' => 'Bearer ' . $t,
-        ];
-        return $this->jsonResponse('success', $message, 200);
+        $t = JWT::encode($payload, env('APP_SECRET'), 'HS512');
+        $response->getBody()->write(json_encode(['token' => $t]));
+        return $response->withHeader('Content-Type', 'application/json');
     }
+
 }

@@ -69,7 +69,7 @@ class CrudController extends AbstractController
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
             if(is_array($fields) && array_key_exists('users', $fields)) {
-                $entity->setUsersId($this->getUserId());
+                $entity->setUsersId($this->getUser()->getId());
             }
             $this->getRepository($this->repository)->createOject($entity, true);
             $this->addFlash('panel-info', 'Opération réalisée avec succès.');

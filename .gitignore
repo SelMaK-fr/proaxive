@@ -15,10 +15,15 @@
 /public/uploads/avatars/*
 /public/uploads/logo/*
 /public/uploads/sign/*
+/public/uploads/equipments/*
 ###< Addon ###
 /src/Addon/Inventory
 ###< Storage ###
 /storage/backups/*
 /storage/tmp/*
 /storage/documents/deposits/*.pdf
+/storage/documents/deposits/signed/*.pdf
 /storage/app/bao/*
+###< Seeder ###
+/src/Infrastructure/Seeder/CustomerSeeder.php
+/src/Infrastructure/Seeder/EquipmentSeeder.php

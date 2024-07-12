@@ -22,7 +22,7 @@ class OutlayCreateController extends CrudController
 
     protected string $repository = OutlayRepository::class;
     protected string $form_name = 'outlay';
-    protected string $routeName = 'admin_outlay';
+    protected string $routeName = 'dash_outlay';
     protected string $template_path = 'outlay';
     protected string $menuItem = 'outlay';
 

@@ -20,17 +20,17 @@ class StatusSeeder extends AbstractSeed
                 'fixed' => 1
             ],
             [
-                'name' => 'Réparé',
+                'name' => 'En attente',
                 'color' => null,
                 'fixed' => 1
             ],
             [
-                'name' => 'Devis approuvé',
+                'name' => 'Complété(e)',
                 'color' => null,
                 'fixed' => 1
             ],
             [
-                'name' => 'Devis refusé',
+                'name' => 'Annulé(e)',
                 'color' => null,
                 'fixed' => 1
             ],

@@ -28,6 +28,7 @@
                 <tr>
                     <th style="width: 2%"><input type="checkbox" onClick="toggle(this)"></th>
                     <th style="width: 2%"></th>
+                    <th></th>
                     <th>Nom</th>
                     <th>Client</th>
                     <th>Type</th>
@@ -43,6 +44,9 @@
                             <input type="checkbox" name="delete_equipments[]" value="{{ e.id }}">
                         </td>
                         <td>
+                            <img class="rd-1" style="width: 75px; height: 50px" src="{{ assetExist(asset('uploads/equipments/' ~ e.id), e.picture, '75-notFound.png') }}" alt="">
+                        </td>
+                        <td>
                             <span class="label badge-{% if e.is_outofservice is not null %}light-pink{% else %}light-green{% endif %}">
                                 {% if e.is_outofservice is not null %}
                                  HS
@@ -51,10 +55,14 @@
                                 {% endif%}
                             </span>
                         </td>
-                        <td><a class="{% if e.is_outofservice is defined and e.is_outofservice is not null %}pink{% else %}text-dark{% endif %} p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">{{ e.name }}</a></td>
+                        <td>
+                            <a class="{% if e.is_outofservice is defined and e.is_outofservice is not null %}pink{% else %}text-dark{% endif %} p-relative" href="{{ url_for('equipment_read', {'id': e.id}) }}">{{ e.name }}</a>
+                            <span class="d-block">{{ e.e_model }}</span>
+                            <em>{{ e.e_year }}</em>
+                        </td>
                         <td><span class="d-block">{{ e.customer_name }}</span></td>
                         <td>{{ e.type_name }}</td>
-                        <td>{{ e.brand_name }} <em class="d-block">{{ e.e_model }}</em> </td>
+                        <td>{{ e.brand_name }}</td>
                         <td>{{ e.os_name }}</td>
                         <td class="link-icon">
                             <a class="link-default" href="{{ url_for('equipment_update', {id:e.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>

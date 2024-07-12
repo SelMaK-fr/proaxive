@@ -43,6 +43,6 @@ class TaskAssocRepository extends BaseRepository
      * @throws \Envms\FluentPDO\Exception
      */
     public function search(int $intervention, int $task){
-        return $this->makeQueryDefault()->where('interventions_id = ? AND tasks_id = ?', [$intervention, $task])->fetch();
+        return $this->makeQueryObject()->where('interventions_id = ? AND tasks_id = ?', [$intervention, $task])->fetch();
     }
 }

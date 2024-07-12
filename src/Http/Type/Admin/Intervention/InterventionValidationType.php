@@ -47,17 +47,6 @@ class InterventionValidationType extends Type
                     'ABSOLUTE' => 'Absolue',
                 ]
             ])
-            ->add('way_steps', ChoiceType::class, [
-                'label' => "Etat",
-                'placeholder' => "Sélectionnez un état",
-                'choices' => [
-                    1 => 'Matériel récupéré',
-                    2 => 'En atelier',
-                    3 => 'Tests finaux',
-                    4 => 'En cours de sortie',
-                    5 => 'Terminé',
-                ]
-            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'placeholder' => "Rédigez une courte description de la panne",

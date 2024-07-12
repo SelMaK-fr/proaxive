@@ -1,0 +1,20 @@
+<div class="modal" id="add_picture">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h1>Nouvelle photo</h1>
+        </div>
+        {{ formPicture.renderStart | raw }}
+        <div class="modal-content">
+            <div class="mb-4">
+                Veuillez choisir une nouvelle photo pour cet équipement.
+            </div>
+            {{ formPicture.renderField('file') | raw }}
+            {{ formPicture.renderField('id') | raw }}
+        </div>
+        <div class="modal-footer text-right">
+            <button type="submit" id="submit_add" class="btn btn-light-four">Téléverser</button>
+            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+        </div>
+        {{ formPicture.renderEnd(false) | raw }}
+    </div>
+</div>

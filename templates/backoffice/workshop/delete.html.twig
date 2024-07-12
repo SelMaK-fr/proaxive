@@ -1,0 +1,45 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion d'un magasin/atelier{% endblock %}
+
+{% block body %}
+    <div class="grid-center">
+        <div class="col-5_sm-12">
+            <div class="card all-border-pink">
+                {{ form.renderStart | raw }}
+                <div class="card-header pb-0">
+                    <h2>Supprimer un magasin</h2>
+                    <span>Gestion d'un magasin/atelier</span>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mt-2">
+                        <div class="alert alert-light-pink">
+                            La suppression est irréverssible. Un magasin supprimé ne supprime pas les éléments liés.
+                        </div>
+                        <p>
+                            Vous allez supprimer le magasin <strong class="text-pink">{{ c.name }}</strong>
+                        </p>
+                        <div class="mt-2">
+                            <div class="mb-2">
+                                Veuillez choisir le nouveau magasin qui remplacera <strong>{{ c.name }}</strong>
+                            </div>
+
+                                {{ form.renderField('company_id') | raw }}
+                                <em>Un magasin doit avoir au minimum 1 employé pour être affiché ici.</em>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    Les éléments comme les interventions, débours, dépôts ne seront pas supprimés.
+                    <button type="submit" class="btn btn-light-pink mt-2">Supprimer ce magasin</button>
+                </div>
+                {{ form.renderEnd(false) | raw }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ get_env('PATH_PUBLIC') }}/assets/js/tabs-js.js"></script>
+{% endblock %}

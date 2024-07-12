@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Selmak\Proaxive2\Domain\Auth\SessionUser;
 use Selmak\Proaxive2\Factory\CookieFactory;
 use Slim\Psr7\Response as RPSR7;
 
@@ -23,10 +24,8 @@ class RedirectAuthIfCookieMiddleware implements MiddlewareInterface
     {
         $response = new RPSR7();
         if($this->cookie->has('proaxive2-auth')){
-            $parts = explode('==', $this->cookie->get('proaxive2-auth'));
-            $user_id = (int)$parts[0];
             $user = $this->query->from('users')
-                ->where('users.id = ?', [$user_id])
+                ->where('users.auth_token = ?', [$this->cookie->get('proaxive2-auth')])
                 ->fetch()
             ;
             if($user){

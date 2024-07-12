@@ -12,7 +12,7 @@ use Selmak\Proaxive2\Http\Type\Type;
 class InterventionCreateType extends Type
 {
 
-    public function createFormBuilder(mixed $data = null, ?array $args = []): Form
+    public function createFormBuilder(mixed $data = null, mixed $args = []): Form
     {
         $builder = (new FormBuilder([
             'key'             => 'intervention',
@@ -47,7 +47,7 @@ class InterventionCreateType extends Type
                 'required' => false
             ])
         ;
-        if($args['roles'] === "SUPER_ADMIN"){
+        if($args->getRoles() === "SUPER_ADMIN"){
             $builder
                 ->add('company_id', ChoiceType::class, [
                     'label' => 'Magasin',

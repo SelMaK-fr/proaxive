@@ -8,8 +8,13 @@
         <div class="card">
             <div class="card-body">
                 <p>
-                    Les fichiers sont récupérés depuis le dépôt Github officiel.
+                    Les fichiers sont récupérés depuis le dépôt Github officiel. <br>
+                    Si vous le souhaitez, vous pouvez également lancer la commande <em>git pull</em> via SSH. Assurez vous d'être dans le répertoire d'installation de Proaxive.
+                    <br>La commande doit être lancée à la racine de Proaxive.
                 </p>
+                <div class="alert alert-warning">
+                    <strong>Avertissement</strong> Que ce soit ici ou par SSH, vous devez avoir installé Proaxive via le dépôt officiel disponible sur Github.
+                </div>
                 <h3>Retour de la console</h3>
                 <div class="console all-border-dashed p-3">
                     <h4 class="mb-2">{{ message }}</h4>
@@ -18,7 +23,21 @@
                     {% endfor %}
                 </div>
                 <form method="post" class="mt-4">
-                    <button type="submit" class="btn btn-sk-one">Vérifier les mises à jour</button>
+                    <div class="card-inside all-border-pink mb-3">
+                        <div class="card-body p-3">
+                            <h3 class="mb-0">Option(s) de mise à jour</h3>
+                            <p class="mb-3 mt-0">Ne cochez que si c'est spécifié dans le journal de version.</p>
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="form_app_command[migrate]" id="form_app_command-migrate" class="form-check-input">
+                                <label for="form_app_command-migrate">Avec Migration</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="form_app_command[require]" id="form_app_command-require" class="form-check-input">
+                                <label for="form_app_command-require">Avec Package Update</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sk-one">Lancer la mise à jour</button>
                 </form>
             </div>
         </div>

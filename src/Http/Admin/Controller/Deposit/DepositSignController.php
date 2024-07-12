@@ -75,16 +75,17 @@ class DepositSignController extends AbstractController
                     $qrcode = $result->getDataUri();
                     // Generate PDF and save in storage folder (storage/documents/deposits)
                     $dompdf = new Dompdf();
-                    $dompdf->loadHtml($this->view('/pdf/deposit_pdf.html.twig',
-                        ['d' => $deposit, 'data' => $data, 'qrcode' => $qrcode
+                    $dompdf->setPaper('A4', 'landscape');
+                    $dompdf->loadHtml($this->view('/pdf/deposit_receipt.html.twig',
+                        ['d' => $deposit, 'data' => $data, 'qrcode' => $qrcode, 'numeric' => true
                         ]));
                     $dompdf->render();
                     // Save PDF
                     $output = $dompdf->output();
-                    file_put_contents($settings->get('storage')['documents'] . '/deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
+                    file_put_contents($settings->get('storage')['documents'] . '/deposits/signed/Depot_signed_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
                     $this->addFlash('panel-info', 'Le bon de dépôt a bien été généré.');
                     // Deposit Ok (is_signed)
-                    $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id']);
+                    $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id'], false);
                     // Send Mail
                     if($deposit['c_mail']){
                         if(isset($data['send_mail'])){

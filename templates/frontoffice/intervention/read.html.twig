@@ -34,16 +34,22 @@
                                         Votre matériel est dans nos locaux et en attente de réparation.
                                     </li>
                                     <li class="stepProgress-item {% if i.way_steps == 2 %}current{% elseif i.way_steps >= 2 %}is-done{% endif %}"><strong>En atelier</strong>
-                                        Votre matériel est en cours de réparation dans notre atelier.
+                                        Votre matériel est en cours de réparation dans notre atelier. <br>
+                                        <span class="label" style="background-color:{{ i.s_color }};color:{{ i.s_colortxt }};">{{ i.s_name }}</span>
+                                        <br>
+                                        <em class="fs-13px mt-1">{{ i.s_description }}</em>
+                                        {% if i.status_id == 4 %}
+                                            <span class="label alert-light-success">{{ i.end_date | date('d/m/Y') }}</span>
+                                        {% endif %}
                                     </li>
                                     <li class="stepProgress-item {% if i.way_steps == 3 %}current{% elseif i.way_steps >= 3 %}is-done{% endif %}"><strong>Tests finaux</strong>
                                         Le technicien réalise différents tests sur votre matériel avant sa sortie.
                                     </li>
-                                    <li class="stepProgress-item {% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}is-done{% endif %}"><strong>En cours de sortie</strong>
-                                        Votre matériel sera bientôt disponible pour retrait.
+                                    <li class="stepProgress-item {% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}is-done{% endif %}"><strong>En attente de récupération / livraison</strong>
+                                        L'intervention est terminée, votre matériel est en attante de retrait.
                                     </li>
-                                    <li class="stepProgress-item {% if i.way_steps == 5 %}is-done text-pink{% endif %}"><strong>Terminé</strong>
-                                        La réparation de votre matériel est terminée et prêt pour retrait.
+                                    <li class="stepProgress-item {% if i.way_steps == 5 %}is-done text-pink{% endif %}"><strong>Matériel récupéré / livré</strong>
+                                        Votre matériel vous a été restitué.
                                     </li>
                                 </ul>
                             </div>
@@ -52,7 +58,7 @@
                             <div class="card all-border mb-4">
                                 <div class="card-body p-4">
                                     <p class="mt-0 mb-4">Les détails spécifiques de cette intervention ont volontairement été cachés pour raison de vie privée. Connectez vous pour visualiser les détails complet.</p>
-                                    <a href="{{ url_for('portal_login') }}" class="btn btn-sk-two">Se connecter maintenant</a>
+                                    <a href="{{ url_for('portal_login') }}" class="btn btn-sk-tree">Se connecter maintenant</a>
                                 </div>
                             </div>
                             <h3 class="mb-3">Historique des tâches effectuées</h3>

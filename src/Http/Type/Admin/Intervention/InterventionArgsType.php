@@ -6,6 +6,7 @@ namespace Selmak\Proaxive2\Http\Type\Admin\Intervention;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
 use Palmtree\Form\Type\ChoiceType;
+use Palmtree\Form\Type\HiddenType;
 use Palmtree\Form\Type\TextareaType;
 use Palmtree\Form\Type\TextType;
 use Selmak\Proaxive2\Http\Type\Type;
@@ -40,22 +41,6 @@ class InterventionArgsType extends Type
                 'label' => 'Description',
                 'placeholder' => "Rédigez une courte description de la panne",
                 'required' => false
-            ])
-            ->add('way_type', ChoiceType::class, [
-                'label' => "Statut",
-                'placeholder' => "Sélectionnez un statut",
-                'choices' => self::getStatus()
-            ])
-            ->add('way_steps', ChoiceType::class, [
-                'label' => "Etat",
-                'placeholder' => "Sélectionnez un état",
-                'choices' => [
-                    1 => 'Matériel récupéré',
-                    2 => 'En atelier',
-                    3 => 'Tests finaux',
-                    4 => 'En cours de sortie',
-                    5 => 'Terminé',
-                ]
             ])
             ->add('a_priority', ChoiceType::class, [
                 'label' => 'Priorité',
@@ -112,18 +97,6 @@ class InterventionArgsType extends Type
             return $users;
         }
         return $users;
-    }
-    private function getStatus(): array
-    {
-        $status = [];
-        $req = $this->query->from('status')->select(null)->select('status.id, status.name')->fetchAll();
-        if($req){
-            foreach ($req as $s) {
-                $status[$s['name']] = $s['name'];
-            }
-            return $status;
-        }
-        return $status;
     }
 
     private function getEquipments(int $data): array

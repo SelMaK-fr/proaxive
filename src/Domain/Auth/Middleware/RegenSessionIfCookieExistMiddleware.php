@@ -7,6 +7,7 @@ use Odan\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Selmak\Proaxive2\Domain\Auth\SessionUser;
 
 class RegenSessionIfCookieExistMiddleware
 {
@@ -18,10 +19,8 @@ class RegenSessionIfCookieExistMiddleware
     public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if($_COOKIE['proaxive2-auth']){
-            $parts = explode('==', $_COOKIE['proaxive2-auth']);
-            $user_id = (int)$parts[0];
             $user = $this->query->from('users')
-                ->where('users.id = ?', [$user_id])
+                ->where('users.auth_token = ?', [$_COOKIE['proaxive2-auth']])
                 ->fetch()
             ;
             if($user['auth_token'] === $_COOKIE['proaxive2-auth'] && !isset($_SESSION['auth'])){

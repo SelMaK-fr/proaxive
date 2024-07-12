@@ -1,8 +1,7 @@
 {% extends 'backoffice/base.html.twig' %}
 
-{% block title %}{{ e.name }} de {{ e.customer_name }}{% endblock %}
+{% block title %}{{ e.name }} de {{ getStringData(e.customer_name) }}{% endblock %}
 
-{% set toolbar_tool = 1 %}
 
 {% block toolbar %}
     <div class="toolbar-tools">
@@ -22,10 +21,11 @@
     <div class="card">
         <div class="card-tabs">
             <div class="p-4">
-                {{ include('backoffice/equipment/_form.html.twig', {'device': null}) }}
+                {{ include('backoffice/equipment/_form.html.twig', {'device': null, 'update':true}) }}
             </div>
         </div>
     </div>
+    {{ include('backoffice/equipment/_modal/_add_picture.html.twig') }}
 {% endblock %}
 
 {% block stylesheets %}

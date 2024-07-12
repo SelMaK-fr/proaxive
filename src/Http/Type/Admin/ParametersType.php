@@ -19,10 +19,6 @@ class ParametersType extends Type
                 'label' => "Nombre de jour",
                 'required' => false
             ])
-            ->add('price_time', NumberType::class, [
-                'label' => "Tarif horaire en €",
-                'required' => false
-            ])
             ->add('api_address', CheckboxType::class, [
                 'label' => '',
                 'required' => false

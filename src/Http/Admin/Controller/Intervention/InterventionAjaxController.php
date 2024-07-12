@@ -9,11 +9,13 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as V;
+use Selmak\Proaxive2\Domain\Customer\CustomerFastDTO;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailInterventionService;
+use Selmak\Proaxive2\Infrastructure\Security\RandomStringGeneratorFactory;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 use Slim\App;
 use Twig\Error\LoaderError;
@@ -52,31 +54,52 @@ class InterventionAjaxController extends AbstractController
             ]);
             if($validator->count() === 0){
                 $numberFormatter = new SerialNumberFormatterService($this->parameter);
+                // Génération des informations liées à l'intervention
                 $arrayData = [
                     'ref_number' => $numberFormatter->generateSerialNumber(),
                     'name' => $data['name'],
                     'ref_for_link' => bin2hex(random_bytes(5)),
-                    'state' => 'DRAFT',
+                    'state' => 'PENDING',
                     'sort' => $data['sort'],
                     'company_id' => $data['company_id'],
                     'customer_name' => $data['customer_name'],
-                    'users_id' => $this->getUserId()
+                    'status_id' => 3,
+                    'a_priority' => 'AVERAGE',
+                    'users_id' => $this->getUser()->getId()
                 ];
+                // Check si la création de client est cochée
                 $data['create_customer'] = $data['create_customer'] ?? null;
+                // Si oui, création du client avec le nom complet rentré
                 if(!is_null($data['create_customer'])) {
-                    $newCustomer = [
-                        'fullname' => $data['fullname'],
-                        'activated' => 0,
-                        'is_draft' => 1
-                    ];
+                    // Appel du factory RamdomStringGeneratorFactory
+                    // permet de générer un numéro client aléatoir et unique
+                    $generateClientId = new RandomStringGeneratorFactory();
+                    // Extrait le nom complet
+                    $fullname = self::extractFullname($data['fullname']);
+                    // Sauvegarde du nom
+                    $lastname = $fullname['lastname'];
+                    // Sauvegarde du prénom
+                    $firstname = $fullname['firstname'];
+                    // Création de l'objet Customer via son DTO
+                    $newCustomer = new CustomerFastDTO(['firstname' => $firstname, 'lastname' => $lastname]);
+                    // Récupération du repository Customer
                     $customerRepository = $this->getRepository(CustomerRepository::class);
+                    // Set le nom complet
+                    $newCustomer->setFullname($newCustomer->getFullname());
+                    // Set le nuéro client (login ID)
+                    $newCustomer->setLoginId('C-' . $generateClientId->generate(9));
+                    // Sauvegarder le client en base de données
                     $customerRepository->add($newCustomer, true);
+                    // Récupération du dernier ID insérer et le fullname généré et les envoyer au tableau arrayData (intervention).
                     $arrayData['customers_id'] = $customerRepository->lastInsertId();
-                    $arrayData['customer_name'] = $data['fullname'];
+                    $arrayData['customer_name'] = $newCustomer->getFullname();
                 } else {
+                    // Dans le cas de la création via selection de client (select)
                     $arrayData['customers_id'] = $data['customers_id'];
                 }
+                // Destruction du champ create_customer dans le tableau data du formulaire.
                 unset($data['create_customer']);
+                // Sauvegarde de l'intervention en base de données.
                 $save = $this->getRepository(InterventionRepository::class)->add($arrayData, true);
                 if($save){
                     $this->addFlash('panel-info', sprintf("La nouvelle intervention - %s - a bien été créée", $arrayData['ref_number']));
@@ -126,6 +149,7 @@ class InterventionAjaxController extends AbstractController
         if($request->getMethod() === 'POST') {
             $this->getRepository(InterventionRepository::class)->update([
                'start_date' => date('Y-m-d h:i:s'),
+                'state' => 'PROGRESS',
                 'way_steps' => 2
             ], $intervention_id);
             // If the client at a mail address, send mail
@@ -209,11 +233,17 @@ class InterventionAjaxController extends AbstractController
             $currentStep = $i->way_steps;
             // Checks if way_steps is equal to 4, in this case end the intervention.
             // Otherwise, continue incrementing
-            if($currentStep === 4){
+            if($currentStep === 3){
+                $data = [
+                    'way_steps' => 4,
+                    'status_id' => 2
+                ];
+            } elseif ($currentStep === 4) {
                 $data = [
                     'end_date' => date('Y-m-d h:i:s'),
                     'state' => 'COMPLETED',
                     'way_steps' => 5,
+                    'status_id' => 4,
                     'is_closed' => 1
                 ];
                 // If the client at a mail address, send mail
@@ -231,5 +261,19 @@ class InterventionAjaxController extends AbstractController
             $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
         }
         return new \Slim\Psr7\Response();
+    }
+
+    /*
+     * Permet de découper le nom complet.
+     */
+    private function extractFullname(string $fullname): array
+    {
+        $value = preg_split("/\s+/", $fullname);
+        $firstname = array_shift($value);
+        $lastname = implode('', $value);
+        return [
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+        ];
     }
 }

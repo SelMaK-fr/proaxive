@@ -33,9 +33,6 @@
         <div class="pt-tools-menu">
             <ul>
                 <li class="pt-menu-item"><a href="#" title="Rendez-vous"><i class="ri-calendar-todo-fill"></i></a></li>
-                <li class="pt-menu-item"><a href="#"></a></li>
-                <li class="pt-menu-item"><a href="#"></a></li>
-                <li class="pt-menu-item"><a href="#"></a></li>
             </ul>
         </div>
     </div>
@@ -44,7 +41,7 @@
     <div class="portal-topbar-wrapper">
         <div class="portal-topbar-content">
             <div class="topbar__title">
-                <a href="">
+                <a href="" class="flex align-items-center">
                     <span class="fw-500 fs-22px">Ma super boite</span>
                     <span class="inline-block pl-2">Espace client</span>
                 </a>
@@ -52,6 +49,7 @@
             <ul class="pm-navigation">
                 <li><a href="{{ url_for('portal_home') }}"><i class="ri-home-2-fill"></i> Accueil</a></li>
                 <li><a href="{{ url_for('portal_interventions') }}"><i class="ri-list-check-2"></i> Interventions</a></li>
+                <li><a href="{{ url_for('portal_documents') }}"><i class="ri-file-list-3-fill"></i> Documents</a></li>
                 <li><a href="#"><i class="ri-service-line"></i> Débours</a></li>
                 <li><a href="{{ url_for('portal_parameters') }}"><i class="ri-settings-4-fill"></i> Paramètres</a></li>
             </ul>

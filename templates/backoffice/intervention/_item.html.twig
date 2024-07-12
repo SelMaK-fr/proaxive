@@ -1,0 +1,47 @@
+<div class="item-list {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' and hot is defined %}item-list-ribbon{% endif %}">
+    <a href="{{ url_for('intervention_read', {'id': data.id}) }}">
+        {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' and hot is defined %}
+            <div class="ribbon ribbon-bookmark ribbon-vertical-left ribbon-one"><i class="ri-fire-fill"></i></div>
+        {% endif %}
+        <div class="item-list__content">
+            <div class="flex">
+                <div class="item-list--icon">
+                    <img src="{{ asset('img/icons/computer.png') }}" class="mr-3" style="width: 45px;height: 45px" alt="">
+                </div>
+                <div class="item-list--meta flex-root">
+                    <div>
+                        <h6><span class="text-pink">{{ data.name }}</span></h6>
+                        <p class="m-0">{{ data.sort }} => {{ data.customer_name }} | {{ data.equipment_name }}</p>
+                        <em class="d-inline-block mr-1">{{ data.cy_name }}</em>
+                    </div>
+                </div>
+                <div class="item--meta text-right">
+                    <div class="item-list--label mb-2">
+                    <span class="text-muted fs-12px fw-600">
+                        {% if data.created_at | date("U") > "-7 days"|date("U") %}
+                            <span class="fs-12px label-mid btn-light-info">New</span>
+                        {% else %}
+                            <span class="fs-12px label-mid btn-light-green"><i class="ri-calendar-2-line"></i> {{ data.created_at | date('d/m/Y') }}</span>
+                        {% endif%}
+                        {% if data.state == 'PENDING' %}
+                            <span class="fs-12px label-mid btn-light-pink">Non finalisé</span>
+                                    {% elseif data.state == 'DRAFT' %}
+                            <span class="fs-12px label-mid btn-light-warning">Brouillon</span>
+                        {% endif %}
+                        {{ getDataStatus(data.s_name, data.s_color, data.s_colortxt) }}
+                    </span>
+                    </div>
+                    {% if(data.deposit_date) %}
+                        <span class="fs-12px d-block mr-1">Déposé le : {{ data.deposit_date | date('d/m/Y') }}</span>
+                    {% endif %}
+                    {% if data.pull_date is not null %}
+                        <span class="fs-12px text-green-300">Retrait le : {{ data.pull_date | date('d/m/Y') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <p class="text-dark fs-15px">
+                {{ data.description }}
+            </p>
+        </div>
+    </a>
+</div>

@@ -8,7 +8,7 @@ class ParameterService implements ParameterInterface
 {
     public function __construct(private readonly string $files){}
 
-    public function getParam($key): string
+    public function getParam($key): string|int
     {
         $readJson = file_get_contents($this->files);
         $param = json_decode($readJson, false);

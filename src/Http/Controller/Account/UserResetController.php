@@ -30,7 +30,7 @@ class UserResetController extends AbstractController
             if($user){
                 $token = bin2hex($user->mail);
                 $code = rand(5,99999);
-                $cryptCode = password_hash((string)$code, PASSWORD_DEFAULT);
+                $cryptCode = password_hash((string)$code, PASSWORD_BCRYPT);
                 $data = [
                     'code' => $code,
                     'fullname' => $user->fullname,

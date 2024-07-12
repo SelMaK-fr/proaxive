@@ -11,6 +11,7 @@ use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Slim\Exception\HttpNotFoundException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -32,6 +33,9 @@ class EquipmentReadController extends AbstractController
     {
         $equipment_id = (int)$args['id'];
         $e = $this->getRepository(EquipmentRepository::class)->findWithTypeBool($equipment_id);
+        if(!$e){
+            throw new HttpNotFoundException($request, 'This equipment could not be found. Please check your database.');
+        }
         $c = $this->getRepository(CustomerRepository::class)->find('id', $e->customers_id);
         $i = $this->getRepository(InterventionRepository::class)->allBy('equipments_id', $e->id);
         //

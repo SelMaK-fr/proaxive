@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="grid">
-        <div class="col-7_sm-12">
+        <div class="col-9_sm-12">
             <div class="pt-5 pb-5">
                 <h3 class="fs-20px fw-600 txt-veryhard mb-0">Liste des interventions</h3>
                 <p class="fs-18px fw-300 mt-0">Vous avez actuellement <strong>{{ i | length }}</strong> intervention(s) d'enregistrées.</p>
@@ -33,7 +33,7 @@
                                     <td>{{ item.created_at | date('d/m/Y') }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.sort }}</td>
-                                    <td>{{ item.way_type }}</td>
+                                    <td>{{ getDataStatus(item.s_name, item.s_color, item.s_colortxt) }}</td>
                                     <td>
                                         {% if item.state == 'DRAFT' %}
                                             <span class="label-mid badge-light-yellow">{{ item.state }}</span>
@@ -41,6 +41,8 @@
                                             <span class="label-mid badge-light-green">{{ item.state }}</span>
                                         {% elseif item.state == 'COMPLETED' %}
                                             <span class="label-mid badge-light-green">{{ item.state }}</span>
+                                        {% elseif item.state == 'PROGRESS' %}
+                                            <span class="label-mid alert-light-info">{{ item.state }}</span>
                                         {% endif %}
                                     </td>
                                     <td>

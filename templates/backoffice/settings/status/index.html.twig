@@ -1,0 +1,152 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Gestion des statuts{% endblock %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="grid-2 -noGutter">
+                        <div class="col-6_sm-12">
+                            <h2>Gestion des statuts</h2>
+                            <span>Ajouter ou supprimer un statut</span>
+                        </div>
+                        <div class="col-6_sm-12 text-right">
+                            <button type="button" data-target="add_status" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter un statut</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if status is not empty %}
+                        <div class="alert alert-light-info">
+                            Un statut supprimé sera égal à <em>null</em> dans l'intervention.
+                        </div>
+                        <div class="boxed-shadow p-relative br-5">
+                            <table class="table-radius table-shadow overflow-hidden" id="table-visible">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Couleur</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for s in status %}
+                                    <tr class="{% if s.fixed == 1 %}body-background text-muted{% endif %}">
+                                        <td>
+                                            {{ s.name }}
+                                            <em class="d-block fs-12px">{{ s.description }}</em>
+                                        </td>
+                                        <td><span class="label-mid" style="background-color: {{ s.color }};color:{{ s.color_txt }};">{{ s.color }}</span></td>
+                                        <td class="p-relative">
+                                            {% if s.fixed != 1 %}
+                                            <div class="admin-tools">
+                                                <span class="d-block text-right">
+                                                <button class="btn-sm btn-nothing toggle" type="button"><i class="ri-more-fill"></i></button>
+                                                </span>
+                                                <div class="table-submenu" id="menu-tools{{ s.id }}">
+                                                    <button type="button" data-target="edit_status-{{ s.id }}" data-toggle="modal"><i class="ri-pencil-line"></i> Modifier</button>
+                                                    <form action="{{ url_for('settings_status_delete') }}" method="post">
+                                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                                        <input type="hidden" name="id" value="{{ s.id }}">
+                                                        <button type="submit" class="delete-confirm"><i class="ri-delete-bin-2-line"></i> Supprimer</button>
+                                                    </form>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <!-- EDIT -->
+                                            <div class="modal" id="edit_status-{{ s.id }}">
+                                                <div class="modal-container">
+                                                    <div class="modal-header">
+                                                        <h1>Modification</h1>
+                                                    </div>
+                                                    <form method="post" action="{{ url_for('settings_status_update') }}?id={{ s.id }}">
+                                                        <div class="modal-content">
+                                                            <div class="grid-12 mt-5">
+                                                                <div class="col-4_sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="name" class="form-label">Dénomination</label>
+                                                                        <input type="text" name="name" value="{{ s.name }}" class="form-control" id="name">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4_sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="color" class="form-label">Couleur de fond</label>
+                                                                        <input type="color" name="color" id="color" class="form-control" value="{{ s.color }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4_sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="color_txt" class="form-label">Couleur du texte</label>
+                                                                        <input type="color" name="color_txt" id="color" class="form-control" value="{{ s.color_txt }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="fixed" id="fixed" class="form-control" value="{{ s.fixed }}">
+                                                                <label for="description">Description</label>
+                                                                <textarea name="description" id="description" cols="30"
+                                                                          rows="10" class="form-control">{{ s.description }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-light-four">Sauvegarder</button>
+                                                            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center boxed-shadow">
+                            <span>
+                                <i class="fs-80px ri-server-line"></i>
+                            </span>
+                            <h3>Aucun statut</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ADD -->
+
+    <div class="modal" id="add_status">
+        <div class="modal-container">
+            {{ form.renderStart | raw }}
+            <div class="modal-header">
+                <h1>Nouveau statut</h1>
+            </div>
+            <div class="modal-content">
+                Création d'un nouveau statut
+                <div class="grid-12 mt-5">
+                    <div class="col-4_sm-12">
+                        {{ form.renderField('name') | raw }}
+                    </div>
+                    <div class="col-4_sm-12">
+                        {{ form.renderField('color') | raw }}
+                    </div>
+                    <div class="col-4_sm-12">
+                        {{ form.renderField('color_txt') | raw }}
+                    </div>
+                </div>
+                {{ form.renderField('fixed') | raw }}
+                {{ form.renderField('description') | raw }}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-light-four">Créer</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+            </div>
+            {{ form.renderEnd(false) | raw }}
+        </div>
+    </div>
+{% endblock %}

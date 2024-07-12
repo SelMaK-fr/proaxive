@@ -11,7 +11,7 @@
                 <input type="hidden" name="_METHOD" value="DELETE"/>
                 <button type="submit" onclick="return confirm('Etes-vous sûr ?')" class="btn-mid btn-light-warning">Supprimer l'équipement</button>
             </form>
-            <button type="button" class="btn-mid btn-light-warning">Sélectionner un nouveau client</button>
+            <button type="button" class="btn-mid btn-light-warning">Attribuer un nouveau client</button>
         </div>
     </div>
     {% endif %}
@@ -45,15 +45,24 @@
                         </div>
                     </div>
                     <div class="col-8_sm-12">
-                        <div class="card-inside all-border p-3 mb-4">
-                            <h4 class="d-inline-block fw-500 fs-15px">Détails supplémentaires</h4>
-                            <form method="post" action="#" id="form_update_note_equipment">
-                                <label for="about"></label>
-                                <textarea class="d-block ajax-input mt-3 w100 form_data" placeholder="Note dédiée à ce client" id="about" name="about">{{ e.about }}</textarea>
-                                <button type="button" onclick="ajaxUpdateDataUrl(`{{ url_for('equipment_update_ajax_note', {id: e.id}) }}`, 'form_update_note_equipment'); return false;" name="save_about" id="submit" class="btn-sm btn-light-primary fs-weight mt-3">Mettre à jour</button>
-                                <span class="text-purple" id="message"></span>
-                            </form>
+                        <div class="grid-12">
+                            <div class="col-9_sm-12">
+                                <div class="card-inside all-border p-3 mb-4">
+                                    <h4 class="d-inline-block fw-500 fs-15px">Détails supplémentaires</h4>
+                                    <form method="post" action="#" id="form_update_note_equipment">
+                                        <label for="about"></label>
+                                        <textarea class="d-block ajax-input mt-3 w100 form_data" placeholder="Note dédiée à ce client" id="about" name="about">{{ e.about }}</textarea>
+                                        <button type="button" onclick="ajaxUpdateDataUrl(`{{ url_for('equipment_update_ajax_note', {id: e.id}) }}`, 'form_update_note_equipment'); return false;" name="save_about" id="submit" class="btn-sm btn-light-primary fs-weight mt-3">Mettre à jour</button>
+                                        <span class="text-purple" id="message"></span>
+                                    </form>
 
+                                </div>
+                            </div>
+                            <div class="col-3_sm-12">
+                                <div class="card-inside all-border p-2">
+                                    <img class="img-responsive" src="{{ assetExist(asset('uploads/equipments/' ~ e.id), e.picture) }}" alt="">
+                                </div>
+                            </div>
                         </div>
                         <div class="grid-12">
                             <div class="col-6_sm-12">

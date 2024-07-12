@@ -18,21 +18,10 @@ class InterventionCreateStep5Type extends Type
             'method'          => 'POST',
             'html_validation' => false,
         ], $data))
-            ->add('way_type', ChoiceType::class, [
+            ->add('status_id', ChoiceType::class, [
                 'label' => "Statut",
                 'placeholder' => "Sélectionnez un statut",
                 'choices' => self::getStatus()
-            ])
-            ->add('way_steps', ChoiceType::class, [
-                'label' => "Etat",
-                'placeholder' => "Sélectionnez un état",
-                'choices' => [
-                    1 => 'Matériel récupéré',
-                    2 => 'En atelier',
-                    3 => 'Tests finaux',
-                    4 => 'En cours de sortie',
-                    5 => 'Terminé',
-                ]
             ])
             ->add('a_priority', ChoiceType::class, [
                 'label' => 'Priorité',
@@ -55,7 +44,7 @@ class InterventionCreateStep5Type extends Type
         $req = $this->query->from('status')->select(null)->select('status.id, status.name')->fetchAll();
         if($req){
             foreach ($req as $s) {
-                $status[$s['name']] = $s['name'];
+                $status[$s['id']] = $s['name'];
             }
             return $status;
         }

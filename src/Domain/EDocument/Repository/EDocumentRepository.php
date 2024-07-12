@@ -20,6 +20,11 @@ class EDocumentRepository extends BaseRepository
             ;
     }
 
+    public function findOneByReference($reference)
+    {
+        return $this->findBy('reference', $reference)->fetch();
+    }
+
     public function allWithCustomerAndIntervention()
     {
         return $this->makeQueryDefault()

@@ -27,7 +27,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class InterventionCreateController extends AbstractController
+class InterventionCreateByStepsController extends AbstractController
 {
     /**
      * @param Request $request
@@ -41,7 +41,7 @@ class InterventionCreateController extends AbstractController
      */
     public function create(Request $request, Response $response): Response
     {
-        $auth = $this->getSession('auth');
+        $auth = $this->getUser();
         $form = $this->createForm(InterventionCreateType::class, null, $auth);
         $form->handleRequest();
 
@@ -69,13 +69,14 @@ class InterventionCreateController extends AbstractController
      */
     public function createStep2(Request $request, Response $response): Response
     {
-        $auth = $this->getSession('auth');
+        $auth = $this->getUser();
         $session = $this->getSession('data_intervention_step1');
-        $session['roles'] = $auth['roles'];
-        $inter = new Intervention();
-        $form = $this->createForm(InterventionCreateStep2Type::class, $inter, $session);
+        $session['roles'] = $auth->getRoles();
+        $form = $this->createForm(InterventionCreateStep2Type::class, null, $session);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getRequestData()['form_intervention_step2'];
+            $inter = new Intervention($data);
 
             if(!$session){
                 $this->addFlash('panel-error', 'La session a expirée !');
@@ -83,17 +84,21 @@ class InterventionCreateController extends AbstractController
             }
             $numberFormatter = new SerialNumberFormatterService($this->parameter);
             // Generate data
-            $inter->setCompanyId($session['company_id']);
             $inter->setName($session['name']);
+            $inter->setCompanyId($session['company_id']);
             $inter->setDescription($session['description']);
             $inter->setBeforeBreakdown($session['before_breakdown']);
             $inter->setRefForLink(bin2hex(random_bytes(5)));
             $inter->setRefNumber($numberFormatter->generateSerialNumber());
-            if($auth['roles'] != "SUPER_ADMIN") {
-                $inter->setUsersId($auth['id']);
+            $inter->setSort($session['sort']);
+            if($auth->getRoles() != "SUPER_ADMIN") {
+                $inter->setUsersId($auth->getId());
             }
+            $customer = $this->getRepository(CustomerRepository::class)->find('id', $inter->getCustomersId());
+            $inter->setCustomerName($customer->fullname);
+
             // save to database
-            $save = $this->getRepository(InterventionRepository::class)->createOject($inter);
+            $save = $this->getRepository(InterventionRepository::class)->add($inter, true);
             // Retrieve last ID
             $lastId = $this->getRepository(InterventionRepository::class)->lastInsertId();
             if($save){
@@ -126,13 +131,11 @@ class InterventionCreateController extends AbstractController
     {
         $id = (int)$args['id'];
         $i_id = (int)$request->getQueryParams()['inter'];
-        $customer = $this->getRepository(CustomerRepository::class)->find('id', $id);
         $form = $this->createForm(InterventionCreateStep3Type::class, null, ['customers_id' => $id]);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $request->getParsedBody()['form_intervention_step3'];
+            $data = $form->getRequestData()['form_intervention_step3'];
             $equipment = $this->getRepository(EquipmentRepository::class)->find('id', $data['equipments_id']);
-            $data['customer_name'] = $customer->fullname;
             $data['equipment_name'] = $equipment->name;
             $save = $this->getRepository(InterventionRepository::class)->update($data, $i_id);
             if($save){
@@ -162,7 +165,8 @@ class InterventionCreateController extends AbstractController
         $form = $this->createForm(InterventionCreateStep4Type::class);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $request->getParsedBody()['form_intervention_step4'];
+            $data = $form->getRequestData()['form_intervention_step4'];
+            $data['way_steps'] = 1;
             $save = $this->getRepository(InterventionRepository::class)->update($data, $i_id);
             if($save){
                 return $this->redirectToRoute('intervention_create_regular_step5', ['id' => $id], ['inter' => $i_id]);
@@ -189,8 +193,7 @@ class InterventionCreateController extends AbstractController
         $form = $this->createForm(InterventionCreateStep5Type::class);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $request->getParsedBody()['form_intervention_step5'];
-            $data['state'] = 'VALIDATED';
+            $data = $form->getRequestData()['form_intervention_step5'];
             $save = $this->getRepository(InterventionRepository::class)->update($data, $i_id);
             if($save){
                 return $this->redirectToRoute('intervention_read', ['id' => $i_id]);

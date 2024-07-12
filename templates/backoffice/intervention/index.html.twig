@@ -5,6 +5,7 @@
 {% block body %}
 <div class="grid-12">
     <div class="col-3_sm-12">
+        <a href="{{ url_for('intervention_create_regular') }}" class="btn btn-inverse-one btn-inverse-one-bg w100 d-block"><i class="ri-add-fill"></i> Créer une intervention</a>
         <div class="card-filter-search">
             <div class="pt-2 pb-2 pl-3 pr-3 border-bottom-dashed">
                 <h3 class="fs-14px m-0">Rechercher par référence</h3>
@@ -27,7 +28,7 @@
                 {{ formSearch.renderStart | raw }}
                 {{ formSearch.renderField('sort') | raw }}
                 {{ formSearch.renderField('a_priority') | raw }}
-                {{ formSearch.renderField('way_type') | raw }}
+                {{ formSearch.renderField('status_id') | raw }}
                 {{ formSearch.renderField('users_id') | raw }}
                 {{ formSearch.renderField('way_steps') | raw }}
                 {{ formSearch.renderField('company_id') | raw }}
@@ -39,47 +40,31 @@
     <div class="col-9_sm-12">
         <ul id="tabs" class="nav-components">
             <li><a {% if filter is empty %}class="selected"{% endif%} href="{{ url_for('dash_intervention') }}">Toutes</a></li>
-            <li><a {% if filter == 'DRAFT' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'DRAFT'}) }}">Brouillons</a></li>
-            <li><a {% if filter == 'PENDING' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'PENDING'}) }}">Non finalisées</a></li>
-            <li><a {% if filter == 'COMPLETED' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'COMPLETED'}) }}">Complètes</a></li>
+            <li><a {% if filter == 'progress' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'progress'}) }}">En cours</a></li>
+            <li><a {% if filter == 'pending' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'pending'}) }}">Non finalisées</a></li>
+            <li><a {% if filter == 'completed' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'completed'}) }}">Complètes</a></li>
         </ul>
+        {% if i_hot %}
+        <div class="mb-3 border-bottom-dashed">
+            <h3>Intervention(s) importante(s)</h3>
+        {% for i in i_hot %}
+            {{ include('backoffice/intervention/_item.html.twig', {data:i, hot:true}) }}
+        {% endfor %}
+        </div>
+        {% endif %}
+        <!-- Check if interventions -->
+        {% if interventions is not empty %}
         {% for i in interventions %}
-            <div class="item-list {% if i.a_priority == 'URGENT' or i.a_priority == 'ABSOLUTE' %}item-list-ribbon{% endif %}">
-                {% if i.a_priority == 'URGENT' or i.a_priority == 'ABSOLUTE' %}
-                <div class="ribbon ribbon-bookmark ribbon-vertical-left ribbon-one"><i class="ri-fire-fill"></i></div>
-                {% endif %}
-                <div class="item-list__content">
-                    <div class="flex">
-                        <img src="{{ asset('img/icons/pc1_45.png') }}" class="mr-3" alt="">
-                        <div class="flex-root">
-                            <div>
-                                <h6>
-                                    <a href="{{ url_for('intervention_read', {'id': i.id}) }}">{{ i.name }}</a>
-                                    <span class="f-right text-muted fs-12px">
-                                    {% if i.created_at | date("U") > "-7 days"|date("U") %}
-                                        <span class="fs-12px label-mid btn-light-info">New</span>
-                                    {% else %}
-                                        {{ i.created_at | date('d/m/Y') }}
-                                    {% endif%}
-                                        {% if pull_date is not null %}
-                                            <br>
-                                            <em class="d-block">Retrait : {{ i.pull_date | date('d/m/Y') }}</em>
-                                        {% endif %}
-                                </span>
-                                </h6>
-                                <p class="m-0">{{ i.customer_name }} | {{ i.equipment_name }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-dark fs-15px">
-                        {{ i.description }}
-                    </p>
-                </div>
-            </div>
+            {{ include('backoffice/intervention/_item.html.twig', {data:i}) }}
         {% endfor %}
         <div class="text-center">
-            {{ dataPaginate | raw }}
+            {{ pagerfanta(interventions, 'dash_intervention') }}
         </div>
+        {% else %}
+            <div class="alert alert-light-info">
+                Aucune intervention.
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

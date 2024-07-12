@@ -4,6 +4,7 @@ namespace Selmak\Proaxive2\Http\Type\Admin\Equipment;
 
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
+use Palmtree\Form\Type\FileType;
 use Selmak\Proaxive2\Http\Type\Admin\DateType;
 use Selmak\Proaxive2\Http\Type\Type;
 

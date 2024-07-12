@@ -22,6 +22,8 @@ use Selmak\Proaxive2\Infrastructure\Twig\AppExtension;
 use Selmak\Proaxive2\Infrastructure\Twig\AssetExtension;
 use Selmak\Proaxive2\Infrastructure\Twig\BasePathExtension;
 use Selmak\Proaxive2\Infrastructure\Twig\FrontFunctionTwig;
+use Selmak\Proaxive2\Infrastructure\Twig\PagerfantaExtension;
+use Selmak\Proaxive2\Infrastructure\Twig\TextExtensionTwig;
 use Selmak\Proaxive2\Infrastructure\Twig\TwigCsrfExtension;
 use Selmak\Proaxive2\Infrastructure\Twig\TwigMessageExtension;
 use Selmak\Proaxive2\Settings\Settings;
@@ -135,6 +137,8 @@ return [
         $twig->addExtension($container->get(TwigCsrfExtension::class));
         $twig->addExtension($container->get(DebugExtension::class));
         $twig->addExtension($container->get(BasePathExtension::class));
+        $twig->addExtension($container->get(PagerfantaExtension::class));
+        $twig->addExtension($container->get(TextExtensionTwig::class));
         $twig->addExtension(new \Awurth\Validator\Twig\LegacyValidatorExtension($container->get(StatefulValidator::class), $container->get(DataCollectorAsserter::class)));
         $twig->addExtension(new AppExtension());
         $twig->addExtension(new IntlExtension());

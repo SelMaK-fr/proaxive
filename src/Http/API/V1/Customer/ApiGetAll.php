@@ -15,7 +15,7 @@ final class ApiGetAll extends AbstractController
     {
         $page = $request->getQueryParams()['page'];
         $perPage = $request->getQueryParams()['perPage'];
-        $customers = $this->getRepository(CustomerRepository::class)->getCustomersByPage((int)$page, (int)$perPage);
-        return $this->jsonResponse($response, 'success', $customers, 200);
+        $customers = $this->getRepository(CustomerRepository::class)->getCustomersByPage((int)$page ?: 1, (int)$perPage ?: 10);
+        return $this->jsonResponse('success' , $customers, 200);
     }
 }

@@ -3,15 +3,44 @@
 {% block title %}Panel d'administration de Proaxive{% endblock %}
 
 {% block body %}
+    <div class="alert alert-light-info">
+        <strong>Note importante</strong> : début de la mise à jour importante côté session utilisateur. Si des problèmes surviennent, merci de m'en faire part sur le Discord.
+    </div>
     <div class="grid-12">
         <div class="col-5_sm-12">
-            <div class="card card-welcome">
+            <div class="card">
                 <div class="p-4 card-body">
                     <h2 class="text-truncate fs-28px fw-500 mb-1">Bonjour, {{ getSession.get('auth').fullname }}</h2>
-                    <p class="text-muted fs-16px mt-0" style="width:220px;">
-                        Bienvenue sur votre panel d'administration Proaxive.
+                    <p class="text-muted fs-16px mt-0">
+                        Bienvenue sur votre panel. <br>
+                        Que souhaitez vous faire aujourd'hui ?
                     </p>
-                    <a class="btn btn-sk-one mt-6" href="#">Documentations</a>
+                    <div class="widgets-home">
+                        <a href="{{ url_for('customer_create_particular') }}" class="widget--item">
+                            <div class="widget--icon">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            <div class="widget--content">
+                                <h4>Créer un client</h4>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('intervention_create_regular') }}" class="widget--item">
+                            <div class="widget--icon">
+                                <i class="ri-list-check-2"></i>
+                            </div>
+                            <div class="widget--content">
+                                <h4>Créer une intervention</h4>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('equipment_create') }}" class="widget--item">
+                            <div class="widget--icon">
+                                <i class="ri-computer-line"></i>
+                            </div>
+                            <div class="widget--content">
+                                <h4>Créer un équipement</h4>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,45 +98,61 @@
     </div>
     <div class="grid-12">
         <div class="col-7_sm-12">
-            {% if interventions is not empty %}
-                <div class="card">
-                    <div class="card-header p-3">
+            <div class="card">
+                <div class="card-header p-3">
+                    <div class="flex align-items-center justify-content-space-between">
                         <h2>Interventions en cours</h2>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-default table-card">
-                                <thead>
-                                    <tr>
-                                        <th>Référence</th>
-                                        <th>Client</th>
-                                        <th>Date</th>
-                                        <th>Statut</th>
-                                        <th>Etat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for i in interventions %}
-                                    {% if i.state != "COMPLETED" %}
-                                    <tr>
-                                        <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
-                                        <td>{{ i.customer_name }}</td>
-                                        <td>{{ i.created_at | date('d.M.Y') }}</td>
-                                        <td>{{ getDataState(i.state) }}</td>
-                                        <td>{{ getDataWayStepsStatus(i.way_steps) }}</td>
-                                    </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                        <a href="{{ url_for('dash_intervention') }}?filter=progress" class="btn-sm btn-light-four">Voir tout</a>
                     </div>
                 </div>
-            {% endif %}
+                <div class="card-body p-0">
+                    {% if interventions is not empty %}
+                    <div class="table-responsive">
+                        <table class="table table-default table-card">
+                            <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Etat</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in interventions %}
+                                {% if i.state != "COMPLETED" %}
+                                <tr>
+                                    <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
+                                    <td>{{ getStringData(i.customer_name ) }}</td>
+                                    <td>{{ i.created_at | date('d.M.Y') }}</td>
+                                    <td>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</td>
+                                    <td>{{ getDataWayStepsStatus(i.way_steps) }}</td>
+                                    <td>
+                                        {% if i.state == 'PENDING' %}
+                                            <span class="label-alert l-alert-warning">!</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-light-info">Aucune intervention.</div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         <div class="col-5_sm-12">
             <div class="card">
-                <div class="card-header p-3"><h2>Interventions complètes</h2></div>
+                <div class="card-header p-3">
+                    <div class="flex align-items-center justify-content-space-between">
+                        <h2>Interventions complètes</h2>
+                        <a href="{{ url_for('dash_intervention_all') }}?filter=completed" class="btn-sm btn-light-four">Voir tout</a>
+                    </div>
+                </div>
                 <div class="card-body p-0">
                     {% if interventions is not empty %}
                         <div class="table-responsive">
@@ -123,13 +168,13 @@
                                 </thead>
                                 <tbody>
                                 {% for i in interventions %}
-                                    {% if i.state == "COMPLETED" %}
+                                    {% if i.is_closed == 1 %}
                                     <tr>
                                         <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
                                         <td>{{ i.customer_name }}</td>
                                         <td>{{ i.created_at | date('d.M.Y') }}</td>
                                         <td>
-                                            {{ getDataState(i.state) }}
+                                            <span class="label-mid badge-light-green"><i class="ri-check-line"></i> COMPLÈTE</span>
                                         </td>
                                         <td>
                                            <span class="label-mid btn-light-info label-flex mt-1">
@@ -144,7 +189,7 @@
                             </table>
                         </div>
                     {% else %}
-                        <div class="alert alert-light-info">Aucune intervention en cours.</div>
+                        <div class="alert alert-light-info">Aucune intervention.</div>
                     {% endif %}
                 </div>
             </div>

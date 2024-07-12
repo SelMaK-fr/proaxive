@@ -6,7 +6,7 @@ use Selmak\Proaxive2\Infrastructure\Mailing\Factory\MailerFactory;
 
 class MailService
 {
-    public function __construct(private array $settings)
+    public function __construct(private readonly array $settings)
     {
     }
 

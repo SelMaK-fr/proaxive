@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Http\Type\Admin\Intervention;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
 use Palmtree\Form\Type\ChoiceType;
+use Palmtree\Form\Type\HiddenType;
 use Palmtree\Form\Type\TextareaType;
 use Palmtree\Form\Type\TextType;
 use Selmak\Proaxive2\Http\Type\Type;
@@ -35,26 +36,18 @@ class InterventionUpdateType extends Type
                     'Devis' => 'Devis',
                 ]
             ])
-            ->add('way_type', ChoiceType::class, [
+            ->add('status_id', ChoiceType::class, [
                 'label' => "Statut",
                 'placeholder' => "Sélectionnez un statut",
                 'choices' => self::getStatus()
+            ])
+            ->add('way_type', HiddenType::class, [
+                'label' => "",
             ])
             ->add('users_id', ChoiceType::class, [
                 'label' => "Technicien",
                 'placeholder' => "Sélectionnez un technicien",
                 'choices' => self::getWorkers($data['company_id'])
-            ])
-            ->add('way_steps', ChoiceType::class, [
-                'label' => "Etat",
-                'placeholder' => "Sélectionnez un état",
-                'choices' => [
-                    1 => 'Matériel récupéré',
-                    2 => 'En atelier',
-                    3 => 'Tests finaux',
-                    4 => 'En cours de sortie',
-                    5 => 'Terminé',
-                ]
             ])
             ->add('description', TextareaType::class, [
                 'label' => "Description",
@@ -91,7 +84,7 @@ class InterventionUpdateType extends Type
         $req = $this->query->from('status')->select(null)->select('status.id, status.name')->fetchAll();
         if($req){
             foreach ($req as $s) {
-                $status[$s['name']] = $s['name'];
+                $status[$s['id']] = $s['name'];
             }
             return $status;
         }

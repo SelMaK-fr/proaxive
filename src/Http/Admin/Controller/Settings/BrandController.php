@@ -70,7 +70,7 @@ class BrandController extends AbstractController
             }
             $uploadedFiles = $request->getUploadedFiles()['form_brand']; // For logo
             $uploadedFile = $uploadedFiles['logo_file'];
-            $path = $this->settings['settings']['publicPath']. '/uploads/brands';
+            $path = $this->settings->get('settings')['publicPath']. '/uploads/brands';
             if($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 $manager = new ImageManager(new Driver());
                 if(!file_exists($path)) {

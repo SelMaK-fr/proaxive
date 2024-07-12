@@ -5,7 +5,7 @@ update-dep:
 	composer update
 
 update:
-	git status
+	git pull
 	vendor/bin/phinx migrate
 
 require:
@@ -13,6 +13,9 @@ require:
 
 migrate:
 	vendor/bin/phinx migrate
+
+migrate-status:
+	vendor/bin/phinx status
 
 seed:
 	vendor/bin/phinx seed:run

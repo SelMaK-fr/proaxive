@@ -21,11 +21,9 @@ class InterventionCreateArgsController extends AbstractController
         $e = (int)$request->getQueryParams()['e'];
         $equipment = $this->getRepository(EquipmentRepository::class)->find('id', $e);
         // Récupération des données de l'utilisateur connecté
-        $auth = $this->getSession('auth');
-        // Initialisation de l'objet Intervention
-        $intervention = new Intervention();
+        $auth = $this->getUser();
         // Construction du formulaire
-        $form = $this->createForm(InterventionArgsType::class, $intervention, [
+        $form = $this->createForm(InterventionArgsType::class, null, [
             'auth' => $auth,
             'e' => $e,
             'customers_id' => $args['id']
@@ -36,6 +34,9 @@ class InterventionCreateArgsController extends AbstractController
         // return equipment
         // Traitement du formulaire
         if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getRequestData()['form_intervention_args'];
+            // Initialisation de l'objet Intervention avec les données du formulaire.
+            $intervention = new Intervention($data);
             // Initialisation du service de formatage de numéro
             $numberFormatter = new SerialNumberFormatterService($this->parameter);
             // Vérification si une valeur est passée dans le paramètre "e" de l'URL
@@ -43,8 +44,8 @@ class InterventionCreateArgsController extends AbstractController
                 $equipment = $this->getRepository(EquipmentRepository::class)->find('id', $intervention->getEquipmentsId());
             }
             // Construction de l'objet Intervention
-            $intervention->setCompanyId($auth['company_id']);
-            $intervention->setUsersId($auth['id']);
+            $intervention->setCompanyId($auth->getCompanyId());
+            $intervention->setUsersId($auth->getId());
             $intervention->setCustomersId($args['id']);
             if($e > 0) {
                 $intervention->setEquipmentsId($e);
@@ -52,10 +53,9 @@ class InterventionCreateArgsController extends AbstractController
             $intervention->setEquipmentName($equipment->name);
             $intervention->setRefForLink(bin2hex(random_bytes(5)));
             $intervention->setRefNumber($numberFormatter->generateSerialNumber());
-            $intervention->setState('VALIDATED');
             $intervention->setCustomerName($customer->fullname);
             // Enregistrement des données en base de données via l'objet Intervention
-            $this->getRepository(InterventionRepository::class)->createOject($intervention);
+            $this->getRepository(InterventionRepository::class)->add($intervention, true);
             // Information pour l'utilisateur
             $this->addFlash('panel-success', sprintf("Intervention N°%s créée avec succès.", $intervention->getRefNumber()));
             // Inscription dans les log de Proaxive

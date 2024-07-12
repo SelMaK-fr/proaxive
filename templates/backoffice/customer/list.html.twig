@@ -15,65 +15,76 @@
             </div>
             <div class="sk-topbar-search-button">
                 <a title="Ajouter un client" href="{{ url_for('customer_create_particular') }}" class="btn btn-sk-one m-0"><i class="fs-18px ri-add-fill"></i></a>
-                <a title="Vue en carte" href="{{ url_for('dash_customer') }}" class="btn btn-sk-one m-0"><i class="fs-18px ri-layout-grid-fill"></i></a>
+                <a title="Vue en carte" href="{{ url_for('dash_customer') }}" class="btn btn-sk-one m-0 pr-4 pl-4"><i class="fs-18px ri-layout-grid-2-fill"></i></a>
             </div>
         </div>
         <div class="results" id="htmlContent"></div>
         <div class="card mt-3">
-            <div class="card-body p-3">
-                <table class="table-default table-striped mt-3">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Nom</th>
-                        <th>Tél fixe</th>
-                        <th>Mobile</th>
-                        <th>Ville</th>
-                        <th>Département</th>
-                        <th>Courriel</th>
-                        <th>MAJ</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for c in customers %}
+            <div class="card-header p-3"><h2>Tableau des clients</h2></div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-default table-card">
+                        <thead>
                         <tr>
-                            <td>
-                                <span><i class="fs-24px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
-                                {% if c.is_draft == 1 %}
-                                    <span class="label badge-warning">
+                            <th></th>
+                            <th>Nom</th>
+                            <th>Tél fixe</th>
+                            <th>Mobile</th>
+                            <th>Ville</th>
+                            <th>Département</th>
+                            <th>Courriel</th>
+                            <th>Portail</th>
+                            <th>MAJ</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for c in customers %}
+                            <tr>
+                                <td>
+                                    <span><i class="fs-24px ri-{% if c.is_society is not null %}building{% else %}user-2{% endif %}-fill"></i></span>
+                                    {% if c.is_draft == 1 %}
+                                        <span class="label badge-warning">
                                         <i class="fa-solid fa-triangle-exclamation"></i> Incomplet
                                     </span>
-                                {% endif %}
-                                {% if c.on_sale is not null %}
-                                    <span class="label badge-light-green">-{{ c.on_sale }}%</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if c.enable_portal is not null %}
-                                    <span class="label badge-light-green">
+                                    {% endif %}
+                                    {% if c.on_sale is not null %}
+                                        <span class="label badge-light-green">-{{ c.on_sale }}%</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if c.enable_portal is not null %}
+                                        <span class="label badge-light-green">
                                     <i class="ri-lock-unlock-line"></i>
                                     </span>
-                                {% endif %}
-                                <span class="{% if c.is_blacklisted is not null %}text-pink{% endif %}">{{ c.fullname }}</span>
-                            </td>
-                            <td>{{ c.phone }}</td>
-                            <td>{{ c.mobile }}</td>
-                            <td>{{ c.city }} <br> <em class="text-muted">{{ c.zipcode }}</em></td>
-                            <td>{{ c.department }}</td>
-                            <td>{{ c.mail }}</td>
-                            <td>{{ c.updated_at | date('d/m/Y') }}</td>
-                            <td class="link-icon">
-                                <a class="link-default" href="{{ url_for('customer_read', {'id': c.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    {% endif %}
+                                    <span class="{% if c.is_blacklisted is not null %}text-pink{% endif %}">{{ c.fullname }}</span>
+                                </td>
+                                <td>{{ c.phone }}</td>
+                                <td>{{ c.mobile }}</td>
+                                <td>{{ c.city }} <br> <em class="text-muted">{{ c.zipcode }}</em></td>
+                                <td>{{ c.department }}</td>
+                                <td>{{ c.mail }}</td>
+                                <td>
+                                    {% if c.enable_portal == 1 %}
+                                        <span class="text-green-300 fw-500">Activé</span>
+                                    {% else %}
+                                        <span class="text-orange fw-500">Désactivé</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ c.updated_at | date('d/m/Y') }}</td>
+                                <td class="link-icon">
+                                    <a class="link-default" href="{{ url_for('customer_read', {'id': c.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
 
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        {{ dataPaginate | raw }}
+        {{ pagerfanta(customers, 'dash_customer', {'view':'list'}) }}
     {% else %}
         <div class="text-center">
         <span class="text-one">

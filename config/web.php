@@ -37,12 +37,13 @@ use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\EquipmentUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralUpdateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Equipment\Upload\EquipmentUploadPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateArgsController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionArchiveController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateController;
-use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateController as CreateIntervention;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateByStepsController as CreateIntervention;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchController;
@@ -57,9 +58,11 @@ use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\BrandController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\OperatingSystemController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\ParametersController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\StatusController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TaskController as SettingTask;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TypeEquipmentController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\UpdateAppController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\Version\VersionAppUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Society\SocietyUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Task\AddTaskToInterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Task\DeleteTaskOfInterventionController;
@@ -70,8 +73,8 @@ use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateLogoCon
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateSignatureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopUpdateController;
-use Selmak\Proaxive2\Http\API\V1\ApiInterventionController;
 use Selmak\Proaxive2\Http\Controller\Account\UserAccountController;
 use Selmak\Proaxive2\Http\Controller\Account\UserResetController;
 use Selmak\Proaxive2\Http\Controller\IndexController;
@@ -80,9 +83,11 @@ use Selmak\Proaxive2\Http\Controller\Intervention\InterventionSearchController a
 use Selmak\Proaxive2\Http\Controller\Portal\LoginController;
 use Selmak\Proaxive2\Http\Controller\Portal\LogoutController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalController;
+use Selmak\Proaxive2\Http\Controller\Portal\PortalDocumentController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalInterventionController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalParameterController;
 use Selmak\Proaxive2\Security\Middleware\IfDataNullOrEmptyMiddleware;
+use Selmak\Proaxive2\Security\Middleware\IfMailerIsNotActivateMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
 use Slim\App;
@@ -143,12 +148,13 @@ return function (App $app) {
         $group->any('/{id:[0-9]+}/update', WorkshopUpdateController::class)->setName('workshop_update');
         $group->post('/{id:[0-9]+}/ajax/logo', WorkshopUpdateLogoController::class)->setName('workshop_update_logo');
         $group->post('/{id:[0-9]+}/ajax/signature', WorkshopUpdateSignatureController::class)->setName('workshop_update_signature');
-    });
+        $group->any('/{id:[0-9]+}/delete', WorkshopDeleteController::class)->setName('workshop_delete');
+    })->add(RedirectIfNotAdminMiddleware::class);
     /* User (worker) */
     $app->group('/admin/users', function (RouteCollectorProxy $group)
     {
        $group->any('', [UserController::class, 'index'])->setName('dash_user');
-        $group->any('/create', [UserActionController::class, 'action'])->setName('user_create');
+        $group->any('/create', [UserActionController::class, 'action'])->setName('user_create')->add(IfMailerIsNotActivateMiddleware::class);
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
     }); // ->add(RedirectNotPermitDemo::class)
@@ -168,6 +174,7 @@ return function (App $app) {
         $group->any('/ajax/{id:[0-9]+}/update-note', [EquipmentAjaxController::class, 'updateNote'])->setName('equipment_update_ajax_note');
         $group->any('/{id:[0-9]+}/update/specs', [EquipmentUpdateController::class, 'specificies'])->setName('equipment_update_specs');
         $group->post('/{id:[0-9]+}/update/specs/bao/upload', [EquipmentUpdateController::class, 'baoUpload'])->setName('equipment_update_specs_upload');
+        $group->post('/{id:[0-9]+}/picture/upload', EquipmentUploadPictureController::class)->setName('equipment_upload_picture');
         $group->delete('/{id}/delete', [EquipmentDeleteController::class, 'delete'])->setName('equipment_delete');
         $group->delete('/delete/selected', [EquipmentDeleteController::class, 'deleteSelected'])->setName('equipment_delete_selected');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
@@ -192,7 +199,7 @@ return function (App $app) {
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
        $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
        $group->post('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
-       $group->any('/{id:[0-9]+}/validation', [InterventionValidatedController::class, 'validated'])->setName('intervention_validation');
+       $group->any('/{id:[0-9]+}/validation', InterventionValidatedController::class)->setName('intervention_validation');
        $group->any('/{id:[0-9]+}/archive', [InterventionArchiveController::class, 'index'])->setName('intervention_archive');
        $group->any('/{id:[0-9]+}/archive/read', [InterventionArchiveController::class, 'readArchive'])->setName('intervention_archive_read');
        $group->get('/{id:[0-9]+}/pdf', InterventionToPdfController::class)->setName('intervention_open_pdf');
@@ -254,7 +261,12 @@ return function (App $app) {
        $group->post('/operating-system/create', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_create');
        $group->post('/operating-system/update[:{args}]', [OperatingSystemController::class, 'actionForm'])->setName('settings_os_update');
        $group->delete('/operating_system/delete', [OperatingSystemController::class, 'delete'])->setName('settings_os_delete');
+       $group->get('/status', [StatusController::class, 'index'])->setName('settings_status');
+       $group->post('/status/create', [StatusController::class, 'actionForm'])->setName('settings_status_create');
+       $group->post('/status/update[:{args}]', [StatusController::class, 'actionForm'])->setName('settings_status_update');
+       $group->post('/status/delete', [StatusController::class, 'delete'])->setName('settings_status_delete');
        $group->any('/update', UpdateAppController::class)->setName('settings_update');
+       $group->post('/command/app-update', VersionAppUpdateController::class)->setName('settings_app_update')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /** Portal */
     $app->any('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');
@@ -265,6 +277,8 @@ return function (App $app) {
         $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
         $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
         $group->any('/parameters/security', [])->setName('portal_parameters_security');
+        $group->get('/documents', [PortalDocumentController::class, 'index'])->setName('portal_documents');
+        $group->post('/documents/dl/{reference}', [PortalDocumentController::class, 'download'])->setName('portal_documents_download');
     })->add(RedirectIfNotAuthMiddleware::class);
     $app->get('/wxy/customers/logout', LogoutController::class)->setName('portal_logout');
 };

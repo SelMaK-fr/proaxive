@@ -15,10 +15,14 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Account\Repository\AccountRepository;
 use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
+use Selmak\Proaxive2\Domain\User\User;
+use Selmak\Proaxive2\Factory\SessionFactory;
+use Selmak\Proaxive2\Helper\Hydrator;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\AccountPasswordType;
 use Selmak\Proaxive2\Http\Type\AccountTotpType;
 use Selmak\Proaxive2\Http\Type\AccountType;
+use Slim\Exception\HttpUnauthorizedException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -39,9 +43,11 @@ class AccountController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $id = $this->getUserId();
+        $id = $this->getUser()->getId();
         $a = $this->getRepository(AccountRepository::class)->find('id', $id);
-
+        if(!$a){
+            throw new HttpUnauthorizedException($request, "Account not found or session expired");
+        }
         $form = $this->createForm(AccountType::class, $a);
         $form->handleRequest();
 
@@ -53,13 +59,16 @@ class AccountController extends AbstractController
                 return $this->redirectToRoute('dash_account');
             }
         }
-
         # Change Password (Form)
         $formPassword = $this->createForm(AccountPasswordType::class);
         $formPassword->handleRequest();
 
         if($formPassword->isSubmitted() && $formPassword->isValid()) {
             $data = $form->getRequestData()['form_account_password'];
+            // delete password_2 field (confirm)
+            unset($data['password_2']);
+            // Hash password
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $save = $this->getRepository(AccountRepository::class)->update($data, $id);
             if($save){
                 $this->addFlash('panel-info', "Votre mot de passe a bien été mis à jour.");
@@ -118,7 +127,7 @@ class AccountController extends AbstractController
             $secretKey = $google2fa->generateSecretKey();
             $this->getRepository(UserRepository::class)->update([
                 'key_totp' => $secretKey
-            ], $this->getUserId());
+            ], $this->getUser()->getId());
         }
         return new RedirectResponse($this->generateUrl('dash_account'));
     }

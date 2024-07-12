@@ -181,9 +181,11 @@
 <table class="table-container table-collapse">
     <tbody>
     <tr>
+        {% if numeric %}
         <td class="w30p">
             <img style="height: 90px;width: auto" src="{{ qrcode }}" alt="">
         </td>
+        {% endif %}
         <td class="text-center"><span class="title-document">Bon De Dépôt</span></td>
         <td class="w30p" style="font-size: 9pt">
             <div class="bg02 p20px">
@@ -311,7 +313,9 @@
                         <td>
                             <h5 class="bg03 text-center" style="margin: 0 0 5px 0;line-height: 30px">Signature client</h5>
                             <div style="height: 90px">
+                                {% if numeric %}
                                 <img src="{{ data.code_sign }}" alt="Signature Client" style="height: 90px;width: auto" class="img-responsive">
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

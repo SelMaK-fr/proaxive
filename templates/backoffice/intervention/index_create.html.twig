@@ -37,7 +37,46 @@
         </div>
     </div>
     <p class="text-center fs-16px">
-        Il y a actuellement <span class="fw-500 text-pink fs-18px">4</span> intervention non finalisées
+        Il y a actuellement <span class="fw-500 text-pink fs-18px">{% if pendingInterventions is empty %}aucune{% else %}{{ pendingInterventions | length }}{% endif %}</span> intervention(s) non finalisée(s)
     </p>
+    {% if pendingInterventions is not empty %}
+    <div class="grid-center">
+        <div class="col-8_sm-12">
+            <div class="card">
+                <div class="card-header"><h3 class="">Intervention(s) non finalisée(s)</h3></div>
+                <div class="card-body  p-0">
+                    <div class="table-responsive">
+                    <table class="table table-default table-card">
+                        <thead>
+                            <tr>
+                                <th>Dénomination</th>
+                                <th>Référence</th>
+                                <th>Client</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in pendingInterventions %}
+                            <tr>
+                                <td>{{ i.name }}</td>
+                                <td>{{ i.ref_number }}</td>
+                                <td>{{ getStringData(i.customer_name) }}</td>
+                                <td>{{ i.sort }}</td>
+                                <td>{{ i.created_at | date('d-m-Y') }}</td>
+                                <td>
+                                    <a href="{{ url_for('intervention_validation', {id:i.id}) }}" class="btn-sm btn-light-four">Continuer <i class="ri-arrow-right-line"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     {{ include('backoffice/intervention/_modal/_add_fast.html.twig') }}
 {% endblock %}

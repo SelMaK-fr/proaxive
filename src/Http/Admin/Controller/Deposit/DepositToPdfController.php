@@ -41,7 +41,8 @@ class DepositToPdfController extends AbstractController
             //DomPDF
             $dompdf = new Dompdf();
             $dompdf->loadHtml($this->view('/pdf/deposit_pdf.html.twig',
-                ['d' => $deposit
+                ['d' => $deposit,
+                 'numeric' => false
                 ]), $settings['documents'] . 'deposits/Depot_' . $deposit['reference'] . '-I_' . $deposit['ref_number'].'.pdf');
         }
         return new \Slim\Psr7\Response();

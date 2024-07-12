@@ -32,10 +32,6 @@ class UserReadController extends AbstractController
     {
         $user_id = (int)$args['id'];
         $u = $this->getRepository(UserRepository::class)->find('id', $user_id);
-        // Redirect if roles = USER_MANAGER
-        if($u->roles === 'USER_MANAGER'){
-            return $this->redirectToRoute('user_update', ['id' => $u->id]);
-        }
         $i = $this->getRepository(InterventionRepository::class)->allBy('users_id', $user_id, 6);
         $w = $this->getRepository(WorkshopRepository::class)->find('id', $u->company_id);
         // Breadcrumbs

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Selmak\Proaxive2\Http\Admin\Controller\Booking;
 
+use Envms\FluentPDO\Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as V;
@@ -14,9 +15,11 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 class BookingCreateController extends AbstractController
 {
     /**
+     * Permet de créer un évènement de dépôt dans le calendrier
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws Exception
      */
     public function createForIntervention(Request $request, Response $response): Response
     {
@@ -39,8 +42,9 @@ class BookingCreateController extends AbstractController
 
             $save = $this->getRepository(BookingRepository::class)->createOject($booking);
             // update field pull_date intervention
+            $newData = $data['start_date'] . ' ' . $data['start_time'] .':00';
             $updateIntervention = $this->getRepository(InterventionRepository::class)->update([
-                'pull_date' => $data['begin_at']
+                'pull_date' => $newData
             ], (int)$data['intervention_id']);
             if($save && $updateIntervention){
                 return $this->redirectToRoute('dash_booking');

@@ -1,0 +1,64 @@
+{% extends 'frontoffice/portal.html.twig' %}
+
+{% block title %}Mes interventions{% endblock %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col-10_sm-12">
+            <div class="pt-5 pb-5">
+                <h3 class="fs-20px fw-600 txt-veryhard mb-0">Liste des documents</h3>
+                <p class="fs-18px fw-300 mt-0">Vous avez actuellement <strong>{{ documents | length }}</strong> document(s) d'enregistré(s).</p>
+                <div class="card all-border table-radius">
+                    <div class="p-4">
+                        <h3 class="mb-0 fs-16px">Mes documents</h3>
+                        <span>Tous vos documents sont listées ici</span>
+                    </div>
+                    <div class="card-table">
+                        <table class="table-default">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Nom</th>
+                                <th>Fichier</th>
+                                <th>Taille</th>
+                                <th>Extension</th>
+                                <th>Intervention</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in documents %}
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}">{{ d.reference }}</a>
+                                    </td>
+                                    <td>{{ d.name }}</td>
+                                    <td>
+                                        <strong class="d-block">{{ d.filename }}</strong>
+                                    </td>
+                                    <td>{{ getConvertBytes(d.size, 2) }}</td>
+                                    <td>{{ d.extension }}</td>
+                                    <td>
+                                        {% if d.i_ref_number is not null or d.i_ref_number is not empty %}
+                                            {{ d.i_ref_number }}
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ d.created_at | date('d/m/Y') }}</td>
+                                    <td>
+                                        <form method="post" action="{{ url_for('portal_documents_download', {reference:d.reference}) }}">
+                                            <button type="submit" class="btn-sm btn-light-four">Télécharger</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

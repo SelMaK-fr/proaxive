@@ -17,7 +17,7 @@
                 <div class="col-6_sm-12">
                     <div class="form-group">
                         <label for="" class="form-label">Veuillez choisir une date de dépôt</label>
-                        <input name="form_deposit[deposit_date]" id="" type="datetime-local" class="form-control">
+                        <input name="form_deposit[deposit_date]" id="" value="{{ 'now' |date('Y-m-d') }}" type="date" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="" class="form-label">Etat du matériel</label>

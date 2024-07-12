@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
+use Selmak\Proaxive2\Domain\Auth\SessionUser;
 use Selmak\Proaxive2\Infrastructure\Parameter\Interface\ParameterInterface;
 use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\Interfaces\RouteParserInterface;
@@ -107,7 +108,7 @@ abstract class AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function createForm(string $type, mixed $data = null, ?array $args = []): Form
+    protected function createForm(string $type, mixed $data = null, mixed $args = []): Form
     {
         return (new $type($this->query))->createFormBuilder($data, $args);
     }
@@ -211,25 +212,10 @@ abstract class AbstractController
         return $this->session->delete($key);
     }
 
-    /**
-     * @return int
-     */
-    protected function getUserId(): int
+    protected function getUser(): SessionUser
     {
-        return (int)$this->session->get('auth')['id'];
-    }
-
-    protected function getUsername(): string
-    {
-        return $this->session->get('auth')['fullname'];
-    }
-
-    /**
-     * @return int
-     */
-    protected function getUserCompany(): int
-    {
-        return (int)$this->session->get('auth')['company_id'];
+        $session = $this->session->get('auth');
+        return new SessionUser($session);
     }
 
     protected function pdfResponse(string $attachmentFilename): \Slim\Psr7\Response|\Slim\Psr7\Message

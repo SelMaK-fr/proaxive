@@ -7,6 +7,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Domain\Customer\Customer;
 use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\SocietyType;
@@ -37,16 +38,16 @@ class CustomerCreateController extends AbstractController
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getRequestData()['form_customer'];
-            $data['activated'] = 1;
+            $customer = new Customer($data);
+            $customer->setActivated(1);
             $generateClientId = new RandomStringGeneratorFactory();
-            $data['login_id'] = 'C-' . $generateClientId->generate(9);
-            $data['fullname'] = $data['firstname'] . ' ' . $data['lastname'];
-
-            $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $data['mail']);
+            $customer->setLoginId('C-' . $generateClientId->generate(9));
+            $customer->setFullname($customer->getFirstName() . ' ' . $customer->getLastName());
+            $checkIfExist = $this->getRepository(CustomerRepository::class)->ifExist('mail', $customer->getMail());
             if($checkIfExist == 1){
                 $this->addFlash('panel-error', "Un compte client existe déjà avec cette adresse courriel.");
             } else {
-                $save = $this->getRepository(CustomerRepository::class)->add($data, true);
+                $save = $this->getRepository(CustomerRepository::class)->add($customer, true);
                 if($save){
                     $lastId = $this->getRepository(CustomerRepository::class)->lastInsertId();
                     return $this->redirectToRoute('customer_read', ['id' => $lastId]);
@@ -81,7 +82,6 @@ class CustomerCreateController extends AbstractController
     public function society(Request $request, Response $response): Response
     {
         $form = $this->createForm(SocietyType::class);
-        //$form->setAction($this->routeParser->urlFor('customer_create_action', [], ['s' => 'active']));
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getRequestData()['form_customer'];

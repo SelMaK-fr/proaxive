@@ -8,7 +8,11 @@ final class Hydrator
 {
     public static function hydrate(array $data, $object)
     {
-        $instance = new $object();
+        if(is_string($object)) {
+            $instance = new $object();
+        } else {
+            $instance = $object;
+        }
         foreach ($data as $key => $value) {
             $method = self::getSetter($key);
             if (method_exists($instance, $method)) {

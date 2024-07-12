@@ -159,9 +159,9 @@
             {% else%}
                 <div class="grid-12 -noGutter">
                     <div class="col-8_sm-12">
-                        <h3>Equipements ({{ nbEquipments }})</h3>
+                        <h3>Equipements ({{ equipments | length }})</h3>
                     </div>
-                    <div class="col-4_sm-12">
+                    <div class="col-4_sm-12 text-right">
                         <button data-target="choice_add_equipment" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-fill"></i> Créer</button>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                                                     N°de série : <span class="text-{% if e.is_outofservice == 1 %}pink{% else %}green{% endif %}">{{ e.e_serial }}</span>
                                                 </span>
                                                 <span class="d-block">
-                                                    Type : {{ e.type_name }}
+                                                    Type : {{ getStringData(e.type_name) }}
                                                 </span>
                                                 <span class="d-block">
                                                     Date : {{ e.created_at | date('d/m/Y') }}
@@ -215,7 +215,7 @@
             {% else %}
                 <div class="grid-12 -noGutter">
                     <div class="col-8_sm-12">
-                        <h3>Interventions ({{ nbInterventions }})</h3>
+                        <h3>Interventions ({{ interventions | length }})</h3>
                     </div>
                     <div class="col-4_sm-12 text-right">
                         <a href="{{ url_for('intervention_create_args', {id:customer.id}) }}" class="btn btn-light-four fw-600"><i class="ri-add-fill"></i> Créer</a>
@@ -315,8 +315,8 @@
         dashCustomerStats([
             {{ stats.nbInterventions }},
             {{ stats.nbEquipments }},
-            {{ stats.nbDocuments }},
-            {{ stats.nbOutlay }}
+            {{ stats.nbOutlay }},
+            {{ stats.nbDocuments }}
         ])
     </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

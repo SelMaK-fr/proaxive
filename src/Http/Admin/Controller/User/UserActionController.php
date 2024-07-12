@@ -39,35 +39,35 @@ class UserActionController extends AbstractController
             $user = $this->getRepository(UserRepository::class)->find('id', $user_id, true);
             $form = $this->createForm(UserType::class, $user);
         } else {
-            $u = new User();
-            $form = $this->createForm(UserType::class, $u);
+            $form = $this->createForm(UserType::class);
         }
         $form->handleRequest();
-        $data = $form->getRequestData()['form_user'];
         if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getRequestData()['form_user'];
             unset($data['password_2']);
+            $u = new User($data);
             if($user_id){
-                $saveUpdate = $this->getRepository(UserRepository::class)->update($data, $user_id);
+                $saveUpdate = $this->getRepository(UserRepository::class)->update($u, $user_id);
                 if($saveUpdate){
-                    $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $data['fullname']));
+                    $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $u->getFullname()));
                     return $this->redirectToReferer($request);
                 }
             } else {
                 // Generate token and code (confirm_at)
-                $checkIfExist = $this->getRepository(UserRepository::class)->ifExist('mail', $data['mail']);
+                $checkIfExist = $this->getRepository(UserRepository::class)->ifExist('mail', $u->getMail());
                 if($checkIfExist == 1){
-                    $this->addFlash('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $data['mail']));
+                    $this->addFlash('panel-error', sprintf("L'adresse courriel [%s] est déjà enregistrée.", $u->getMail()));
                 } else {
                     $t = new RandomNumberService();
                     $token = $t->token(30);
                     $code = rand(7, 9999999);
                     $u->setToken($token);
-                    $u->setConfirmAt($code);
+                    $u->setConfirmAt((string)$code);
                     $mail = new MailService($this->getParameters('mailer'));
-                    $mail->sendMail($u->getMail(), $this->view('mailer/security/your_account.html.twig', ['data' => $data, 'token' => $token, 'code' => $code]), 'Votre compte utilisateur Proaxive.');
-                    $save = $this->getRepository(UserRepository::class)->add((array)$u, true);
+                    $mail->sendMail($u->getMail(), $this->view('mailer/security/your_account.html.twig', ['data' => $u, 'token' => $token, 'code' => $code]), 'Votre compte utilisateur Proaxive.');
+                    $save = $this->getRepository(UserRepository::class)->add($u, true);
                     if($save){
-                        $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $data['fullname']));
+                        $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été créé.", $u->getFullname()));
                         return $this->redirectToRoute('dash_user');
                     }
                 }

@@ -8,6 +8,7 @@ use PragmaRX\Google2FA\Google2FA;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
+use Selmak\Proaxive2\Domain\Auth\SessionUser;
 use Selmak\Proaxive2\Domain\User\Repository\UserRepository;
 use Selmak\Proaxive2\Factory\CookieFactory;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
@@ -26,13 +27,14 @@ final class UserAccountController extends AbstractController
                 $user = $this->getRepository(UserRepository::class);
                 $data = $user->findUserByMail($params['email']);
                 if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
+
                     if($data['key_totp']){
                         $this->setSession('auth_in_progress', $data);
                         return $this->redirectToRoute('auth_user_2fa');
                     }
-                    $this->getSession('auth');
+                    //$this->getSession('auth');
                     $this->setSession('auth', $data);
-                    // Create Cookie 7 days
+                    // Create Cookie 3 days
                     $cookie = new CookieFactory();
                     $cookie->setCookie($data, $this->query);
                     return $this->redirectToRoute('dash_home');

@@ -12,6 +12,7 @@ use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentBaoFileType;
 use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentSpecsType;
 use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentType;
+use Selmak\Proaxive2\Http\Type\Admin\Equipment\EquipmentUploadType;
 use Selmak\Proaxive2\Infrastructure\Bao\BaoService;
 use Slim\Psr7\UploadedFile;
 use Twig\Error\LoaderError;
@@ -36,7 +37,6 @@ class EquipmentUpdateController extends AbstractController
     public function update(Request $request, Response $response, array $args): Response
     {
         $equipment_id = (int)$args['id'];
-        $customer_id = '';
         $e = $this->getRepository(EquipmentRepository::class)->find('id', $equipment_id, true);
         $form = $this->createForm(EquipmentType::class, $e);
         $form->handleRequest();
@@ -51,6 +51,10 @@ class EquipmentUpdateController extends AbstractController
                 return $this->redirectToReferer($request);
             }
         }
+        // Form for picture upload
+        $formPicture = $this->createForm(EquipmentUploadType::class);
+        $formPicture->setAction($this->getUrlFor('equipment_upload_picture', ['id' => $equipment_id]));
+        $formPicture->handleRequest();
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -62,6 +66,7 @@ class EquipmentUpdateController extends AbstractController
         // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/update.html.twig', [
             'form' => $form,
+            'formPicture' => $formPicture,
             'e' => $e,
             'breadcrumbs' => $bds,
             'currentMenu' => 'equipment'

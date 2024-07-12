@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Customer;
 
 use Envms\FluentPDO\Exception;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -31,10 +33,8 @@ class CustomerController extends AbstractController
     {
         if($request->getQueryParams()['view'] === 'list'){
             $template = 'backoffice/customer/list.html.twig';
-            $paginator = new Paginator('15', 'p', $request);
-            $paginator->set_total($this->getRepository(CustomerRepository::class)->count());
-            $customers = $this->getRepository(CustomerRepository::class)->allArrayForPaginator($paginator->get_limit());
-            $dataPaginate = $paginator->page_links();
+            $params = $request->getQueryParams();
+            $customers = $this->getRepository(CustomerRepository::class)->findPaginated(20, (int)$params['p'] ?: 1);
         } else {
             $template = 'backoffice/customer/index.html.twig';
             $dataPaginate = [];

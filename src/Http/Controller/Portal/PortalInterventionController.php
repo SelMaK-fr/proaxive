@@ -30,7 +30,8 @@ class PortalInterventionController extends AbstractController
     public function index(Request $request, Response $response): Response
     {
 
-        $i = $this->getRepository(InterventionRepository::class)->allBy('customers_id', $this->getSession('customer')['id']);
+        $page = $request->getQueryParams()['p'];
+        $i = $this->getRepository(InterventionRepository::class)->findByCustomerWithPaginate(15, (int)$page ?: 1, ['customers_id' => $this->getSession('customer')['id']]);
 
         return $this->render($response, '/frontoffice/portal/intervention/index.html.twig', [
             'i' => $i
@@ -50,7 +51,7 @@ class PortalInterventionController extends AbstractController
     public function read(Request $request, Response $response, array $args): Response
     {
         $ref_number = (string)$args['ref_number'];
-        $i = $this->getRepository(InterventionRepository::class)->joinForIdWithKey('ref_for_link', $ref_number);
+        $i = $this->getRepository(InterventionRepository::class)->joinForIdWithKey($ref_number);
         $e = $this->getRepository(EquipmentRepository::class)->findWithBrand($i->equipments_id);
         $tasksForI = $this->getRepository(TaskAssocRepository::class)->findByIntervention((int)$i->i_id);
 

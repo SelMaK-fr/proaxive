@@ -18,7 +18,7 @@ class BookingType extends Type
     {
         $builder = (new FormBuilder('booking', $data))
             ->add('start_date', DateType::class, [
-                'label' => ""
+                'label' => "",
             ])
             ->add('start_time', TimeType::class, [
                 'label' => ""

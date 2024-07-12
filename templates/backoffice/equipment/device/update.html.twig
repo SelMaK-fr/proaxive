@@ -10,10 +10,11 @@
                 <li><a class="selected" href="{{ url_for('equipment_update_device', {'id' : e.id}) }}"><i class="ri-pencil-fill"></i> Modifier</a></li>
             </ul>
             <div class="p-4">
-                {{ include('backoffice/equipment/_form.html.twig', {'device': 1}) }}
+                {{ include('backoffice/equipment/_form.html.twig', {'device': 1, 'update': true}) }}
             </div>
         </div>
     </div>
+    {{ include('backoffice/equipment/_modal/_add_picture.html.twig') }}
 {% endblock %}
 {% block stylesheets %}
     <link

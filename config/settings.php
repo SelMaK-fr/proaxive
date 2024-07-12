@@ -17,12 +17,12 @@ $settings = [
         'domainUrl' => env('DOMAIN_PATH', 'http://localhost:8080'),
         'locale' => 'fr',
         'timezone' => 'UTC',
+        'secretKey' => env('APP_SECRET', 'secret'),
         'calendar_url' => '/admin/booking/get/all', // Return API Proaxive or other API
     ],
     'settings' => [
         'rootPath' => dirname(__DIR__),
         'publicPath' => dirname(__DIR__) . '/public/',
-        'snappyPath' => '',
         'licenceKey' => ''
     ],
     'view' => [

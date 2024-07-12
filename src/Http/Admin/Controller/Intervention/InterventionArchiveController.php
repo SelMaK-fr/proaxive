@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller\Intervention;
 
+use DI\NotFoundException;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -9,6 +10,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
+use Slim\Exception\HttpNotFoundException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -30,6 +32,9 @@ class InterventionArchiveController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+        if(!$i){
+            throw new HttpNotFoundException($request, 'This intervention could not be found. Please check your database.');
+        }
         if($request->getMethod() === 'POST'){
             $data = [
               'state' => 'ARCHIVE'
@@ -60,7 +65,9 @@ class InterventionArchiveController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
-
+        if(!$i){
+            throw new HttpNotFoundException($request, 'This intervention could not be found. Please check your database.');
+        }
         return $this->render($response, 'backoffice/intervention/read_archive.html.twig', [
             'i' => $i,
             'currentMenu' => 'intervention',

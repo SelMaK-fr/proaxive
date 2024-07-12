@@ -49,7 +49,7 @@ class InterventionSearchType extends Type
                 'choices' => self::getCompany(),
                 'required' => false
             ])
-            ->add('way_type', ChoiceType::class, [
+            ->add('status_id', ChoiceType::class, [
                 'label' => "",
                 'placeholder' => "Sélectionnez un statut",
                 'choices' => self::getStatus(),
@@ -62,8 +62,8 @@ class InterventionSearchType extends Type
                     1 => 'Matériel récupéré',
                     2 => 'En atelier',
                     3 => 'Tests finaux',
-                    4 => 'En cours de sortie',
-                    5 => 'Terminé',
+                    4 => 'En attente de récupération / livraison',
+                    5 => 'Matériel récupéré / livré',
                 ],
                 'required' => false
             ])
@@ -103,7 +103,7 @@ class InterventionSearchType extends Type
         $req = $this->query->from('status')->select(null)->select('status.id, status.name')->fetchAll();
         if($req){
             foreach ($req as $s) {
-                $status[$s['name']] = $s['name'];
+                $status[$s['id']] = $s['name'];
             }
             return $status;
         }
