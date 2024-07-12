@@ -68,7 +68,7 @@ class DepositToPdfController extends AbstractController
         $pathFilePdf = $settings->get('storage')['documents']. 'deposits/' . $filePdf;
 
         if(!file_exists($pathFilePdf)){
-            $depositToPdf = $this->getRepository(DepositRepository::class)->joinForId($deposit->id);
+            $depositToPdf = $this->getRepository(DepositRepository::class)->joinForId((int)$deposit->id);
             $url = $settings->get('app')['domainUrl'] .'/i/' .$depositToPdf['ref_for_link'];
             $writer = new PngWriter();
             $qrCode = QrCode::create($url)
@@ -79,7 +79,7 @@ class DepositToPdfController extends AbstractController
             $result = $writer->write($qrCode);
             $qrcode = $result->getDataUri();
             $dompdf = new Dompdf();
-            $dompdf->loadHtml($this->view('/pdf/deposit_pdf.html.twig',
+            $dompdf->loadHtml($this->view('/pdf/deposit_receipt.html.twig',
                 ['d' => $depositToPdf, 'qrcode' => $qrcode
                 ]));
             $dompdf->render();
