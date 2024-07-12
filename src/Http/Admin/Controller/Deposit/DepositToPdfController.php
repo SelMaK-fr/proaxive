@@ -79,6 +79,7 @@ class DepositToPdfController extends AbstractController
             $result = $writer->write($qrCode);
             $qrcode = $result->getDataUri();
             $dompdf = new Dompdf();
+            $dompdf->setPaper('A4', 'landscape');
             $dompdf->loadHtml($this->view('/pdf/deposit_receipt.html.twig',
                 ['d' => $depositToPdf, 'qrcode' => $qrcode
                 ]));
