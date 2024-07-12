@@ -96,9 +96,9 @@ final class Update205Model extends AbstractMigration
         // Update system
         $builder = $this->getQueryBuilder();
         $builder
-            ->update('settings')
-            ->set('app_version', '2.0.5')
-            ->where(['id' => 1])
+            ->insert(['app_version'])
+            ->into('settings')
+            ->values(['app_version' => '2.0.5'])
             ->execute();
         // Update status
         $builder
