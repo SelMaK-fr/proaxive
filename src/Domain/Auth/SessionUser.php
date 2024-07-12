@@ -15,8 +15,8 @@ class SessionUser
     private string $auth_token;
 
     public function __construct(array $data) {
-        $this->setId($data['id'] ?? 0);
-        $this->setCompanyId($data['company_id'] ?? 0);
+        $this->setId((int)$data['id'] ?? 0);
+        $this->setCompanyId((int)$data['company_id'] ?? 0);
         $this->setPseudo($data['pseudo'] ?? '');
         $this->setFullname($data['fullname'] ?? '');
         $this->setMail($data['mail'] ?? '');
