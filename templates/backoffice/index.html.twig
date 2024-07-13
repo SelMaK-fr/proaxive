@@ -123,7 +123,7 @@
                             {% for i in interventions %}
                                 {% if i.state != "COMPLETED" %}
                                 <tr>
-                                    <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
+                                    <td><a class="fw-400" href="{{ url_for('intervention_read', {id:i.id}) }}" title="{{ i.name }}">{{ i.ref_number }}</a></td>
                                     <td>{{ getStringData(i.customer_name ) }}</td>
                                     <td>{{ i.created_at | date('d.M.Y') }}</td>
                                     <td>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</td>

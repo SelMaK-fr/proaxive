@@ -40,7 +40,7 @@ class LoginController extends AbstractController
                 if($customer) {
                     if (($customer['login_id'] OR $customer['mail']) == $params['login_id'] AND password_verify($params['passwd'], $customer['passwd'])) {
                         if($customer['enable_portal'] === 1) {
-                            $this->setSession('customer', $customer);
+                            $this->session->set('customer', $customer);
                             return $this->redirectToRoute('portal_home');
                         }else {
                             $this->addFlash('error', "Ce compte en ligne n'est pas activé !");

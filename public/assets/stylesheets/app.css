@@ -2397,6 +2397,17 @@ a.btn-bar.btn-inverse-one i, button.btn-bar.btn-inverse-one i {
   color: var(--sk-color-one);
 }
 
+/* line 162, ../sass/components/_button.scss */
+i.btn-icon {
+  display: flex;
+  height: 35px;
+  width: 35px;
+  border-radius: 50px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
 /* line 1, ../sass/components/_form.scss */
 .form-group abbr {
   color: var(--pink);

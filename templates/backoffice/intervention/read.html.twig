@@ -157,7 +157,7 @@
                         {% endif %}
                         <a data-tippy-content="Convertir en PDF" class="btn btn-sk-tree rounded-circle" href="{{ url_for('intervention_open_pdf', {id:intervention_id}) }}" target="_blank"> <i class="ri-file-pdf-line"></i></a>
                         <a data-tippy-content="Consulter le suivi en ligne" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" class="btn btn-light-info rounded-circle"><i class="fa-solid fa-eye"></i></a>
-                        <button data-tippy-content="Supprimer cette intervention" type="submit" class="btn btn-sk-one rounded-circle"><i class="fa-solid fa-trash-can" data-target="delete_intervention" data-toggle="modal"></i></button>
+                        <i class="fa-solid fa-trash-can btn-icon btn-sk-one" data-target="delete_intervention" data-toggle="modal"></i>
                     </div>
                 </div>
                 <h5 class="fs-16px mb-3 mt-3">Description</h5>
@@ -168,10 +168,12 @@
                 <div class="text-dark fs-15px">
                     {{ getDataWithNotification(i.before_breakdown) }}
                 </div>
+                {% if i.handling_customer is not empty or i.handling_customer is not null %}
                 <h5 class="fs-16px mb-3 mt-3">Manipulation(s) effectuée(s) par l'utilisateur</h5>
                 <div class="text-dark fs-15px">
-                    {{ getDataWithNotification(i.handling_customer) }}
+                    {{ i.handling_custome }}
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="documentation-wrapper mb-3">

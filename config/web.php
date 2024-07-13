@@ -90,6 +90,7 @@ use Selmak\Proaxive2\Security\Middleware\IfDataNullOrEmptyMiddleware;
 use Selmak\Proaxive2\Security\Middleware\IfMailerIsNotActivateMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
+use Selmak\Proaxive2\Security\Middleware\Perms\RedirectNotPermitDemo;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 

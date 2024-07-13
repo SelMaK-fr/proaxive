@@ -30,7 +30,7 @@ class DeleteTaskOfInterventionController extends AbstractController
                 $this->addFlash('panel-error', 'aucune tâche trouvée !');
                 return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
             }
-            $this->getRepository(TaskAssocRepository::class)->delete($t->id);
+            $this->getRepository(TaskAssocRepository::class)->delete((int)$t->id);
             $this->addFlash('panel-info', 'Tâche supprimée avec succès.');
             return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
         }

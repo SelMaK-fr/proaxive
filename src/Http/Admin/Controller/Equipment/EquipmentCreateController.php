@@ -98,7 +98,7 @@ class EquipmentCreateController extends AbstractController
             $pushAllData = $data + $session + $dataEquipment;
             $this->getRepository(EquipmentRepository::class)->add($pushAllData, true);
             $this->addFlash('panel-info', sprintf("Le nouvel équipement %s a bien été créé.", $pushAllData['name']));
-            $this->deleteSession('form_equipment_specs');
+            $this->session->delete('form_equipment_specs');
             return $this->redirectToRoute('dash_equipment');
         }
 

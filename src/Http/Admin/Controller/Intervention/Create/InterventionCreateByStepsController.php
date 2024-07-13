@@ -47,7 +47,7 @@ class InterventionCreateByStepsController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $data = $request->getParsedBody()['form_intervention'];
-            $this->setSession('data_intervention_step1', $data);
+            $this->session->set('data_intervention_step1', $data);
             return $this->redirectToRoute('intervention_create_regular_step2');
         }
 
@@ -102,7 +102,7 @@ class InterventionCreateByStepsController extends AbstractController
             // Retrieve last ID
             $lastId = $this->getRepository(InterventionRepository::class)->lastInsertId();
             if($save){
-                $this->deleteSession('data_intervention_step1');
+                $this->session->delete('data_intervention_step1');
                 $this->setLogger()->info(sprintf("[Add Intervention] N°%s créée en tant que brouillon.", $inter->getRefNumber()));
                 return $this->redirectToRoute('intervention_create_regular_step3', ['id' => $inter->getCustomersId()], ['inter' => $lastId]);
             }

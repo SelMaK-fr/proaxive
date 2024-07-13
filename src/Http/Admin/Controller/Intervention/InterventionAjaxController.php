@@ -181,7 +181,8 @@ class InterventionAjaxController extends AbstractController
                 'end_date' => date('Y-m-d h:i:s'),
                 'state' => 'COMPLETED',
                 'way_steps' => 5,
-                'is_closed' => 1
+                'is_closed' => 1,
+                'status_id' => 4,
             ], $intervention_id);
             // If the client at a mail address, send mail
             $i = $this->getRepository(InterventionRepository::class)->findWithCustomer($intervention_id);

@@ -16,6 +16,9 @@
     <!-- START::CSS App -->
     <link rel="stylesheet" href="{{ asset('assets/stylesheets/app.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/stylesheets/utilities.css') }}">
+    {% if settings.settings.custom_css %}
+        <link rel="stylesheet" href="{{ asset('assets/stylesheets/app_custom.css') }}" type="text/css">
+    {% endif %}
     <!-- START::Print -->
     <link rel="stylesheet" href="{{ asset('assets/stylesheets/print.css') }}" type="text/css" media="print">
     {% block stylesheets %}{% endblock %}

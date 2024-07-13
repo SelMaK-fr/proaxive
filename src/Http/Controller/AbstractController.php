@@ -25,8 +25,6 @@ use Twig\Error\SyntaxError;
 abstract class AbstractController
 {
 
-    protected ContainerInterface $container;
-
     public function __construct(
         protected readonly SettingsInterface $settings,
         protected readonly Twig $twig,
@@ -200,16 +198,6 @@ abstract class AbstractController
     protected function getSession(string $key)
     {
         return $this->session->get($key);
-    }
-
-    protected function setSession(string $key, mixed $value)
-    {
-        return $this->session->set($key, $value);
-    }
-
-    protected function deleteSession(string $key)
-    {
-        return $this->session->delete($key);
     }
 
     protected function getUser(): SessionUser

@@ -23,7 +23,8 @@ $settings = [
     'settings' => [
         'rootPath' => dirname(__DIR__),
         'publicPath' => dirname(__DIR__) . '/public/',
-        'licenceKey' => ''
+        'licenceKey' => '',
+        'custom_css' => true
     ],
     'view' => [
         'path'  => dirname(__DIR__) . '/templates',

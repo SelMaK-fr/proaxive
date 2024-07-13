@@ -29,11 +29,11 @@ final class UserAccountController extends AbstractController
                 if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
 
                     if($data['key_totp']){
-                        $this->setSession('auth_in_progress', $data);
+                        $this->session->set('auth_in_progress', $data);
                         return $this->redirectToRoute('auth_user_2fa');
                     }
                     //$this->getSession('auth');
-                    $this->setSession('auth', $data);
+                    $this->session->set('auth', $data);
                     // Create Cookie 3 days
                     $cookie = new CookieFactory();
                     $cookie->setCookie($data, $this->query);
@@ -70,8 +70,8 @@ final class UserAccountController extends AbstractController
             if($valid){
                 $user = $this->getRepository(UserRepository::class);
                 $data = $user->findUserByMail($session['mail']);
-                $this->setSession('auth', $data);
-                $this->deleteSession('auth_in_progress');
+                $this->session->set('auth', $data);
+                $this->session->delete('auth_in_progress');
                 $cookie = new CookieFactory();
                 $cookie->setCookie($data, $this->query);
                 return $this->redirectToRoute('dash_home');
@@ -110,7 +110,7 @@ final class UserAccountController extends AbstractController
     public function logout($request, $response)
     {
         if($this->getSession('auth')) {
-            $this->deleteSession('auth');
+            $this->session->delete('auth');
             setcookie('proaxive2-auth', '', -1, '/');
         }
         return $response->withStatus(302)->withHeader('Location', $this->getUrlFor('auth_user_login'));

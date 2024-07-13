@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7e27e35f63569e5221de30ad1b78428",
+    "content-hash": "a9a17acce3ad4e043a72fefa31849269",
     "packages": [
         {
             "name": "awurth/slim-validation",
