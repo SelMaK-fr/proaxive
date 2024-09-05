@@ -226,7 +226,7 @@
                         <div class="col-6_sm-12">
                             <div class="card">
                                 <div class="card-body p-4">
-                                    <a href="{{ url_for('intervention_update', {id:i.id}) }}" class="flex align-items-center color-inherit">
+                                    <a href="{{ url_for('intervention_read', {id:i.id}) }}" class="flex align-items-center color-inherit">
                                         <div class="mr-4">
                                             <span class="text-{% if i.is_closed %}blue{% else %}purple-light{% endif %}">
                                                 <i class="fs-32px ri-{% if i.is_closed %}checkbox-circle{% else %}timer-2{% endif %}-fill"></i>

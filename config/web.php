@@ -199,9 +199,10 @@ return function (App $app) {
        $group->any('/create-regular/client/{id:[0-9]+}/setting[:{args}]', [CreateIntervention::class, 'createStep5'])->setName('intervention_create_regular_step5')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create/c-{id:[0-9]+}', InterventionCreateArgsController::class)->setName('intervention_create_args');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
-       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_update')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
+       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
        $group->any('/{id:[0-9]+}/notes', [InterventionUpdateController::class, 'observations'])->setName('intervention_update_notes');
        $group->any('/{id:[0-9]+}/files', [InterventionUpdateController::class, 'files'])->setName('intervention_files');
+       $group->any('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
        $group->any('/{id:[0-9]+}/validation', InterventionValidatedController::class)->setName('intervention_validation');
        $group->get('/{id:[0-9]+}/pdf', InterventionToPdfController::class)->setName('intervention_open_pdf');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);

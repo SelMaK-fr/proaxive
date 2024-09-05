@@ -58,7 +58,7 @@ class DepositSignController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0){
-                $deposit = $this->getRepository(DepositRepository::class)->joinForId($d->id);
+                $deposit = $this->getRepository(DepositRepository::class)->joinForId((int)$d->id);
                 if($deposit){
                     // Return settings array
                     $settings = $this->settings;
@@ -84,7 +84,7 @@ class DepositSignController extends AbstractController
                     file_put_contents($settings->get('storage')['documents'] . '/deposits/signed/Depot_signed_' . $deposit['reference'] . '-I_' . $deposit['i_reference'].'.pdf', $output);
                     $this->addFlash('panel-info', 'Le bon de dépôt a bien été généré.');
                     // Deposit Ok (is_signed)
-                    $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], $deposit['id'], false);
+                    $this->getRepository(DepositRepository::class)->update(['is_signed' => 1], (int)$deposit['id'], false);
                     // Send Mail
                     if($deposit['c_mail']){
                         if(isset($data['send_mail'])){

@@ -206,6 +206,18 @@ class InterventionRepository extends BaseRepository
         return $query->fetchAll();
     }
 
+    public function allProgress()
+    {
+        $query = $this->getInterventionsAndStatus()->where('interventions.state != ?', ['COMPLETED'])->orderBy('created_at DESC');
+        return $query->fetchAll();
+    }
+
+    public function allCompleted(int $limit = 12)
+    {
+        $query = $this->getInterventionsAndStatus()->where('interventions.is_closed = ?', [1])->limit($limit)->orderBy('created_at DESC');
+        return $query->fetchAll();
+    }
+
     /**
      * Permet de récupérer les interventions normal avec une pagination (PagerFanta)
      * Jointure Company, User et Status (défaut)
@@ -291,9 +303,9 @@ class InterventionRepository extends BaseRepository
      */
     private function getInterventionsAndStatus(?string $sql = null, ?array $joins = [])
     {
-        $statement = 'interventions.*, s.name s_name, s.id s_id, s.color s_color, s.color_txt s_colortxt, s.description s_description, ';
+        $statement = 'interventions.*, s.name s_name, s.id s_id, s.color s_color, s.color_txt s_colortxt, s.description s_description';
         if($sql != null){
-            $statement .= $sql;
+            $statement .= ', ' . $sql;
         }
         $query = $this->makeQueryDefault()
             ->select($statement)

@@ -58,7 +58,7 @@ class InterventionValidatedController extends AbstractController
             $save = $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
             if($save){
                 $this->addFlash('panel-info', sprintf("L'intervention N°%s a bien été validée.", $i->ref_number));
-                return $this->redirectToRoute('intervention_update', ['id' => $i->id]);
+                return $this->redirectToRoute('intervention_read', ['id' => $i->id]);
             }
         }
         // Breadcrumbs

@@ -121,9 +121,8 @@
                             </thead>
                             <tbody>
                             {% for i in interventions %}
-                                {% if i.state != "COMPLETED" %}
                                 <tr>
-                                    <td><a class="fw-400" href="{{ url_for('intervention_update', {id:i.id}) }}" title="{{ i.name }}">{{ i.ref_number }}</a></td>
+                                    <td><a class="fw-400" href="{{ url_for('intervention_read', {id:i.id}) }}" title="{{ i.name }}">{{ i.ref_number }}</a></td>
                                     <td>{{ getStringData(i.customer_name ) }}</td>
                                     <td>{{ i.created_at | date('d.M.Y') }}</td>
                                     <td>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</td>
@@ -134,7 +133,6 @@
                                         {% endif %}
                                     </td>
                                 </tr>
-                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
@@ -154,7 +152,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    {% if interventions is not empty %}
+                    {% if interventions_end is not empty %}
                         <div class="table-responsive">
                             <table class="table table-default table-card">
                                 <thead>
@@ -167,10 +165,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for i in interventions %}
-                                    {% if i.is_closed == 1 %}
+                                {% for i in interventions_end %}
                                     <tr>
-                                        <td><a href="{{ url_for('intervention_update', {id:i.id}) }}">{{ i.ref_number }}</a></td>
+                                        <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
                                         <td>{{ i.customer_name }}</td>
                                         <td>{{ i.created_at | date('d.M.Y') }}</td>
                                         <td>
@@ -183,7 +180,6 @@
                                             </span>
                                         </td>
                                     </tr>
-                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                             </table>

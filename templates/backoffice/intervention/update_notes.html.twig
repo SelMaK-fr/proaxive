@@ -9,7 +9,7 @@
     <div class="grid-12">
         <div class="col-9_sm-12">
             <ul id="tabs" class="nav-components">
-                <li><a href="{{ url_for('intervention_update', {id:i.id}) }}"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
+                <li><a href="{{ url_for('intervention_read', {id:i.id}) }}"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
                 <li><a class="selected" href="#"><i class="ri-file-2-fill"></i> Observations et notes</a></li>
                 <li><a href="{{ url_for('intervention_files', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Fichiers joints</a></li>
             </ul>

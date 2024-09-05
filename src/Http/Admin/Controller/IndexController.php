@@ -29,11 +29,10 @@ class IndexController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $interventions = $this->getRepository(InterventionRepository::class)
-            ->all(false,12)
-            ->select('s.name s_name, s.color s_color, s.color_txt s_colortxt')
-            ->leftJoin('status as s ON s.id = interventions.status_id')
-            ->orderBy('created_at DESC');
+        // List all progress interventions
+        $interventions = $this->getRepository(InterventionRepository::class)->allProgress();
+        // List last complete interventions
+        $interventions_end = $this->getRepository(InterventionRepository::class)->allCompleted(6);
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Proaxive Dashboard', false);
@@ -42,6 +41,7 @@ class IndexController extends AbstractController
         // .Breadcrumbs
         return $this->render($response, 'backoffice/index.html.twig', [
             'interventions' => $interventions,
+            'interventions_end' => $interventions_end,
             'currentMenu' => 'home',
             'breadcrumbs' => $bds
         ]);
