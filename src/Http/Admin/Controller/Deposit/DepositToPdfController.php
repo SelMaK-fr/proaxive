@@ -61,11 +61,17 @@ class DepositToPdfController extends AbstractController
     {
         /* Regen PDF IN PROGRESS */
         $reference = (int)$args['reference'];
+        $isSigned = (int)$request->getQueryParams()['is_signed'];
         $deposit = $this->getRepository(DepositRepository::class)->findByReference($reference);
         $settings = $this->settings;
         /* /Regen PDF */
-        $filePdf = 'Depot_' . $deposit->reference . '-I_' . $deposit->intervention_number . '.pdf';
-        $pathFilePdf = $settings->get('storage')['documents']. 'deposits/' . $filePdf;
+        if($isSigned){
+            $filePdf = 'Depot_signed_' . $deposit->reference . '-I_' . $deposit->intervention_number . '.pdf';
+            $pathFilePdf = $settings->get('storage')['documents']. 'deposits/signed/' . $filePdf;
+        } else {
+            $filePdf = 'Depot_' . $deposit->reference . '-I_' . $deposit->intervention_number . '.pdf';
+            $pathFilePdf = $settings->get('storage')['documents']. 'deposits/' . $filePdf;
+        }
 
         if(!file_exists($pathFilePdf)){
             $depositToPdf = $this->getRepository(DepositRepository::class)->joinForId((int)$deposit->id);
@@ -85,7 +91,7 @@ class DepositToPdfController extends AbstractController
                 ]));
             $dompdf->render();
             $output = $dompdf->output();
-            file_put_contents($settings->get('storage')['documents'] . 'deposits/Depot_' . $reference . '-I_' . $deposit->intervention_number.'.pdf', $output);
+            file_put_contents($pathFilePdf, $output);
         }
         $stream = fopen($pathFilePdf, 'r');
         $response = $response

@@ -1,0 +1,77 @@
+<div class="col-3_sm-12">
+    <div class="card">
+        <div class="card-body p-3">
+            <h2 class="fs-16px pb-2"><i class="ri-information-line"></i> Récapitulatif</h2>
+            <div class="c--block">
+                <h3>Détails</h3>
+                <div class="column-flex">
+                    <div class="column--item">
+                        <span class="title">Numéro :</span>
+                        <span class="value"><i class="ri-external-link-line"></i> <a target="_blank" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}">{{ i.ref_number }}</a></span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">PDF :</span>
+                        <span class="value"><i class="ri-external-link-line"></i> <a target="_blank" href="{{ url_for('intervention_open_pdf', {id:intervention_id}) }}">Ouvrir</a></span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Type :</span>
+                        <span class="value">{{ i.sort }}</span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Atelier :</span>
+                        <span class="value">{{ i.cy_name }}</span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Statut :</span>
+                        <div class="column__form">
+                            {{ form.renderField('status_id') | raw }}
+                        </div>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Etat :</span>
+                        <span class="value">{{ getDataState(i.state) }}</span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Priorité :</span>
+                        <span class="value">{{ getDataPriority(i.a_priority) }}</span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Technicien :</span>
+                        <span class="value">{{ i.u_fullname }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="c--block mt-3">
+                <h3>Dates</h3>
+                <div class="column-flex">
+                    <div class="column--item">
+                        <span class="title">Création :</span>
+                        <span class="value">{{ i.created_at | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }} {% if i.start_date is not null %} => <i class="ri-rocket-line"></i> {{ i.start_date | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }} {% endif %}</span>
+                    </div>
+                    <div class="column--item">
+                        <span class="title">Mise à jour :</span>
+                        <span class="value">{{ i.updated_at | format_date('none', 'd MMM Y à h:m', null, 'gregorian', 'fr') }}</span>
+                    </div>
+                    {% if i.deposit_date is not empty and i.deposit_date is not null %}
+                        <div class="column--item">
+                            <span class="title">Dépôt :</span>
+                            <span class="value text-orange-light">{{ i.deposit_date | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }}</span>
+                        </div>
+                    {% endif %}
+                    {% if i.pull_date is not empty and i.pull_date is not null %}
+                        <div class="column--item">
+                            <span class="title">Retrait :</span>
+                            <span class="value text-green">{{ i.pull_date | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }}</span>
+                        </div>
+                    {% endif %}
+                    {% if i.end_date is not empty and i.is_closed == 1 %}
+                        <div class="column--item">
+                            <span class="title">Cloturation :</span>
+                            <span class="value">{{ i.end_date | format_date('none', 'd MMM Y', null, 'gregorian', 'fr') }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

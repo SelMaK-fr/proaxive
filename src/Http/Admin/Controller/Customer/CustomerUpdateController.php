@@ -42,7 +42,6 @@ class CustomerUpdateController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getRequestData()['form_customer'];
             $data['fullname'] = $data['firstname'] . ' ' . $data['lastname'];
-
             $save = $this->getRepository(CustomerRepository::class)->update($data, $customer_id);
             // To Do : refresh customer name of relation database (Service class ?)
             if($save){

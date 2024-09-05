@@ -37,7 +37,7 @@ class InterventionUpdateType extends Type
                 ]
             ])
             ->add('status_id', ChoiceType::class, [
-                'label' => "Statut",
+                'label' => "",
                 'placeholder' => "Sélectionnez un statut",
                 'choices' => self::getStatus()
             ])

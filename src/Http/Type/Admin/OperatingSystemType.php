@@ -23,7 +23,8 @@ class OperatingSystemType extends Type
                     'x64' => '64Bits',
                     'x86' => '32Bits',
                 ],
-                'required' => false
+                'placeholder' => false,
+                'required' => true
             ])
             ->add('os_release', TextType::class, [
                 'label' => 'Version du système',

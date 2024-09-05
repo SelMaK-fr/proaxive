@@ -41,7 +41,7 @@
                                     <tbody>
                                     {% for data in i %}
                                     <tr>
-                                        <td><a class="text-muted" href="{{ url_for('intervention_read', {id:data.id}) }}">{{ data.ref_number }}</a></td>
+                                        <td><a class="text-muted" href="{{ url_for('intervention_update', {id:data.id}) }}">{{ data.ref_number }}</a></td>
                                         <td><strong>{{ data.customer_name }}</strong></td>
                                         <td>{{ data.equipment_name }}</td>
                                         <td>{{ data.created_at | date('d/m/y à H:i') }}</td>

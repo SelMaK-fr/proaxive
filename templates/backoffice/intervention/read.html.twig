@@ -5,306 +5,37 @@
 {% endblock %}
 
 {% block body %}
-<div class="grid-12">
-    <div class="col-3_sm-12">
-        {{ include('backoffice/intervention/widgets/_next_step.html.twig') }}
-        {% if i.way_steps >= 3 %}
-        <div class="accordion all-border-dashed">
-            <div class="accordion-title">
-                <div>
-                    <h3 class="fs-18px fw-500 mb-0">Diagnostic général</h3>
-                    <span>Veuillez remplir les éléments ci-dessous</span>
-                </div>
-                <button type="button"><i class="ri-add-circle-fill"></i></button>
-            </div>
-            <div class="accordion-content">
-                <div class="choice_default style1">
-                    {{ formDiag.renderStart | raw }}
-                    {{ formDiag.renderField('diag_cpu') | raw }}
-                    {{ formDiag.renderField('diag_gpu') | raw }}
-                    {{ formDiag.renderField('diag_memory') | raw }}
-                    {{ formDiag.renderField('diag_storage') | raw }}
-                    <div class="text-right">
-                        <button type="submit" class="btn-sm btn-sk-one"><i class="ri-check-line"></i> Enregistrer</button>
-                    </div>
-                    {{ formDiag.renderEnd(false) | raw }}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <!-- Tasks -->
-        <div class="accordion all-border-dashed">
-            <div class="accordion-title">
-                <div>
-                    <h3 class="fs-18px fw-500 mb-0">Gestion des tâches</h3>
-                    <span>Si une tâche n'existe pas, ajoutez-la ci-dessous.</span>
-                </div>
-                <button type="button"><i class="ri-add-circle-fill"></i></button>
-            </div>
-            <div class="accordion-content">
-                <form method="post" action="{{ url_for('settings_task_create') }}">
-                    <div class="flex label-twin label-twin-left-btn mb-3">
-                                <span class="lt-text">
-                                    <label for="name">
-                                        <input type="text" class="form-input-twin" id="name" name="form_setting_task[name]" placeholder="Nom de la tâche">
-                                    </label>
-                                </span>
-                        <span class="lt-button">
-                                <button type="submit" class="btn-sm btn-light-four">Créer</button>
-                            </span>
-                    </div>
-                </form>
-                <div class="mb-3">
-                    <em>Vous pouvez selectionner plusieurs tâches à la fois depuis ce sélecteur.</em>
-                </div>
-                {{ formTasks.renderStart | raw }}
-                <div class="select2">
-                    {{ formTasks.renderField('tasks') | raw }}
-                </div>
-                <div class="flex align-items-center justify-content-space-between">
-                    <div class="text-right flex-root">
-                        <button type="submit" class="btn-sm btn-light-four">Mettre à jour</button>
-                    </div>
-                </div>
-                {{ formTasks.renderEnd(false) | raw }}
-                <div class="tasks-list mt-3">
-                    <span class="d-block fw-500 mb-3">Tâche(s) enregistrée(s)</span>
-                    <ul>
-                        {% for t in tForI %}
-                            <li data-task-id="{{ t.id }}">
-                                <form class="flex align-items-center justify-content-space-between" method="post" action="{{ url_for('task_delete_intervention', {'id':intervention_id, 'task': t.id}) }}">
-                                    <input type="hidden" name="task_id" value="{{ t.id }}">
-                                    <span>{{ t.name }}</span>
-                                    <button type="submit" class="label-mid badge-light-pink">x</button>
-                                </form>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-9_sm-12">
-        <div class="title-flex-page">
-            <div>
-                <h1 class="fs-22px mb-0">{{ i.name }}</h1>
-                <span>{{ i.sort }}</span>
-            </div>
-            {% if i.start_date is not null %}
-                {% if i.way_steps <= 4 %}
-                    <span>Intervention démarrée le <span class="text-green">{{ i.start_date | date('d/m/Y') }}</span></span>
-                 {% else %}
-                    <span>Terminée le <span class="text-pink">{{ i.end_date | date('d/m/Y') }}</span></span>
-                 {% endif%}
-            {% else %}
-                <form method="post" action="" id="start-intervention">
-                    <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_start', {'id' : intervention_id}) }}', 'start-intervention'); return false;" class="btn btn-light-green rd-10 submit-ajax">Commencer maintenant !</button>
-                    <span id="sync-start"></span>
-                </form>
-            {% endif %}
-        </div>
-        {% if i.equipments_id is null %}
-            <div class="alert alert-warning">
-                L'équipement associé à cette intervention n'existe plus. Que voulez-vous faire ?
-                <div class="mt-2">
-                    <form method="post" action="{{ url_for('equipment_delete',{id:e.id}) }}" class="d-inline-block">
-                        <input type="hidden" name="_METHOD" value="DELETE"/>
-                        <button type="submit" onclick="return confirm('Etes-vous sûr ?')" class="btn-mid btn-light-warning">Supprimer l'intervention</button>
-                    </form>
-                    <button type="button" class="btn-mid btn-light-warning">Archiver l'intervention</button>
-                </div>
-            </div>
-        {% else %}
-            {% if i.equipment_name != i.e_name %}
-                <div class="alert alert-info" id="alert-ajax">
-                    <strong>Information</strong> : le nom de l'équipement de cette intervention ne correspond pas avec l'association "Equipment". Cliquez ci-dessous afin de mettre à jour les données.
-                    <form method="post" action="#" id="update-equipment-name" class="mt-2">
-                        <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_u_equipment_name', {'id' : intervention_id, 'eid': i.e_id}) }}', 'update-equipment-name'); return false;" class="btn-sm btn-light-info submit-ajax">Mettre à jour maintenant</button>
-                        <span id="message"></span>
-                    </form>
-                </div>
-            {% endif %}
-        {% endif %}
-        <div class="item-list">
-            <div class="item-list__content">
-                <div class="flex">
-                    <img src="{{ asset('img/icons/computer.png') }}" style="width: 45px;height: 45px" class="mr-3" alt="">
-                    <div class="flex-root">
-                        <div>
-                            <h4 class="mb-0">{{ i.equipment_name }}</h4>
-                            <span>{{ i.e_type_name }}</span>
-                        </div>
-                    </div>
-                    <div class="admin-btn-intervention">
-                        {% if i.equipments_id is not null %}
-                            {% if i.is_closed == 0 %}
-                            <button data-tippy-content="Modifier cette intervention" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-settings-2-line" data-target="update_intervention" data-toggle="modal"></i></button>
-                            {% endif %}
-                            {% if i.deposit_reference is not null and i.deposit_reference is not empty %}
-                                <a data-tippy-content="Afficher le bon de dépôt" target="_blank" href="{{ url_for('deposit_read_pdf', {reference:i.deposit_reference}) }}" class="btn btn-sk-tree rounded-circle"><i class="ri-eye-fill"></i></a>
-                                {% if i.d_is_signed is null %}
-                                    <a data-tippy-content="Faire signer le bon de dépôt" href="{{ url_for('deposit_sign', {reference:i.deposit_reference}) }}" class="btn btn-sk-tree rounded-circle"><i class="fa-solid fa-pen-nib"></i></a>
-                                {% else %}
-                                    <form action="{{ url_for('deposit_read') }}" method="get">
-                                        <input type="hidden" name="intervention_reference" value="{{ i.ref_number }}">
-                                        <input type="hidden" name="deposit_reference" value="{{ i.deposit_reference }}">
-                                        <button data-tippy-content="Voir le bon de dépôt" type="submit" class="btn btn-sk-tree rounded-circle" title="Afficher le bon"><i class="fa-solid fa-eye"></i></button>
-                                    </form>
-                                {% endif %}
+    {{ include('backoffice/intervention/includes/_meta_btn.html.twig') }}
+    <div class="grid-12">
+        <div class="col-9_sm-12">
+            <ul id="tabs" class="nav-components">
+                <li><a class="selected" href="#"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
+                <li><a href="{{ url_for('intervention_update_notes', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Observations et notes</a></li>
+                <li><a href="{{ url_for('intervention_files', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Fichiers joints</a></li>
+            </ul>
+            <div class="tabs-wrapper">
+                <div class="tabs-content">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            {% if i.is_closed == 1 %}
+                                {{ include('backoffice/intervention/closed.html.twig') }}
                             {% else %}
-                                <button data-tippy-content="Créer le bon de dépôt" type="button" class="btn btn-sk-tree rounded-circle"> <i class="ri-file-2-line" data-target="add_deposit" data-toggle="modal"></i></button>
+                                {{ include('backoffice/intervention/open.html.twig') }}
                             {% endif %}
-                        {% endif %}
-                        <a data-tippy-content="Convertir en PDF" class="btn btn-sk-tree rounded-circle" href="{{ url_for('intervention_open_pdf', {id:intervention_id}) }}" target="_blank"> <i class="ri-file-pdf-line"></i></a>
-                        <a data-tippy-content="Consulter le suivi en ligne" href="{{ url_for('app_read_intervention', {ref_for_link:i.ref_for_link}) }}" class="btn btn-light-info rounded-circle"><i class="fa-solid fa-eye"></i></a>
-                        <i class="fa-solid fa-trash-can btn-icon btn-sk-one" data-target="delete_intervention" data-toggle="modal"></i>
-                    </div>
-                </div>
-                <h5 class="fs-16px mb-3 mt-3">Description</h5>
-                <div class="text-dark fs-15px">
-                    {{ getDataWithNotification(i.description) }}
-                </div>
-                <h5 class="fs-16px mb-3 mt-3">Avant panne</h5>
-                <div class="text-dark fs-15px">
-                    {{ getDataWithNotification(i.before_breakdown) }}
-                </div>
-                {% if i.handling_customer is not empty or i.handling_customer is not null %}
-                <h5 class="fs-16px mb-3 mt-3">Manipulation(s) effectuée(s) par l'utilisateur</h5>
-                <div class="text-dark fs-15px">
-                    {{ i.handling_custome }}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        <div class="documentation-wrapper mb-3">
-            <div class="card">
-                <div class="p-4">
-                    <h3 class="mb-3">Document(s) lié(s)</h3>
-                    <div class="doc-columns">
-                        <div class="card-add-file p-relative">
-                            <div class="div-btn" data-target="add_document" data-toggle="modal"></div>
-                            <div>
-                                <div class="fs-22px">
-                                    <i class="ri-add-circle-line"></i>
-                                </div>
-                                <span class="fw-500">Ajouter un fichier</span>
-                                <span class="text-muted fs-12px">(PDF,docx, xlsx)</span>
-                            </div>
                         </div>
-                        {% for d in documents %}
-                        <div class="item-file p-relative">
-                            <div class="fs-44px">
-                                <i class="ri-file-pdf-line"></i>
-                            </div>
-                            <div>
-                                <h6>{{ d.name }}</h6>
-                                <p class="text-muted">
-                                    <span class="fs-12px">{{ getConvertBytes(d.size, 2) }}</span>
-                                </p>
-                            </div>
-                            <div class="p-absolute" style="top: 10px;right:10px;">
-                                <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}"><i class="fa-solid fa-eye"></i></a>
-                            </div>
-                        </div>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="grid-12">
-            <div class="col-4_sm-12">
-                <div class="card mb-3">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center border-bottom-dashed pb-2">
-                            <div class="mr-3"><i class="ri-user-fill fs-32px"></i></div>
-                            <div>
-                                <h3>{{ i.customer_name }}</h3>
-                                <span class="d-block">{{ i.c_zipcode }} - {{ i.c_city }}</span>
-                                <span class="d-block">{{ i.c_department }}</span>
-                                <span class="d-block"><strong>{{ i.c_phone }}</strong> / <strong>{{ i.c_mobile }}</strong></span>
-                            </div>
-                        </div>
-                        <div class="pt-2">
-                            <div class="flex align-items-center justify-content-space-between">
-                                <div>Préférence de contact</div>
-                                <div class="text-right fw-600">{{ i.c_favorite_contact }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4_sm-12">
-                <div class="card mb-3">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center border-bottom-dashed pb-2">
-                            <div class="mr-3"><i class="ri-building-fill fs-32px"></i></div>
-                            <div>
-                                <h3>{{ i.cy_name }}</h3>
-                                <span class="d-block">{{ i.cy_address }}</span>
-                                <span class="d-block">{{ i.cy_zipcode }} - {{ i.cy_city }}</span>
-                                <span class="d-block">{{ i.cy_department }}</span>
-                                <span class="d-block"><strong>{{ i.cy_phone }}</strong></span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="user-avatar mr-3">
-                                {% if i.u_avatar is not null and i.u_avatar is not empty %}
-                                    <img class="img-responsive rounded-circle" style="width: 60px;height: auto" src="{{ get_env('PATH_PUBLIC') }}/uploads/avatars/{{ i.u_id }}/{{ i.u_avatar }}" alt="">
-                                {% else %}
-                                    <img class="img-responsive rounded-circle" style="width: 50px;height: auto" src="{{ get_env('PATH_PUBLIC') }}/img/default-avatar.webp" alt="">
-                                {% endif %}
-                            </div>
-                            <div>
-                                <h3 class="mb-1">{{ i.u_fullname }}</h3> Technicien
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4_sm-12"></div>
-        </div>
-        {{ include('backoffice/intervention/_modal/_update_fields.html.twig') }}
-        {% if i.with_deposit is null or i.with_deposit is empty %}
-            {{ include('backoffice/intervention/_modal/_add_deposit.html.twig') }}
-        {% endif %}
-        {{ include('backoffice/intervention/_modal/_delete.html.twig') }}
+        {{ include('backoffice/intervention/includes/_data_details.html.twig') }}
     </div>
-</div>
-    {{ include('backoffice/intervention/_modal/_add_document.html.twig') }}
+    {% if i.with_deposit is null or i.with_deposit is empty %}
+        {{ include('backoffice/intervention/_modal/_add_deposit.html.twig') }}
+    {% endif %}
+    {{ include('backoffice/intervention/_modal/_delete.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/assets/js/functions.interventions.js"></script>
-    <script src="{{ asset('assets/js/accordion.js') }}" type="module"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script>
-        $(document).ready(function() {
-            $('#form_tasks-tasks').select2();
-        });
-    </script>
-    {% if i.start_date is null %}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            Swal.fire({
-                title: 'Intervention en attente !',
-                text: "Cette intervention n'est pas démarrée.",
-                icon: 'warning',
-                confirmButtonText: "J'ai compris",
-                confirmButtonColor: '#F9556D',
-                customClass: {
-                    popup: 'bg-foreground',
-                    confirmButton: 'bg-sk-color-one',
-                    title: 'text-foreground',
-                    htmlContainer: 'text-muted'
-                }
-            })
-        </script>
-    {% endif %}
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <script>
-        tippy('[data-tippy-content]');
-    </script>
+    <script src="{{ asset('assets/js/intervention/dash.steps.js') }}" defer></script>
+    <script src="{{ asset('assets/js/intervention/dash.status.js') }}" defer></script>
 {% endblock %}

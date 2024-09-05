@@ -5,11 +5,11 @@ function dashUserStats(customerStats) {
         Chart.defaults.color = "#ffffff";
     }
     const myChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
             labels: ['Interventions', 'Débours'],
             datasets: [{
-                label: 'Qty',
+                label: 'Quantité',
                 data: customerStats,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

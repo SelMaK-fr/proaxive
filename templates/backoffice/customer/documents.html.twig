@@ -40,7 +40,7 @@
                                 </p>
                             </div>
                             <div class="p-absolute" style="top: 10px;right:10px;">
-                                <a target="_blank" href="{{ url_for('document_read', {id:d.id}) }}"><i class="fa-solid fa-eye"></i></a>
+                                <a href="{{ url_for('document_read', {id:d.id}) }}"><i class="ri-download-fill"></i> Télécharger</a>
                             </div>
                         </div>
                     {% endfor %}

@@ -40,7 +40,6 @@ use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\Peripheral
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\Upload\EquipmentUploadPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateArgsController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxController;
-use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionArchiveController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateByStepsController as CreateIntervention;
@@ -186,6 +185,8 @@ return function (App $app) {
        $group->get('/search[:{args}]', [InterventionSearchController::class, 'searchByFields'])->setName('intervention_search_fields');
        $group->get('/ajax/search/{key}', [InterventionAjaxController::class, 'search'])->setName('intervention_search');
        $group->post('/ajax/add/fast', [InterventionAjaxController::class, 'addFast'])->setName("intervention_create_fast");
+       $group->post('/ajax/update-steps/{id:[0-9]+}', [InterventionAjaxController::class, 'updateSteps'])->setName("intervention_update_steps");
+       $group->post('/ajax/update-status/{id:[0-9]+}', [InterventionAjaxController::class, 'updateStatus'])->setName("intervention_update_status");
        $group->any('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
        $group->post('/{id:[0-9]+}/ajax/end', [InterventionAjaxController::class, 'end'])->setName("intervention_ajax_end");
        $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
@@ -198,11 +199,10 @@ return function (App $app) {
        $group->any('/create-regular/client/{id:[0-9]+}/setting[:{args}]', [CreateIntervention::class, 'createStep5'])->setName('intervention_create_regular_step5')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create/c-{id:[0-9]+}', InterventionCreateArgsController::class)->setName('intervention_create_args');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
-       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
-       $group->post('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
+       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_update')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
+       $group->any('/{id:[0-9]+}/notes', [InterventionUpdateController::class, 'observations'])->setName('intervention_update_notes');
+       $group->any('/{id:[0-9]+}/files', [InterventionUpdateController::class, 'files'])->setName('intervention_files');
        $group->any('/{id:[0-9]+}/validation', InterventionValidatedController::class)->setName('intervention_validation');
-       $group->any('/{id:[0-9]+}/archive', [InterventionArchiveController::class, 'index'])->setName('intervention_archive');
-       $group->any('/{id:[0-9]+}/archive/read', [InterventionArchiveController::class, 'readArchive'])->setName('intervention_archive_read');
        $group->get('/{id:[0-9]+}/pdf', InterventionToPdfController::class)->setName('intervention_open_pdf');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class)->add(IfDataNullOrEmptyMiddleware::class);
@@ -211,7 +211,7 @@ return function (App $app) {
        $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');
        $group->any('/{reference}/sign', [DepositSignController::class, 'index'])->setName('deposit_sign');
        $group->get('/[:{args}]', [DepositReadController::class, 'read'])->setName('deposit_read');
-       $group->get('/pdf/{reference}', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
+       $group->get('/pdf/{reference}[:{args}]', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Outlay */
     $app->group('/admin/outlay', function (RouteCollectorProxy $group) {
@@ -265,7 +265,7 @@ return function (App $app) {
        $group->get('/status', [StatusController::class, 'index'])->setName('settings_status');
        $group->post('/status/create', [StatusController::class, 'actionForm'])->setName('settings_status_create');
        $group->post('/status/update[:{args}]', [StatusController::class, 'actionForm'])->setName('settings_status_update');
-       $group->post('/status/delete', [StatusController::class, 'delete'])->setName('settings_status_delete');
+       $group->delete('/status/delete', [StatusController::class, 'delete'])->setName('settings_status_delete');
        $group->any('/update', UpdateAppController::class)->setName('settings_update');
        $group->post('/command/app-update', VersionAppUpdateController::class)->setName('settings_app_update')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class);

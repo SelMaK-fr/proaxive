@@ -63,9 +63,6 @@ class InterventionReadController extends AbstractController
         $formDiag->setAction($this->getUrlFor('intervention_update', ['id' => $intervention_id]));
         $formDiag->handleRequest();
 
-        // Find Documents
-        $documents = $this->getRepository(EDocumentRepository::class)->allBy('interventions_id', $intervention_id);
-
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -86,8 +83,7 @@ class InterventionReadController extends AbstractController
            'form' => $form,
            'formBooking' => $formBooking,
            'formDiag' => $formDiag,
-           'currentMenu' => 'intervention',
-            'documents' => $documents
+           'currentMenu' => 'intervention'
         ]);
 
     }

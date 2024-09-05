@@ -3,7 +3,7 @@
         <div class="modal-header">
             <h1>Téléverser un nouveau document</h1>
         </div>
-        <form action="{{ url_for('document_add') }}?c={{ i.customers_id }}&i={{ intervention_id }}" method="post" id="form_deposit" enctype="multipart/form-data">
+        <form action="{{ url_for('document_add') }}?c={{ i.customers_id }}&i={{ i.id }}" method="post" id="form_deposit" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="mb-4">
                     Ce document sera ajouté à l'intervention en cours.

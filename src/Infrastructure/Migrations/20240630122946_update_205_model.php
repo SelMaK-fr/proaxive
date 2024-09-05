@@ -103,7 +103,6 @@ final class Update205Model extends AbstractMigration
         // Update status
         $builder
             ->update('status')
-            ->into('settings')
             ->set([
                 'color' => 'rgba(0, 119, 193, 0.2)',
                 'color_txt' => '#0094c1',
@@ -112,16 +111,15 @@ final class Update205Model extends AbstractMigration
             ->execute();
         $builder
             ->update('status')
-            ->into('settings')
             ->set([
                 'color' => 'rgba(0, 119, 193, 0.2)',
                 'color_txt' => '#0094c1',
+                'description' => 'Une confirmation a été envoyée sur votre adresse courriel.'
             ])
             ->where(['id' => 2])
             ->execute();
         $builder
             ->update('status')
-            ->into('settings')
             ->set([
                 'name' => 'En attente',
                 'color' => 'rgba(0, 119, 193, 0.2)',
@@ -131,7 +129,6 @@ final class Update205Model extends AbstractMigration
             ->execute();
         $builder
             ->update('status')
-            ->into('settings')
             ->set([
                 'name' => 'Complété(e)',
                 'description' => 'Intervention cloturée le :',
@@ -142,11 +139,11 @@ final class Update205Model extends AbstractMigration
             ->execute();
         $builder
             ->update('status')
-            ->into('settings')
             ->set([
                 'name' => 'Annulé(e)',
                 'color' => 'rgba(247, 49, 100, 0.15)',
                 'color_txt' => '#f73164',
+                'description' => 'Intervention annulée. Veuillez nous contacter.'
             ])
             ->where(['id' => 5])
             ->execute();

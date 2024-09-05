@@ -22,26 +22,30 @@ final class UserAccountController extends AbstractController
     {
         if($request->getMethod() === 'POST'){
             $params = $request->getParsedBody();
-            $mail = v::email()->validate($params['email']);
-            if($mail){
-                $user = $this->getRepository(UserRepository::class);
-                $data = $user->findUserByMail($params['email']);
-                if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
-
-                    if($data['key_totp']){
-                        $this->session->set('auth_in_progress', $data);
-                        return $this->redirectToRoute('auth_user_2fa');
+            if($params) {
+                $mail = v::email()->validate($params['email']);
+                if($mail){
+                    $user = $this->getRepository(UserRepository::class);
+                    $data = $user->findUserByMail($params['email']);
+                    if ($data['mail'] == $params['email'] AND password_verify($params['password'], $data['password'])) {
+                        if($data['key_totp']){
+                            $this->session->set('auth_in_progress', $data);
+                            return $this->redirectToRoute('auth_user_2fa');
+                        }
+                        //$this->getSession('auth');
+                        $this->session->set('auth', $data);
+                        // Create Cookie 3 days
+                        $cookie = new CookieFactory();
+                        $cookie->setCookie($data, $this->query);
+                        return $this->redirectToRoute('dash_home');
+                    } else {
+                        $this->addFlash('error', 'Le mot de passe ou le courriel ne correspond pas !');
                     }
-                    //$this->getSession('auth');
-                    $this->session->set('auth', $data);
-                    // Create Cookie 3 days
-                    $cookie = new CookieFactory();
-                    $cookie->setCookie($data, $this->query);
-                    return $this->redirectToRoute('dash_home');
                 }
             } else {
-                $this->addFlash('error', 'Le mot de passe ou le courriel ne correspond pas !');
+                $this->addFlash('error', 'Veuillez renseigner un identifiant et un mot de passe');
             }
+
         }
         return $this->render($response, 'security/user/signin.html.twig');
     }

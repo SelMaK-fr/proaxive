@@ -1,0 +1,172 @@
+{% if i.start_date is null %}
+    <div class="grid-center">
+        <div class="col-6_sm-12">
+            <div class="card-inside inside-four-border-dashed text-center mb-3">
+                <div class="p-4">
+                    L'intervention n'est pas démarrée, veuillez cliquer ci-dessous.
+                    <form method="post" action="" id="start-intervention">
+                        <button type="button" onclick="ajaxUpdateDataUrl('{{ url_for('intervention_ajax_start', {'id' : intervention_id}) }}', 'start-intervention'); return false;" class="btn btn-light-green rd-10 submit-ajax mt-3">Commencer maintenant <i class="ri-rocket-line"></i></button>
+                        <span id="sync-start"></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p class="text-center">
+        <i class="ri-information-line"></i> Pour mettre à jour l'état de l'intervention, cliquez simplement sur celui souhaité.
+    </p>
+    <div class="steps">
+        <ul>
+            <li class="{% if i.way_steps >= 1 %}active{% endif %}">
+                <i class="icon ri-store-2-line"></i>
+                <div class="progress one">
+                    <p>1</p>
+                    <i class="uil ri-check-line"></i>
+                </div>
+                <p class="text">Matériel récupéré</p>
+            </li>
+            <li class="{% if i.way_steps == 2 %}current{% elseif i.way_steps >= 2 %}active{% endif %}">
+                <i class="icon ri-tools-line"></i>
+                <div class="progress two">
+                    <p>2</p>
+                    {% if i.way_steps == 2 %}
+                        <i class="ri-hourglass-2-fill icon_current"></i>
+                    {% else %}
+                        <i class="uil ri-check-line"></i>
+                    {% endif %}
+                </div>
+                <p class="text">En atelier</p>
+            </li>
+            <li class="{% if i.way_steps == 3 %}current{% elseif i.way_steps >= 3 %}active{% endif %}">
+                <i class="icon ri-list-check-3"></i>
+                <div class="progress three">
+                    <p>3</p>
+                    {% if i.way_steps == 3 %}
+                        <i class="ri-hourglass-2-fill icon_current"></i>
+                    {% else %}
+                        <i class="uil ri-check-line"></i>
+                    {% endif %}
+                </div>
+                <p class="text">Tests finaux</p>
+            </li>
+            <li class="{% if i.way_steps == 4 %}current{% elseif i.way_steps >= 4 %}active{% endif %}">
+                <i class="icon ri-truck-line"></i>
+                <div class="progress four">
+                    <p>4</p>
+                    {% if i.way_steps == 4 %}
+                        <i class="ri-hourglass-2-fill icon_current"></i>
+                    {% else %}
+                        <i class="uil ri-check-line"></i>
+                    {% endif %}
+                </div>
+                <p class="text">Récupération / livraison</p>
+            </li>
+            <li class="{% if i.way_steps == 5 %}active{% endif %}">
+                <i class="icon ri-map-pin-line"></i>
+                <div class="progress five">
+                    <p>5</p>
+                    <i class="uil ri-check-line"></i>
+                </div>
+                <p class="text">Matériel récupéré</p>
+            </li>
+        </ul>
+    </div>
+    {% if i.way_steps == 4 and i.pull_date is null %}
+        <div class="grid-center">
+            <div class="col-6_sm-12">
+                <div class="card-inside inside-four-border-dashed text-center mb-3">
+                    <div class="p-4">
+                        Si vous le souhaitez, vous pouvez programmer une date de retait ou de livraison.
+                        <button type="button" data-target="exit_date" data-toggle="modal" class="btn btn-sk-tree rd-10 mt-3">Programmer une sortie <i class="fa-solid fa-circle-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ include('backoffice/intervention/_modal/_add_exit_date.html.twig') }}
+    {% endif %}
+    <div class="border-bottom-dashed mb-3"></div>
+    <div class="grid-12">
+        <div class="col-8_sm-12 border-right-dashed">
+            <div class="mb-3">
+                <h3 class="fs-18px fw-500 mb-0">Gestion des tâches</h3>
+                <span>Si une tâche n'existe pas, ajoutez-la ci-dessous.</span>
+            </div>
+            <form method="post" action="{{ url_for('settings_task_create') }}">
+                <div class="flex label-twin label-twin-left-btn mb-3">
+                                <span class="lt-text">
+                                    <label for="name">
+                                        <input type="text" class="form-input-twin" id="name" name="form_setting_task[name]" placeholder="Nom de la tâche">
+                                    </label>
+                                </span>
+                    <span class="lt-button">
+                                <button type="submit" class="btn-sm btn-light-four">Créer</button>
+                            </span>
+                </div>
+            </form>
+            <div class="mb-3">
+                <em>Vous pouvez selectionner plusieurs tâches à la fois.</em>
+            </div>
+
+            <div class="grid-12">
+                <div class="col-6_sm-12">
+                    {{ formTasks.renderStart | raw }}
+                    <div class="select2">
+                        {{ formTasks.renderField('tasks') | raw }}
+                    </div>
+                    <div class="flex align-items-center justify-content-space-between">
+                        <div class="flex-root">
+                            <button type="submit" class="btn-sm btn-sk-one">Mettre à jour</button>
+                        </div>
+                    </div>
+                    {{ formTasks.renderEnd(false) | raw }}
+                </div>
+                <div class="col-6_sm-12">
+                    <div class="tasks-list">
+                        <span class="d-block fw-500 mb-3">Tâche(s) effectuée(s)</span>
+                        {% if tForI is empty %}
+                            <div class="alert alert-light-info">
+                                Il n'y a aucune tâche assignée.
+                            </div>
+                        {% else %}
+                            <ul>
+                                {% for t in tForI %}
+                                    <li data-task-id="{{ t.id }}">
+                                        <form class="flex align-items-center justify-content-space-between" method="post" action="{{ url_for('task_delete_intervention', {'id':intervention_id, 'task': t.id}) }}">
+                                            <input type="hidden" name="task_id" value="{{ t.id }}">
+                                            <span><i class="ri-checkbox-circle-line"></i> {{ t.name }}</span>
+                                            <button type="submit" class="label-mid badge-light-pink">x</button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4_sm-12">
+            <div class="mb-3">
+                <h3 class="fs-18px fw-500 mb-0">Diagnostic général</h3>
+                <span>Veuillez remplir les éléments ci-dessous</span>
+            </div>
+            {% if i.way_steps >= 3 %}
+                <div class="choice_default style1">
+                    {{ formDiag.renderStart | raw }}
+                    {{ formDiag.renderField('diag_cpu') | raw }}
+                    {{ formDiag.renderField('diag_gpu') | raw }}
+                    {{ formDiag.renderField('diag_memory') | raw }}
+                    {{ formDiag.renderField('diag_storage') | raw }}
+                    <div class="text-right">
+                        <button type="submit" class="btn-sm btn-sk-one"><i class="ri-check-line"></i> Enregistrer</button>
+                    </div>
+                    {{ formDiag.renderEnd(false) | raw }}
+                </div>
+            {% else %}
+                <div class="alert alert-light-info">
+                    Vous devez poursuivre l'intervention pour remplir les informations de diagnostic
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

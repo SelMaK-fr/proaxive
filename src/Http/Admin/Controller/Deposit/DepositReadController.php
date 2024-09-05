@@ -30,9 +30,10 @@ class DepositReadController extends AbstractController
             $form = $request->getQueryParams();
             $intervention = $form['intervention_reference'];
             $deposit = $form['deposit_reference'];
+            $isSigned = $form['is_signed'];
             $d = $this->getRepository(DepositRepository::class)->findByReference($deposit);
             if($d->reference != $deposit OR $d->intervention_number != $intervention){
-                return $this->redirectToRoute('intervention_read', ['id' => $d->interventions_id]);
+                return $this->redirectToRoute('intervention_update', ['id' => $d->interventions_id]);
             }
             // Breadcrumbs
             $breadcrumbs = $this->breadcrumbs;
@@ -43,6 +44,7 @@ class DepositReadController extends AbstractController
             // .Breadcrumbs
             return $this->render($response, 'backoffice/deposit/read.html.twig', [
                 'd' => $d,
+                'is_signed' => $isSigned,
                 'breadcrumbs' => $breadcrumbs,
                 'currentMenu' => 'intervention'
             ]);

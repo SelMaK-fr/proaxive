@@ -15,7 +15,7 @@
 /* line 5, ../sass/base/_reset.scss */
 a {
   text-decoration: none;
-  color: var(--pink);
+  color: var(--sk-color-one);
 }
 
 /* line 9, ../sass/base/_reset.scss */
@@ -106,10 +106,10 @@ Other Dark Colors
 :root {
   --font-body-sans-serif: Outfit,sans-serif;
   --sk-color-one: var(--pink2);
-  --sk-color-two: #2A3650;
-  --sk-color-tree: #323c58;
-  --sk-color-four: #01608C;
+  --sk-color-two: var(--blue-hard);
+  --sk-color-tree: #2A3650;
   --sk-color-link: #97A1B3;
+  --sk-color-four: #48A3D7;
   --sk-color-base-foreground: #ffffff;
   --sk-color-base-foreground-child: #f5f6fa;
   --sk-color-base-background: #f4f7f9;
@@ -144,6 +144,7 @@ Other Dark Colors
   --green-light: rgba(75, 192, 192, 0.2);
   --green: #4bc0c0;
   --green-300: #04B660;
+  --green-400: #5CB15E;
   --blue: #31daf7;
   --blue-hard: #01358D;
   --white: #ffffff;
@@ -160,7 +161,7 @@ Other Dark Colors
   --shadow-color: rgba(175, 175, 175, 0.1);
 }
 
-/* line 77, ../sass/base/_root.scss */
+/* line 78, ../sass/base/_root.scss */
 [data-layout_mode=dark] {
   --sk-color-tree: #414b6e;
   --sk-color-base-foreground: #2a3650;
@@ -193,10 +194,6 @@ Other Dark Colors
   --bg-purple-light: rgba(115, 102, 255, 0.06);
   /** Shadow **/
   --shadow-color: rgba(0, 0, 0, 0.1);
-  --sk-color-one: var(--pink2);
-  --sk-color-two: var(--blue-hard);
-  --sk-color-link: #97A1B3;
-  --sk-color-four: #48A3D7;
   --bg-four: #48a3d733;
   --sk-color-border-four: rgba(72, 163, 215, 0.3);
 }
@@ -1672,8 +1669,8 @@ body.portal-body h1.title-login {
 .portal-main .card .card-icon {
   border-radius: 50px;
   height: 72px;
-  border: 1px dashed var(--pink);
-  color: var(--pink);
+  border: 1px dashed var(--sk-color-one);
+  color: var(--sk-color-one);
   transition: all 0.2s ease-in-out;
 }
 
@@ -1774,12 +1771,17 @@ body.portal-body .form-control, .form-select, .form-search {
 }
 
 /* line 303, ../sass/layout/_portal.scss */
+.stepProgress.step-vertical {
+  display: flex;
+}
+
+/* line 306, ../sass/layout/_portal.scss */
 .stepProgress {
   position: relative;
   padding-left: 45px;
   list-style: none;
 }
-/* line 307, ../sass/layout/_portal.scss */
+/* line 310, ../sass/layout/_portal.scss */
 .stepProgress:before {
   display: inline-block;
   content: '';
@@ -1791,16 +1793,16 @@ body.portal-body .form-control, .form-select, .form-search {
   border-left: 2px solid var(--sk-color-base-border);
 }
 
-/* line 318, ../sass/layout/_portal.scss */
+/* line 321, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item {
   position: relative;
   counter-increment: list;
 }
-/* line 321, ../sass/layout/_portal.scss */
+/* line 324, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:not(:last-child) {
   padding-bottom: 50px;
 }
-/* line 324, ../sass/layout/_portal.scss */
+/* line 327, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:before {
   display: inline-block;
   content: '';
@@ -1809,7 +1811,7 @@ body.portal-body .form-control, .form-select, .form-search {
   height: 100%;
   width: 10px;
 }
-/* line 332, ../sass/layout/_portal.scss */
+/* line 335, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item:after {
   content: '';
   display: flex;
@@ -1825,11 +1827,11 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 348, ../sass/layout/_portal.scss */
+/* line 351, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:before {
   border-left: 2px solid var(--sk-color-one);
 }
-/* line 351, ../sass/layout/_portal.scss */
+/* line 354, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.is-done:after {
   content: "✔";
   font-size: 18px;
@@ -1839,13 +1841,14 @@ body.portal-body .form-control, .form-select, .form-search {
   background-color: var(--sk-color-one);
 }
 
-/* line 361, ../sass/layout/_portal.scss */
-.stepProgress .stepProgress-item.current:before {
-  border-left: 2px solid var(--green);
-}
 /* line 364, ../sass/layout/_portal.scss */
+.stepProgress .stepProgress-item.current:before {
+  border-left: 2px solid var(--sk-color-four);
+}
+/* line 367, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item.current:after {
-  content: counter(list);
+  font-family: 'remixicon', sans-serif;
+  content: '\f336';
   padding-top: 1px;
   width: 42px;
   height: 42px;
@@ -1853,17 +1856,33 @@ body.portal-body .form-control, .form-select, .form-search {
   left: -50px;
   font-size: 14px;
   text-align: center;
-  color: var(--green);
-  border: 2px solid var(--green);
+  color: var(--sk-color-four);
+  border: 2px solid var(--sk-color-four);
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 378, ../sass/layout/_portal.scss */
+/* line 382, ../sass/layout/_portal.scss */
+.stepProgress .stepProgress-item.current:after {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* line 396, ../sass/layout/_portal.scss */
 .stepProgress .stepProgress-item strong {
   display: block;
 }
 
-/* line 381, ../sass/layout/_portal.scss */
+/* line 399, ../sass/layout/_portal.scss */
 .stepProgress:after {
   content: '';
   position: absolute;
@@ -1873,18 +1892,18 @@ body.portal-body .form-control, .form-select, .form-search {
   left: 0;
 }
 
-/* line 389, ../sass/layout/_portal.scss */
+/* line 407, ../sass/layout/_portal.scss */
 ul.tasks li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-/* line 393, ../sass/layout/_portal.scss */
+/* line 411, ../sass/layout/_portal.scss */
 ul.tasks li:last-child {
   margin-bottom: 0;
 }
 
-/* line 397, ../sass/layout/_portal.scss */
+/* line 415, ../sass/layout/_portal.scss */
 ul.tasks li span.t-icon {
   display: block;
   width: 25px;
@@ -1897,12 +1916,12 @@ ul.tasks li span.t-icon {
   color: var(--green);
 }
 
-/* line 408, ../sass/layout/_portal.scss */
+/* line 426, ../sass/layout/_portal.scss */
 .item-equipment {
   display: flex;
 }
 
-/* line 411, ../sass/layout/_portal.scss */
+/* line 429, ../sass/layout/_portal.scss */
 .item-equipment .item_name {
   display: block;
   font-weight: 500;
@@ -1912,13 +1931,13 @@ ul.tasks li span.t-icon {
   width: 30%;
 }
 
-/* line 419, ../sass/layout/_portal.scss */
+/* line 437, ../sass/layout/_portal.scss */
 .item-equipment:last-child .item_name,
 .item-equipment:last-child .item_value {
   border-bottom: 0;
 }
 
-/* line 423, ../sass/layout/_portal.scss */
+/* line 441, ../sass/layout/_portal.scss */
 .item-equipment .item_value {
   display: block;
   border-bottom: 1px solid var(--sk-color-base-border);
@@ -1927,13 +1946,13 @@ ul.tasks li span.t-icon {
 }
 
 @media (max-width: 840px) {
-  /* line 430, ../sass/layout/_portal.scss */
+  /* line 448, ../sass/layout/_portal.scss */
   .item-equipment {
     margin-bottom: 8px;
     flex-direction: column;
   }
 
-  /* line 434, ../sass/layout/_portal.scss */
+  /* line 452, ../sass/layout/_portal.scss */
   .item-equipment .item_name {
     margin-bottom: 3px;
     width: 100%;
@@ -1941,14 +1960,14 @@ ul.tasks li span.t-icon {
     padding: 0;
   }
 
-  /* line 440, ../sass/layout/_portal.scss */
+  /* line 458, ../sass/layout/_portal.scss */
   .item-equipment .item_value {
     width: 100%;
     border: none;
     padding: 0;
   }
 }
-/* line 446, ../sass/layout/_portal.scss */
+/* line 464, ../sass/layout/_portal.scss */
 .portal-body .aside-left {
   background-color: var(--sk-color-one);
   width: 200px;
@@ -1956,36 +1975,36 @@ ul.tasks li span.t-icon {
   position: fixed;
 }
 
-/* line 452, ../sass/layout/_portal.scss */
+/* line 470, ../sass/layout/_portal.scss */
 .portal-body .main {
   position: relative;
   margin-left: 0;
   height: 100vh;
 }
 
-/* line 458, ../sass/layout/_portal.scss */
+/* line 476, ../sass/layout/_portal.scss */
 .portal-body .consult {
   padding: 30px 0 10px 0;
 }
 
-/* line 461, ../sass/layout/_portal.scss */
+/* line 479, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:after {
-  background-color: var(--pink);
-  border-color: var(--pink);
+  background-color: var(--sk-color-one);
+  border-color: var(--sk-color-one);
 }
 
-/* line 465, ../sass/layout/_portal.scss */
+/* line 483, ../sass/layout/_portal.scss */
 .portal-body .consult .stepProgress .stepProgress-item.is-done:before {
-  border-color: var(--pink);
+  border-color: var(--sk-color-one);
 }
 
-/* line 468, ../sass/layout/_portal.scss */
+/* line 486, ../sass/layout/_portal.scss */
 .portal-body .header {
   border-bottom: 1px solid var(--sk-color-base-border);
   padding: 10px 0;
 }
 
-/* line 472, ../sass/layout/_portal.scss */
+/* line 490, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input {
   border: 2px solid var(--sk-color-base-border);
   line-height: 35px;
@@ -1995,7 +2014,7 @@ ul.tasks li span.t-icon {
   min-width: 250px;
 }
 
-/* line 480, ../sass/layout/_portal.scss */
+/* line 498, ../sass/layout/_portal.scss */
 .portal-body .header .search-i span.search-icon {
   position: absolute;
   left: 30px;
@@ -2003,23 +2022,23 @@ ul.tasks li span.t-icon {
   color: rgba(109, 153, 197, 0.4);
 }
 
-/* line 486, ../sass/layout/_portal.scss */
+/* line 504, ../sass/layout/_portal.scss */
 .portal-body .header .search-i input::placeholder {
   color: rgba(109, 153, 197, 0.4);
 }
 
 @media (max-width: 680px) {
-  /* line 490, ../sass/layout/_portal.scss */
+  /* line 508, ../sass/layout/_portal.scss */
   .portal-body .aside-left {
     transform: translateX(-100%);
   }
 
-  /* line 493, ../sass/layout/_portal.scss */
+  /* line 511, ../sass/layout/_portal.scss */
   .portal-body .main {
     margin-left: 0;
   }
 }
-/* line 497, ../sass/layout/_portal.scss */
+/* line 515, ../sass/layout/_portal.scss */
 .search_card, .login_card {
   display: flex;
   justify-content: center;
@@ -2027,48 +2046,38 @@ ul.tasks li span.t-icon {
   top: 10em;
 }
 
-/* line 1, ../sass/layout/_mod.scss */
-.tasks-list {
-  min-height: 230px;
-  max-height: 230px;
-  overflow-y: auto;
-  scrollbar-color: var(--bg-four);
-  scrollbar-width: thin;
-}
-/* line 9, ../sass/layout/_mod.scss */
-.tasks-list::-webkit-scrollbar {
-  width: 5px;
-  height: 8px;
-  background-color: var(--sk-color-base-background);
-  /* or add it to the track */
-}
-/* line 14, ../sass/layout/_mod.scss */
-.tasks-list::-webkit-scrollbar-thumb {
-  background: var(--bg-four);
-}
-
-/* line 18, ../sass/layout/_mod.scss */
+/* line 2, ../sass/layout/_mod.scss */
 .tasks-list ul > li {
   margin-bottom: 5px;
+  background-color: var(--sk-color-four);
+  border-radius: 50px;
 }
 
-/* line 21, ../sass/layout/_mod.scss */
+/* line 7, ../sass/layout/_mod.scss */
 .tasks-list ul > li span {
-  background-color: var(--bg-four);
-  padding: 3px 5px;
-  color: var(--sk-color-four);
-  border-radius: 4px;
-  font-size: 13px;
+  padding: 5px 10px;
+  color: white;
+  flex: 1;
 }
 
-/* line 28, ../sass/layout/_mod.scss */
+/* line 12, ../sass/layout/_mod.scss */
+.tasks-list ul > li span i {
+  vertical-align: inherit;
+}
+
+/* line 15, ../sass/layout/_mod.scss */
 .tasks-list ul > li button {
   border: 0;
-  margin-right: 8px;
+  margin-right: 5px;
+  background-color: white;
+  height: 20px;
+  width: 20px;
+  color: var(--sk-color-four);
+  border-radius: 50px;
 }
 
 /** Nav tools **/
-/* line 33, ../sass/layout/_mod.scss */
+/* line 25, ../sass/layout/_mod.scss */
 .nav-tools {
   position: fixed;
   display: flex;
@@ -2076,7 +2085,7 @@ ul.tasks li span.t-icon {
   z-index: 1100;
 }
 
-/* line 39, ../sass/layout/_mod.scss */
+/* line 31, ../sass/layout/_mod.scss */
 .nav-tools button.btn-nav-tools {
   width: 40px;
   height: 40px;
@@ -2087,7 +2096,7 @@ ul.tasks li span.t-icon {
   top: 0;
 }
 
-/* line 48, ../sass/layout/_mod.scss */
+/* line 40, ../sass/layout/_mod.scss */
 .nav-tools .content-nav-tools ul.nav li button {
   font-family: 'Rubik', sans-serif;
   background-color: transparent;
@@ -2095,7 +2104,7 @@ ul.tasks li span.t-icon {
   font-size: 14px;
 }
 
-/* line 54, ../sass/layout/_mod.scss */
+/* line 46, ../sass/layout/_mod.scss */
 .nav-vertical-tools.nav-tools {
   bottom: 0;
   right: 0;
@@ -2103,25 +2112,25 @@ ul.tasks li span.t-icon {
   transition: transform 0.3s ease-in-out;
 }
 
-/* line 60, ../sass/layout/_mod.scss */
+/* line 52, ../sass/layout/_mod.scss */
 .nav-vertical-tools.nav-tools.deployed {
   transform: translateX(0);
 }
 
-/* line 63, ../sass/layout/_mod.scss */
+/* line 55, ../sass/layout/_mod.scss */
 .nav-vertical-tools .content-nav-tools {
   background-color: var(--sk-color-base-foreground);
   padding: 10px 0;
   box-shadow: 0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05);
 }
 
-/* line 68, ../sass/layout/_mod.scss */
+/* line 60, ../sass/layout/_mod.scss */
 .nav-vertical-tools button.btn-nav-tools {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
-/* line 73, ../sass/layout/_mod.scss */
+/* line 65, ../sass/layout/_mod.scss */
 .nav-vertical-tools .content-nav-tools ul.nav li a,
 .nav-vertical-tools .content-nav-tools ul.nav li button {
   display: block;
@@ -2130,18 +2139,18 @@ ul.tasks li span.t-icon {
   padding: 10px 20px;
 }
 
-/* line 81, ../sass/layout/_mod.scss */
+/* line 73, ../sass/layout/_mod.scss */
 .nav-vertical-tools .content-nav-tools ul.nav li a.text-delete {
   color: var(--sk-color-one);
 }
 
-/* line 84, ../sass/layout/_mod.scss */
+/* line 76, ../sass/layout/_mod.scss */
 .nav-horizontal-tools button.btn-nav-tools {
   margin-right: .8rem;
   border-radius: 50px;
 }
 
-/* line 88, ../sass/layout/_mod.scss */
+/* line 80, ../sass/layout/_mod.scss */
 .nav-horizontal-tools ul.nav {
   background-color: var(--sk-color-base-foreground);
   -moz-border-radius-topright: 50px;
@@ -2151,13 +2160,13 @@ ul.tasks li span.t-icon {
   box-shadow: 0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05);
 }
 
-/* line 96, ../sass/layout/_mod.scss */
+/* line 88, ../sass/layout/_mod.scss */
 .nav-horizontal-tools ul.nav li {
   display: inline-block;
   margin-right: 15px;
 }
 
-/* line 100, ../sass/layout/_mod.scss */
+/* line 92, ../sass/layout/_mod.scss */
 .nav-horizontal-tools ul.nav li a {
   display: block;
   color: var(--sk-color-base-text-hard);
@@ -2444,6 +2453,19 @@ i.btn-icon {
 }
 
 /* line 28, ../sass/components/_form.scss */
+.column__form .form-group {
+  margin: 0;
+}
+
+/* line 31, ../sass/components/_form.scss */
+.column__form .form-group select.palmtree-form-control.form-control,
+.column__form .form-group select.form-control {
+  height: auto;
+  border-style: dashed;
+  border-color: var(--sk-color-one);
+}
+
+/* line 37, ../sass/components/_form.scss */
 textarea.ajax-input {
   border: 0;
   background-color: transparent;
@@ -2451,18 +2473,18 @@ textarea.ajax-input {
   font-style: italic;
   color: var(--sk-color-base-text);
 }
-/* line 34, ../sass/components/_form.scss */
+/* line 43, ../sass/components/_form.scss */
 textarea.ajax-input::placeholder {
   font-style: italic;
   color: var(--sk-color-base-text);
 }
 
-/* line 39, ../sass/components/_form.scss */
+/* line 48, ../sass/components/_form.scss */
 .form-group {
   margin-bottom: 1rem;
 }
 
-/* line 42, ../sass/components/_form.scss */
+/* line 51, ../sass/components/_form.scss */
 .form-group .form-label {
   display: inline-block;
   margin-bottom: 0.5rem;
@@ -2470,7 +2492,7 @@ textarea.ajax-input::placeholder {
   color: var(--sk-color-base-h);
 }
 
-/* line 48, ../sass/components/_form.scss */
+/* line 57, ../sass/components/_form.scss */
 .form-group .form-input, .form-group .form-control, .form-group .palmtree-form-control, .form-select {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-input-form-border);
@@ -2484,20 +2506,20 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 58, ../sass/components/_form.scss */
+/* line 67, ../sass/components/_form.scss */
 .form-group .palmtree-form-control.form-control:focus {
   outline: none !important;
   border: 1px solid var(--sk-color-two);
   box-shadow: 0 0 10px var(--shadow-color);
 }
 
-/* line 63, ../sass/components/_form.scss */
+/* line 72, ../sass/components/_form.scss */
 .form-group select.palmtree-form-control.form-control,
 .form-group select.form-control {
   border-style: solid;
 }
 
-/* line 67, ../sass/components/_form.scss */
+/* line 76, ../sass/components/_form.scss */
 .form-group .form-textarea {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-input-form-border);
@@ -2510,18 +2532,18 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 76, ../sass/components/_form.scss */
+/* line 85, ../sass/components/_form.scss */
 .form-group textarea.palmtree-form-control {
   min-height: 120px;
   padding-top: 10px;
 }
 
-/* line 80, ../sass/components/_form.scss */
+/* line 89, ../sass/components/_form.scss */
 .form-group .input-icon.icon-left {
   left: 0;
 }
 
-/* line 83, ../sass/components/_form.scss */
+/* line 92, ../sass/components/_form.scss */
 .form-group .input-icon span.icon {
   display: block;
   position: absolute;
@@ -2531,36 +2553,36 @@ textarea.ajax-input::placeholder {
   border-radius: 8px 0px 0 8px;
 }
 
-/* line 91, ../sass/components/_form.scss */
+/* line 100, ../sass/components/_form.scss */
 .form-group .input-icon .form-input {
   padding-left: 55px;
 }
 
-/* line 94, ../sass/components/_form.scss */
+/* line 103, ../sass/components/_form.scss */
 .form-group .input-icon.input-danger span.icon {
   background: var(--sk-color-one);
   border-right: 1px solid var(--sk-color-one);
   color: var(--white);
 }
 
-/* line 99, ../sass/components/_form.scss */
+/* line 108, ../sass/components/_form.scss */
 .form-group .input-icon.input-danger input, .form-group .input-icon.input-danger div {
   border-color: var(--sk-color-one);
 }
 
-/* line 102, ../sass/components/_form.scss */
+/* line 111, ../sass/components/_form.scss */
 .form-group .input-icon.input-default span.icon {
   background: transparent;
   border-right: 1px solid var(--sk-color-base-border);
   color: var(--sk-color-base-text);
 }
 
-/* line 107, ../sass/components/_form.scss */
+/* line 116, ../sass/components/_form.scss */
 .form-group .input-icon.input-default input, .form-group .input-icon.input-default div {
   border-color: var(--sk-color-base-border);
 }
 
-/* line 110, ../sass/components/_form.scss */
+/* line 119, ../sass/components/_form.scss */
 .form-group.form-icon {
   background-color: var(--sk-color-base-background);
   color: var(--sk-color-base-text);
@@ -2569,19 +2591,19 @@ textarea.ajax-input::placeholder {
   border-radius: 6px;
 }
 
-/* line 115, ../sass/components/_form.scss */
+/* line 124, ../sass/components/_form.scss */
 .form-group.form-icon .form-input {
   background-color: transparent;
   padding: 0;
 }
 
-/* line 119, ../sass/components/_form.scss */
+/* line 128, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple {
   min-height: 250px;
   overflow-y: auto;
 }
 
-/* line 123, ../sass/components/_form.scss */
+/* line 132, ../sass/components/_form.scss */
 .form-group select[multiple]:focus + .focus {
   position: absolute;
   top: -1px;
@@ -2592,7 +2614,7 @@ textarea.ajax-input::placeholder {
   border-radius: inherit;
 }
 
-/* line 132, ../sass/components/_form.scss */
+/* line 141, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple option {
   height: 25px;
   line-height: 25px !important;
@@ -2601,13 +2623,18 @@ textarea.ajax-input::placeholder {
   padding: 5px;
 }
 
-/* line 139, ../sass/components/_form.scss */
+/* line 148, ../sass/components/_form.scss */
 .form-group .form-select.select-multiple option:checked {
   background-color: var(--purple-light);
   color: white;
 }
 
-/* line 143, ../sass/components/_form.scss */
+/* line 152, ../sass/components/_form.scss */
+.select2 .form-control {
+  min-height: 150px;
+}
+
+/* line 155, ../sass/components/_form.scss */
 form span.input-error {
   display: block;
   margin-top: -0.7rem;
@@ -2615,26 +2642,26 @@ form span.input-error {
   color: var(--pink);
 }
 
-/* line 149, ../sass/components/_form.scss */
+/* line 161, ../sass/components/_form.scss */
 .inline-form {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* line 154, ../sass/components/_form.scss */
+/* line 166, ../sass/components/_form.scss */
 .inline-form .form-group {
   margin-bottom: 0;
   margin-right: 0.5rem;
   width: 100%;
 }
 
-/* line 159, ../sass/components/_form.scss */
+/* line 171, ../sass/components/_form.scss */
 .inline-form .form-group.switch-group {
   width: auto;
 }
 
-/* line 162, ../sass/components/_form.scss */
+/* line 174, ../sass/components/_form.scss */
 .upload-avatar {
   min-height: 120px;
   min-width: 120px;
@@ -2642,7 +2669,7 @@ form span.input-error {
   position: relative;
 }
 
-/* line 168, ../sass/components/_form.scss */
+/* line 180, ../sass/components/_form.scss */
 .upload-avatar input {
   background: unset;
   opacity: 0;
@@ -2656,7 +2683,7 @@ form span.input-error {
   cursor: pointer;
 }
 
-/* line 180, ../sass/components/_form.scss */
+/* line 192, ../sass/components/_form.scss */
 .upload-avatar div img {
   max-width: 100%;
   height: auto;
@@ -2665,32 +2692,32 @@ form span.input-error {
 }
 
 /* Choices JS Edit */
-/* line 187, ../sass/components/_form.scss */
+/* line 199, ../sass/components/_form.scss */
 .choices__inner {
   border-color: var(--sk-color-base-background);
   background-color: var(--sk-color-base-background);
 }
 
-/* line 191, ../sass/components/_form.scss */
+/* line 203, ../sass/components/_form.scss */
 .choices__list--dropdown, .choices__list[aria-expanded],
 .choices[data-type*=select-one] .choices__input {
   background-color: var(--sk-color-base-foreground);
 }
 
-/* line 195, ../sass/components/_form.scss */
+/* line 207, ../sass/components/_form.scss */
 .is-open .choices__list--dropdown, .is-open .choices__list[aria-expanded],
 .is-focused .choices__inner, .is-open .choices__inner,
 .choices[data-type*=select-one] .choices__input {
   border-color: var(--sk-color-base-border);
 }
 
-/* line 200, ../sass/components/_form.scss */
+/* line 212, ../sass/components/_form.scss */
 .choices__list--dropdown .choices__item--selectable.is-highlighted, .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
   background-color: var(--sk-color-base-background);
 }
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
-  /* line 205, ../sass/components/_form.scss */
+  /* line 217, ../sass/components/_form.scss */
   .form-check input[type='checkbox'],
   .form-check input[type='radio'] {
     --active: var(--sk-color-one);
@@ -2714,7 +2741,7 @@ form span.input-error {
     background: var(--b, var(--background));
     transition: background .3s, border-color .3s, box-shadow .2s;
   }
-  /* line 227, ../sass/components/_form.scss */
+  /* line 239, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:after,
   .form-check input[type='radio']:after {
     content: '';
@@ -2725,7 +2752,7 @@ form span.input-error {
     position: absolute;
     transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
   }
-  /* line 236, ../sass/components/_form.scss */
+  /* line 248, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:checked,
   .form-check input[type='radio']:checked {
     --b: var(--active);
@@ -2734,50 +2761,50 @@ form span.input-error {
     --d-t: .6s;
     --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
   }
-  /* line 243, ../sass/components/_form.scss */
+  /* line 255, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled,
   .form-check input[type='radio']:disabled {
     --b: var(--disabled);
     cursor: not-allowed;
     opacity: .9;
   }
-  /* line 247, ../sass/components/_form.scss */
+  /* line 259, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled:checked,
   .form-check input[type='radio']:disabled:checked {
     --b: var(--disabled-inner);
     --bc: var(--border);
   }
-  /* line 251, ../sass/components/_form.scss */
+  /* line 263, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:disabled + label,
   .form-check input[type='radio']:disabled + label {
     cursor: not-allowed;
   }
-  /* line 257, ../sass/components/_form.scss */
+  /* line 269, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:hover:not(:checked):not(:disabled),
   .form-check input[type='radio']:hover:not(:checked):not(:disabled) {
     --bc: var(--border-hover);
   }
-  /* line 262, ../sass/components/_form.scss */
+  /* line 274, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:focus,
   .form-check input[type='radio']:focus {
     box-shadow: 0 0 0 var(--focus);
   }
-  /* line 265, ../sass/components/_form.scss */
+  /* line 277, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input),
   .form-check input[type='radio']:not(.form-check-input) {
     width: 21px;
   }
-  /* line 267, ../sass/components/_form.scss */
+  /* line 279, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):after,
   .form-check input[type='radio']:not(.form-check-input):after {
     opacity: var(--o, 0);
   }
-  /* line 270, ../sass/components/_form.scss */
+  /* line 282, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):checked,
   .form-check input[type='radio']:not(.form-check-input):checked {
     --o: 1;
   }
-  /* line 274, ../sass/components/_form.scss */
+  /* line 286, ../sass/components/_form.scss */
   .form-check input[type='checkbox'] + label,
   .form-check input[type='radio'] + label {
     font-size: 14px;
@@ -2787,12 +2814,12 @@ form span.input-error {
     cursor: pointer;
     margin-left: 4px;
   }
-  /* line 285, ../sass/components/_form.scss */
+  /* line 297, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input),
   .form-check input[type='radio']:not(.form-check-input) {
     border-radius: 7px;
   }
-  /* line 287, ../sass/components/_form.scss */
+  /* line 299, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):after,
   .form-check input[type='radio']:not(.form-check-input):after {
     width: 5px;
@@ -2804,18 +2831,18 @@ form span.input-error {
     top: 4px;
     transform: rotate(var(--r, 20deg));
   }
-  /* line 297, ../sass/components/_form.scss */
+  /* line 309, ../sass/components/_form.scss */
   .form-check input[type='checkbox']:not(.form-check-input):checked,
   .form-check input[type='radio']:not(.form-check-input):checked {
     --r: 43deg;
   }
-  /* line 301, ../sass/components/_form.scss */
+  /* line 313, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input,
   .form-check input[type='radio'].form-check-input {
     width: 38px;
     border-radius: 11px;
   }
-  /* line 304, ../sass/components/_form.scss */
+  /* line 316, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:after,
   .form-check input[type='radio'].form-check-input:after {
     left: 2px;
@@ -2826,22 +2853,22 @@ form span.input-error {
     background: var(--ab, var(--border));
     transform: translateX(var(--x, 0));
   }
-  /* line 313, ../sass/components/_form.scss */
+  /* line 325, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:checked,
   .form-check input[type='radio'].form-check-input:checked {
     --ab: var(--active-inner);
     --x: 17px;
   }
-  /* line 319, ../sass/components/_form.scss */
+  /* line 331, ../sass/components/_form.scss */
   .form-check input[type='checkbox'].form-check-input:disabled:not(:checked):after,
   .form-check input[type='radio'].form-check-input:disabled:not(:checked):after {
     opacity: .6;
   }
-  /* line 326, ../sass/components/_form.scss */
+  /* line 338, ../sass/components/_form.scss */
   .form-check input[type='radio'] {
     border-radius: 50%;
   }
-  /* line 328, ../sass/components/_form.scss */
+  /* line 340, ../sass/components/_form.scss */
   .form-check input[type='radio']:after {
     width: 19px;
     height: 19px;
@@ -2850,12 +2877,12 @@ form span.input-error {
     opacity: 0;
     transform: scale(var(--s, 0.7));
   }
-  /* line 336, ../sass/components/_form.scss */
+  /* line 348, ../sass/components/_form.scss */
   .form-check input[type='radio']:checked {
     --s: .5;
   }
 }
-/* line 343, ../sass/components/_form.scss */
+/* line 355, ../sass/components/_form.scss */
 #char_count {
   background-color: var(--sk-color-base-background);
   padding: 0.15rem 0.5rem;
@@ -2865,27 +2892,27 @@ form span.input-error {
   border-radius: 4px;
 }
 
-/* line 351, ../sass/components/_form.scss */
+/* line 363, ../sass/components/_form.scss */
 .form-group-flex {
   display: flex;
 }
 
-/* line 354, ../sass/components/_form.scss */
+/* line 366, ../sass/components/_form.scss */
 .form-group-flex .input-flex .form-control {
   border-radius: 50px 0 0 50px;
 }
 
-/* line 357, ../sass/components/_form.scss */
+/* line 369, ../sass/components/_form.scss */
 .form-group-flex .button-flex {
   border-radius: 0 50px 50px 0;
 }
 
-/* line 360, ../sass/components/_form.scss */
+/* line 372, ../sass/components/_form.scss */
 .input-inner-button {
   position: relative;
 }
 
-/* line 363, ../sass/components/_form.scss */
+/* line 375, ../sass/components/_form.scss */
 .input-inner-button button {
   position: absolute;
   top: 9px;
@@ -2895,23 +2922,23 @@ form span.input-error {
   border-radius: 50px;
 }
 
-/* line 371, ../sass/components/_form.scss */
+/* line 383, ../sass/components/_form.scss */
 .card-filter-search .form-group select.palmtree-form-control.form-control, .card-filter-search .form-group select.form-control {
   border-style: dashed;
 }
 
 /** With Icon **/
-/* line 375, ../sass/components/_form.scss */
+/* line 387, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group {
   display: block;
 }
 
-/* line 378, ../sass/components/_form.scss */
+/* line 390, ../sass/components/_form.scss */
 body.portal-body .input-with-icon label {
   display: none;
 }
 
-/* line 381, ../sass/components/_form.scss */
+/* line 393, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group .input-group-case.case-prefix {
   background-color: transparent;
   color: inherit;
@@ -2923,7 +2950,7 @@ body.portal-body .input-with-icon .form-group .input-group .input-group-case.cas
   padding: 0;
 }
 
-/* line 391, ../sass/components/_form.scss */
+/* line 403, ../sass/components/_form.scss */
 body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .form-control {
   position: relative;
   border-radius: 50px;
@@ -2932,40 +2959,40 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 
 /** Select2 JS **/
-/* line 398, ../sass/components/_form.scss */
+/* line 410, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 402, ../sass/components/_form.scss */
+/* line 414, ../sass/components/_form.scss */
 #body-wrapper .select2-dropdown {
   background-color: var(--sk-color-base-background);
   border: 1px solid var(--sk-color-base-border);
 }
 
-/* line 406, ../sass/components/_form.scss */
+/* line 418, ../sass/components/_form.scss */
 .select2 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: var(--bg-purple);
   color: var(--purple-light);
   border-color: var(--bg-purple);
 }
 
-/* line 411, ../sass/components/_form.scss */
+/* line 423, ../sass/components/_form.scss */
 .divGrid-4 div[id^="form_intervention"] {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
-/* line 416, ../sass/components/_form.scss */
+/* line 428, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-/* line 421, ../sass/components/_form.scss */
+/* line 433, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check {
   background-color: var(--sk-input-form-background);
   border: 1px dashed var(--sk-color-base-border);
@@ -2975,24 +3002,24 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   position: relative;
   display: flex;
 }
-/* line 429, ../sass/components/_form.scss */
+/* line 441, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check:hover {
   border-color: var(--sk-color-one);
 }
 
-/* line 433, ../sass/components/_form.scss */
+/* line 445, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check input[type='radio'] {
   display: block;
   opacity: 0;
 }
 
-/* line 437, ../sass/components/_form.scss */
+/* line 449, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] .form-check label {
   display: block;
   flex: 1;
 }
 
-/* line 441, ../sass/components/_form.scss */
+/* line 453, ../sass/components/_form.scss */
 .choice_radio_custom div[id^="form_intervention"] input[type='radio']:checked + label {
   background-color: var(--sk-color-one);
   position: absolute;
@@ -3006,7 +3033,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   border-radius: 10px;
 }
 
-/* line 453, ../sass/components/_form.scss */
+/* line 465, ../sass/components/_form.scss */
 .absolute-button {
   position: absolute;
   bottom: 0;
@@ -3018,32 +3045,33 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   text-align: end;
 }
 
-/* line 464, ../sass/components/_form.scss */
+/* line 476, ../sass/components/_form.scss */
 .choice_default div[id^="form_intervention"] {
   display: flex;
+  background-color: var(--sk-color-base-foreground-child);
+  border-radius: 50px;
 }
 
-/* line 467, ../sass/components/_form.scss */
+/* line 481, ../sass/components/_form.scss */
 .choice_default .form-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* line 472, ../sass/components/_form.scss */
+/* line 486, ../sass/components/_form.scss */
 .choice_default .form-group .palmtree-form-control {
   height: auto;
   width: auto;
 }
 
-/* line 476, ../sass/components/_form.scss */
+/* line 490, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline {
   display: flex;
   cursor: pointer;
   font-weight: 500;
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.375em;
   /* Accessible outline */
   /* Remove comment to use */
   /*
@@ -3052,21 +3080,21 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
     }
   */
 }
-/* line 490, ../sass/components/_form.scss */
+/* line 503, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input {
   position: absolute;
   left: -9999px;
 }
-/* line 493, ../sass/components/_form.scss */
+/* line 506, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input:checked + label {
   background-color: var(--sk-color-one);
   color: white;
 }
-/* line 496, ../sass/components/_form.scss */
+/* line 509, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline input:checked + label:before {
   box-shadow: inset 0 0 0 0.4375em white;
 }
-/* line 501, ../sass/components/_form.scss */
+/* line 514, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label {
   cursor: pointer;
   display: flex;
@@ -3076,17 +3104,18 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   transition: 0.25s ease;
   text-transform: uppercase;
   font-size: 12px;
+  margin-bottom: 0;
 }
-/* line 510, ../sass/components/_form.scss */
+/* line 524, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:hover {
   background-color: var(--sk-color-one);
   color: white;
 }
-/* line 513, ../sass/components/_form.scss */
+/* line 527, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:hover:before {
   background-color: white;
 }
-/* line 517, ../sass/components/_form.scss */
+/* line 531, ../sass/components/_form.scss */
 .choice_default.style1 .form-group .form-check-inline label:before {
   display: flex;
   flex-shrink: 0;
@@ -4475,7 +4504,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 
 /* line 25, ../sass/components/_widget.scss */
 .widgets-home .widget--item {
-  border: 1px dashed var(--pink);
+  border: 1px dashed var(--sk-color-one);
   padding: 15px;
   border-radius: 10px;
   text-align: center;
@@ -4504,7 +4533,7 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
 }
 /* line 9, ../sass/components/_listing.scss */
 .item-list:hover {
-  border-color: var(--pink);
+  border-color: var(--sk-color-one);
 }
 /* line 12, ../sass/components/_listing.scss */
 .item-list > a {
@@ -4528,4 +4557,187 @@ body.portal-body .input-with-icon .form-group .input-group.input-group-prefix .f
   font-size: 14px;
   letter-spacing: .6px;
   line-height: 1;
+}
+
+/* line 1, ../sass/components/_steps.scss */
+.steps ul {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+/* line 6, ../sass/components/_steps.scss */
+.steps ul li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* line 12, ../sass/components/_steps.scss */
+.steps ul li .icon {
+  font-size: 35px;
+  color: var(--text-muted);
+  margin: 0 60px;
+}
+
+/* line 17, ../sass/components/_steps.scss */
+.steps ul li .text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Progress Div Css  */
+/* line 25, ../sass/components/_steps.scss */
+.steps ul li .progress {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--sk-color-base-background);
+  margin: 14px 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+/* line 36, ../sass/components/_steps.scss */
+.steps ul li .progress:hover {
+  border-color: var(--sk-color-one);
+  background-color: var(--sk-color-four);
+}
+
+/* line 41, ../sass/components/_steps.scss */
+.steps .progress::after {
+  content: " ";
+  position: absolute;
+  width: 125px;
+  height: 5px;
+  background-color: var(--sk-color-base-background);
+  right: 30px;
+}
+
+/* line 49, ../sass/components/_steps.scss */
+.steps .one::after {
+  width: 0;
+  height: 0;
+}
+
+/* line 53, ../sass/components/_steps.scss */
+.steps ul li .progress .uil {
+  display: none;
+}
+
+/* line 56, ../sass/components/_steps.scss */
+.steps ul li .progress p {
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Active Css  */
+/* line 62, ../sass/components/_steps.scss */
+.steps ul li.active .text, .steps ul li.active .icon {
+  color: var(--sk-color-one);
+}
+
+/* line 65, ../sass/components/_steps.scss */
+.steps ul li.active .progress {
+  background-color: var(--sk-color-one);
+  display: grid;
+  place-items: center;
+}
+
+/* line 70, ../sass/components/_steps.scss */
+.steps li.active .progress::after {
+  background-color: var(--sk-color-one);
+}
+
+/* line 73, ../sass/components/_steps.scss */
+.steps ul li.active .progress p {
+  display: none;
+}
+
+/* line 76, ../sass/components/_steps.scss */
+.steps ul li.active .progress .uil {
+  font-size: 20px;
+  display: flex;
+}
+
+/* Current Css */
+/* line 82, ../sass/components/_steps.scss */
+.steps ul li.current .text, .steps ul li.current .icon {
+  color: var(--sk-color-four);
+}
+
+/* line 85, ../sass/components/_steps.scss */
+.steps ul li.current .progress {
+  background-color: var(--sk-color-four);
+  display: grid;
+  place-items: center;
+}
+
+/* line 90, ../sass/components/_steps.scss */
+.steps li.current .progress::after {
+  background-color: var(--sk-color-one);
+}
+
+/* line 93, ../sass/components/_steps.scss */
+.steps ul li.current .progress p {
+  display: none;
+}
+
+/* line 96, ../sass/components/_steps.scss */
+.steps ul li.current .progress .icon_current {
+  font-size: 20px;
+  display: flex;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+/* Responsive Css  */
+@media (max-width: 980px) {
+  /* line 108, ../sass/components/_steps.scss */
+  .steps ul {
+    flex-direction: column;
+  }
+
+  /* line 111, ../sass/components/_steps.scss */
+  .steps ul li {
+    flex-direction: row;
+  }
+
+  /* line 114, ../sass/components/_steps.scss */
+  .steps ul li .progress {
+    margin: 0 30px;
+  }
+
+  /* line 117, ../sass/components/_steps.scss */
+  .steps .progress::after {
+    width: 5px;
+    height: 55px;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* line 124, ../sass/components/_steps.scss */
+  .steps .one::after {
+    height: 0;
+  }
+
+  /* line 127, ../sass/components/_steps.scss */
+  .steps ul li .icon {
+    margin: 15px 0;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

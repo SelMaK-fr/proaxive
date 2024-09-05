@@ -1,6 +1,6 @@
-<div class="item-list {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' and hot is defined %}item-list-ribbon{% endif %}">
-    <a href="{{ url_for('intervention_read', {'id': data.id}) }}">
-        {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' and hot is defined %}
+<div class="item-list {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' %}item-list-ribbon{% endif %}">
+    <a href="{{ url_for('intervention_update', {'id': data.id}) }}">
+        {% if data.a_priority == 'URGENT' or data.a_priority == 'ABSOLUTE' %}
             <div class="ribbon ribbon-bookmark ribbon-vertical-left ribbon-one"><i class="ri-fire-fill"></i></div>
         {% endif %}
         <div class="item-list__content">

@@ -17,7 +17,7 @@ class TaskListType extends Type
                 'label' => "Tâches",
                 'required' => false,
                 'multiple' => true,
-                'choices' => self::getTask(),
+                'choices' => self::getTask()
             ])
             ;
 

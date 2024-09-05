@@ -1,0 +1,61 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}
+    Intervention du {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('backoffice/intervention/includes/_meta_btn.html.twig') }}
+    <div class="grid-12">
+        <div class="col-9_sm-12">
+            <ul id="tabs" class="nav-components">
+                <li><a href="{{ url_for('intervention_update', {id:i.id}) }}"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
+                <li><a href="{{ url_for('intervention_update_notes', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Observations et notes</a></li>
+                <li><a class="selected" href="#"><i class="ri-file-2-fill"></i> Fichiers joints</a></li>
+            </ul>
+            <div class="tabs-wrapper documentation-wrapper">
+                <div class="tabs-content">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <h3 class="mb-3">Document(s) lié(s)</h3>
+                            <p>
+                                Veuillez téléverser uniquement des fichiers de type "document" (ex : Word, Excel, PDF, Text)
+                                <br>
+                                Pour l'envoi d'image, une galerie est disponible <a href="#" title="Galerie images de l'intervention n°{{ i.ref_number }}">ICI</a>
+                            </p>
+                            <div class="doc-columns">
+                                <div class="card-add-file p-relative">
+                                    <div class="div-btn" data-target="add_document" data-toggle="modal"></div>
+                                    <div>
+                                        <div class="fs-22px">
+                                            <i class="ri-add-circle-line"></i>
+                                        </div>
+                                        <span class="fw-500">Ajouter un fichier</span>
+                                        <span class="text-muted fs-12px">(PDF,docx, xlsx)</span>
+                                    </div>
+                                </div>
+                                {% for d in documents %}
+                                    <div class="item-file p-relative">
+                                        <div class="fs-44px">
+                                            <i class="ri-file-pdf-line"></i>
+                                        </div>
+                                        <div>
+                                            <h6>{{ d.name }}</h6>
+                                            <p class="text-muted">
+                                                <span class="fs-12px">{{ getConvertBytes(d.size, 2) }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="p-absolute" style="top: 10px;right:10px;">
+                                            <a href="{{ url_for('document_read', {id:d.id}) }}"><i class="ri-download-fill"></i> Télécharger</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('backoffice/intervention/_modal/_add_document.html.twig') }}
+{% endblock %}

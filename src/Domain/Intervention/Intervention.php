@@ -34,7 +34,7 @@ class Intervention extends BaseDTO
     /* @var string */
     private string $ref_for_link;
     /* @var string */
-    private string $state = 'PROGRESS';
+    private string $state = 'VALIDATED';
     private string $customer_name;
     private ?string $equipment_name = null;
     private int $status_id = 1;

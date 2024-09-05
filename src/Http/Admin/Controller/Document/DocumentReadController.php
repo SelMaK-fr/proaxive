@@ -26,8 +26,8 @@ class DocumentReadController extends AbstractController
         $pathFilePdf = $directory . $document->customers_id .'/' . $document->filename;
         $stream = fopen($pathFilePdf, 'r');
         $response = $response
-            ->withHeader('Content-Type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'inline; filename="'.$document->filename.'"');
+            ->withHeader('Accept', 'application/pdf, text/html, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            ->withHeader('Content-Disposition', 'attachment; filename="'.$document->filename.'"');
         return $response->withBody(new Stream($stream));
     }
 }

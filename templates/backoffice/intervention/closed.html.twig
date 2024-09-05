@@ -1,0 +1,24 @@
+<div class="card-inside all-b-d border-blue mb-3">
+    <div class="p-4">
+        <span class="text-blue fs-16px fw-600"><i class="ri-emotion-line fs-32px"></i> Félicitation, cette intervention est terminée !</span>
+        <p>
+            Pour rappel, une intervention cloturée ne peut plus être modifiée. Ci-dessous, retrouvez le bilan de cette intervention.
+        </p>
+    </div>
+</div>
+<div class="grid-12">
+    <div class="col-4_sm-12">
+        <h3>Les tâches effectuées</h3>
+        <ul class="tasks mt-3">
+            {% for t in tForI %}
+                <li class="bg-foreground-child p-2 rd-2">
+                    <span class="t-icon"><i class="ri-check-fill"></i></span>
+                    <span class="t-name">{{ t.name }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-8_sm-12">
+        <h3>Diagnotic final</h3>
+    </div>
+</div>

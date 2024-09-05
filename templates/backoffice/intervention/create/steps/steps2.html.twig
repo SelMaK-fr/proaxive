@@ -51,3 +51,21 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    const items = document.querySelectorAll("#form_intervention_step2-customers_id");
+    items.forEach((item) => new Choices(item, {
+        duplicateItemsAllowed: false,
+        searchEnabled: true,
+        itemSelectText: 'Cliquez pour selectionner',
+    }));
+</script>
+{% endblock %}
+{% block stylesheets %}
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+{% endblock %}

@@ -41,16 +41,14 @@
         <ul id="tabs" class="nav-components">
             <li><a {% if filter is empty %}class="selected"{% endif%} href="{{ url_for('dash_intervention') }}">Toutes</a></li>
             <li><a {% if filter == 'progress' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'progress'}) }}">En cours</a></li>
+            <li><a {% if filter == 'validated' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'validated'}) }}">Validées</a></li>
             <li><a {% if filter == 'pending' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'pending'}) }}">Non finalisées</a></li>
             <li><a {% if filter == 'completed' %}class="selected"{% endif%} href="{{ url_for('dash_intervention', {}, {'filter': 'completed'}) }}">Complètes</a></li>
         </ul>
-        {% if i_hot %}
-        <div class="mb-3 border-bottom-dashed">
-            <h3>Intervention(s) importante(s)</h3>
-        {% for i in i_hot %}
-            {{ include('backoffice/intervention/_item.html.twig', {data:i, hot:true}) }}
-        {% endfor %}
-        </div>
+        {% if filter == 'validated' %}
+            <p class="mt-0">
+                Liste des interventions qui n'ont pas encore été démarrées.
+            </p>
         {% endif %}
         <!-- Check if interventions -->
         {% if interventions is not empty %}

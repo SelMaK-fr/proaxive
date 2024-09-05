@@ -66,4 +66,18 @@ class StatusController extends AbstractController
         }
         return new \Slim\Psr7\Response();
     }
+
+    public function delete(Request $request, Response $response): Response
+    {
+        if($request->getMethod() === 'DELETE'){
+            $data = $request->getParsedBody();
+            if($data){
+                unset($data['_METHOD']);
+                $this->getRepository(StatusRepository::class)->delete((int)$data['id']);
+                $this->session->getFlash()->add('panel-info', "Statut supprimé.");
+                return $this->redirectToRoute('settings_status');
+            }
+        }
+        return new \Slim\Psr7\Response();
+    }
 }

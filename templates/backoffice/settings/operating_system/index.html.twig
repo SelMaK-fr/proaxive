@@ -72,9 +72,8 @@
                                                                         <label class="form-label" for="os_architecture">Architecture
                                                                             <abbr title="Required Field">*</abbr></label>
                                                                         <select class="palmtree-form-control form-control" id="os_architecture" name="os_architecture" required="">
-                                                                            <option value="">Enter your os architecture</option>
-                                                                            <option value="64Bits" {% if(os.os_architecture == '64Bits') %}selected{% endif %}>64Bits</option>
-                                                                            <option value="32Bits" {% if(os.os_architecture == '32Bits') %}selected{% endif %}>32Bits</option>
+                                                                            <option value="x64" {% if(os.os_architecture == '64Bits') %}selected{% endif %}>64Bits</option>
+                                                                            <option value="x86" {% if(os.os_architecture == '32Bits') %}selected{% endif %}>32Bits</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

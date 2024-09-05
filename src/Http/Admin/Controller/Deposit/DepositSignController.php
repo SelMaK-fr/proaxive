@@ -44,7 +44,7 @@ class DepositSignController extends AbstractController
         // Check if deposit as signed
         if($d->is_signed === 1){
             $this->addFlash('panel-info', "Ce dépôt a déjà été signé par le client.");
-            return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $d->i_reference, 'deposit_reference' => $d->reference]);
+            return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $d->i_reference, 'deposit_reference' => $d->reference, 'is_signed' => 1]);
         }
 
         if($request->getMethod() === 'POST'){
@@ -58,7 +58,6 @@ class DepositSignController extends AbstractController
                 ]
             ]);
             if($validator->count() === 0){
-
                 $deposit = $this->getRepository(DepositRepository::class)->joinForId($d->id);
                 if($deposit){
                     // Return settings array
@@ -99,7 +98,7 @@ class DepositSignController extends AbstractController
                         }
                     }
                     // Redirect
-                    return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference']]);
+                    return $this->redirectToRoute('deposit_read', [], ['intervention_reference' => $deposit['i_reference'], 'deposit_reference' => $deposit['reference'], 'is_signed' => 1]);
                 }
             }
             $this->addFlash('panel-error', "Le formulaire n'est pas rempli correctement !");

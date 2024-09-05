@@ -4,6 +4,7 @@ namespace Selmak\Proaxive2\Http\Admin\Controller\Intervention;
 
 use Awurth\Validator\StatefulValidator;
 use Envms\FluentPDO\Exception;
+use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -196,6 +197,7 @@ class InterventionAjaxController extends AbstractController
     }
 
     /**
+     * AT DELETED
      * @param Request $request
      * @param Response $response
      * @param array $args
@@ -217,6 +219,7 @@ class InterventionAjaxController extends AbstractController
     }
 
     /**
+     * AT DELETED
      * @param Request $request
      * @param Response $response
      * @param array $args
@@ -260,6 +263,62 @@ class InterventionAjaxController extends AbstractController
                 ];
             }
             $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+        }
+        return new \Slim\Psr7\Response();
+    }
+
+    /**
+     * Permet de mettre à jour l'état de l'intervention (steps/progress css)
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws Exception
+     */
+    public function updateSteps(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        if($request->getMethod() === 'POST') {
+            $data = $request->getParsedBody();
+            if($data['way_steps'] === 5){
+                $data = [
+                    'end_date' => date('Y-m-d h:i:s'),
+                    'state' => 'COMPLETED',
+                    'way_steps' => 5,
+                    'status_id' => 4,
+                    'is_closed' => 1
+                ];
+                // Todo : send mail
+            } elseif ($data['way_steps'] === 4) {
+                $data['status_id'] = 2;
+            }
+            $i = $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+            if(!$i){
+                return new JsonResponse(['error' => 'Impossible de poursuivre cette action'], 500, []);
+            }
+        }
+        return new \Slim\Psr7\Response();
+    }
+
+    public function updateStatus(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        if($request->getMethod() === 'POST') {
+            $data = $request->getParsedBody();
+            if($data['status_id'] === 4){
+                $data = [
+                    'end_date' => date('Y-m-d h:i:s'),
+                    'state' => 'COMPLETED',
+                    'way_steps' => 5,
+                    'status_id' => 4,
+                    'is_closed' => 1
+                ];
+                // Todo : send mail
+            }
+            $i = $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+            if(!$i){
+                return new JsonResponse(['error' => 'Impossible de poursuivre cette action'], 500, []);
+            }
         }
         return new \Slim\Psr7\Response();
     }

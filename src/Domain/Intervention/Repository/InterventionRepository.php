@@ -132,12 +132,14 @@ class InterventionRepository extends BaseRepository
             cy.zipcode cy_zipcode, cy.city cy_city, cy.created_at cy_created_at, cy.website cy_website, cy.logo cy_logo, cy.siret cy_siret, cy.aprm cy_aprm, cy.ape cy_ape, cy.rm cy_rm, cy.signature cy_signature, e.name e_name, e.brand_name e_brand_name, e.e_year e_year, e.e_model e_model, e.os_name e_os_name, e.id e_id, e.type_name e_type_name, e.e_serial e_serial, u.fullname u_fullname, u.roles u_roles, u.id u_id, 
             u.avatar u_avatar, e.created_at e_created_at, c.city c_city, c.zipcode c_zipcode, c.department c_department, c.phone c_phone,
             c.mobile c_mobile, c.favorite_contact c_favorite_contact, c.address c_address, c.zipcode c_zipcode, c.city c_city, c.mail c_mail, c.login_id c_login_id,
-            d.is_signed d_is_signed, d.deposit_date d_deposit_date')
+            d.is_signed d_is_signed, d.deposit_date d_deposit_date,
+            s.name s_name, s.id s_id, s.color s_color, s.color_txt s_colortxt, s.description s_description')
             ->leftJoin('equipments as e ON e.id = interventions.equipments_id')
             ->leftJoin('users as u ON u.id = interventions.users_id')
             ->leftJoin('customers as c ON c.id = interventions.customers_id')
             ->leftJoin('company as cy ON cy.id = interventions.company_id')
             ->leftJoin('deposit as d ON d.reference = interventions.deposit_reference')
+            ->leftJoin('status as s ON s.id = interventions.status_id')
             ->where('interventions.id = ?', [$id])
             ->fetch()
             ;
@@ -200,7 +202,7 @@ class InterventionRepository extends BaseRepository
                 'users as u ON u.id = interventions.users_id',
                 'company as c ON c.id = interventions.company_id'
             ]
-        )->where('interventions.a_priority = ? OR interventions.a_priority = ? AND interventions.is_closed is null', ['URGENT', 'ABSOLUTE']);
+        )->where('interventions.a_priority = ? OR interventions.a_priority = ?', ['URGENT', 'ABSOLUTE']);
         return $query->fetchAll();
     }
 
@@ -216,7 +218,7 @@ class InterventionRepository extends BaseRepository
         if(!empty($filter)){
             $query = $this->allWithUser()->where('state = ?', $filter)->orderBy('interventions.created_at DESC');
         } else {
-            $query = $this->allWithCompanyAndUser(null, true)->orderBy('interventions.created_at DESC')->where('interventions.a_priority != ? AND interventions.a_priority != ?', ['URGENT', 'ABSOLUTE']);
+            $query = $this->allWithCompanyAndUser(null, true)->orderBy('interventions.created_at DESC');
         }
         $req = new PagerfantaQuery($query);
         return (new Pagerfanta($req))

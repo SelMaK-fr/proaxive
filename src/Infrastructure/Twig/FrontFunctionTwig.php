@@ -129,9 +129,11 @@ class FrontFunctionTwig extends AbstractExtension
         } elseif($data == 'VALIDATED'){
             return '<span class="label-mid btn-light-info">VALIDÉE</span>';
         } elseif ($data == 'PROGRESS'){
-            return '<span class="label-mid btn-light-info">EN TRAITEMENT</span>';
+            return '<span class="label-mid btn-light-info">OUVERTE</span>';
         } elseif ($data == 'COMPLETED'){
             return '<span class="label-mid badge-light-green"><i class="ri-check-line"></i> COMPLÈTE</span>';
+        }  elseif ($data == 'CANCELED'){
+            return '<span class="label-mid badge-light-pink"><i class="ri-close-circle-line"></i> ANNULÉE</span>';
         } elseif ($data == 'PENDING'){
             return '<span class="label-mid badge-light-pink"><i class="ri-alarm-warning-line"></i> A FINALISER</span>';
         }

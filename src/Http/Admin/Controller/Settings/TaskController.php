@@ -77,7 +77,8 @@ class TaskController extends AbstractController
             if($validator->count() === 0) {
                 $checkIfExist = $this->getRepository(TaskRepository::class)->ifExist('name', $data['name']);
                 if($id != 0){
-                    $this->getRepository(TaskRepository::class)->update($data, $id);
+                    $this->getRepository(TaskRepository::class)->update($data, $id, false);
+                    $this->addFlash('panel-info', "Action effectuée avec succès");
                 } else {
                     if($checkIfExist === 0) {
                         $this->getRepository(TaskRepository::class)->add($data);
