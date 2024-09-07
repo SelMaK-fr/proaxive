@@ -38,7 +38,7 @@ class AddTaskToInterventionController extends AbstractController
                     foreach ($array as $dataT){
                         if((int)$dataT['tasks_id'] === $dt['tasks_id']){
                             $this->addFlash('panel-error', 'Cette tâche a déjà été effectuée !');
-                            return $this->redirectToRoute('intervention_update', ['id' => $intervention_id]);
+                            return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
                         }
                     }
                 }
@@ -48,7 +48,7 @@ class AddTaskToInterventionController extends AbstractController
                 } else {
                     $this->addFlash('panel-error', 'Impossible de poursuivre.');
                 }
-                return $this->redirectToRoute('intervention_update', ['id' => $intervention_id]);
+                return $this->redirectToRoute('intervention_read', ['id' => $intervention_id]);
             }
             $this->addFlash('panel-error', "Veuillez sélectionner une tâche !");
             return $this->redirectToReferer($request);
