@@ -237,7 +237,6 @@ class BaseRepository
 
         $values->setCreatedAt(new Literal('NOW()'));
         $values->setUpdatedAt(new Literal('NOW()'));
-
         return $this->query->insertInto($this->model)->values(get_object_vars($values))->execute();
     }
 

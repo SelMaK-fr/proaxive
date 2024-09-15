@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Http\Admin\Controller\Settings;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Domain\Application\SettingRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use SensioLabs\AnsiConverter\Theme\SolarizedXTermTheme;
@@ -32,7 +33,7 @@ class UpdateAppController extends AbstractController
             }
             // Check if require is checked, if yes, run "make migrate"
             if(isset($data['migrate'])){
-                $command .= '&& ls';
+                $command .= '&& make migrate';
             }
             $command .= ' 2>&1';
 
@@ -45,6 +46,7 @@ class UpdateAppController extends AbstractController
                 $message = 'Erreur lors de l\'exécution : ';
             }
         }
+        $setting = $this->getRepository(SettingRepository::class)->find('id', 1);
         //
         $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
@@ -56,6 +58,7 @@ class UpdateAppController extends AbstractController
             'currentMenu' => 'settings',
             'setting_current' => 'update',
             'breadcrumbs' => $breadcrumbs,
+            'setting' => $setting,
             'output' => $output,
             'message' => $message
         ]);

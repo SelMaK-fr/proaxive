@@ -17,7 +17,7 @@ final class TasksCreateModel extends AbstractMigration
      * with the Table class.
      */
 
-    public function change(): void
+    public function up(): void
     {
         $this->table('tasks')
             ->addColumn('name', 'string')
@@ -41,5 +41,11 @@ final class TasksCreateModel extends AbstractMigration
                 'update' => 'NO_ACTION'
             ])
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('tasks')->drop()->update();
+        $this->table('tasks_assoc')->drop()->update();
     }
 }

@@ -16,7 +16,7 @@ final class EquipmentUpdateModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('equipments')
             ->addColumn('localization_site', 'text', [
@@ -28,5 +28,13 @@ final class EquipmentUpdateModel extends AbstractMigration
             ])
             ->update();
         ;
+    }
+
+    public function down(): void
+    {
+        $this->table('equipments')
+            ->removeColumn('localization_site')
+            ->removeColumn('picture')
+            ->update();
     }
 }

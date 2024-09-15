@@ -50,7 +50,6 @@ class EquipmentUploadPictureController extends AbstractController
                 $errors = [];
                 foreach ($validator as $failure) {
                     $errors[] = $failure->getMessage();
-
                 }
                 $this->addFlash('panel-error', $errors[0]);
                 return $this->redirectToRoute('equipment_update', ['id' => $equipment_id]);

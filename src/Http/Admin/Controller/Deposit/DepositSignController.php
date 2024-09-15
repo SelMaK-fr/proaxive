@@ -104,9 +104,17 @@ class DepositSignController extends AbstractController
             $this->addFlash('panel-error', "Le formulaire n'est pas rempli correctement !");
             return $this->redirectToReferer($request);
         }
+        // Breadcrumbs
+        $breadcrumbs = $this->breadcrumbs;
+        $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
+        $breadcrumbs->addCrumb('Dépôt', false);
+        $breadcrumbs->addCrumb($d->reference, false);
+        $breadcrumbs->render();
+        // .Breadcrumbs
         return $this->render($response, 'backoffice/deposit/sign.html.twig', [
             'd' => $d,
             'c' => $c,
+            'breadcrumbs' => $breadcrumbs,
             'currentMenu' => 'deposit'
         ]);
     }

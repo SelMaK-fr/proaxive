@@ -16,7 +16,7 @@ final class InterventionsToCompanyModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('interventions')
             ->addColumn('company_id', 'integer', ['null' => true])
@@ -24,6 +24,14 @@ final class InterventionsToCompanyModel extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'update' => 'NO_ACTION'
             ])
+            ->update();
+    }
+
+    public function down(): void
+    {
+        $this->table('interventions')
+            ->removeColumn('company_id')
+            ->dropForeignKey('company_id')
             ->update();
     }
 }

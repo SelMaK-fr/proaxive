@@ -3,7 +3,10 @@ Dotenv\Dotenv::createImmutable(__DIR__)->load();
 return
 [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/src/Infrastructure/Migrations',
+        'migrations' => [
+            '%%PHINX_CONFIG_DIR%%/src/Infrastructure/Migrations',
+            '%%PHINX_CONFIG_DIR%%/src/Addon/Inventory/Infrastructure/Migrations',
+        ],
         'seeds' => '%%PHINX_CONFIG_DIR%%/src/Infrastructure/Seeder'
     ],
     'environments' => [

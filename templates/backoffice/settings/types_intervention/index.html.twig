@@ -1,0 +1,121 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Catégories des interventions{% endblock %}
+
+{% block body %}
+
+    <div class="grid">
+        <div class="col-2_sm-12">
+            {{ include('backoffice/settings/_includes/_navigation.html.twig') }}
+        </div>
+        <div class="col-10_sm-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="grid-2 -noGutter">
+                        <div class="col-6_sm-12">
+                            <h2>Catégories des interventions (Types)</h2>
+                            <span>Ajouter ou supprimer les catégories pour les interventions</span>
+                        </div>
+                        <div class="col-6_sm-12 text-right">
+                            <button type="button" data-target="add_type" data-toggle="modal" class="btn btn-light-four"><i class="ri-add-line"></i> Ajouter une catégorie</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if types is not empty %}
+                        <div class="boxed-shadow p-relative overflow-hidden br-5">
+                            <table class="table-radius table-shadow" id="table-visible">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for type in types %}
+                                    <tr>
+                                        <td>{{ type.name }}</td>
+                                        <td class="p-relative">
+                                            <div class="admin-tools">
+                                                <span class="d-block text-right">
+                                                <button class="btn-sm btn-nothing toggle" type="button"><i class="ri-more-fill"></i></button>
+                                            </span>
+                                                <div class="table-submenu">
+                                                    <button data-target="edit_type{{ type.id }}" data-toggle="modal"><i class="ri-pencil-line"></i> Modifier</button>
+                                                    <form action="{{ url_for('settings_type_intervention_delete') }}" method="post">
+                                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                                        <input type="hidden" name="id" value="{{ type.id }}">
+                                                        <button type="submit" class="delete-confirm"><i class="ri-delete-bin-2-line"></i> Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!-- EDIT -->
+                                            <div class="modal" id="edit_type{{ type.id }}">
+                                                <div class="modal-container">
+                                                    <div class="modal-header">
+                                                        <h1>Modification</h1>
+                                                    </div>
+                                                    <form method="post" action="{{ url_for('settings_type_intervention_update') }}?id={{ type.id }}">
+                                                        <div class="modal-content">
+                                                            <div class="grid-2 mt-5">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="name" class="form-label">Dénomination</label>
+                                                                        <input type="text" name="name" value="{{ type.name }}" class="form-control" id="name">
+                                                                    </div>
+                                                                    <div class="form-group mb-3 form-check">
+                                                                        <input class="palmtree-form-control form-check-input" type="checkbox" id="is_peripheral" name="is_peripheral" placeholder="Enter your is peripheral" value="1" {% if type.is_peripheral == 1 %}checked{% endif %}>
+                                                                        <label class="form-label form-check-label" for="is_peripheral">Catégorie pour périphérique</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-light-four">Sauvegarder</button>
+                                                            <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center boxed-shadow">
+                            <span>
+                                <i class="fs-80px ri-server-line"></i>
+                            </span>
+                            <h3>Aucune Catégorie pour les équipements</h3>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ADD -->
+    <div class="modal" id="add_type">
+        <div class="modal-container">
+            {{ form.renderStart | raw }}
+            <div class="modal-header">
+                <h1>Nouveau type</h1>
+            </div>
+            <div class="modal-content">
+                Création d'une nouvelle catégorie afin de l'utiliser dans les interventions.
+                <div class="grid-2 mt-5">
+                    <div class="col">
+                        {{ form.renderField('name') | raw }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-light-four">Créer</button>
+                <button data-dismiss="modal" class="modal__close btn btn-light-pink">Annuler</button>
+            </div>
+            {{ form.renderEnd(false) | raw }}
+        </div>
+    </div>
+{% endblock %}

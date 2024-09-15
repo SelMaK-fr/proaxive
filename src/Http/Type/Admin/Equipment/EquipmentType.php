@@ -180,9 +180,9 @@ final class EquipmentType extends Type
     private function getOperatingSystem(): array
     {
         $operatingSystem = [];
-        $req = $this->query->from('operating_systems')->select(null)->select('operating_systems.id, operating_systems.os_name')->fetchAll();
+        $req = $this->query->from('operating_systems')->select(null)->select('operating_systems.id, operating_systems.os_name, operating_systems.os_release')->orderBy('os_order ASC')->fetchAll();
         foreach ($req as $os) {
-            $operatingSystem[$os['id']] = $os['os_name'];
+            $operatingSystem[$os['id']] = '[' . $os['os_release'] . '] ' . $os['os_name'];
         }
         return $operatingSystem;
     }

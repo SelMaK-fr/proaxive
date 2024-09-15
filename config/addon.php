@@ -2,6 +2,9 @@
 /**
  * Initialize addon's Proaxive
  */
-return [
 
+use Selmak\Proaxive2\Addon\Inventory\InventoryModule;
+
+return [
+    //'ModulName' => NameModule::class
 ];

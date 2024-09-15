@@ -71,6 +71,11 @@
                     </div>
                 </div>
             </div>
+            <p class="text-center">
+                <a href="{{ workshop.website }}" target="_blank"><strong>{{ workshop.type }} {{ workshop.name }}</strong></a>
+                <br>
+                {{ workshop.address }}, {{ workshop.city }} {{ workshop.zipcode }} | Tél : {{ workshop.phone }} | Siret : {{ workshop.siret }}
+            </p>
         </div>
     </div>
 {% endblock %}

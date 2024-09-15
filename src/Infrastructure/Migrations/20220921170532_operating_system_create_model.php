@@ -16,7 +16,7 @@ final class OperatingSystemCreateModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('operating_systems')
             ->addColumn('os_name', 'string')
@@ -25,5 +25,10 @@ final class OperatingSystemCreateModel extends AbstractMigration
             ->addColumn('os_about', 'text', ['null' => true])
             ->addColumn('os_full', 'string', ['null' => true])
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('operating_systems')->drop()->update();
     }
 }

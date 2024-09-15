@@ -81,6 +81,21 @@
                                     {% endif %}
                                 </div>
                             </div>
+                            <h3 class="mt-4">Galerie public</h3>
+                            <p class="mt-0">Retrouvez ci-dessous les photos partagées par le technicien.</p>
+                            <div class="grid-12">
+                                {% if pictures is empty %}
+                                    <div class="alert alert-info alert-dashed mb-0">Aucune photo pour le moment</div>
+                                {% else %}
+                                {% for p in pictures %}
+                                    {% if p.is_online == 1 %}
+                                        <div class="col-4_sm-12">
+                                            <img class="img-responsive" src="{{ url_for('gallery_view_picture', {'id':i.id, 'pid':p.id}) }}" alt="">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}

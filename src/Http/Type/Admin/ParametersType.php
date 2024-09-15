@@ -7,6 +7,7 @@ use Palmtree\Form\FormBuilder;
 use Palmtree\Form\Type\CheckboxType;
 use Palmtree\Form\Type\ChoiceType;
 use Palmtree\Form\Type\NumberType;
+use Palmtree\Form\Type\TextType;
 use Selmak\Proaxive2\Http\Type\Type;
 
 class ParametersType extends Type

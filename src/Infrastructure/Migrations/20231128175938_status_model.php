@@ -16,12 +16,19 @@ final class StatusModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('status')
             ->addColumn('name', 'string')
             ->addColumn('color', 'string', ['null' => true])
             ->addColumn('fixed', 'boolean')
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('status')
+            ->drop()
+            ->update();
     }
 }

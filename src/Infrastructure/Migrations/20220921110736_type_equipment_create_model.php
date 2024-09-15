@@ -16,12 +16,17 @@ final class TypeEquipmentCreateModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('types_equipments')
             ->addColumn('name', 'string', ['null' => true])
             ->addColumn('slug', 'string', ['null' => true])
             ->addColumn('is_peripheral', 'boolean', ['null' => true])
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('types_equipments')->drop()->update();
     }
 }

@@ -29,6 +29,7 @@ class InterventionUpdateType extends Type
                 'choices' => [
                     'Dépannage' => 'Dépannage',
                     'Réparation' => 'Réparation',
+                    'Entretiens' => 'Entretiens',
                     'Visite périodique' => 'Visite périodique',
                     'Préparation de poste' => 'Préparation de poste',
                     'Assemblage' => 'Assemblage',

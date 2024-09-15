@@ -16,7 +16,7 @@ final class CustomerCreateModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('customers')
             ->addColumn('mail', 'string', ['null' => true])
@@ -70,5 +70,10 @@ final class CustomerCreateModel extends AbstractMigration
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('customers')->drop()->update();
     }
 }

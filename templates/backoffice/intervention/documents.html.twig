@@ -12,6 +12,7 @@
                 <li><a href="{{ url_for('intervention_read', {id:i.id}) }}"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
                 <li><a href="{{ url_for('intervention_update_notes', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Observations et notes</a></li>
                 <li><a class="selected" href="#"><i class="ri-file-2-fill"></i> Fichiers joints</a></li>
+                <li><a href="{{ url_for('intervention_gallery', {id:i.id}) }}"><i class="ri-picture-in-picture-2-fill"></i> Galerie photos</a></li>
             </ul>
             <div class="tabs-wrapper documentation-wrapper">
                 <div class="tabs-content">

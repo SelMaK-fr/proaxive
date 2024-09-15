@@ -145,7 +145,7 @@
         </tr>
         <tr>
             <td class="br-r">Suivi : </td>
-            <td>Téléphone : {{ i.c_phone }} / {{ i.c_mobile }}</td>
+            <td>Téléphone : {{ i.c_phone }} {% if i.c_mobile %}/ {{ i.c_mobile }}{% endif %}</td>
         </tr>
         <tr>
             <td class="br-r">Technicien : {{ i.u_fullname }}</td>

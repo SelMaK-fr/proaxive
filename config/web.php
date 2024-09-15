@@ -5,6 +5,7 @@ use Selmak\Proaxive2\Domain\Application\Middleware\CheckDateCodeInitMiddleware;
 use Selmak\Proaxive2\Domain\Company\Middleware\IfUpdateSocietyMiddleware;
 use Selmak\Proaxive2\Domain\Customer\Middleware\RedirectIfNotAuthMiddleware;
 use Selmak\Proaxive2\Domain\Equipment\Middleware\IfUpdatePeripheralMiddleware;
+use Selmak\Proaxive2\Domain\Intervention\Gallery\Middleware\HasAccessToImageMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\CheckUrlCreateMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDarftMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
@@ -39,6 +40,9 @@ use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\Peripheral
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\Upload\EquipmentUploadPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateArgsController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionAddPictureController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionDeletePictureController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionViewPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateController;
@@ -60,6 +64,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Settings\ParametersController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\StatusController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TaskController as SettingTask;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\TypeEquipmentController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\TypeInterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\UpdateAppController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Version\VersionAppUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Society\SocietyUpdateController;
@@ -77,6 +82,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopUpdateController;
 use Selmak\Proaxive2\Http\Controller\Account\UserAccountController;
 use Selmak\Proaxive2\Http\Controller\Account\UserResetController;
 use Selmak\Proaxive2\Http\Controller\IndexController;
+use Selmak\Proaxive2\Http\Controller\Intervention\Gallery\GalleryViewPictureController;
 use Selmak\Proaxive2\Http\Controller\Intervention\InterventionReadController as FrontInterventionRead;
 use Selmak\Proaxive2\Http\Controller\Intervention\InterventionSearchController as FrontInterventionSearch;
 use Selmak\Proaxive2\Http\Controller\Portal\LoginController;
@@ -205,8 +211,16 @@ return function (App $app) {
        $group->any('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
        $group->any('/{id:[0-9]+}/validation', InterventionValidatedController::class)->setName('intervention_validation');
        $group->get('/{id:[0-9]+}/pdf', InterventionToPdfController::class)->setName('intervention_open_pdf');
+       $group->any('/{id:[0-9]+}/gallery', [InterventionUpdateController::class, 'gallery'])->setName('intervention_gallery');
+       $group->post('/{id:[0-9]+}/gallery/add', InterventionAddPictureController::class)->setName('intervention_add_picture');
+        $group->get('/img/i-{id:[0-9]+}_p-{pid:[0-9]+}', GalleryViewPictureController::class)->setName('intervention_view_picture');
        $group->delete('/{id:[0-9]+}/delete', [InterventionDeleteController::class, 'delete'])->setName('intervention_delete')->add(RedirectIfNotAdminMiddleware::class);
+       $group->delete('/img/i-{id:[0-9]+}_p-{pid:[0-9]+}/delete', InterventionDeletePictureController::class)->setName('intervention_delete_picture');
     })->add(RedirectIfNotAdminOrTechMiddleware::class)->add(IfDataNullOrEmptyMiddleware::class);
+    /* Gallery for customer with Middleware */
+    $app->group('/gallery', function (RouteCollectorProxy $group) {
+        $group->get('/i-{id:[0-9]+}_p-{pid:[0-9]+}', GalleryViewPictureController::class)->setName('gallery_view_picture')->add(HasAccessToImageMiddleware::class);
+    });
     /* Deposit */
     $app->group('/admin/deposit', function (RouteCollectorProxy $group) {
        $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');
@@ -251,10 +265,16 @@ return function (App $app) {
        $group->post('/tasks/create', [SettingTask::class, 'actionForm'])->setName('settings_task_create');
        $group->post('/tasks/update[:{args}]', [SettingTask::class, 'actionForm'])->setName('settings_task_update');
        $group->delete('/tasks/delete', [SettingTask::class, 'delete'])->setName('settings_task_delete');
+       // Type Equipment
        $group->get('/types', [TypeEquipmentController::class, 'index'])->setName('settings_type_equipment');
        $group->post('/types/create', [TypeEquipmentController::class, 'actionForm'])->setName('settings_type_equipment_create');
        $group->post('/types/update[:{args}]', [TypeEquipmentController::class, 'actionForm'])->setName('settings_type_equipment_update');
        $group->delete('/types/delete', [TypeEquipmentController::class, 'delete'])->setName('settings_type_equipment_delete');
+       // Type Intervention
+        $group->get('/types/intervention', [TypeInterventionController::class, 'index'])->setName('settings_type_intervention');
+        $group->post('/types/intervention/create', [TypeInterventionController::class, 'actionForm'])->setName('settings_type_intervention_create');
+        $group->post('/types/intervention/update[:{args}]', [TypeInterventionController::class, 'actionForm'])->setName('settings_type_intervention_update');
+        $group->delete('/types/intervention/delete', [TypeInterventionController::class, 'delete'])->setName('settings_type_intervention_delete');
        $group->get('/brands', [BrandController::class, 'index'])->setName('settings_brand');
        $group->post('/brands/create', [BrandController::class, 'actionForm'])->setName('settings_brand_create');
        $group->post('/brands/update[:{args}]', [BrandController::class, 'actionForm'])->setName('settings_brand_update');

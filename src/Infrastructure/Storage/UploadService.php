@@ -6,14 +6,14 @@ use Slim\Psr7\UploadedFile;
 
 class UploadService implements UploadInterface
 {
-    const PERMESSIONS = 0777;
+    const PERMISSIONS = 0777;
     public function move($directory, UploadedFile $uploadedFile): string
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
         $basename = bin2hex(random_bytes(8));
         $filename = sprintf('%s.%0.8s', $basename, $extension);
         if (!file_exists($directory)) {
-            mkdir($directory, self::PERMESSIONS, true);
+            mkdir($directory, self::PERMISSIONS, true);
         }
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 

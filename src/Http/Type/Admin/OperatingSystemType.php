@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Http\Type\Admin;
 use Palmtree\Form\Form;
 use Palmtree\Form\FormBuilder;
 use Palmtree\Form\Type\ChoiceType;
+use Palmtree\Form\Type\NumberType;
 use Palmtree\Form\Type\TextType;
 use Selmak\Proaxive2\Http\Type\Type;
 
@@ -29,6 +30,10 @@ class OperatingSystemType extends Type
             ->add('os_release', TextType::class, [
                 'label' => 'Version du système',
                 'placeholder' => 'ex : 22h2'
+            ])
+            ->add('os_order', NumberType::class, [
+                'label' => 'Ordre',
+                'placeholder' => "ex : 2"
             ])
             ;
         return $builder->getForm();

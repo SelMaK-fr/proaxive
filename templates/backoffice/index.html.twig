@@ -3,9 +3,6 @@
 {% block title %}Panel d'administration de Proaxive{% endblock %}
 
 {% block body %}
-    <div class="alert alert-light-info">
-        <strong>Note importante</strong> : début de la mise à jour importante côté session utilisateur. Si des problèmes surviennent, merci de m'en faire part sur le Discord.
-    </div>
     <div class="grid-12">
         <div class="col-5_sm-12">
             <div class="card">
@@ -108,24 +105,26 @@
                 <div class="card-body p-0">
                     {% if interventions is not empty %}
                     <div class="table-responsive">
-                        <table class="table table-default table-card">
+                        <table class="table table-default table-card table-clickable">
                             <thead>
                                 <tr>
                                     <th>Référence</th>
                                     <th>Client</th>
                                     <th>Date</th>
                                     <th>Statut</th>
+                                    <th>Type</th>
                                     <th>Etat</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                             {% for i in interventions %}
-                                <tr>
+                                <tr data-href="{{ url_for('intervention_read', {id:i.id}) }}" style="cursor: pointer">
                                     <td><a class="fw-400" href="{{ url_for('intervention_read', {id:i.id}) }}" title="{{ i.name }}">{{ i.ref_number }}</a></td>
                                     <td>{{ getStringData(i.customer_name ) }}</td>
                                     <td>{{ i.created_at | date('d.M.Y') }}</td>
                                     <td>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</td>
+                                    <td>{{ i.sort }}</td>
                                     <td>{{ getDataWayStepsStatus(i.way_steps) }}</td>
                                     <td>
                                         {% if i.state == 'PENDING' %}
@@ -198,5 +197,13 @@
     <script type="text/javascript" src="/assets/js/charts-data/dash.home.js"></script>
     <script>
         dashHomeStatIntervention();
+        const tableRows = document.querySelectorAll(".table-clickable tbody tr");
+
+        for (const tableRow of tableRows) {
+            tableRow.addEventListener("click", function () {
+                window.open(this.dataset.href, "_self");
+                //window.location.href = this.dataset.href;
+            });
+        }
     </script>
 {% endblock %}

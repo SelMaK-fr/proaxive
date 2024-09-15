@@ -33,6 +33,13 @@ final class Update204Model extends AbstractMigration
      */
     public function down(): void
     {
-
+        $this->table('interventions')
+            ->removeColumn('deposit_reference')
+            ->update();
+        $this->table('customers')
+            ->removeColumn('lastname')
+            ->removeColumn('firstname')
+            ->removeColumn('civility')
+            ->update();
     }
 }

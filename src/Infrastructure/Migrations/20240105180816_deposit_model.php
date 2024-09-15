@@ -16,7 +16,7 @@ final class DepositModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('deposit')
             ->addColumn('reference', 'string')
@@ -49,5 +49,12 @@ final class DepositModel extends AbstractMigration
                 'update' => 'NO_ACTION'
             ])
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('deposit')
+            ->drop()
+            ->update();
     }
 }

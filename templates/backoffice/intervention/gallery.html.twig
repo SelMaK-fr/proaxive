@@ -1,0 +1,65 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}
+    Intervention du {{ i.created_at | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('backoffice/intervention/includes/_meta_btn.html.twig') }}
+    <ul id="tabs" class="nav-components">
+        <li><a href="{{ url_for('intervention_read', {id:i.id}) }}"><i class="ri-information-fill"></i> Tâches/Diagnostic</a></li>
+        <li><a href="{{ url_for('intervention_update_notes', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Observations et notes</a></li>
+        <li><a href="{{ url_for('intervention_files', {id:i.id}) }}"><i class="ri-file-2-fill"></i> Fichiers joints</a></li>
+        <li><a class="selected" href="#"><i class="ri-picture-in-picture-2-fill"></i> Galerie photos</a></li>
+    </ul>
+    <div class="grid-12">
+        <div class="col-9_sm-12">
+            <div class="card">
+                <div class="card-body p-4">
+                    <h3 class="mb-3">Photo(s)/Image(s) lié(e)(s)</h3>
+                    <div class="grid-12">
+                        {% for p in pictures %}
+                            <div class="col-3_sm-12 p-relative">
+                                <div>
+                                    <h6>{{ p.name }}</h6>
+                                    <img class="img-responsive" src="{{ url_for('intervention_view_picture', {'id':p.interventions_id, 'pid':p.id}) }}" alt="{{ p.name }}">
+                                </div>
+                                <div class="p-absolute" style="top: 10px;right:10px;">
+                                    <form method="post" action="{{ url_for('intervention_delete_picture', {id:p.interventions_id,pid:p.id}) }}">
+                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                        <button type="submit" class="btn-sm btn-sk-one">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3_sm-12">
+            <div class="tabs-wrapper documentation-wrapper">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h3 class="mb-3">Téléversement</h3>
+                        <p>
+                            Veuillez téléverser uniquement des fichiers de type "image" (ex : JPG/JPEG, PNG, GIF)
+                            <br>
+                            Pour l'envoi de document, le formulaire est disponible <a href="{{ url_for('intervention_files', {id:i.id}) }}" title="Galerie images de l'intervention n°{{ i.ref_number }}">ICI</a>
+                        </p>
+                        <div class="card-add-file p-relative">
+                            <div class="div-btn" data-target="add_document" data-toggle="modal"></div>
+                            <div>
+                                <div class="fs-22px">
+                                    <i class="ri-add-circle-line"></i>
+                                </div>
+                                <span class="fw-500">Ajouter un fichier</span>
+                                <span class="text-muted fs-12px">(jpg,png,gif,webp)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('backoffice/intervention/_modal/_add_picture.html.twig') }}
+{% endblock %}

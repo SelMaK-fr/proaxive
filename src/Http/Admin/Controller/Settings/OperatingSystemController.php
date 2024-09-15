@@ -33,7 +33,7 @@ class OperatingSystemController extends AbstractController
      */
     public function index(Request $request, Response $response): Response
     {
-        $operatingSystem = $this->getRepository(OperatingSystemRepository::class)->all();
+        $operatingSystem = $this->getRepository(OperatingSystemRepository::class)->all()->orderBy('os_order ASC');
         $form = $this->createForm(OperatingSystemType::class);
         $form->setAction($this->getUrlFor('settings_os_create'));
         $form->handleRequest();

@@ -16,7 +16,7 @@ final class UsersToCompanyModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('users')
             ->addColumn('company_id', 'integer', ['null' => true])
@@ -24,6 +24,14 @@ final class UsersToCompanyModel extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'update' => 'NO_ACTION'
             ])
+            ->update();
+    }
+
+    public function down(): void
+    {
+        $this->table('users')
+            ->removeColumn('company_id')
+            ->dropForeignKey('company_id')
             ->update();
     }
 }

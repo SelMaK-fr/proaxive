@@ -45,7 +45,7 @@ class AddonLoaderMiddleware implements MiddlewareInterface
                             $addonInstance->initRoute();
                         }
                         if (method_exists($addonInstance, 'initMenu')) {
-                            // Appeler la méthode initRoute pour gérer les routes de l'addon
+                            // Appeler la méthode initMenu pour ajouter l'item au menu
                             $addonInstance->initMenu();
                         }
                         // Vous pouvez également effectuer d'autres tâches avec l'addon si nécessaire

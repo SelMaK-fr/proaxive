@@ -2,10 +2,11 @@
     <a href="{{ url_for('dash_account') }}" {% if setting_current is defined and setting_current == 'account' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-profile-fill"></i></span><span>Profil</span></a>
     <a href="{{ url_for('settings_preference') }}" {% if setting_current is defined and setting_current == 'preference' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-settings-2-fill"></i></span><span>Préférences</span></a>
     <a href="{{ url_for('settings_type_equipment') }}" {% if setting_current is defined and setting_current == 'types' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-folder-2-fill"></i></span><span>Types Equipement</span></a>
+    <a href="{{ url_for('settings_type_intervention') }}" {% if setting_current is defined and setting_current == 'types_intervention' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-folder-2-fill"></i></span><span>Types Intervention</span></a>
     <a href="{{ url_for('settings_brand') }}" {% if setting_current is defined and setting_current == 'brand' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-building-4-fill"></i></span><span>Marques</span></a>
     <a href="{{ url_for('settings_os') }}" {% if setting_current is defined and setting_current == 'operatingSystem' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-microsoft-fill"></i></span><span>Systèmes d'exploitation</span></a>
     <a href="{{ url_for('settings_task') }}" {% if setting_current is defined and setting_current == 'tasks' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-list-check-2"></i></span><span>Tâches (Interventions)</span></a>
     <a href="{{ url_for('settings_status') }}" {% if setting_current is defined and setting_current == 'status' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-check-line"></i></span><span>Statuts</span></a>
     <a href="" {% if setting_current is defined and setting_current == 'import_data' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-database-2-fill"></i></span><span>Importer des données</span></a>
-    <a href="#"><span class="d-block mr-2"><i class="ri-history-fill"></i></span><span>Mise à jour et version</span></a>
+    <a href="{{ url_for('settings_update') }}" {% if setting_current is defined and setting_current == 'update' %}class="current"{% endif %}><span class="d-block mr-2"><i class="ri-history-fill"></i></span><span>Mise à jour et version</span></a>
 </div>

@@ -10,7 +10,7 @@ ini_set('display_startup_errors', '0');
 date_default_timezone_set('Europe/Paris');
 $settings = [
     'app' => [
-        'name'   => 'Proaxive',
+        'name'   => 'Proaxive', // Sitename or your business name
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',
@@ -80,6 +80,7 @@ $settings = [
         'bao' => dirname(__DIR__) . '/storage/app/bao',
         'backups' => dirname(__DIR__) . '/storage/backups/',
         'documents' => dirname(__DIR__) . '/storage/documents/',
+        'gallery' => dirname(__DIR__) . '/storage/gallery/',
         'temp' => dirname(__DIR__) . '/storage/tmp'
     ]
 ];

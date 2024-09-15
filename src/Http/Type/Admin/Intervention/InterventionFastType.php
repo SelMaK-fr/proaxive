@@ -39,15 +39,7 @@ class InterventionFastType extends Type
             ->add('sort', ChoiceType::class, [
                 'label' => 'Type',
                 'placeholder' => 'Choisissez un type',
-                'choices' => [
-                    'Dépannage' => 'Dépannage',
-                    'Réparation' => 'Réparation',
-                    'Visite périodique' => 'Visite périodique',
-                    'Préparation de poste' => 'Préparation de poste',
-                    'Assemblage' => 'Assemblage',
-                    'Expertise' => 'Expertise',
-                    'Devis' => 'Devis',
-                ]
+                'choices' => self::getTypeIntervention()
             ])
             ->add('company_id', ChoiceType::class, [
                 'label' => 'Magasin',
@@ -88,5 +80,19 @@ class InterventionFastType extends Type
             }
         }
         return $companies;
+    }
+
+    private function getTypeIntervention(): array
+    {
+        $type = [];
+        $req = $this->query->from('types_interventions as ti')->select(null)->select('ti.id, ti.name')->orderBy('name ASC')->fetchAll();
+        if($req){
+            foreach ($req as $e) {
+                $label = $e['name'];
+                $type[$e['name']] = $label;
+            }
+            return $type;
+        }
+        return $type;
     }
 }

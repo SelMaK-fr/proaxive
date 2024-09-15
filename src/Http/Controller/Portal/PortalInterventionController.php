@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
+use Selmak\Proaxive2\Domain\InterventionPicture\Repository\InterventionPictureRepository;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Twig\Error\LoaderError;
@@ -54,10 +55,12 @@ class PortalInterventionController extends AbstractController
         $i = $this->getRepository(InterventionRepository::class)->joinForIdWithKey($ref_number);
         $e = $this->getRepository(EquipmentRepository::class)->findWithBrand($i->equipments_id);
         $tasksForI = $this->getRepository(TaskAssocRepository::class)->findByIntervention((int)$i->i_id);
+        $pictures = $this->getRepository(InterventionPictureRepository::class)->allBy('interventions_id', (int)$i->i_id);
 
         return $this->render($response, '/frontoffice/portal/intervention/read.html.twig', [
             'i' => $i,
             'e' => $e,
+            'pictures' => $pictures,
             'tasks' => $tasksForI
         ]);
     }

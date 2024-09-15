@@ -26,15 +26,7 @@ class InterventionValidationType extends Type
             ->add('sort', ChoiceType::class, [
                 'label' => 'Type',
                 'placeholder' => 'Choisissez un type',
-                'choices' => [
-                    'Dépannage' => 'Dépannage',
-                    'Réparation' => 'Réparation',
-                    'Visite périodique' => 'Visite périodique',
-                    'Préparation de poste' => 'Préparation de poste',
-                    'Assemblage' => 'Assemblage',
-                    'Expertise' => 'Expertise',
-                    'Devis' => 'Devis',
-                ]
+                'choices' => self::getTypeIntervention()
             ])
             ->add('a_priority', ChoiceType::class, [
                 'label' => 'Priorité',
@@ -76,6 +68,20 @@ class InterventionValidationType extends Type
 
         foreach ($req as $e) {
             $equipments[$e['id']] = $e['name'];
+        }
+        return $equipments;
+    }
+
+    private function getTypeIntervention(): array
+    {
+        $equipments = [];
+        $req = $this->query->from('types_interventions as ti')->select(null)->select('ti.id, ti.name')->fetchAll();
+        if($req){
+            foreach ($req as $e) {
+                $label = $e['name'];
+                $equipments[$e['name']] = $label;
+            }
+            return $equipments;
         }
         return $equipments;
     }

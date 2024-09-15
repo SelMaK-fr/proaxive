@@ -30,6 +30,7 @@
                                     <th>Nom</th>
                                     <th>Version</th>
                                     <th>Architecture</th>
+                                    <th>Ordre</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                                 </thead>
@@ -39,6 +40,7 @@
                                         <td>{{ os.os_name }}</td>
                                         <td>{{ os.os_release }}</td>
                                         <td>{{ os.os_architecture }}</td>
+                                        <td>{{ os.os_order }}</td>
                                         <td class="p-relative">
                                             <div class="admin-tools">
                                                 <span class="d-block text-right">
@@ -82,6 +84,11 @@
                                                                         <label class="form-label" for="os_release">Version du système
                                                                             <abbr title="Required Field">*</abbr></label>
                                                                         <input class="palmtree-form-control form-control" type="text" id="os_release" value="{{ os.os_release }}" name="os_release" placeholder="ex : 22h2" required="">
+                                                                    </div>
+                                                                    <div class="form-group mb-3 is-required">
+                                                                        <label class="form-label" for="os_release">Ordre
+                                                                            <abbr title="Required Field">*</abbr></label>
+                                                                        <input class="palmtree-form-control form-control" type="number" id="os_order" value="{{ os.os_order }}" name="os_order" required="">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -128,6 +135,7 @@
                         </div>
                         <div class="col">
                             {{ form.renderField('os_release') | raw }}
+                            {{ form.renderField('os_order') | raw }}
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ class TaskListType extends Type
     private function getTask(): array
     {
         $tasks = [];
-        $req = $this->query->from('tasks')->select(null)->select('tasks.id, tasks.name')->fetchAll();
+        $req = $this->query->from('tasks')->select(null)->select('tasks.id, tasks.name')->orderBy('name ASC')->fetchAll();
         foreach ($req as $t) {
             $tasks[$t['id']] = $t['name'];
         }

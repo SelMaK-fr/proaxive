@@ -16,7 +16,7 @@ final class BrandCreateModel extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $this->table('brands')
             ->addColumn('name', 'string', ['null' => true])
@@ -24,5 +24,10 @@ final class BrandCreateModel extends AbstractMigration
             ->addColumn('slug', 'string', ['null' => true])
             ->addColumn('logo_file', 'string', ['null' => true])
             ->create();
+    }
+
+    public function down(): void
+    {
+        $this->table('brands')->drop()->update();
     }
 }
