@@ -9,6 +9,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
+use Selmak\Proaxive2\Domain\Task\Repository\TaskAssocRepository;
 use Selmak\Proaxive2\Domain\Task\Repository\TaskRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Http\Type\Admin\TaskType;
@@ -68,7 +69,9 @@ class TaskController extends AbstractController
                 $data = $request->getParsedBody();
             } else {
                 $data = $request->getParsedBody()['form_setting_task'];
+                $addToIntervention = $request->getParsedBody()['add_to_intervention'];
             }
+
             $validator = $this->validator->validate($data, [
                 'name' => [
                     'rules' => Validator::notBlank()
@@ -82,6 +85,15 @@ class TaskController extends AbstractController
                 } else {
                     if($checkIfExist === 0) {
                         $this->getRepository(TaskRepository::class)->add($data);
+                        // Si coché, ajoute la tâche à l'intervention en cours.
+                        if(isset($addToIntervention['isChecked'])) {
+                            // Création d'un nouveau tableau "add"
+                            $array = [
+                                'tasks_id' => $this->getRepository(TaskRepository::class)->lastInsertId(),
+                                'interventions_id' => $addToIntervention["i_id"]
+                            ];
+                            $this->getRepository(TaskAssocRepository::class)->add($array);
+                        }
                         $this->addFlash('panel-info', "Action effectuée avec succès");
                     } else {
                         $this->addFlash('panel-error', "Cet élément existe déjà !");

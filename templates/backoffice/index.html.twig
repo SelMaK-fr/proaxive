@@ -108,7 +108,7 @@
                         <table class="table table-default table-card table-clickable">
                             <thead>
                                 <tr>
-                                    <th>Référence</th>
+                                    <th>Technicien</th>
                                     <th>Client</th>
                                     <th>Date</th>
                                     <th>Statut</th>
@@ -120,7 +120,18 @@
                             <tbody>
                             {% for i in interventions %}
                                 <tr data-href="{{ url_for('intervention_read', {id:i.id}) }}" style="cursor: pointer">
-                                    <td><a class="fw-400" href="{{ url_for('intervention_read', {id:i.id}) }}" title="{{ i.name }}">{{ i.ref_number }}</a></td>
+                                    <td>
+                                        <div class="flex align-items-center">
+                                            <div class="mr-2">
+                                                {% if i.u_avatar is not null and i.u_avatar is not empty %}
+                                                <img style="width:30px;height: 30px" class="img-responsive rounded-circle v-middle" src="{{ asset('uploads/avatars') }}/{{ i.u_id }}/{{ i.u_avatar }}" alt="">
+                                                {% else %}
+                                                <img style="width:30px;height: 30px" class="img-responsive rounded-circle v-middle" src="{{ asset('img/no-avatar-350x350.jpg') }}" alt="">
+                                                {% endif %}
+                                            </div>
+                                            <span>{{ i.u_fullname }}</span>
+                                        </div>
+                                    </td>
                                     <td>{{ getStringData(i.customer_name ) }}</td>
                                     <td>{{ i.created_at | date('d.M.Y') }}</td>
                                     <td>{{ getDataStatus(i.s_name, i.s_color, i.s_colortxt) }}</td>
@@ -153,10 +164,10 @@
                 <div class="card-body p-0">
                     {% if interventions_end is not empty %}
                         <div class="table-responsive">
-                            <table class="table table-default table-card">
+                            <table class="table table-default table-card table-clickable">
                                 <thead>
                                 <tr>
-                                    <th>Référence</th>
+                                    <th>Technicien</th>
                                     <th>Client</th>
                                     <th>Date</th>
                                     <th>Statut</th>
@@ -165,8 +176,19 @@
                                 </thead>
                                 <tbody>
                                 {% for i in interventions_end %}
-                                    <tr>
-                                        <td><a href="{{ url_for('intervention_read', {id:i.id}) }}">{{ i.ref_number }}</a></td>
+                                    <tr data-href="{{ url_for('intervention_read', {id:i.id}) }}" style="cursor: pointer">
+                                        <td>
+                                            <div class="flex align-items-center">
+                                                <div class="mr-2">
+                                                    {% if i.u_avatar is not null and i.u_avatar is not empty %}
+                                                        <img style="width:30px;height: 30px" class="img-responsive rounded-circle v-middle" src="{{ asset('uploads/avatars') }}/{{ i.u_id }}/{{ i.u_avatar }}" alt="">
+                                                    {% else %}
+                                                        <img style="width:30px;height: 30px" class="img-responsive rounded-circle v-middle" src="{{ asset('img/no-avatar-350x350.jpg') }}" alt="">
+                                                    {% endif %}
+                                                </div>
+                                                <span>{{ i.u_fullname }}</span>
+                                            </div>
+                                        </td>
                                         <td>{{ i.customer_name }}</td>
                                         <td>{{ i.created_at | date('d.M.Y') }}</td>
                                         <td>

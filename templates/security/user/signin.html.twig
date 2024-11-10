@@ -33,6 +33,10 @@
                                         <div class="form-group">
                                             <a class="link color-inherit" href="{{ url_for('auth_reset_account') }}">Mot de passe oublié ?</a>
                                         </div>
+                                        <div class="mt-2 mb-3 form-group form-check">
+                                            <input type="checkbox" name="remember_me" class="form-check-input" id="remember_me">
+                                            <label for="remember_me" style="display: inline-block">Se souvenir de moi (10 jours)</label>
+                                        </div>
                                         <div class="mt-4">
                                             <button type="submit" class="btn-sk-one btn-lg rd-10">Se connecter</button>
                                         </div>
@@ -47,7 +51,7 @@
                         </div>
                     </div>
                     <div class="p-relative t-4 text-center">
-                        2021, 2024. Propulsé par <strong>Proaxive</strong>
+                        2021, 2024. Propulsé par <a href="https://proaxive.fr" target="_blank"><strong>Proaxive</strong></a>
                     </div>
                 </div>
             </div>

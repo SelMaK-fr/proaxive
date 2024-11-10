@@ -36,7 +36,7 @@ class CustomerPortalAddressType extends Type
             ->add('department', 'text', [
                 'placeholder' => 'Département',
                 'label' => 'Département',
-                'required' => true
+                'required' => false
             ])
             ->add('type_housing', 'choice', [
                 'placeholder' => 'Selectionnez un type',

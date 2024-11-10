@@ -38,10 +38,6 @@ class InterventionReadController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         $i = $this->getRepository(InterventionRepository::class)->joinForId($intervention_id);
-        if(!$i) {
-            $this->addFlash('panel-error', "Cette intervention n'existe pas !");
-            return $this->redirectToRoute('dash_intervention');
-        }
         $taskForI = $this->getRepository(TaskAssocRepository::class)->findByIntervention($intervention_id);
 
         // Add task

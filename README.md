@@ -9,7 +9,7 @@
 Proaxive est une application web dédiée aux techniciens informatique.
 Elle permet de gérer les interventions informatique en ligne. L'application web Proaxive a pour but de simplifier le suivi en atelier. Vos clients peuvent suivre ce qu'il se passe sur leur PC en temps réel.
 
-![ScreenShot](https://files.proaxive.fr/img/2_0/logo_proaxive2.png)
+![ScreenShot](https://proaxive.fr/images/gallery/01.jpg)
 
 ### Site web et support
 
@@ -18,7 +18,7 @@ Elle permet de gérer les interventions informatique en ligne. L'application web
 **Discord :** https://discord.gg/R9XeNMw5D4
 
 #### Requis
-- PHP >= 8.2
+- PHP >= 8.2 (php-intl, php-xml, php-openssl, imagick, php-iconv et php-mbstring)
 - MySQL 5.x
 - Apache or Nginx
 

@@ -24,7 +24,7 @@
     <div class="p-4 text-center">
         <span class="d-block text-one"><i class="fa-solid fa-ban"></i> Aucun résultat !</span>
         <p>Ce client n'existe pas.</p>
-        <a href="#" class="btn-sm btn-light-four">Le créer ?</a>
+        <a href="{{ url_for('customer_create_particular') }}" class="btn-sm btn-light-four">Le créer ?</a>
     </div>
 {% endif %}
 </div>

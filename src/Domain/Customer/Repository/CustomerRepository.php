@@ -17,7 +17,7 @@ class CustomerRepository extends BaseRepository
 
     public function getByClientID($login)
     {
-        return $this->makeQueryDefault()->where('mail = ? or login_id = ?', [$login,$login])->fetch();
+        return $this->makeQueryDefault()->where('mobile = ? or login_id = ?', [$login,$login])->fetch();
     }
 
     public function statsChartsProfil(int $id)

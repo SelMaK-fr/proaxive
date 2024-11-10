@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Domain\Intervention\Middleware;
 
 use Envms\FluentPDO\Query;
+use Odan\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -16,10 +17,12 @@ class IfIdIsNullMiddleware implements MiddlewareInterface
 
     private Query $db;
     private RouteParserInterface $routeParser;
+    private SessionInterface $session;
 
-    public function __construct(Query $db, RouteParserInterface $routeParser){
+    public function __construct(Query $db, RouteParserInterface $routeParser, SessionInterface $session){
         $this->db = $db;
         $this->routeParser = $routeParser;
+        $this->session = $session;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -31,12 +34,16 @@ class IfIdIsNullMiddleware implements MiddlewareInterface
             ->where('interventions.id = ?', [$route->getArgument('id')])
             ->fetch()
         ;
-        if($i && $i['customers_id'] === null || $i['equipments_id'] === null){
-            $response = new ResponseFactory();
+        $response = new ResponseFactory();
+        if(!$i) {
+            $this->session->getFlash()->add('panel-error', "Cette intervention est introuvable.");
+            return $response->createResponse()->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('dash_intervention'));
+        }
+        if($i['customers_id'] === null || $i['equipments_id'] === null){
             if($i['state'] === 'ARCHIVE'){
                 return $response->createResponse()->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_archive_read', ['id' => $route->getArgument('id')]));
             }
-            return $response->createResponse()->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_archive', ['id' => $route->getArgument('id')]));
+            return $response->createResponse()->withStatus(302)->withHeader('Location', $this->routeParser->urlFor('intervention_validation', ['id' => $route->getArgument('id')]));
         }
         return $handler->handle($request);
     }

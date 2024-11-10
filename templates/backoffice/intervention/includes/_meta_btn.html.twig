@@ -1,3 +1,14 @@
+{% if i.customer_name != i.c_fullname %}
+    <div class="alert alert-warning">
+        <i class="ri-error-warning-fill fs-18px"></i> Le nom ou le prénom a été modifié sur la fiche client. Vous pouvez mettre à jour cette intervention si vous le souhaitez.
+        <div>
+            <form method="post" id="update_intervention">
+                <input type="hidden" name="update_intervention[id]" value="{{ i.id }}">
+                <button type="button" onclick="ajaxPostModalData('{{ url_for('intervention_ajax_u_customer_name', {id:i.id}) }}', 'update_intervention')" class="btn-mid btn-light-warning submit-ajax">Mettre à jour</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
 <div class="card mb-3 update-intervention" data-id-intervention="{{ i.id }}">
     <div class="card-body p-3">
         <div class="flex justify-content-space-between align-items-center" style="gap: 30px">
@@ -16,7 +27,9 @@
             <div class="flex-root">
                 <span class="text-muted text-uppercase fs-12px d-block">Equipement</span>
                 <div>
-                    <h3 class="p-0 d-inline-block">{{ i.equipment_name }}</h3>
+                    <h3 class="p-0 d-inline-block">
+                        <a class="color-inherit" href="{{ url_for('equipment_read', {id:i.equipments_id}) }}" title="Voir sa fiche">{{ i.equipment_name }}</a>
+                    </h3>
                     {% if i.e_type_name is not empty %}
                         <em>({{ i.e_type_name }})</em>
                     {% endif %}

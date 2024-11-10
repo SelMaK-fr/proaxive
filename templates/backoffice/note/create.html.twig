@@ -1,0 +1,11 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Nouvelle note{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="p-4">
+            {{ include('backoffice/note/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

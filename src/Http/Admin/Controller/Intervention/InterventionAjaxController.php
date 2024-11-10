@@ -16,6 +16,7 @@ use Selmak\Proaxive2\Domain\Equipment\Repository\EquipmentRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Selmak\Proaxive2\Infrastructure\Mailing\MailInterventionService;
+use Selmak\Proaxive2\Infrastructure\Mailing\MailService;
 use Selmak\Proaxive2\Infrastructure\Security\RandomStringGeneratorFactory;
 use Selmak\Proaxive2\Infrastructure\Security\SerialNumberFormatterService;
 use Slim\App;
@@ -218,6 +219,20 @@ class InterventionAjaxController extends AbstractController
         return new \Slim\Psr7\Response();
     }
 
+    public function updateCustomerName(Request $request, Response $response, array $args): Response
+    {
+        $intervention_id = (int)$args['id'];
+        $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+        $customer = $this->getRepository(CustomerRepository::class)->find('id', $i->customers_id);
+        if($request->getMethod() === 'POST') {
+            $data = [
+                'customer_name' => $customer->fullname
+            ];
+            $this->getRepository(InterventionRepository::class)->update($data, $intervention_id);
+        }
+        return new \Slim\Psr7\Response();
+    }
+
     /**
      * AT DELETED
      * @param Request $request
@@ -279,6 +294,8 @@ class InterventionAjaxController extends AbstractController
     {
         $intervention_id = (int)$args['id'];
         if($request->getMethod() === 'POST') {
+            $i = $this->getRepository(InterventionRepository::class)->find('id', $intervention_id);
+            $customer = $this->getRepository(CustomerRepository::class)->find('id', $i->customers_id);
             $data = $request->getParsedBody();
             if($data['way_steps'] === 5){
                 $data = [
@@ -289,6 +306,10 @@ class InterventionAjaxController extends AbstractController
                     'is_closed' => 1
                 ];
                 // Todo : send mail
+                if($customer->mail){
+                    $mail = new MailService($this->getParameters('mailer'));
+                    $mail->sendMail($customer->mail, $this->view('mailer/intervention/end.html.twig', ['data' => $i]), 'Intervention terminée.');
+                }
             } elseif ($data['way_steps'] === 4) {
                 $data['status_id'] = 2;
             }

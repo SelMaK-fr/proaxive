@@ -194,17 +194,17 @@
                     </ul>
                 </div>
             </li>
-            <li class="item-nav dropdown">
-                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne (WIP) <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
-                <div class="submenu-dropdown">
+            <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == 'note' %}current{% endif %}">
+                <a href="#" title="Gestion des notes interne"><span class="icon"><i class="ri-sticky-note-line"></i></span> <span class="title">Notes interne<span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
+                <div class="submenu-dropdown {% if currentMenu is defined and currentMenu == 'note' %}open{% endif %}">
                     <ul class="dropdown-navigation">
                         <li>
-                            <a href="#">
+                            <a href="{{ url_for('dash_note') }}">
                                 <span>Notes enregistrées</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{{ url_for('note_create') }}">
                                 <span>Créer une note</span>
                             </a>
                         </li>
@@ -215,9 +215,9 @@
             <li class="title-navigation"><span class="item-title d-block">Modules</span></li>
             {% endif %}
             {% for addonNav in addonMenu %}
-                <li class="item-nav dropdown">
+                <li class="item-nav dropdown {% if currentMenu is defined and currentMenu == addonNav.label %}current{% endif %}">
                     <a href="#" title="Gestion du module {{ addonNav.label }}"><span class="icon"><i class="ri-apps-line"></i></span> <span class="title">{{ addonNav.label }} <span class="right-icon"><i class="fa-solid fa-chevron-right"></i></span></span></a>
-                    <div class="submenu-dropdown">
+                    <div class="submenu-dropdown  {% if currentMenu is defined and currentMenu == addonNav.label %}open{% endif %}">
                         <ul class="dropdown-navigation">
                         {% for menuItem in addonNav.subItems %}
                             <li>

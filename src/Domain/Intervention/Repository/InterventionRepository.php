@@ -131,7 +131,7 @@ class InterventionRepository extends BaseRepository
             ->select('interventions.*, cy.name cy_name, cy.address cy_address, cy.phone cy_phone, cy.mobile cy_mobile, cy.mail cy_mail, 
             cy.zipcode cy_zipcode, cy.city cy_city, cy.created_at cy_created_at, cy.website cy_website, cy.logo cy_logo, cy.siret cy_siret, cy.aprm cy_aprm, cy.ape cy_ape, cy.rm cy_rm, cy.signature cy_signature, e.name e_name, e.brand_name e_brand_name, e.e_year e_year, e.e_model e_model, e.os_name e_os_name, e.id e_id, e.type_name e_type_name, e.e_serial e_serial, u.fullname u_fullname, u.roles u_roles, u.id u_id, 
             u.avatar u_avatar, e.created_at e_created_at, c.city c_city, c.zipcode c_zipcode, c.department c_department, c.phone c_phone,
-            c.mobile c_mobile, c.favorite_contact c_favorite_contact, c.address c_address, c.zipcode c_zipcode, c.city c_city, c.mail c_mail, c.login_id c_login_id,
+            c.mobile c_mobile, c.favorite_contact c_favorite_contact, c.address c_address, c.zipcode c_zipcode, c.city c_city, c.mail c_mail, c.login_id c_login_id, c.fullname c_fullname,
             d.is_signed d_is_signed, d.deposit_date d_deposit_date,
             s.name s_name, s.id s_id, s.color s_color, s.color_txt s_colortxt, s.description s_description')
             ->leftJoin('equipments as e ON e.id = interventions.equipments_id')
@@ -208,13 +208,13 @@ class InterventionRepository extends BaseRepository
 
     public function allProgress()
     {
-        $query = $this->getInterventionsAndStatus()->where('interventions.state != ?', ['COMPLETED'])->orderBy('created_at DESC');
+        $query = $this->getInterventionsAndStatusAndUser()->where('interventions.state != ?', ['COMPLETED'])->orderBy('created_at DESC');
         return $query->fetchAll();
     }
 
     public function allCompleted(int $limit = 12)
     {
-        $query = $this->getInterventionsAndStatus()->where('interventions.is_closed = ?', [1])->limit($limit)->orderBy('created_at DESC');
+        $query = $this->getInterventionsAndStatusAndUser()->where('interventions.is_closed = ?', [1])->limit($limit)->orderBy('created_at DESC');
         return $query->fetchAll();
     }
 
@@ -311,6 +311,25 @@ class InterventionRepository extends BaseRepository
             ->select($statement)
             ->leftJoin('status as s ON s.id = interventions.status_id')
             ;
+        if(!empty($joins)) {
+            foreach($joins as $join) {
+                $query->leftJoin($join);
+            }
+        }
+        return $query;
+    }
+
+    private function getInterventionsAndStatusAndUser(?string $sql = null, ?array $joins = [])
+    {
+        $statement = 'interventions.*, s.name s_name, s.id s_id, s.color s_color, s.color_txt s_colortxt, s.description s_description, u.fullname u_fullname, u.avatar u_avatar, u.id u_id';
+        if($sql != null){
+            $statement .= ', ' . $sql;
+        }
+        $query = $this->makeQueryDefault()
+            ->select($statement)
+            ->leftJoin('status as s ON s.id = interventions.status_id')
+            ->leftJoin('users as u ON u.id = interventions.users_id')
+        ;
         if(!empty($joins)) {
             foreach($joins as $join) {
                 $query->leftJoin($join);

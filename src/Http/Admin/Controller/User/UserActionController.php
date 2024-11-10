@@ -47,6 +47,8 @@ class UserActionController extends AbstractController
             unset($data['password_2']);
             $u = new User($data);
             if($user_id){
+                // fix 2.0.8 -> empty ID for DTO
+                $u->setId($user_id);
                 $saveUpdate = $this->getRepository(UserRepository::class)->update($u, $user_id);
                 if($saveUpdate){
                     $this->addFlash('panel-info', sprintf("L'utilisateur - %s - a bien été modifié.", $u->getFullname()));

@@ -25,7 +25,7 @@ try {
     /** @var Application $application */
     $application = $container->get(Application::class);
 
-    // Register your console commands here
+    // Import Customers
     $application->add($container->get(ImportCustomerCommand::class));
 
     exit($application->run());

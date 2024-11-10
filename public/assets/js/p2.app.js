@@ -75,7 +75,7 @@ async function uploadFile(url, name) {
     let formData = new FormData();
     let fileSelect = document.getElementById('avatar');
     let files = fileSelect.files;
-    formData.append("avatar", files[0], files[0].name);
+    formData.append(name, files[0], files[0].name);
     await fetch(url, {
         method: "POST",
         body: formData
@@ -125,6 +125,12 @@ async function ajaxPostModalData(url, formId) {
     })
         .then((response) => {
             if(response.ok){
+                document.getElementsByClassName('submit-ajax').disabled = false;
+                document.getElementById(formId).reset();
+                let loader = document.getElementById("loader");
+                let body = document.getElementById("body-wrapper");
+                loader.style.display = 'block';
+                body.style.overflow = 'hidden';
                 setTimeout(function ()
                 {
                     window.location.reload();

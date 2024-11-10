@@ -16,18 +16,20 @@
                 <div class="card-body">
                     <div class="grid-12">
                         <div class="col-6_sm-12">
-                            <form method="post" enctype="multipart/form-data" class="all-border-blue-light p-2 rd-2" style="width: 140px">
+                            <form method="post" action="{{ url_for('dash_account_avatar') }}" enctype="multipart/form-data" class="all-border-blue-light p-2 rd-2" style="width: 140px">
                                 <div class="upload-avatar">
-                                    <input type="file" id="avatar" tabindex="-1" name="avatar" accept="image/">
+                                    <input type="file" id="avatar" tabindex="-1" name="form_avatar[file]">
+                                    <input type="hidden" name="form_avatar[user]" value="{{ user.id }}">
                                     <div>
                                         {% if user.avatar is not null and user.avatar is not empty %}
-                                            <img class="img-responsive" src="/uploads/avatars/{{ user.id }}/{{ user.avatar }}" alt="">
+                                            <img class="img-responsive" src="{{ asset('uploads/avatars') }}/{{ user.id }}/{{ user.avatar }}" alt="">
                                         {% else %}
                                             <img class="img-responsive" src="{{ asset('img/no-avatar-350x350.jpg') }}" alt="">
                                         {% endif %}
                                     </div>
                                 </div>
-                                <button type="button" class="btn-sm btn-light-info mt-2 w100" onclick="uploadFile(``, 'avatar')" disabled>Envoyer</button>
+                                <!-- onclick="uploadFile('', 'avatar')" -->
+                                <button type="submit" class="btn-sm btn-light-info mt-2 w100" >Envoyer</button>
                             </form>
                         </div>
                         <div class="col-6_sm-12">

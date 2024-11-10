@@ -1,0 +1,8 @@
+{{ form.renderStart | raw }}
+{{ form.renderField('title') | raw }}
+{{ form.renderField('content') | raw }}
+{{ form.renderField('stick') | raw }}
+{{ form.renderField('bgcolor') | raw }}
+{{ form.renderField('txtcolor') | raw }}
+<button type="submit" class="btn btn-light-four">Enregistrer</button>
+{{ form.renderEnd(false) | raw }}

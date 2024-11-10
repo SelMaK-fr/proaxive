@@ -38,7 +38,7 @@ class LoginController extends AbstractController
             if($validator->count() === 0) {
                 $customer = $this->getRepository(CustomerRepository::class)->getByClientID($params['login_id']);
                 if($customer) {
-                    if (($customer['login_id'] OR $customer['mail']) == $params['login_id'] AND password_verify($params['passwd'], $customer['passwd'])) {
+                    if (($customer['login_id'] OR $customer['mobile']) == $params['login_id'] AND password_verify($params['passwd'], $customer['passwd'])) {
                         if($customer['enable_portal'] === 1) {
                             $this->session->set('customer', $customer);
                             return $this->redirectToRoute('portal_home');

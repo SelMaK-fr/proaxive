@@ -3,6 +3,8 @@ declare(strict_types=1);
 // Settings
 // Error reporting
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 error_reporting(0);
 ini_set('display_errors', '0');
 ini_set('display_startup_errors', '0');
@@ -64,11 +66,11 @@ $settings = [
         'dsn' => env('MAIL_DSN', 'smtp://127.0.0.1:1025'),
         'debug' => false,
         'host' => env('MAIL_HOST', 'localhost'),
-        'SMTPAuth' => false, // false if local server
+        'SMTPAuth' => env('MAIL_SMTPAUTH', false), // false if local server
         'from' => env('MAIL_FROM', 'admin@proaxive.in'),
         'username' => env('MAIL_USERNAME', 'user'),
         'password' => env('MAIL_PASSWORD', 'password'),
-        'SMTPSecure' => false, // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS // false if local server
+        'SMTPSecure' => env('MAIL_SMTPSECURE', false), // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS // false if local server
         'port' => env('MAIL_PORT', 1025)
     ],
     'logger' => [

@@ -132,5 +132,4 @@ class AccountController extends AbstractController
         return new RedirectResponse($this->generateUrl('dash_account'));
     }
 
-
 }

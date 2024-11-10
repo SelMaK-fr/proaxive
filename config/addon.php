@@ -1,10 +1,9 @@
 <?php
 /**
  * Initialize addon's Proaxive
+ * ex : 'MyAddon' => MyAddonModule::class
  */
 
-use Selmak\Proaxive2\Addon\Inventory\InventoryModule;
-
 return [
-    //'ModulName' => NameModule::class
+
 ];

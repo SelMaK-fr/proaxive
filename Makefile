@@ -8,6 +8,11 @@ update:
 	git pull
 	vendor/bin/phinx migrate
 
+full-update:
+	git pull
+	composer update
+	vendor/bin/phinx migrate
+
 require:
 	composer require $(get)
 

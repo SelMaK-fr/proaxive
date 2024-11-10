@@ -8,6 +8,7 @@
 /var/logs
 /cron-database.php
 /config/parameters.json
+/changelog.md
 ###< Assets ###
 /public/assets/sass
 /public/assets/.sass-cache
@@ -16,6 +17,7 @@
 /public/uploads/logo/*
 /public/uploads/sign/*
 /public/uploads/equipments/*
+/public/img/logos/logo.psd
 ###< Addon ###
 /src/Addon/Inventory
 ###< Seeder ###

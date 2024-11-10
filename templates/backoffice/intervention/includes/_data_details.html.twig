@@ -10,8 +10,8 @@
                         <span class="value">{{ i.c_login_id }}</span>
                     </div>
                     <div class="column--item">
-                        <span class="title">Contact :</span>
-                        <span class="value">{{ i.c_phone }}{% if i.c_mobile %} - {{ i.c_mobile }}{% endif %} <span class="text-green">({{ i.c_favorite_contact }})</span></span>
+                        <span class="title">Contact <span class="text-green">({{ i.c_favorite_contact }})</span> :</span>
+                        <span class="value fw-600 fs-16px">{{ i.c_phone }}{% if i.c_mobile %} <br> {{ i.c_mobile }}{% endif %}</span>
                     </div>
                 </div>
             </div>

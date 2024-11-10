@@ -37,7 +37,6 @@ class AddonLoaderMiddleware implements MiddlewareInterface
 
                     if (class_exists($addonClass)) {
                         // Si la classe existe, instancier
-                        /* @var \Selmak\Proaxive2\Addon\Rental\Module $addonInstance */
                         $addonInstance = new $addonClass($this->app, $this->app->getContainer()->get(Twig::class));
                         // Vérifier si la méthode initRoute existe dans la classe
                         if (method_exists($addonInstance, 'initRoute')) {

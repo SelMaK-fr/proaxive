@@ -7,7 +7,7 @@ use Selmak\Proaxive2\Domain\Customer\Middleware\RedirectIfNotAuthMiddleware;
 use Selmak\Proaxive2\Domain\Equipment\Middleware\IfUpdatePeripheralMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Gallery\Middleware\HasAccessToImageMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\CheckUrlCreateMiddleware;
-use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDarftMiddleware;
+use Selmak\Proaxive2\Domain\Intervention\Middleware\IfDraftMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfIdIsNullMiddleware;
 use Selmak\Proaxive2\Domain\Intervention\Middleware\IfLinkExpirateMiddleware;
 use Selmak\Proaxive2\Http\Admin\Controller\Booking\BookingController;
@@ -53,10 +53,15 @@ use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchContro
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionToPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionValidatedController;
+use Selmak\Proaxive2\Http\Admin\Controller\Note\NoteController;
+use Selmak\Proaxive2\Http\Admin\Controller\Note\NoteCreateController;
+use Selmak\Proaxive2\Http\Admin\Controller\Note\NoteDeleteController;
+use Selmak\Proaxive2\Http\Admin\Controller\Note\NoteUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Outlay\OutlayUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\PermsController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountAvatarController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\BrandController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\OperatingSystemController;
@@ -95,7 +100,6 @@ use Selmak\Proaxive2\Security\Middleware\IfDataNullOrEmptyMiddleware;
 use Selmak\Proaxive2\Security\Middleware\IfMailerIsNotActivateMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminOrTechMiddleware;
-use Selmak\Proaxive2\Security\Middleware\Perms\RedirectNotPermitDemo;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -126,6 +130,7 @@ return function (App $app) {
     $app->group('/admin/settings/account', function (RouteCollectorProxy $group) {
         $group->any('', [AccountController::class, 'index'])->setName('dash_account');
         $group->post('/2fa', [AccountController::class, 'on2fa'])->setName('dash_account_on_2fa');
+        $group->post('/avatar', AccountAvatarController::class)->setName('dash_account_avatar');
     });
     /* Customer */
     $app->group('/admin/customers', function (RouteCollectorProxy $group) {
@@ -196,6 +201,7 @@ return function (App $app) {
        $group->any('/{id:[0-9]+}/ajax/start', [InterventionAjaxController::class, 'start'])->setName("intervention_ajax_start");
        $group->post('/{id:[0-9]+}/ajax/end', [InterventionAjaxController::class, 'end'])->setName("intervention_ajax_end");
        $group->post('/{id:[0-9]+}/ajax/e-update/{eid:[0-9]+}', [InterventionAjaxController::class, 'updateEquipmentName'])->setName('intervention_ajax_u_equipment_name');
+       $group->post('/{id:[0-9]+}/ajax/c-update', [InterventionAjaxController::class, 'updateCustomerName'])->setName('intervention_ajax_u_customer_name');
        $group->post('/{id:[0-9]+}/ajax/next-step', [InterventionAjaxController::class, 'nextStep'])->setName('ajax_intervention_next_step');
        $group->get('/create', [InterventionCreateController::class, 'index'])->setName('intervention_create_index');
        $group->any('/create-regular[:{id:[0-9]+}]', [CreateIntervention::class, 'create'])->setName('intervention_create_regular');
@@ -205,7 +211,7 @@ return function (App $app) {
        $group->any('/create-regular/client/{id:[0-9]+}/setting[:{args}]', [CreateIntervention::class, 'createStep5'])->setName('intervention_create_regular_step5')->add(CheckUrlCreateMiddleware::class);
        $group->any('/create/c-{id:[0-9]+}', InterventionCreateArgsController::class)->setName('intervention_create_args');
        $group->post('/create-regular/save', [InterventionCreateController::class, 'save'])->setName('intervention_create_save');
-       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDarftMiddleware::class);
+       $group->get('/{id:[0-9]+}', [InterventionReadController::class, 'read'])->setName('intervention_read')->add(IfIdIsNullMiddleware::class)->add(IfDraftMiddleware::class);
        $group->any('/{id:[0-9]+}/notes', [InterventionUpdateController::class, 'observations'])->setName('intervention_update_notes');
        $group->any('/{id:[0-9]+}/files', [InterventionUpdateController::class, 'files'])->setName('intervention_files');
        $group->any('/{id:[0-9]+}/update', [InterventionUpdateController::class, 'update'])->setName('intervention_update');
@@ -262,7 +268,7 @@ return function (App $app) {
     $app->group('/admin/settings', function (RouteCollectorProxy $group) {
        $group->any('/preferences', [ParametersController::class, 'parameters'])->setName('settings_preference')->add(RedirectIfNotAdminMiddleware::class);
        $group->get('/tasks', [SettingTask::class, 'index'])->setName('settings_task');
-       $group->post('/tasks/create', [SettingTask::class, 'actionForm'])->setName('settings_task_create');
+       $group->post('/tasks/create[:{args}]', [SettingTask::class, 'actionForm'])->setName('settings_task_create');
        $group->post('/tasks/update[:{args}]', [SettingTask::class, 'actionForm'])->setName('settings_task_update');
        $group->delete('/tasks/delete', [SettingTask::class, 'delete'])->setName('settings_task_delete');
        // Type Equipment
@@ -290,6 +296,13 @@ return function (App $app) {
        $group->any('/update', UpdateAppController::class)->setName('settings_update');
        $group->post('/command/app-update', VersionAppUpdateController::class)->setName('settings_app_update')->add(RedirectIfNotAdminMiddleware::class);
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
+    // Notes/Stickies
+    $app->group('/admin/notes', function (RouteCollectorProxy $group){
+        $group->get('', NoteController::class)->setName('dash_note');
+        $group->any('/create', NoteCreateController::class)->setName('note_create');
+        $group->any('/{id:[0-9]+}/update', NoteUpdateController::class)->setName('note_update');
+        $group->any('/delete', NoteDeleteController::class)->setName('note_delete');
+    });
     /** Portal */
     $app->any('/wxy/customers/login', [LoginController::class, 'index'])->setName('portal_login');
     $app->group('/wxy/customers', function (RouteCollectorProxy $group){

@@ -35,8 +35,10 @@ final class UserAccountController extends AbstractController
                         //$this->getSession('auth');
                         $this->session->set('auth', $data);
                         // Create Cookie 3 days
-                        $cookie = new CookieFactory();
-                        $cookie->setCookie($data, $this->query);
+                        if(isset($params['remember_me'])) {
+                            $cookie = new CookieFactory();
+                            $cookie->setCookie($data, $this->query);
+                        }
                         return $this->redirectToRoute('dash_home');
                     } else {
                         $this->addFlash('error', 'Le mot de passe ou le courriel ne correspond pas !');
@@ -102,7 +104,7 @@ final class UserAccountController extends AbstractController
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $data['confirm_at'] = '';
             unset($data['password_2']);
-            $this->getRepository(UserRepository::class)->update($data, $user['id']);
+            $this->getRepository(UserRepository::class)->update($data, (int)$user['id']);
             $this->addFlash('info', 'Votre mot de passe a bien été sauvegardé.');
             return $this->redirectToRoute('auth_user_login');
         }

@@ -35,7 +35,7 @@ return function (App $app) {
     $app->add(RespectValidationMiddleware::class);
     //$app->add($container->get('csrf'));
     $app->add(RedirectIfNotAuthMiddleware::class);
-    $app->add(RegenSessionIfCookieExistMiddleware::class);
+    //$app->add(RegenSessionIfCookieExistMiddleware::class);
     // Errors For Production
     $customErrorHandler = function (
         ServerRequestInterface $request,

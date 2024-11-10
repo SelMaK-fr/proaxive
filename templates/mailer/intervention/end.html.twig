@@ -101,7 +101,7 @@
                 <div class="card-body" style="padding:20px;">
                     <strong>Bonjour {{ data.customer_name }}</strong>
                     <div class="pt-10px">
-                        <span class="block">Votre produit est parvenu dans notre atelier le {{ data.deposit_date | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}. Nous vous informerons par courriel lorsque la réparation sera achevée.</span>
+                        <span class="block">Votre produit est parvenu dans notre atelier le {{ data.deposit_date | format_date('none', 'EEEE d MMM Y', null, 'gregorian', 'fr') }}. Nous vous informerons que l'intervention sur votre équipement est terminée.</span>
                         <div class="pt-20px">
                             <div class="block">
                                 <strong>Produit : </strong><span class="text-uppercase">{{ data.equipment_name }}</span>

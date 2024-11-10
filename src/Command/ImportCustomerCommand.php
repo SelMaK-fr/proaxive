@@ -36,7 +36,7 @@ class ImportCustomerCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title("Tentative d'importation des données Customers...");
-        $reader = Reader::createFromPath(__DIR__ . '/../../storage/app/imports/Export-Clients.csv', 'r');
+        $reader = Reader::createFromPath(__DIR__ . '/../../storage/app/imports/ProaxiveLite_Export-Clients.csv', 'r');
         $reader->setHeaderOffset(0);
         $io->progressStart(iterator_count($reader));
         foreach($reader->getRecords() as $row) {

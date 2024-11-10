@@ -11,7 +11,7 @@ use Slim\Interfaces\RouteParserInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Routing\RouteContext;
 
-class IfDarftMiddleware implements MiddlewareInterface
+class IfDraftMiddleware implements MiddlewareInterface
 {
 
     public function __construct(private readonly Query $db, private readonly RouteParserInterface $routeParser){}

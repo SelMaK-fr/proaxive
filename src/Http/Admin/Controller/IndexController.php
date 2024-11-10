@@ -3,12 +3,8 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Admin\Controller;
 
 use Envms\FluentPDO\Exception;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Selmak\Proaxive2\Domain\Auth\SessionUser;
-use Selmak\Proaxive2\Domain\Customer\Repository\CustomerRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Twig\Error\LoaderError;
@@ -35,7 +31,6 @@ class IndexController extends AbstractController
         $interventions_end = $this->getRepository(InterventionRepository::class)->allCompleted(6);
         // Breadcrumbs
         $bds = $this->breadcrumbs;
-        $bds->addCrumb('Proaxive Dashboard', false);
         $bds->addCrumb('Accueil', false);
         $bds->render();
         // .Breadcrumbs

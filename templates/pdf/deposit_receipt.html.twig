@@ -54,6 +54,9 @@
         .text-uppercase {
             text-transform: uppercase;
         }
+        .text-italic{
+            font-style: italic;
+        }
         .bold {
             font-weight: bold;
         }
@@ -133,9 +136,9 @@
             </div>
             <!-- Informations client -->
             {% if d.c_login_id is not null and d.c_login_id is not empty %}
-            <div class="mb-2">
-                <span>Votre ID CLient : <strong>{{ d.c_login_id }}</strong></span>
-            </div>
+                <div class="mb-2">
+                    <span>Votre ID CLient : <strong>{{ d.c_login_id }}</strong></span>
+                </div>
             {% endif %}
             <div class="title" style="margin-top: 20px;">Informations client</div>
             <table class="table-container table-customer">
@@ -144,14 +147,12 @@
                     <td>
                         <span class="block bold">Nom</span>{{ d.customer_name }}
                     </td>
-                    <td colspan="2">
+                    <td>
                         <span class="block bold">Adresse</span>{{ d.c_address }}, {{ d.c_zipcode }} {{ d.c_city }}
+                        <span class="block text-italic">{{ d.c_department }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <span class="block bold">Département</span>{{ d.c_department }}
-                    </td>
                     <td>
                         <span class="block bold">Téléphone</span>{{ d.c_phone }} {% if d.c_mobile is not empty %}OU {{ d.c_mobile }}{% endif %}
                     </td>
@@ -165,14 +166,14 @@
             <div class="title" style="margin-top: 15px;">Dépôt de matériel</div>
             <table class="" style="margin-bottom: 15px;">
                 <tbody>
-                    <tr>
-                        <td><strong>N° de série</strong></td>
-                        <td>{{ d.e_serial }}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Accessoire(s)</strong></td>
-                        <td>{{ d.equipment_accessories }}</td>
-                    </tr>
+                <tr>
+                    <td><strong>N° de série : </strong></td>
+                    <td>{{ d.e_serial }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Accessoire(s) : </strong></td>
+                    <td>{{ d.equipment_accessories }}</td>
+                </tr>
                 </tbody>
             </table>
             <table class="table-container table-components">
@@ -200,13 +201,13 @@
                 </tbody>
             </table>
             <div class="space"></div>
-            <div class="text-left padding-bottom" style="font-size: 7pt;">
+            <div class="text-left padding-bottom" style="font-size: 6pt;">
                 Pour votre information : Ce document peut vous être demandé pour faire récupérer votre matériel par une tierce personne.<br>
                 En cas de non-reprise du matériel dans un délai de 30 jours après la fin des réparations, des frais de garde de 5 € par jour seront appliqués. Si le matériel n'est pas récupéré dans un délai supplémentaire de 3 mois après l'envoi d'une mise en demeure, le matériel pourra être considéré comme abandonné et deviendra la propriété de {{ d.cy_name }}.
             </div>
-            <div class="footer">
+            <div class="footer" style="font-size: 6pt;">
                 <p>
-                    {{ d.cy_name }} | {{ d.cy_address }}, {{ d.cy_zipcode }} {{ d.cy_city }} | {{ d.cy_phone }} | {{ d.cy_mail }} | Société au capital de {{ d.cy_capital }} € | SIRET {{ d.cy_siret }} - RCS {{ d.cy_rcs }} | TVA intracommunautaire : {{ d.cy_vat }}
+                    {{ d.cy_name }} | {{ d.cy_address }}, {{ d.cy_zipcode }} {{ d.cy_city }} | {{ d.cy_phone }} | {{ d.cy_mail }}
                 </p>
             </div>
         </td>
@@ -223,7 +224,7 @@
             <table class="table-container table-customer">
                 <tbody>
                 <tr>
-                    <td><strong>Client :</strong> {{ d.customer_name }} ({{ d.login_id }})</td>
+                    <td><strong>Client :</strong> {{ d.customer_name }} ({% if d.c_mobile is not empty %}{{ d.c_mobile }}{% elseif d.c_phone is not empty %}{{ d.c_phone }}{% endif %})</td>
                 </tr>
                 <tr>
                     <td><strong>Matériel :</strong> {{ d.e_name }} ({{ d.e_brand_name }})</td>
