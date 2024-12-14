@@ -27,19 +27,21 @@ class WorkshopDeleteController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $data = $request->getParsedBody()['form_workshop_delete'];
             // Change ID for interventions
-            $updateInterventions = $this->getRepository(InterventionRepository::class)->updateBy(
+            $this->logger->info("[Supression d'un magasin] Transfère des interventions...");
+            $this->getRepository(InterventionRepository::class)->updateBy(
                 [
                     'company_id' => (int)$data['company_id']
                 ], 'company_id', $company_id, false);
             // Change ID for Deposit
-            $updateDeposit = $this->getRepository(DepositRepository::class)->updateBy(
+            $this->logger->info("[Supression d'un magasin] Transfère des débours...");
+            $this->getRepository(DepositRepository::class)->updateBy(
                 [
                     'company_id' => (int)$data['company_id']
                 ], 'company_id', $company_id, false);
-            if($updateInterventions && $updateDeposit){
-                $this->getRepository(CompanyRespository::class)->delete($company_id);
-                $this->addFlash('panel-info', 'Magasin supprimé avec succès.');
-            }
+            $this->logger->info(sprintf("Suppression du magasin avec l'ID %s", $company_id));
+            $this->getRepository(CompanyRespository::class)->delete($company_id);
+            $this->addFlash('panel-info', 'Magasin supprimé avec succès.');
+            return $this->redirectToRoute('dash_workshop');
         }
         // Breadcrumbs
         $bds = $this->breadcrumbs;

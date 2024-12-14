@@ -123,6 +123,14 @@ class AccountController extends AbstractController
     public function on2fa(Request $request, Response $response): Response
     {
         if ($request->getMethod() === 'POST'){
+            $disable = $request->getQueryParams()['disable'];
+            if($disable){
+                $this->getRepository(UserRepository::class)->update([
+                    'key_totp' => null
+                ], $this->getUser()->getId());
+                $this->addFlash('panel-info', "Double authentification désactivée");
+                return new RedirectResponse($this->generateUrl('dash_account'));
+            }
             $google2fa = new Google2FA();
             $secretKey = $google2fa->generateSecretKey();
             $this->getRepository(UserRepository::class)->update([

@@ -55,7 +55,9 @@
                                             <span>{{ user.key_totp }}</span>
                                         </div>
                                         <button data-target="active_auth_2fa" data-toggle="modal" type="button" class="btn btn-light-info">QR Code</button>
-                                        <button type="button" class="btn btn-light-pink">Désactiver l'authentification 2FA</button>
+                                        <form method="post" action="{{ url_for('dash_account_on_2fa') }}?disable=true" class="d-inline-block">
+                                        <button type="submit" class="btn btn-light-pink">Désactiver l'authentification 2FA</button>
+                                        </form>
                                     {% endif %}
                                 </div>
                             </div>

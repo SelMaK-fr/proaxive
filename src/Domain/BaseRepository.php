@@ -270,17 +270,21 @@ class BaseRepository
      * @param string $whereKey
      * @param string|int $whereValue
      * @param bool $date
-     * @return bool|int|\PDOStatement
+     * @return bool
      * @throws Exception
      */
-    public function updateBy(array $data, string $whereKey, string|int $whereValue, bool $date = true): bool|int|\PDOStatement
+    public function updateBy(array $data, string $whereKey, string|int $whereValue, bool $date = true): bool
     {
         // update date auto
         if($date){
             $data['updated_at'] = new Literal('NOW()');
         }
         $query = $this->query->update($this->model)->set($data)->where($whereKey, $whereValue);
-        return $query->execute();
+        $exec = $query->execute();
+        if($exec){
+            return true;
+        }
+        return false;
     }
 
     /**

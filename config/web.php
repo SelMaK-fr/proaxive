@@ -129,7 +129,7 @@ return function (App $app) {
     // Account Admin/Tech/Manager
     $app->group('/admin/settings/account', function (RouteCollectorProxy $group) {
         $group->any('', [AccountController::class, 'index'])->setName('dash_account');
-        $group->post('/2fa', [AccountController::class, 'on2fa'])->setName('dash_account_on_2fa');
+        $group->post('/2fa[:{args}]', [AccountController::class, 'on2fa'])->setName('dash_account_on_2fa');
         $group->post('/avatar', AccountAvatarController::class)->setName('dash_account_avatar');
     });
     /* Customer */
