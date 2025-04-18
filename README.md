@@ -1,6 +1,6 @@
 # PROAXIVE 2.0
-### version 2.0.x [beta]
-#### Slim Framework v4.13.0
+### version 2.0.8
+#### Slim Framework v4.14.0
 
 [![Minimum PHP Version](https://img.shields.io/badge/PHP->=8.2-%23786fa6)](https://php.net/)
 [![Minimum MySQL Version](https://img.shields.io/badge/MySQL-5.x-%23f0932b)](https://www.mysql.com/fr/)
@@ -25,6 +25,10 @@ Elle permet de gérer les interventions informatique en ligne. L'application web
 #### Licence
 
 Proaxive est distribué sous les termes de la licence GNU General Public License v3+ ou supérieure.
+
+#### Version complète packagée (archive ZIP)
+
+Téléchargement : https://proaxive.fr/changelogs
 
 ## Installation avec le dépôt Git
 
