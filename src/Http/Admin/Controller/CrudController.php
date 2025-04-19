@@ -68,7 +68,6 @@ class CrudController extends AbstractController
         $form = $this->createForm($type, $entity);
         $form->handleRequest();
         if($form->isSubmitted() && $form->isValid()) {
-            dd($form->getRequestData()['form_' .$this->form_name]);
             if(is_array($fields) && array_key_exists('users', $fields)) {
                 $entity->setUsersId($this->getUser()->getId());
                 if(array_key_exists('company', $fields)){
