@@ -39,7 +39,7 @@ class DepositReadController extends AbstractController
             $breadcrumbs = $this->breadcrumbs;
             $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
             $breadcrumbs->addCrumb('Dépôt', false);
-            $breadcrumbs->addCrumb($deposit, false);
+            $breadcrumbs->addCrumb($this->sanitize($deposit), false);
             $breadcrumbs->render();
             // .Breadcrumbs
             return $this->render($response, 'backoffice/deposit/read.html.twig', [

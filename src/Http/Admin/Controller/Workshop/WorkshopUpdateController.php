@@ -57,7 +57,7 @@ class WorkshopUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Magasins', $this->getUrlFor('dash_workshop'));
-        $bds->addCrumb($workshop->name, false);
+        $bds->addCrumb($this->sanitize($workshop->name), false);
         $bds->addCrumb('Modification', false);
         $bds->render();
         // .Breadcrumbs

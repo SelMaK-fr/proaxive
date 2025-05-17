@@ -45,7 +45,7 @@ class SocietyUpdateController extends CrudController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Client (société)', $this->getUrlFor('dash_customer'));
-        $bds->addCrumb($customer->fullname, $this->getUrlFor('customer_read', ['id' => $customer->id]));
+        $bds->addCrumb($this->sanitize($customer->fullname), $this->getUrlFor('customer_read', ['id' => $customer->id]));
         $bds->addCrumb('Modification', false);
         $bds->render();
         // .Breadcrumbs

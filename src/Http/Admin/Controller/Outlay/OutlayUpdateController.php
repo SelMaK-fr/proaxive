@@ -39,7 +39,7 @@ class OutlayUpdateController extends CrudController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Débours', false);
-        $bds->addCrumb($outlay->reference, false);
+        $bds->addCrumb($this->sanitize($outlay->reference), false);
         $bds->render();
         // .Breadcrumbs
         return $this->crudUpdate(OutlayType::class, $outlay, (int)$args['id'], $response, $request, $bds);

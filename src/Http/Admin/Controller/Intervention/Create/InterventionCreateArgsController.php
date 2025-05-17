@@ -67,7 +67,7 @@ class InterventionCreateArgsController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb($customer->fullname, false);
+        $bds->addCrumb($this->sanitize($customer->fullname), false);
         $bds->addCrumb('Création', $this->getUrlFor('intervention_create_index'));
         $bds->render();
         return $this->render($response, 'backoffice/intervention/create/create_args.html.twig', [

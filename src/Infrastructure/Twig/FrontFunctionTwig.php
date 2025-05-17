@@ -50,7 +50,7 @@ class FrontFunctionTwig extends AbstractExtension
         if($data == null){
             return '<a href="'.$link.'" class="btn-sm d-block btn-light-four">Ajouter</a>';
         } else {
-            return $data;
+            return $this->sanitize($data);
         }
     }
 
@@ -71,12 +71,12 @@ class FrontFunctionTwig extends AbstractExtension
                     }
                 }
                 if($v){
-                    $html = '<div><span class="fw-600 d-inline-block mr-1">'.$title.' :</span> <'.$tag.'>'.implode(' - ', $v).'</'.$tag.'></div>';
+                    $html = '<div><span class="fw-600 d-inline-block mr-1">'.$this->sanitize($title).' :</span> <'.$this->sanitize($tag).'>'.implode(' - ', $v).'</'.$this->sanitize($tag).'></div>';
                 } else {
                     $html = '';
                 }
             } elseif(is_string($data)) {
-                $html = '<div><span class="fw-600 d-inline-block mr-1">'.$title.' :</span><'.$tag.'>'.$data.'</'.$tag.'></div>';
+                $html = '<div><span class="fw-600 d-inline-block mr-1">'.$this->sanitize($title).' :</span><'.$this->sanitize($tag).'>'.$this->sanitize($data).'</'.$this->sanitize($tag).'></div>';
             } else {
                 $html = 'Data error';
             }
@@ -88,7 +88,7 @@ class FrontFunctionTwig extends AbstractExtension
     public function getStringData(string|array|null $data): string
     {
         if($data){
-            return $data;
+            return $this->sanitize($data);
         }
         return '---';
     }
@@ -98,7 +98,7 @@ class FrontFunctionTwig extends AbstractExtension
         if(empty($data)){
             $var = '<div class="alert alert-light-info">Cette donnée n\'est pas renseignée</div>';
         } else {
-            $var = $data;
+            $var = $this->sanitize($data);
         }
         return $var;
     }
@@ -150,7 +150,7 @@ class FrontFunctionTwig extends AbstractExtension
         $color = $color ?: '#dbdbdb';
         $colorTxt = $colorTxt ?: '#000';
         $name = $name ?: 'n/a';
-        return '<span class="label-mid fs-12px" style="background-color:'.$color.';color:'.$colorTxt.';">'.$name.'</span>';
+        return '<span class="label-mid fs-12px" style="background-color:'.$this->sanitize($color).';color:'.$this->sanitize($colorTxt).';">'.$this->sanitize($name).'</span>';
     }
 
     /**
@@ -166,7 +166,7 @@ class FrontFunctionTwig extends AbstractExtension
         } elseif ($var == 'USER_MANAGER'){
             return '<span class="label-mid badge-light-yellow text-uppercase">Manager</span>';
         }
-        return $var;
+        return $this->sanitize($var);
     }
 
     /**
@@ -279,5 +279,17 @@ class FrontFunctionTwig extends AbstractExtension
             $number = $octet;
         }
         return(str_replace(".",",",$number.' '.$unite_spec[$count]));
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    protected function sanitize($string): ?string
+    {
+        if(is_null($string)){
+            return null;
+        }
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

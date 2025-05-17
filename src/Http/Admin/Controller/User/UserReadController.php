@@ -38,7 +38,7 @@ class UserReadController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Utilisateurs', $this->getUrlFor('dash_user'));
-        $bds->addCrumb($u->fullname, $this->getUrlFor('dash_customer'));
+        $bds->addCrumb($this->sanitize($u->fullname), $this->getUrlFor('dash_customer'));
         $bds->render();
         // .Breadcrumbs
         return $this->render($response, 'backoffice/user/read.html.twig', [

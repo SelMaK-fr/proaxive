@@ -59,9 +59,9 @@ class EquipmentUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
-        $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
-        $bds->addCrumb($e['type_name'], false);
-        $bds->addCrumb($e['name'], false);
+        $bds->addCrumb($this->sanitize($e['customer_name']), $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
+        $bds->addCrumb($this->sanitize($e['type_name']), false);
+        $bds->addCrumb($this->sanitize($e['name']), false);
         $bds->render();
         // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/update.html.twig', [
@@ -104,9 +104,9 @@ class EquipmentUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
-        $bds->addCrumb($e['customer_name'], $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
-        $bds->addCrumb($e['type_name'], false);
-        $bds->addCrumb($e['name'], $this->getUrlFor('equipment_read', ['id' => $equipment_id]));
+        $bds->addCrumb($this->sanitize($e['customer_name']), $this->getUrlFor('customer_read', ['id' => $e['customers_id']]));
+        $bds->addCrumb($this->sanitize($e['type_name']), false);
+        $bds->addCrumb($this->sanitize($e['name']), $this->getUrlFor('equipment_read', ['id' => $equipment_id]));
         $bds->addCrumb('Configuration système', false);
         $bds->render();
         // .Breadcrumbs

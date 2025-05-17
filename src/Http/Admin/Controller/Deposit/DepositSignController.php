@@ -108,7 +108,7 @@ class DepositSignController extends AbstractController
         $breadcrumbs = $this->breadcrumbs;
         $breadcrumbs->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $breadcrumbs->addCrumb('Dépôt', false);
-        $breadcrumbs->addCrumb($d->reference, false);
+        $breadcrumbs->addCrumb($this->sanitize($d->reference), false);
         $breadcrumbs->render();
         // .Breadcrumbs
         return $this->render($response, 'backoffice/deposit/sign.html.twig', [

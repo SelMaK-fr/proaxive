@@ -37,7 +37,7 @@ class CustomerReadController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
-        $bds->addCrumb($customer->fullname, false);
+        $bds->addCrumb($this->sanitize($customer->fullname), false);
         $bds->render();
         // .Breadcrumbs
         return $this->render($response, 'backoffice/customer/read.html.twig', [

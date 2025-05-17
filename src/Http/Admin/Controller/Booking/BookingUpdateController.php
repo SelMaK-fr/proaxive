@@ -26,7 +26,7 @@ class BookingUpdateController extends CrudController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Evènements', $this->getUrlFor('dash_booking'));
-        $bds->addCrumb($event->title, false);
+        $bds->addCrumb($this->sanitize($event->title), false);
         $bds->addCrumb('Modification', false);
         $bds->render();
         // .Breadcrumbs

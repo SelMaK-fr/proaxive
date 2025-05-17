@@ -1,3 +1,7 @@
+## Proaxive v2.0.9
+Mise à jour de sécurité
+#### Corrections importantes
+- Sécurisations de certaines variables (risque XSS)
 ## Proaxive v2.0.8
 - [Portail] Remplacement du mail par le numéro de mobile à la connexion au panel
 - [Panel] Ajout de lien vers l'équipement dans l'intervention

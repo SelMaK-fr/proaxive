@@ -26,7 +26,7 @@ class NoteUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Notes', false);
-        $bds->addCrumb($note->title, false);
+        $bds->addCrumb($this->sanitize($note->title), false);
         $bds->render();
         // .Breadcrumbs
         return $this->render($response, "backoffice/note/create.html.twig", [

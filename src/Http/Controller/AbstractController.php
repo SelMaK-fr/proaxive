@@ -230,4 +230,16 @@ abstract class AbstractController
         ];
         return new JsonResponse($result, $code, [], JSON_PRETTY_PRINT);
     }
+
+    /**
+     * @param $string
+     * @return string|null
+     */
+    protected function sanitize($string): ?string
+    {
+        if(is_null($string)) {
+            return null;
+        }
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
 }

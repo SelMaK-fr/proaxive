@@ -56,9 +56,9 @@ class InterventionUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb($i['customer_name'], $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
-        $bds->addCrumb($i['equipment_name'], $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
-        $bds->addCrumb($i['ref_number'], false);
+        $bds->addCrumb($this->sanitize($i['customer_name']), $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
+        $bds->addCrumb($this->sanitize($i['equipment_name']), $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
+        $bds->addCrumb($this->sanitize($i['ref_number']), false);
         $bds->addCrumb('Observations', false);
         $bds->render();
         // .Breadcrumbs
@@ -84,9 +84,9 @@ class InterventionUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb($i['customer_name'], $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
-        $bds->addCrumb($i['equipment_name'], $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
-        $bds->addCrumb($i['ref_number'], false);
+        $bds->addCrumb($this->sanitize($i['customer_name']), $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
+        $bds->addCrumb($this->sanitize($i['equipment_name']), $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
+        $bds->addCrumb($this->sanitize($i['ref_number']), false);
         $bds->addCrumb('Fichiers joints', false);
         $bds->render();
         // .Breadcrumbs
@@ -115,9 +115,9 @@ class InterventionUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Interventions', $this->getUrlFor('dash_intervention'));
-        $bds->addCrumb($i['customer_name'], $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
-        $bds->addCrumb($i['equipment_name'], $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
-        $bds->addCrumb($i['ref_number'], false);
+        $bds->addCrumb($this->sanitize($i['customer_name']), $this->getUrlFor('customer_read', ['id' => $i['customers_id']]));
+        $bds->addCrumb($this->sanitize($i['equipment_name']), $this->getUrlFor('equipment_read', ['id' => $i['equipments_id']]));
+        $bds->addCrumb($this->sanitize($i['ref_number']), false);
         $bds->addCrumb('Galerie', false);
         $bds->render();
         // .Breadcrumbs

@@ -108,4 +108,12 @@ class CrudController extends AbstractController
     {
         return $this->redirectToRoute($this->routeName);
     }
+
+    protected function sanitize($string): ?string
+    {
+        if(is_null($string)) {
+            return null;
+        }
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
 }

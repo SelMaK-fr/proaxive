@@ -53,7 +53,7 @@ class CustomerUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
-        $bds->addCrumb($customer->fullname, false);
+        $bds->addCrumb($this->sanitize($customer->fullname), false);
         $bds->addCrumb('Modification', false);
         $bds->render();
         // .Breadcrumbs
@@ -103,7 +103,7 @@ class CustomerUpdateController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Clients', $this->getUrlFor('dash_customer'));
-        $bds->addCrumb($customer->fullname, $this->getUrlFor('customer_read', ['id' => $customer->id]));
+        $bds->addCrumb($this->sanitize($customer->fullname), $this->getUrlFor('customer_read', ['id' => $customer->id]));
         $bds->addCrumb('Modification', $this->getUrlFor('customer_update', ['id' => $customer->id]));
         $bds->addCrumb('Paramètres', false);
         $bds->render();

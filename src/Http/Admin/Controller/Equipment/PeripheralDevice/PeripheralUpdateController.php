@@ -48,7 +48,7 @@ class PeripheralUpdateController extends AbstractController
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Équipements', $this->getUrlFor('dash_equipment'));
         $bds->addCrumb('Périphérique', false);
-        $bds->addCrumb($e->name, false);
+        $bds->addCrumb($this->sanitize($e->name), false);
         $bds->render();
         // .Breadcrumbs
         return $this->render($response, 'backoffice/equipment/device/update.html.twig', [

@@ -42,9 +42,9 @@ class EquipmentReadController extends AbstractController
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', $this->getUrlFor('dash_home'));
         $bds->addCrumb('Equipements', $this->getUrlFor('dash_equipment'));
-        $bds->addCrumb($e->customer_name, $this->getUrlFor('customer_read', ['id' => $e->customers_id]));
-        $bds->addCrumb($e->te_name, false);
-        $bds->addCrumb($e->name, false);
+        $bds->addCrumb($this->sanitize($e->customer_name), $this->getUrlFor('customer_read', ['id' => $e->customers_id]));
+        $bds->addCrumb($this->sanitize($e->te_name), false);
+        $bds->addCrumb($this->sanitize($e->name), false);
         $bds->render();
         //
         return $this->render($response, 'backoffice/equipment/read.html.twig', [

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Command;
 
+use Envms\FluentPDO\Literal;
 use Envms\FluentPDO\Query;
 use League\Csv\Reader;
 use Selmak\Proaxive2\Domain\Customer\Customer;
@@ -57,6 +58,9 @@ class ImportCustomerCommand extends Command
                     ->setMail($mail)
                     ->setZipcode($row['zipcode'])
                     ->setCity($row['city'])
+                    ->setCreatedAt(new Literal('now'))
+                    ->setUpdatedAt(new Literal('now'))
+                    ->setActivated(1)
                 ;
                 $repo->add($customer, true);
             }
