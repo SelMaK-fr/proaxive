@@ -1,3 +1,10 @@
+## Proaxive v2.0.10
+- [Panel] Correction lien dans l'onglet "fichier joint" d'une intervention
+- [Portal] Correction CSS "Equipement concerné"
+- Correction de l'envoi du dépôt par courriel.
+- Affichage des marques par ordre alphabétique.
+- Affichage des 5 prochains rendez-vous dans l'accueil du panel.
+- [Portal] Ajout du changement de mot de passe Customer.
 ## Proaxive v2.0.9
 Mise à jour de sécurité
 #### Corrections importantes

@@ -111,9 +111,9 @@ class FrontFunctionTwig extends AbstractExtension
     public function getDataBool(mixed $data): string
     {
         if($data){
-            $var = '<span class="label alert-light-pink">OFF</span>';
-        } else {
             $var = '<span class="label alert-light-green">ON</span>';
+        } else {
+            $var = '<span class="label alert-light-pink">OFF</span>';
         }
         return $var;
     }

@@ -13,6 +13,7 @@ date_default_timezone_set('Europe/Paris');
 $settings = [
     'app' => [
         'name'   => 'Proaxive', // Sitename or your business name
+        'version' => '2.0.10',
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',

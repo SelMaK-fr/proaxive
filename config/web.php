@@ -23,6 +23,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Customer\CustomerUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositReadController;
+use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSendPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSignController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositToPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentController;
@@ -64,6 +65,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\PermsController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountAvatarController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\BrandController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\ExportDataController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\OperatingSystemController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\ParametersController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\StatusController;
@@ -96,6 +98,7 @@ use Selmak\Proaxive2\Http\Controller\Portal\PortalController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalDocumentController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalInterventionController;
 use Selmak\Proaxive2\Http\Controller\Portal\PortalParameterController;
+use Selmak\Proaxive2\Http\Controller\Portal\PortalSecurityController;
 use Selmak\Proaxive2\Security\Middleware\IfDataNullOrEmptyMiddleware;
 use Selmak\Proaxive2\Security\Middleware\IfMailerIsNotActivateMiddleware;
 use Selmak\Proaxive2\Security\Middleware\Perms\RedirectIfNotAdminMiddleware;
@@ -232,6 +235,7 @@ return function (App $app) {
        $group->post('/add/i-{id:[0-9]+}', [DepositCreateController::class, 'create'])->setName('deposit_create');
        $group->any('/{reference}/sign', [DepositSignController::class, 'index'])->setName('deposit_sign');
        $group->get('/[:{args}]', [DepositReadController::class, 'read'])->setName('deposit_read');
+       $group->post('/send-{id:[0-9]+}', DepositSendPdfController::class)->setName('deposit_send_pdf');
        $group->get('/pdf/{reference}[:{args}]', [DepositToPdfController::class, 'viewDepositPdf'])->setName('deposit_read_pdf');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     /* Outlay */
@@ -295,6 +299,7 @@ return function (App $app) {
        $group->delete('/status/delete', [StatusController::class, 'delete'])->setName('settings_status_delete');
        $group->any('/update', UpdateAppController::class)->setName('settings_update');
        $group->post('/command/app-update', VersionAppUpdateController::class)->setName('settings_app_update')->add(RedirectIfNotAdminMiddleware::class);
+       $group->any('/backup', ExportDataController::class)->setName('settings_backup');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     // Notes/Stickies
     $app->group('/admin/notes', function (RouteCollectorProxy $group){
@@ -311,7 +316,7 @@ return function (App $app) {
         $group->get('/i/r/{ref_number}', [PortalInterventionController::class, 'read'])->setName('portal_intervention_read');
         $group->any('/parameters', [PortalParameterController::class, 'index'])->setName('portal_parameters');
         $group->any('/parameters/address', [PortalParameterController::class, 'address'])->setName('portal_parameters_address');
-        $group->any('/parameters/security', [])->setName('portal_parameters_security');
+        $group->any('/parameters/security', [PortalSecurityController::class, 'index'])->setName('portal_parameters_security');
         $group->get('/documents', [PortalDocumentController::class, 'index'])->setName('portal_documents');
         $group->post('/documents/dl/{reference}', [PortalDocumentController::class, 'download'])->setName('portal_documents_download');
     })->add(RedirectIfNotAuthMiddleware::class);

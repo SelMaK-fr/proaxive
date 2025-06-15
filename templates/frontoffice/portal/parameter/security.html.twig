@@ -10,36 +10,33 @@
                 <li><a href="{{ url_for('portal_home') }}">Accueil</a></li>
                 <li class="ml-1 mr-1"><span>/</span></li>
                 <li><a href="#"></a>Paramètres</li>
+                <li class="ml-1 mr-1"><span>/</span></li>
+                <li><a href="#"></a>Sécurité</li>
             </ul>
         </div>
         <div class="grid">
             <div class="col-2_sm-12">
                 <div class="navigation-parameters">
-                    <a href="{{ url_for('portal_parameters') }}" class="current"><span class="d-block mr-2"><i class="ri-profile-fill"></i></span><span>Mon compte</span></a>
+                    <a href="{{ url_for('portal_parameters') }}"><span class="d-block mr-2"><i class="ri-profile-fill"></i></span><span>Mon compte</span></a>
                     <a href="{{ url_for('portal_parameters_address') }}"><span class="d-block mr-2"><i class="ri-settings-2-fill"></i></span><span>Mon adresse</span></a>
-                    <a href="{{ url_for('portal_parameters_security') }}"><span class="d-block mr-2"><i class="ri-key-2-fill"></i></span><span>Sécurité</span></a>
+                    <a href="#" class="current"><span class="d-block mr-2"><i class="ri-key-2-fill"></i></span><span>Sécurité</span></a>
                 </div>
             </div>
             <div class="col-10_sm-12">
                 <div class="card all-border">
                     <div class="card-body p-4">
                         <div class="card-header mb-5">
-                            <h2>Paramètres de votre compte utilisateur</h2>
-                            <span>Mettre à jour ses paramètres de compte.</span>
+                            <h2>Sécurité de votre compte utilisateur</h2>
+                            <span>Mettre à jour son mot de passe.</span>
                         </div>
                         {{ form.renderStart(false) | raw }}
-                            <div class="grid-2">
-                                <div class="col-6_sm-12">
-                                    {{ form.renderField('fullname') | raw }}
-                                    {{ form.renderField('phone') | raw }}
-                                    {{ form.renderField('favorite_contact') | raw }}
-                                </div>
-                                <div class="col-6_sm-12">
-                                    {{ form.renderField('mail') | raw }}
-                                    {{ form.renderField('mobile') | raw }}
-                                </div>
+                        <div class="grid-2">
+                            <div class="col-6_sm-12">
+                                {{ form.renderField('passwd') | raw }}
+                                {{ form.renderField('passwd_2') | raw }}
                             </div>
-                            <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Mettre à jour</button>
+                        </div>
+                        <button type="submit" class="btn btn-light-four"><i class="ri-checkbox-circle-line"></i> Mettre à jour</button>
                         {{ form.renderEnd(false) | raw }}
                     </div>
                 </div>

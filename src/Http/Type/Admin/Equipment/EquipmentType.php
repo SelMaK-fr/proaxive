@@ -170,7 +170,7 @@ final class EquipmentType extends Type
     private function getBrand(): array
     {
         $brands = [];
-        $req = $this->query->from('brands')->select(null)->select('brands.id, brands.name')->fetchAll();
+        $req = $this->query->from('brands')->select(null)->select('brands.id, brands.name')->orderBy('name')->fetchAll();
         foreach ($req as $b) {
             $brands[$b['id']] = $b['name'];
         }

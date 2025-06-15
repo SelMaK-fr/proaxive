@@ -22,7 +22,7 @@
                             <p>
                                 Veuillez téléverser uniquement des fichiers de type "document" (ex : Word, Excel, PDF, Text)
                                 <br>
-                                Pour l'envoi d'image, une galerie est disponible <a href="#" title="Galerie images de l'intervention n°{{ i.ref_number }}">ICI</a>
+                                Pour l'envoi d'image, une galerie est disponible <a href="{{ url_for('intervention_gallery', {id:i.id}) }}" title="Galerie images de l'intervention n°{{ i.ref_number }}">ICI</a>
                             </p>
                             <div class="doc-columns">
                                 <div class="card-add-file p-relative">

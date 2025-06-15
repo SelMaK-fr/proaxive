@@ -7,15 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Selmak\Proaxive2\Domain\Application\SettingRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
-use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
-use SensioLabs\AnsiConverter\Theme\SolarizedXTermTheme;
 use Slim\Exception\HttpBadRequestException;
-use Slim\Exception\HttpNotFoundException;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class UpdateAppController extends AbstractController
 {
@@ -59,6 +51,7 @@ class UpdateAppController extends AbstractController
             'setting_current' => 'update',
             'breadcrumbs' => $breadcrumbs,
             'setting' => $setting,
+            'versionApp' => $this->settings->get('app')['version'],
             'output' => $output,
             'message' => $message
         ]);

@@ -1918,7 +1918,9 @@ ul.tasks li span.t-icon {
 
 /* line 426, ../sass/layout/_portal.scss */
 .item-equipment {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(20px, auto);
 }
 
 /* line 429, ../sass/layout/_portal.scss */
@@ -1928,7 +1930,6 @@ ul.tasks li span.t-icon {
   padding: 6px 0 6px 3px;
   border-bottom: 1px solid var(--sk-color-base-border);
   border-right: 1px solid var(--sk-color-base-border);
-  width: 30%;
 }
 
 /* line 437, ../sass/layout/_portal.scss */
@@ -1941,7 +1942,6 @@ ul.tasks li span.t-icon {
 .item-equipment .item_value {
   display: block;
   border-bottom: 1px solid var(--sk-color-base-border);
-  width: 70%;
   padding: 6px 0 6px 8px;
 }
 

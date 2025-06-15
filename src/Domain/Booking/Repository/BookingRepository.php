@@ -30,4 +30,16 @@ class BookingRepository extends BaseRepository
             ->fetchAll()
             ;
     }
+
+    public function allLastEvents(\DateTimeImmutable $now)
+    {
+        return $this->makeQueryDefault()
+            ->select(null)
+            ->select("booking.*")
+            ->where('start_date >= ?', [$now->format('Y-m-d')]) // => futur ou aujourd'hui
+            ->orderBy('start_date') // ordre croissant (le plus proche d'abord)
+            ->limit(5)
+            ->fetchAll();
+    }
+
 }

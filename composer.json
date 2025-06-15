@@ -1,7 +1,7 @@
 {
     "name": "selmak/proaxive2",
     "scripts": {
-        "proaxive-start": "php -S localhost:8080 -d display_error=1 -t public"
+        "proaxive-start": "php -S localhost:8003 -d display_error=1 -t public"
     },
     "config": {
         "process-timeout":8000

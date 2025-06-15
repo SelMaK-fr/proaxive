@@ -5,6 +5,7 @@ namespace Selmak\Proaxive2\Http\Admin\Controller;
 use Envms\FluentPDO\Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selmak\Proaxive2\Domain\Booking\Repository\BookingRepository;
 use Selmak\Proaxive2\Domain\Intervention\Repository\InterventionRepository;
 use Selmak\Proaxive2\Http\Controller\AbstractController;
 use Twig\Error\LoaderError;
@@ -29,6 +30,8 @@ class IndexController extends AbstractController
         $interventions = $this->getRepository(InterventionRepository::class)->allProgress();
         // List last complete interventions
         $interventions_end = $this->getRepository(InterventionRepository::class)->allCompleted(6);
+        // Last Events
+        $events = $this->getRepository(BookingRepository::class)->allLastEvents(new \DateTimeImmutable());
         // Breadcrumbs
         $bds = $this->breadcrumbs;
         $bds->addCrumb('Accueil', false);
@@ -38,6 +41,7 @@ class IndexController extends AbstractController
             'interventions' => $interventions,
             'interventions_end' => $interventions_end,
             'currentMenu' => 'home',
+            'events' => $events,
             'breadcrumbs' => $bds
         ]);
     }

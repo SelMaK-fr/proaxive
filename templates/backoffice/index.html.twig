@@ -44,7 +44,18 @@
         <div class="col-3_sm-12">
             <div class="card p-4">
                 <h2>Derniers évènements</h2>
-                <em>Bientôt disponible !</em>
+                {% if events is empty %}
+                <div class="alert alert-info">Aucun événement prévu</div>
+                {% else %}
+                <ul class="flex" style="gap: 8px;flex-direction: column;">
+                {% for e in events %}
+                    <li class="pt-2 pb-2 pr-3 pl-3 all-border-dashed rd-10" style="border-color:{{ e.backgroundColor }}">
+                        <span class="d-block fw-500">{{ e.title }}</span>
+                        le <span>{{ e.start_date | date('d/m/Y') }}</span> <em>à {{ e.start_time }}</em>
+                    </li>
+                {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </div>
         <div class="col-4_sm-12">
