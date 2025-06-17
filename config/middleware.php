@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 use DI\NotFoundException;
 use Odan\Session\Middleware\SessionStartMiddleware;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use Selmak\Proaxive2\Domain\Application\Middleware\RespectValidationMiddleware;
-use Selmak\Proaxive2\Domain\Application\Middleware\TwigFlashMiddleware;
+use Selmak\Proaxive2\Application\Middleware\RespectValidationMiddleware;
+use Selmak\Proaxive2\Application\Middleware\TwigFlashMiddleware;
 use Selmak\Proaxive2\Domain\Auth\Middleware\RedirectIfNotAuthMiddleware;
-use Selmak\Proaxive2\Domain\Auth\Middleware\RegenSessionIfCookieExistMiddleware;
 use Selmak\Proaxive2\Infrastructure\Module\AddonLoaderMiddleware;
-use Selmak\Proaxive2\Settings\SettingsInterface;
 use Slim\App;
 use Slim\Middleware\MethodOverrideMiddleware;
 use Slim\Views\TwigMiddleware;

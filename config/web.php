@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Selmak\Proaxive2\Domain\Application\Middleware\CheckDateCodeInitMiddleware;
+use Selmak\Proaxive2\Application\Middleware\CheckDateCodeInitMiddleware;
 use Selmak\Proaxive2\Domain\Company\Middleware\IfUpdateSocietyMiddleware;
 use Selmak\Proaxive2\Domain\Customer\Middleware\RedirectIfNotAuthMiddleware;
 use Selmak\Proaxive2\Domain\Equipment\Middleware\IfUpdatePeripheralMiddleware;
@@ -26,8 +26,8 @@ use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSendPdfController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositSignController;
 use Selmak\Proaxive2\Http\Admin\Controller\Deposit\DepositToPdfController;
-use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentAddController;
+use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Document\DocumentReadController;
@@ -41,13 +41,12 @@ use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\Peripheral
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\PeripheralDevice\PeripheralUpdateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Equipment\Upload\EquipmentUploadPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateArgsController;
+use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateByStepsController as CreateIntervention;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionAddPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionDeletePictureController;
-use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Gallery\InterventionViewPictureController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionAjaxController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionCreateController;
-use Selmak\Proaxive2\Http\Admin\Controller\Intervention\Create\InterventionCreateByStepsController as CreateIntervention;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Intervention\InterventionSearchController;
@@ -66,6 +65,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountAvatarControl
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\Account\AccountController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\BrandController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\ExportDataController;
+use Selmak\Proaxive2\Http\Admin\Controller\Settings\Import\ImportIndexController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\OperatingSystemController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\ParametersController;
 use Selmak\Proaxive2\Http\Admin\Controller\Settings\StatusController;
@@ -82,8 +82,8 @@ use Selmak\Proaxive2\Http\Admin\Controller\User\UserController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateLogoController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateSignatureController;
-use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopController;
+use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopCreateController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\WorkshopUpdateController;
 use Selmak\Proaxive2\Http\Controller\Account\UserAccountController;
@@ -298,8 +298,12 @@ return function (App $app) {
        $group->post('/status/update[:{args}]', [StatusController::class, 'actionForm'])->setName('settings_status_update');
        $group->delete('/status/delete', [StatusController::class, 'delete'])->setName('settings_status_delete');
        $group->any('/update', UpdateAppController::class)->setName('settings_update');
+       $group->post('/update/result', [UpdateAppController::class, 'updateApp'])->setName('settings_update_result');
+       $group->post('/update/migrate/result', [UpdateAppController::class, 'migrate'])->setName('settings_update_migrate_result');
        $group->post('/command/app-update', VersionAppUpdateController::class)->setName('settings_app_update')->add(RedirectIfNotAdminMiddleware::class);
        $group->any('/backup', ExportDataController::class)->setName('settings_backup');
+       $group->any('/import-data', ImportIndexController::class)->setName('settings_import_index');
+       $group->post('/import-data/launch', [ImportIndexController::class, 'importData'])->setName('settings_import_launch');
     })->add(RedirectIfNotAdminOrTechMiddleware::class);
     // Notes/Stickies
     $app->group('/admin/notes', function (RouteCollectorProxy $group){

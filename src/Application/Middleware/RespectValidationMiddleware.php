@@ -1,6 +1,6 @@
 <?php
 
-namespace Selmak\Proaxive2\Domain\Application\Middleware;
+namespace Selmak\Proaxive2\Application\Middleware;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;

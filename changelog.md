@@ -1,3 +1,8 @@
+## Proaxive v2.0.11
+Mise à jour dédiée à l'import des données de Proaxive 1.5.7
+- [Import] Customer, Intervention, Equipment, Brand, OS, EquipmentType
+- [Fixe] Correction des commandes de mise à jour dans le panel
+- [Panel] Ajout des migrations manuelle (si installation/mise à jour FTP)
 ## Proaxive v2.0.10
 - [Panel] Correction lien dans l'onglet "fichier joint" d'une intervention
 - [Portal] Correction CSS "Equipement concerné"

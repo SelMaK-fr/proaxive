@@ -13,7 +13,7 @@ date_default_timezone_set('Europe/Paris');
 $settings = [
     'app' => [
         'name'   => 'Proaxive', // Sitename or your business name
-        'version' => '2.0.10',
+        'version' => '2.0.11',
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',
@@ -80,6 +80,7 @@ $settings = [
         'level' => \Monolog\Level::Info,
     ],
     'storage' => [
+        'app' => dirname(__DIR__) . '/storage/app/',
         'bao' => dirname(__DIR__) . '/storage/app/bao',
         'backups' => dirname(__DIR__) . '/storage/backups/',
         'documents' => dirname(__DIR__) . '/storage/documents/',

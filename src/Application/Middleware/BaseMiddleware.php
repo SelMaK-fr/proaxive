@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Selmak\Proaxive2\Domain\Application\Middleware;
+namespace Selmak\Proaxive2\Application\Middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Laminas\Diactoros\Response\JsonResponse;
-use Selmak\Proaxive2\Http\API\Exception\ApiAuthException;
 use Slim\Psr7\Response;
 
 abstract class BaseMiddleware

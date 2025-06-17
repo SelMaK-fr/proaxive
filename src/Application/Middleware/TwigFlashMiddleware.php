@@ -1,6 +1,6 @@
 <?php
 
-namespace Selmak\Proaxive2\Domain\Application\Middleware;
+namespace Selmak\Proaxive2\Application\Middleware;
 
 use Odan\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;

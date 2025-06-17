@@ -1,0 +1,37 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Importation des données Proaxive 1.5.x{% endblock %}
+
+{% block body %}
+    <div class="grid-center">
+        <div class="col-8_sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Proaxive 1.5.x -> Proaxive 2.0.x</h3>
+                    <p>
+                        Ce service est dédié à l'importation des données venant de Proaxive 1.5.7. <br>
+                        La procédure d'importation est très spécifique, il est important de bien la suivre.
+                    </p>
+                    <p>
+                        La base de données de Proaxive 1.5.x est bien différente de Proaxive 2, il se peut et même probable que toutes les données ne soient pas importées.
+                    </p>
+                    <div class="alert alert-warning">
+                        <strong>Avertissement</strong> : éffectuez une sauvegarde de votre base de données si elle n'est pas vide.
+                    </div>
+                    <h3>Avant de commencer</h3>
+                    <p>
+                        Suivre la procédure décrite dans <a href="https://proaxive.fr/docs/app/v-2-0-x/importation-de-donnees-v1-37" target="_blank" title="Documentation Proaxive">la documentation</a>.
+                    </p>
+                    {% if missingFiles is not empty %}
+                        <div class="alert alert-light-danger">{{ flash }}</div>
+                    {% endif %}
+                    {% if missingFiles is empty %}
+                    <form method="post" class="mt-4" id="import_data">
+                        <button type="button" onclick="ajaxPostModalData('{{ url_for('settings_import_launch') }}', 'import_data')" class="btn btn-sk-one submit-ajax">Lancer l'importation</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

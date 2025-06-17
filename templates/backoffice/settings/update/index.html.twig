@@ -3,7 +3,36 @@
 {% block title %}Mise à jour{% endblock %}
 
 {% block body %}
-<div class="grid-center">
+{% if isExecEnabled == false %}
+    <div class="alert alert-light-danger">
+        La function <strong>exec()</strong> n'est pas activée dans votre configuration PHP, vous ne pouvez donc pas utiliser les services ci-dessous. <br>
+        Vous devez éditer votre fichier php.ini et supprimer "exec" de la directive disable_functions.
+    </div>
+{% endif %}
+<div class="grid-12">
+    <div class="col-4_sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h3>Mise à jour de la base de données</h3>
+                <div class="alert alert-warning">
+                    <strong>Avertissement</strong> : script uniquement compatible avec l'installation manuelle (par FTP)
+                </div>
+                <p>
+                    Veuillez effectuer une sauvegarde de votre base de données avant de procéder à la nouvelle migration.
+                </p>
+                {% if lastUpdate.version != 20250616134407 %}
+                    <span class="text-pink">Il y a une ou des migrations en retard</span>
+                    {% if isExecEnabled %}
+                    <form action="{{ url_for('settings_update_migrate_result') }}" method="post" class="mt-2">
+                        <button type="submit" class="btn btn-sk-tree">Mettre à jour</button>
+                    </form>
+                    {% endif %}
+                    {% else %}
+                    <span class="text-green"><i class="ri-check-fill"></i> La base de données est à jour.</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <div class="col-8_sm-12">
         <div class="card">
             <div class="card-body">
@@ -18,14 +47,7 @@
                 <div class="alert alert-warning">
                     <strong>Avertissement</strong> Que ce soit ici ou par SSH, vous devez avoir installé Proaxive via le dépôt officiel disponible sur Github.
                 </div>
-                <h3>Retour de la console</h3>
-                <div class="console all-border-dashed p-3">
-                    <h4 class="mb-2">{{ message }}</h4>
-                    {% for line in output %}
-                        {{ line }}<br>
-                    {% endfor %}
-                </div>
-                <form method="post" class="mt-4">
+                <form action="{{ url_for('settings_update_result') }}" method="post" class="mt-4">
                     <div class="card-inside all-border-pink mb-3">
                         <div class="card-body p-3">
                             <h3 class="mb-0">Option(s) de mise à jour</h3>
@@ -40,7 +62,9 @@
                             </div>
                         </div>
                     </div>
+                    {% if isExecEnabled %}
                     <button type="submit" class="btn btn-sk-one">Lancer la mise à jour</button>
+                    {% endif %}
                 </form>
             </div>
         </div>

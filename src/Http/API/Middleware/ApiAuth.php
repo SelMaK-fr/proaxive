@@ -5,8 +5,7 @@ namespace Selmak\Proaxive2\Http\API\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Selmak\Proaxive2\Domain\Application\Middleware\BaseMiddleware;
-use Selmak\Proaxive2\Http\API\Exception\ApiAuthException;
+use Selmak\Proaxive2\Application\Middleware\BaseMiddleware;
 use Slim\Psr7\Response;
 
 final class ApiAuth extends BaseMiddleware

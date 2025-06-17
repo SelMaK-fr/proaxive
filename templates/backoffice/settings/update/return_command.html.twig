@@ -1,0 +1,23 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Mise à jour{% endblock %}
+
+{% block body %}
+    <div class="grid-12">
+        <div class="col-12_sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div><strong>Version BDD de Proaxive : </strong> <span class="text-green">{{ setting.app_version }}</span></div>
+                    <div><strong>Version de Proaxive : </strong> <span class="text-green">{{ versionApp }}</span></div>
+                    <h3>Retour de la console</h3>
+                    <div class="console all-border-dashed p-3">
+                        <h4 class="mb-2">{{ message }}</h4>
+                        {% for line in output %}
+                            {{ line }}<br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

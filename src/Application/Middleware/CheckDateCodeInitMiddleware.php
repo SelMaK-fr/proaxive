@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Selmak\Proaxive2\Domain\Application\Middleware;
+namespace Selmak\Proaxive2\Application\Middleware;
 
 use Envms\FluentPDO\Query;
 use Odan\Session\SessionInterface;
