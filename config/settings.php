@@ -13,7 +13,7 @@ date_default_timezone_set('Europe/Paris');
 $settings = [
     'app' => [
         'name'   => 'Proaxive', // Sitename or your business name
-        'version' => '2.0.11',
+        'version' => '2.0.12',
         'env'    => env('APP_ENV', 'production'),
         'debug'  => true,
         'urlPath' => '/',
@@ -72,7 +72,7 @@ $settings = [
         'username' => env('MAIL_USERNAME', 'user'),
         'password' => env('MAIL_PASSWORD', 'password'),
         'SMTPSecure' => env('MAIL_SMTPSECURE', false), // PHPMailer::ENCRYPTION_SMTPS or PHPMailer::ENCRYPTION_STARTTLS // false if local server
-        'port' => env('MAIL_PORT', 1025)
+        'port' => env('MAIL_PORT', 2025)
     ],
     'logger' => [
         'name' => 'proaxive-app',

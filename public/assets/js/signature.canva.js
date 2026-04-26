@@ -12,8 +12,7 @@ document.getElementById('save').addEventListener("click", function (event) {
     if (signaturePad.isEmpty()) {
         alert("Please provide signature first.");
     } else {
-        let image = signaturePad.toDataURL(); // data:image/png....
-        document.getElementById('client_sign').value = image;
+        document.getElementById('client_sign').value = signaturePad.toDataURL();
         //document.getElementById('results').innerHTML = '<img src="'+image+'"/>';
     }
 });
@@ -42,6 +41,12 @@ signaturePad.fromData(data);
 
 // Draws signature image from an array of point groups, without clearing your existing image (clear defaults to true if not provided)
 signaturePad.fromData(data, { clear: false });
+
+// Redraw the canvas
+signaturePad.redraw();
+
+// Returns true if canvas is empty, otherwise returns false
+signaturePad.isEmpty();
 
 // Unbinds all event handlers
 signaturePad.off();

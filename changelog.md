@@ -1,3 +1,8 @@
+## Proaxive v2.0.12
+- [Panel] Ajout des CGV pour les entreprises
+- [Panel] Ajout de la suppression d'employé (User)
+- [Panel] Correction envoi dépôt par courriel
+- [Panel] Mise à jour plugin JS signature_pad
 ## Proaxive v2.0.11
 Mise à jour dédiée à l'import des données de Proaxive 1.5.7
 - [Import] Customer, Intervention, Equipment, Brand, OS, EquipmentType

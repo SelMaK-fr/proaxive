@@ -27,6 +27,7 @@ class DepositSendPdfController extends AbstractController
 
         if($request->getMethod() === 'POST'){
             $mail = new MailService($this->getParameters('mailer'));
+
             $mail->sendMailWithAttachment(
                 $deposit['c_mail'],
                 $this->view('mailer/deposit/sendpdf.html.twig', ['data' => $deposit, 'setting' => $this->settings->get('app')]),

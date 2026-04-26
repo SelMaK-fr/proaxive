@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Selmak\Proaxive2\Http\Type\Admin\Workshop;
 
+use Palmtree\Form\Constraint\Length;
 use Palmtree\Form\Constraint\Number;
 use Palmtree\Form\Constraint\File as FileConstraint;
 use Palmtree\Form\Form;
@@ -49,6 +50,13 @@ class WorkshopType extends Type
                     new Number()
                 ],
                 'error_message' => 'Numéro invalid'
+            ])
+            ->add('cgv', 'textarea', [
+                'required' => false,
+                'label' => "Conditions Générales de Vente",
+                'constraints' => [
+                    new Length(['min' => 3])
+                ]
             ])
             ->add('about', 'textarea', [
                 'label' => "Description",

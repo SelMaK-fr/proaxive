@@ -52,7 +52,7 @@ return function (App $app) {
     };
     // Add setDefaultErrorHandler($customErrorHandler)
     // For activate simple Json error in production
-    $app->addErrorMiddleware(true,true,true, $container->get('logger'));
+    $app->addErrorMiddleware(false,true,true, $container->get('logger'));
 
     // Session by Odan for Slim
     $app->add(SessionStartMiddleware::class);

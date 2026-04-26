@@ -4,6 +4,7 @@ use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Selmak\Proaxive2\Command\ImportCustomerCommand;
 use Selmak\Proaxive2\Command\ImportFromProaxiveV1Command;
+use Selmak\Proaxive2\Command\ModifyInterventionsForCompleted;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
@@ -28,6 +29,8 @@ try {
 
     // Import Customers
     $application->add($container->get(ImportFromProaxiveV1Command::class));
+    // Modify Interventions for COMPLETED
+    $application->add($container->get(ModifyInterventionsForCompleted::class));
 
     exit($application->run());
 } catch (Throwable $exception) {

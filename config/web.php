@@ -79,6 +79,7 @@ use Selmak\Proaxive2\Http\Admin\Controller\Task\AddTaskToInterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\Task\DeleteTaskOfInterventionController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserActionController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserController;
+use Selmak\Proaxive2\Http\Admin\Controller\User\UserDeleteController;
 use Selmak\Proaxive2\Http\Admin\Controller\User\UserReadController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateLogoController;
 use Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload\WorkshopUpdateSignatureController;
@@ -171,6 +172,7 @@ return function (App $app) {
         $group->any('/create', [UserActionController::class, 'action'])->setName('user_create')->add(IfMailerIsNotActivateMiddleware::class);
         $group->any('/{id:[0-9]+}/update', [UserActionController::class, 'action'])->setName('user_update');
         $group->get('/{id:[0-9]+}', [UserReadController::class, 'read'])->setName('user_read');
+        $group->delete('/{id:[0-9]+}/delete', [UserDeleteController::class, 'delete'])->setName('user_delete');
     }); // ->add(RedirectNotPermitDemo::class)
     /* Equipment */
     $app->group('/admin/equipments', function (RouteCollectorProxy $group){

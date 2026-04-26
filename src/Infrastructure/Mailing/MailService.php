@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Selmak\Proaxive2\Infrastructure\Mailing;
 
 use Selmak\Proaxive2\Infrastructure\Mailing\Factory\MailerFactory;
+use Twig\Error\RuntimeError;
 
 class MailService
 {
@@ -22,7 +23,7 @@ class MailService
         $sendmail->msgHTML($view);
         $sendmail->send();
         } catch (\Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$sendmail->ErrorInfo}";
+            throw new RuntimeError(sprintf("Message could not be sent. Mailer Error: %s", $e->getMessage()));
         }
     }
 
@@ -39,7 +40,7 @@ class MailService
             $sendmail->addAttachment($attachment);
             $sendmail->send();
         } catch (\Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$sendmail->ErrorInfo}";
+            throw new RuntimeError(sprintf("Message could not be sent. Mailer Error: %s", $e->getMessage()));
         }
     }
 }
