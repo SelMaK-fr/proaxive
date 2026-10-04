@@ -20,13 +20,13 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "slim/slim": "^4.14.0",
-        "slim/twig-view": "^3.4",
-        "slim/psr7": "^1.7",
+        "slim/slim": "^4.15.3",
+        "slim/twig-view": "^3.4.1",
+        "slim/psr7": "^1.8.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
         "guzzlehttp/psr7": "^2",
-        "laminas/laminas-diactoros": "^3.3",
+        "laminas/laminas-diactoros": "^3.6.0",
         "php-di/slim-bridge": "^3.4",
         "envms/fluentpdo": "^2.2",
         "ext-pdo": "*",
@@ -47,10 +47,10 @@
         "creitive/breadcrumbs": "^3.3",
         "phpmailer/phpmailer": "^6.9",
         "intervention/image": "^3.2",
-        "dompdf/dompdf": "^2.0",
+        "dompdf/dompdf": "^v3.1.6",
         "endroid/qr-code": "^5.0",
         "symfony/mailer": "^7.0",
-        "firebase/php-jwt": "^6.10",
+        "firebase/php-jwt": "^v7.1.1",
         "symfony/yaml": "^7.0",
         "symfony/expression-language": "^7.0",
         "symfony/dotenv": "^7.0",
@@ -59,8 +59,7 @@
         "bacon/bacon-qr-code": "^3.0",
         "siriusphp/upload": "^4.0",
         "pagerfanta/pagerfanta": "^4.6",
-        "league/csv": "^9.16",
-        "verot/class.upload.php": "^2.1"
+        "league/csv": "^9.16"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23"

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Selmak\Proaxive2\Http\Admin\Controller\Workshop\Upload;
 
-use Awurth\Validator\Validator;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;

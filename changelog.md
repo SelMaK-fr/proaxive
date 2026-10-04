@@ -1,3 +1,6 @@
+## Proaxive v2.0.13
+- [Core] Mise à jour des packages
+- [Core] Slim Framework v4.15.3
 ## Proaxive v2.0.12
 - [Panel] Ajout des CGV pour les entreprises
 - [Panel] Ajout de la suppression d'employé (User)
