@@ -20,7 +20,7 @@
                 <p>
                     Veuillez effectuer une sauvegarde de votre base de données avant de procéder à la nouvelle migration.
                 </p>
-                {% if lastUpdate.version != 20250616134407 %}
+                {% if lastUpdate.version != 20250718144614 %}
                     <span class="text-pink">Il y a une ou des migrations en retard</span>
                     {% if isExecEnabled %}
                     <form action="{{ url_for('settings_update_migrate_result') }}" method="post" class="mt-2">
